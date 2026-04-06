@@ -1,0 +1,945 @@
+// /**
+//  * Folix Game Theme - One Step Checkout Styles
+//  * 
+//  * Magento标准移动优先写法
+//  * 
+//  * 包含优化：
+//  * - 移动端 sidebar 可折叠面板
+//  * - 固定 Place Order 按钮在底部
+//  * - 支付方式手风琴样式
+//  * - 触摸友好的交互
+//  * 
+//  * 直接使用主题变量 @folix-* 系列
+//  */
+
+// ============================================================================
+//  Common - 通用样式（移动优先）
+// ============================================================================
+
+& when (@media-common =true) {
+
+    //  Steps 进度条隐藏
+    .steps {
+        .step-title {
+            display: none;
+        }
+    }
+
+    //  Layout - 整体布局
+    .checkout-container {
+        .opc-wrapper {
+            width: 100%;
+            float: none;
+            padding-right: 0;
+        }
+
+        .opc-sidebar {
+            width: 100%;
+            float: none;
+            max-width: 100%;
+            margin-top: @indent__base;
+        }
+    }
+
+    //  Authentication - 登录认证
+    //  覆盖 Magento 默认 _authentication.less 中的:
+    //  float: right; margin-top: -1.5*@indent__xl; max-width: 50%; z-index: 1;
+    .authentication-wrapper {
+        position: relative !important;
+        float: none !important;
+        margin-top: 0 !important;
+        max-width: none !important;
+        z-index: auto !important;
+        text-align: left !important;
+
+        .action-auth-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: @indent__s;
+            padding: @indent__s @indent__base;
+            background: @color-white;
+            border: 1px solid @color-gray-middle1;
+            border-radius: @button__border-radius;
+            color: @primary__color;
+            font-size: 14px;
+            font-weight: @font-weight__semibold;
+
+            &:hover {
+                background: @color-gray-light01;
+                color: @folix-primary;
+                border-color: @folix-primary;
+            }
+        }
+
+        ._has-auth-shown & {
+            z-index: @modal__z-index;
+        }
+    }
+
+    .authentication-dropdown {
+        .modal-inner-wrap {
+            max-width: 400px;
+            padding: @indent__l;
+            background: @color-white;
+            border-radius: @button__border-radius;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+        }
+
+        .block-customer-login {
+            .block-title {
+                margin-bottom: @indent__base;
+                padding-bottom: @indent__s;
+                border-bottom: 2px solid @folix-primary;
+
+                strong {
+                    font-size: 20px;
+                    font-weight: @font-weight__semibold;
+                    color: @primary__color;
+                }
+            }
+
+            .field {
+                margin-bottom: @indent__base;
+
+                .label {
+                    font-size: 14px;
+                    font-weight: @font-weight__semibold;
+                    color: @color-gray-darken1;
+                }
+
+                .control {
+                    input {
+                        width: 100%;
+                        padding: @indent__s @indent__base;
+                        background: @color-white;
+                        border: 1px solid @color-gray-middle1;
+                        border-radius: @button__border-radius;
+                        font-size: 15px;
+
+                        &:focus {
+                            border-color: @folix-primary;
+                            outline: none;
+                        }
+                    }
+                }
+            }
+
+            .actions-toolbar {
+                margin-top: @indent__base;
+
+                .primary .action {
+                    width: 100%;
+                    padding: @indent__s;
+                    background: @folix-primary;
+                    border: none;
+                    border-radius: @button__border-radius;
+                    color: @color-white;
+                    font-size: 15px;
+                    font-weight: @font-weight__semibold;
+
+                    &:hover {
+                        background: @folix-primary-dark;
+                    }
+                }
+
+                .secondary {
+                    text-align: center;
+                    margin-top: @indent__s;
+
+                    .action-remind {
+                        font-size: 13px;
+                        color: @color-gray-darken1;
+
+                        &:hover {
+                            color: @folix-primary;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //  Payment - 支付区域
+    .checkout-payment-method {
+        .step-title {
+            display: none;
+        }
+
+        .checkout-payment {
+            background: @color-white;
+            border-radius: @button__border-radius;
+            padding: @indent__base;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
+            margin-bottom: @indent__base;
+            border: 1px solid @color-gray-light01;
+        }
+    }
+
+    //  Payment Methods - 支付方式列表（优化）
+    .payment-methods {
+        .payment-group-title-wrap {
+            display: block;
+            margin-bottom: @indent__l;
+            padding-bottom: @indent__base;
+            font-size: 20px;
+            font-weight: @font-weight__semibold;
+            color: @folix-text-primary;
+            border-bottom: 2px solid @folix-primary;
+        }
+
+        .payment-methods-items {
+            display: grid; // 使用 Grid 布局
+            grid-template-columns: repeat(2, 1fr); // 2列排列
+            gap: @indent__base; // 间距
+            
+            .payment-method {
+                border: 2px solid @folix-border;
+                border-radius: @button__border-radius;
+                background: @folix-bg-card;
+                transition: all 0.2s ease;
+                overflow: hidden;
+                cursor: pointer; // 整个卡片可点击
+
+                &:hover {
+                    border-color: @folix-primary;
+                    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);
+                    transform: translateY(-2px);
+                }
+
+                &._active {
+                    border-color: @folix-primary;
+                    background: lighten(@folix-primary, 48%);
+                    box-shadow: 0 4px 16px rgba(74, 144, 226, 0.2);
+
+                    // ✅ 隐藏支付方式的内容区域
+                    .payment-method-content {
+                        display: none !important;
+                    }
+                }
+
+                // 支付方式标题 - 横向排列
+                .payment-method-title {
+                    padding: @indent__base @indent__l; // 左右更多 padding
+                    cursor: pointer;
+                    display: flex;
+                    flex-direction: row; // ✅ 横向排列
+                    align-items: center; // ✅ 垂直居中
+                    justify-content: flex-start; // ✅ 左对齐
+                    gap: @indent__base; // radio 和文本的间距
+
+                    &._active {
+                        border-bottom: none;
+                    }
+
+                    // Radio 单选按钮
+                    .radio {
+                        width: 20px;
+                        height: 20px;
+                        margin: 0;
+                        flex-shrink: 0; // 不收缩
+                        accent-color: @folix-primary;
+                        cursor: pointer;
+                    }
+
+                    // Label 文字
+                    .label {
+                        margin: 0;
+                        font-size: 15px;
+                        font-weight: @font-weight__semibold;
+                        color: @folix-text-primary;
+                        cursor: pointer;
+                        flex: 1; // 占据剩余空间
+                        white-space: nowrap; // 不换行
+                        overflow: hidden; // 超出隐藏
+                        text-overflow: ellipsis; // 省略号
+                    }
+                }
+
+                //  隐藏支付方式内的 Place Order 按钮
+                .payment-method-content {
+                    padding: @indent__base @indent__l;
+                    padding-top: 0;
+                    background: @folix-bg-card;
+                    display: none;
+                    max-height: 0;
+                    overflow: hidden;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+                    //  隐藏原生的 Place Order 按钮
+                    .actions-toolbar .primary .action.primary {
+                        display: none !important;
+                    }
+
+                    // 其他表单元素样式
+                    .field {
+                        margin-bottom: @indent__s;
+
+                        label {
+                            font-size: 14px;
+                            color: @folix-text-secondary;
+                            margin-bottom: @indent__xs;
+                        }
+
+                        input,
+                        textarea,
+                        select {
+                            width: 100%;
+                            padding: @indent__s @indent__base;
+                            border: 1px solid @folix-border;
+                            border-radius: @button__border-radius;
+                            font-size: 14px;
+
+                            &:focus {
+                                border-color: @folix-primary;
+                                outline: none;
+                                box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+                            }
+                        }
+                    }
+
+                    // 说明文字
+                    p {
+                        font-size: 14px;
+                        color: @folix-text-secondary;
+                        line-height: 1.6;
+                        margin: @indent__s 0;
+                    }
+
+                    // 账单地址
+                    .payment-method-billing-address {
+                        margin-bottom: @indent__base;
+                    }
+                }
+
+                //  激活状态显示内容
+                &._active {
+                    .payment-method-content {
+                        display: block;
+                        max-height: 1000px;
+                        padding: @indent__base @indent__l;
+                        border-top: 1px solid @folix-border;
+                    }
+                }
+            }
+        }
+    }
+
+    //  Cart Items - 购物车商品（优化）
+    .items-in-cart {
+        background: @folix-bg-card;
+        border-radius: @button__border-radius;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        margin-bottom: @indent__base;
+        overflow: hidden;
+        border: 1px solid @folix-border;
+
+        .title {
+            padding: @indent__l;
+            background: @folix-bg-panel;
+            border-radius: @button__border-radius @button__border-radius 0 0;
+            cursor: pointer;
+            border-bottom: 1px solid @folix-border;
+            transition: all 0.2s ease;
+
+            &:hover {
+                background: darken(@folix-bg-panel, 2%);
+            }
+
+            strong {
+                font-size: 16px;
+                font-weight: @font-weight__semibold;
+                color: @folix-text-primary;
+            }
+        }
+
+        .content {
+            .minicart-items-wrapper {
+                padding: 0;
+                max-height: none;
+            }
+        }
+
+        .minicart-items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid; // 使用 Grid 布局
+            gap: 0;
+
+            .product-item {
+                display: flex;
+                padding: @indent__l;
+                border-bottom: 1px solid @folix-border;
+                transition: background 0.2s ease;
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                &:hover {
+                    background: lighten(@folix-bg-panel, 2%);
+                }
+
+                .product-item-details {
+                    display: flex;
+                    gap: @indent__l;
+                    flex: 1;
+
+                    // 产品图片
+                    .product-item-image {
+                        flex-shrink: 0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        img {
+                            width: 80px;
+                            height: 80px;
+                            object-fit: cover;
+                            border-radius: @button__border-radius;
+                            border: 1px solid @folix-border;
+                            background: @folix-bg-panel;
+                            transition: transform 0.2s ease;
+                        }
+
+                        &:hover img {
+                            transform: scale(1.05);
+                        }
+                    }
+
+                    // 产品信息
+                    .product-item-info {
+                        flex: 1;
+                        min-width: 0;
+                        display: flex;
+                        flex-direction: column;
+                        gap: @indent__xs;
+
+                        // 产品名称
+                        .product-item-name {
+                            font-size: 15px;
+                            font-weight: @font-weight__semibold;
+                            color: @folix-text-primary;
+                            line-height: 1.4;
+                        }
+
+                        // 产品选项
+                        .product-item-options {
+                            font-size: 13px;
+                            color: @folix-text-secondary;
+                            line-height: 1.5;
+
+                            span {
+                                display: inline-block;
+                                margin-right: @indent__s;
+                                
+                                &:before {
+                                    content: "•";
+                                    margin-right: 4px;
+                                    color: @folix-text-light;
+                                }
+                            }
+                        }
+
+                        // 数量和价格
+                        .product-item-qty,
+                        .product-item-price {
+                            font-size: 14px;
+                            color: @folix-text-secondary;
+                            display: flex;
+                            align-items: center;
+                            gap: @indent__xs;
+
+                            span {
+                                color: @folix-text-primary;
+                                font-weight: @font-weight__semibold;
+                            }
+                        }
+
+                        .product-item-price {
+                            font-size: 16px;
+                            color: @folix-secondary; // 使用主题橙色突出价格
+
+                            span {
+                                font-size: 18px;
+                                color: @folix-secondary;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //  Order Summary - 订单摘要
+    //  根据实际HTML结构修复选择器
+    .opc-sidebar {
+        background: @folix-bg-card;
+        border-radius: @button__border-radius;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        border: 1px solid @folix-border;
+
+        // 移动端折叠切换按钮
+        .summary-toggle {
+            display: none; // 桌面端隐藏
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: @folix-secondary; // 使用主题次要色（橙色）
+            color: @color-white;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 @indent__base;
+            cursor: pointer;
+            border-radius: @button__border-radius @button__border-radius 0 0;
+            font-weight: @font-weight__semibold;
+            font-size: 16px;
+            z-index: 10;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+
+            .toggle-icon {
+                transition: 0.2s ease;
+                display: flex;
+                align-items: center;
+
+                svg {
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+
+            &:hover {
+                background: @folix-secondary-dark;
+            }
+
+            // 当 sidebar 展开时旋转图标
+            &.toggle-active {
+                .toggle-icon {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+
+        // 折叠内容区域
+        .summary-content {
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+            &.active {
+                max-height: 2000px;
+            }
+        }
+
+        .opc-block-summary {
+            padding: @indent__l;
+
+            >.title {
+                display: block;
+                font-size: 20px;
+                font-weight: @font-weight__semibold;
+                color: @folix-text-primary;
+                margin-bottom: @indent__base;
+                padding-bottom: @indent__s;
+                border-bottom: 2px solid @folix-primary;
+            }
+
+            .table-totals {
+                width: 100%;
+
+                .totals {
+
+                    &.sub,
+                    &.grand {
+
+                        th,
+                        td {
+                            padding: @indent__s 0;
+                        }
+
+                        th {
+                            font-size: 14px;
+                            color: @folix-text-secondary;
+                        }
+
+                        td {
+                            text-align: right;
+
+                            .price {
+                                font-size: 15px;
+                                font-weight: @font-weight__semibold;
+                                color: @folix-text-primary;
+                            }
+                        }
+                    }
+
+                    &.grand {
+
+                        th,
+                        td {
+                            padding-top: @indent__base;
+                            border-top: 2px solid @folix-border;
+                        }
+
+                        th {
+                            font-size: 16px;
+                            color: @folix-text-primary;
+                        }
+
+                        strong {
+                            font-size: 18px;
+                            color: @folix-secondary; // 使用主题橙色突出总价
+                        }
+
+                        .price {
+                            font-size: 18px;
+                            color: @folix-secondary;
+                        }
+                    }
+                }
+            }
+
+            .folix-place-order {
+                margin-top: @indent__l;
+                padding-top: @indent__base;
+                border-top: 2px solid @folix-border;
+
+                .primary .action.primary.checkout {
+                    width: 100%;
+                    padding: 16px; // ✅ 调整 padding 为 16px
+                    background: @folix-secondary; // 使用主题次要色（橙色）
+                    border: none;
+                    border-radius: @button__border-radius;
+                    color: @color-white;
+                    font-size: 16px;
+                    font-weight: @font-weight__semibold;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    transition: all 0.2s ease;
+
+                    &:hover:not(:disabled) {
+                        background: @folix-secondary-dark;
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+                    }
+
+                    &:active:not(:disabled) {
+                        transform: translateY(0);
+                    }
+
+                    &:disabled {
+                        opacity: 0.5;
+                        cursor: not-allowed;
+                        background: @color-gray-middle1;
+                    }
+                }
+            }
+        }
+    }
+
+    //  Sign In 按钮样式
+    .action-auth-toggle.social-login-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: @indent__xs;
+        padding: @indent__s @indent__base;
+        background: @folix-primary; // 蓝色背景
+        border: none;
+        border-radius: @button__border-radius;
+        color: @color-white;
+        font-size: 14px;
+        font-weight: @font-weight__semibold;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        cursor: pointer;
+
+        // 添加图标
+        &:before {
+            content: '';
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M10 17l5-5-5-5v10z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        &:hover {
+            background: @folix-primary-dark;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+            text-decoration: none;
+            color: @color-white;
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+
+        span {
+            // 确保文字颜色正确
+            color: @color-white;
+        }
+    }
+}
+
+// ============================================================================
+//  Mobile - 移动端样式（优化）
+// ============================================================================
+
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__m) {
+    
+    // 移动端页面底部留空
+    .checkout-index-index {
+        .page-wrapper {
+            padding-bottom: 120px; // 为固定按钮留空间
+        }
+    }
+
+    // 移动端 Order Summary 改为固定底部可折叠面板
+    // 根据实际HTML结构修复选择器
+    .opc-sidebar {
+        position: fixed;
+        bottom: 0; // 改为 0，让 Place Order 按钮在 sidebar 内部
+        left: 0;
+        right: 0;
+        max-height: 70vh; // 增加最大高度
+        overflow-y: auto;
+        border-radius: @button__border-radius @button__border-radius 0 0;
+        transform: translateY(calc(100% - 60px)); // 默认只显示标题栏
+        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 100;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+        border: none;
+        border-bottom: none;
+        margin-top: 0;
+        background: @folix-bg-card; // 确保背景色
+
+        &.active {
+            transform: translateY(0);
+        }
+
+        // 显示折叠切换按钮
+        .summary-toggle {
+            display: flex;
+        }
+
+        // 修复折叠内容显示
+        .summary-content {
+            overflow: hidden;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+            &.active {
+                max-height: 2000px; // 足够显示所有内容
+            }
+        }
+
+        .opc-block-summary {
+            padding: @indent__base;
+
+            >.title {
+                display: none; // 移动端不需要标题
+            }
+        }
+    }
+
+    // 移动端 Place Order 按钮在 sidebar 内部固定
+    // 修复选择器匹配实际HTML结构
+    .opc-sidebar .opc-block-summary .folix-place-order {
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        background: @folix-bg-card;
+        border-top: 2px solid @folix-border;
+        border-radius: 0;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+
+        .primary .action.primary.checkout {
+            padding: @indent__base;
+            font-size: 16px;
+            min-height: 50px;
+            background: @folix-secondary;
+            border: none;
+            border-radius: @button__border-radius;
+            color: @color-white;
+            font-weight: @font-weight__semibold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+
+            &:hover:not(:disabled) {
+                background: @folix-secondary-dark;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+            }
+
+            &:active:not(:disabled) {
+                transform: translateY(0);
+            }
+        }
+    }
+
+    // 移动端支付方式手风琴样式
+    .payment-methods {
+        .payment-methods-items {
+            grid-template-columns: 1fr; // 移动端单列
+
+            .payment-method {
+                .payment-method-content {
+                    display: none;
+                    max-height: 0;
+                    overflow: hidden;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+                    // 隐藏原生 Place Order 按钮
+                    .actions-toolbar .primary .action.primary {
+                        display: none !important;
+                    }
+                }
+
+                &._active {
+                    .payment-method-content {
+                        display: block;
+                        max-height: 1000px;
+                    }
+                }
+            }
+        }
+    }
+
+    // 移动端表单字段优化
+    .payment-method-content {
+        input.input-text,
+        select.select {
+            font-size: 16px !important; // 防止 iOS 缩放
+            min-height: 44px; // 触摸友好
+        }
+    }
+
+    // 移动端商品列表优化
+    .items-in-cart {
+        .minicart-items {
+            .product-item {
+                .product-item-details {
+                    .product-item-image {
+                        img {
+                            width: 50px;
+                            height: 50px;
+                        }
+                    }
+
+                    .product-item-info {
+                        .product-item-name {
+                            font-size: 14px;
+                        }
+
+                        .product-item-options,
+                        .product-item-qty,
+                        .product-item-price {
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ============================================================================
+//  Desktop - 桌面端样式（优化）
+// ============================================================================
+
+.media-width(@extremum, @break) when (@extremum ='min') and (@break =@screen__m) {
+    .checkout-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: @indent__base 0;
+
+        .opc-wrapper {
+            float: left;
+            width: 50%; // 调整为 50%
+            padding-right: @indent__l;
+        }
+
+        .opc-sidebar {
+            float: right;
+            width: 48%; // 调整为 50%
+            max-width: 500px;
+            
+            // 使用 position:sticky 让 sidebar 在滚动时固定
+            position: -webkit-sticky; // Safari 兼容
+            position: sticky;
+            top: @indent__l; // 距离顶部距离
+            max-height: calc(100vh - 100px); // 最大高度
+            overflow-y: auto; // 内容过多时滚动
+        }
+    }
+
+    // 桌面端 Authentication 保持正常流布局，不浮动
+    .authentication-wrapper {
+        float: none !important;
+        margin-bottom: @indent__base;
+    }
+
+    .checkout-payment-method .checkout-payment {
+        padding: @indent__l;
+    }
+
+    .payment-methods {
+        .payment-group-title-wrap {
+            font-size: 18px;
+        }
+
+        .payment-methods-items .payment-method .payment-method-title .label {
+            font-size: 15px;
+        }
+    }
+
+    .items-in-cart {
+        .title strong {
+            font-size: 16px;
+        }
+
+        .minicart-items .product-item .product-item-details {
+            flex-wrap: nowrap;
+
+            .product-item-image img {
+                width: 75px;
+                height: 75px;
+            }
+
+            .product-item-info {
+                .product-item-name {
+                    font-size: 15px;
+                }
+
+                .product-item-options {
+                    font-size: 13px;
+                }
+            }
+        }
+    }
+
+    .opc-sidebar .opc-summary-wrapper .opc-block-summary>.title {
+        font-size: 20px;
+    }
+
+    #social-login-popup.white-popup {
+        max-width: 480px;
+        padding: @indent__l;
+    }
+}
+
+// ============================================================================
+//  Mobile - 移动端样式（可选，仅针对特定断点）
+// ============================================================================
+
+.media-width(@extremum, @break) when (@extremum ='max') and (@break =@screen__s) {
+    // 移动端特殊样式
+}

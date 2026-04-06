@@ -1,0 +1,103 @@
+// /**
+//  * Folix Game Theme - Global Styles
+//  * 
+//  * 原生选择器来源：
+//  * - phtml 模板: vendor/magento/module-theme/view/frontend/templates/
+//  * - XML 布局: vendor/magento/theme-frontend-blank/Magento_Theme/layout/
+//  */
+
+//
+//  Common (All devices)
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    //
+    //  Body - 页面主体
+    //  选择器来源: 默认 HTML 元素
+    //  _____________________________________________
+  html{
+    font-size: 10px;
+  }
+    body {
+        background-color: @page__background-color;
+        color: @primary__color;
+        font-family: @font-family__base;
+        // 移动端触摸优化
+        -webkit-tap-highlight-color: transparent;
+        -webkit-font-smoothing: antialiased;
+    }
+    //
+    //  Page Wrapper - 页面容器
+    //  选择器来源: Magento_Theme/templates/html/container.phtml
+    //  _____________________________________________
+    
+    .page-wrapper {
+        background-color: @page__background-color;
+    }
+
+    
+
+    
+    //
+    //  Page Main - 主内容区
+    //  选择器来源: XML layout default.xml
+    //  _____________________________________________
+    
+    .page-main {
+        padding-top: @indent__base;
+    }
+    
+    //
+    //  Links - 链接
+    //  _____________________________________________
+    
+    a {
+        transition: color 0.2s ease;
+    }
+    
+    //
+    //  Headings - 标题
+    //  _____________________________________________
+    
+    h1, h2, h3, h4, h5, h6 {
+        color: @primary__color;
+    }
+}
+
+//
+//  Desktop (≥ 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    body {
+        font-size: @font-size__base;
+    }
+}
+
+//
+//  Mobile (< 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .page-main {
+        padding-left: @indent__s;
+        padding-right: @indent__s;
+    }
+
+    // Newsletter 移动端优化
+    .block.newsletter .field .control:before {
+        line-height: 3;
+    }
+
+    // 确保所有可点击元素最小 44x44px (Apple 推荐标准)
+    a,
+    button,
+    .action {
+        //min-height: 44px;
+        min-width: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}

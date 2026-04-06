@@ -1,0 +1,385 @@
+// /**
+//  * Folix Game Theme - Social Login Popup Styles
+//  * 
+//  * 优化社交登录弹窗样式
+//  * 参考支付方式的卡片式设计
+//  */
+
+& when (@media-common = true) {
+
+    //  Social Login Popup - 社交登录弹窗
+    #social-login-popup {
+        &.white-popup {
+            background: @folix-bg-card;
+            border-radius: @button__border-radius;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            padding: 0;
+            max-width: 600px;
+            overflow: hidden;
+        }
+
+        // 弹窗标题
+        .social-login-title {
+            text-align: center;
+            padding: @indent__base @indent__l;
+            background: @folix-secondary; // ✅ 使用主题橙色
+            border-bottom: 2px solid @folix-secondary-dark;
+
+            h2 {
+                font-size: 18px;
+                font-weight: @font-weight__semibold;
+                color: @color-white; // ✅ 白色文字
+                margin: 0;
+            }
+        }
+
+        // 弹窗内容区域
+        .mp-social-popup {
+            padding: @indent__base;
+            display: block !important;
+
+            // 通用按钮样式 - 所有登录相关按钮
+            .action.login.primary,
+            .action.create.primary,
+            .action.send.primary,
+            #bnt-social-login-authentication,
+            #button-create-social,
+            #bnt-social-login-fake-email,
+            #bnt-social-login-forgot {
+                padding: @indent__base @indent__l;
+                background: @folix-secondary !important; // ✅ 强制使用橙色
+                border: none;
+                border-radius: @button__border-radius;
+                color: @color-white !important;
+                font-size: 15px;
+                font-weight: @font-weight__semibold;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                transition: all 0.2s ease;
+                cursor: pointer;
+
+                &:hover {
+                    background: @folix-secondary-dark !important;
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+                }
+
+                &:active {
+                    transform: translateY(0);
+                }
+            }
+
+            // 通用块容器
+            .block-container {
+                margin-bottom: @indent__base;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                // 块标题
+                .block-title {
+                    font-size: 16px;
+                    font-weight: @font-weight__semibold;
+                    color: @folix-text-primary;
+                    margin-bottom: @indent__base;
+                    padding-bottom: @indent__s;
+                    border-bottom: 2px solid @folix-primary;
+                }
+
+                // 表单字段优化 - 按行排列，label 全宽可点击
+                .block-content {
+                    display: block !important;
+
+                    .form-customer-login,
+                    .form-customer-create,
+                    .form-password-forget,
+                    .form-fake-email {
+                        display: block;
+                        
+                        .fieldset {
+                            display: block;
+
+                            .field {
+                                margin-bottom: @indent__s;
+                                padding: @indent__s;
+                                border: 2px solid @folix-border;
+                                border-radius: @button__border-radius;
+                                background: @folix-bg-card;
+                                transition: all 0.2s ease;
+                                cursor: pointer;
+
+                                &:hover {
+                                    border-color: @folix-primary;
+                                    background: lighten(@folix-primary, 48%);
+                                    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.1);
+                                }
+
+                                &.required {
+                                    .label::after {
+                                        content: ' *';
+                                        color: @error__color;
+                                    }
+                                }
+
+                                // Label 全宽可点击
+                                .label {
+                                    display: block;
+                                    width: 100%;
+                                    margin-bottom: @indent__xs;
+                                    font-size: 13px;
+                                    font-weight: @font-weight__semibold;
+                                    color: @folix-text-primary;
+                                    cursor: pointer;
+                                }
+
+                                // 输入框
+                                .control {
+                                    width: 100%;
+
+                                    input {
+                                        width: 100%;
+                                        padding: @indent__s;
+                                        border: none;
+                                        border-radius: @button__border-radius;
+                                        background: @folix-bg-panel;
+                                        font-size: 14px;
+                                        transition: all 0.2s ease;
+
+                                        &:focus {
+                                            outline: none;
+                                            background: @color-white;
+                                            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // 操作按钮区域 - 第一个 actions-toolbar（登录按钮 + 忘记密码链接）
+                        .actions-toolbar {
+                            margin-top: @indent__base;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            gap: @indent__base;
+
+                            .primary {
+                                margin-bottom: 0;
+                                flex-shrink: 0;
+
+                                .action {
+                                    padding: @indent__base @indent__l;
+                                    background: @folix-secondary;
+                                    border: none;
+                                    border-radius: @button__border-radius;
+                                    color: @color-white;
+                                    font-size: 15px;
+                                    font-weight: @font-weight__semibold;
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.5px;
+                                    transition: all 0.2s ease;
+                                    cursor: pointer;
+
+                                    &:hover {
+                                        background: @folix-secondary-dark;
+                                        transform: translateY(-2px);
+                                        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+                                    }
+
+                                    &:active {
+                                        transform: translateY(0);
+                                    }
+                                }
+                            }
+
+                            .secondary {
+                                flex: 1;
+
+                                .action.remind,
+                                .action.back {
+                                    display: inline-block;
+                                    padding: @indent__xs @indent__s;
+                                    color: @folix-text-secondary;
+                                    font-weight: @font-weight__semibold;
+                                    font-size: 13px;
+                                    text-decoration: none;
+                                    transition: color 0.2s ease;
+
+                                    &:hover {
+                                        color: @folix-primary;
+                                        text-decoration: underline;
+                                    }
+                                }
+                            }
+                        }
+
+                        // 第二个 actions-toolbar（创建账户按钮，全宽）
+                        .actions-toolbar + .actions-toolbar {
+                            margin-top: @indent__base;
+                            padding-top: @indent__base;
+                            border-top: 2px solid @folix-border;
+                            display: block;
+
+                            .primary {
+                                width: 100%;
+
+                                .action.create {
+                                    width: 100%;
+                                    padding: @indent__base;
+                                    background: @folix-secondary;
+                                    border: none;
+                                    border-radius: @button__border-radius;
+                                    color: @color-white;
+                                    font-size: 15px;
+                                    font-weight: @font-weight__semibold;
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.5px;
+                                    transition: all 0.2s ease;
+                                    cursor: pointer;
+
+                                    &:hover {
+                                        background: @folix-secondary-dark;
+                                        transform: translateY(-2px);
+                                        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+                                    }
+
+                                    &:active {
+                                        transform: translateY(0);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 创建账号和忘记密码表单的特殊样式
+            .block-container.create,
+            .block-container.forgot,
+            .block-container.fake-email {
+                .block-content {
+                    .fieldset {
+                        // 复选框特殊处理
+                        .field.choice {
+                            display: flex;
+                            align-items: center;
+                            gap: @indent__s;
+                            padding: @indent__base;
+                            border: 2px solid @folix-border;
+                            border-radius: @button__border-radius;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+
+                            &:hover {
+                                border-color: @folix-primary;
+                                background: lighten(@folix-primary, 48%);
+                            }
+
+                            input[type="checkbox"] {
+                                width: 20px;
+                                height: 20px;
+                                accent-color: @folix-primary;
+                                cursor: pointer;
+                            }
+
+                            .label {
+                                margin-bottom: 0;
+                                cursor: pointer;
+                            }
+                        }
+
+                        // 说明文字
+                        .field.note {
+                            padding: @indent__base;
+                            background: lighten(@folix-primary, 48%);
+                            border-left: 4px solid @folix-primary;
+                            border-radius: @button__border-radius 0 0 @button__border-radius;
+                            font-size: 14px;
+                            color: @folix-text-secondary;
+                            margin-bottom: @indent__base;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //  Magnific Popup 关闭按钮
+    .mfp-close {
+        color: @folix-text-secondary !important;
+        font-size: 32px !important;
+        opacity: 0.6 !important;
+        transition: all 0.2s ease;
+        right: 10px !important;
+        top: 10px !important;
+        width: 32px !important;
+        height: 32px !important;
+
+        &:hover {
+            opacity: 1;
+            color: @folix-text-primary !important;
+        }
+    }
+
+    // 弹窗容器
+    .mfp-content {
+        position: relative;
+        z-index: 9999;
+        opacity: 1 !important; // ✅ 确保可见
+    }
+
+    // 弹窗遮罩
+    .mfp-bg {
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 9998;
+    }
+
+    // 弹窗动画 - 修复可见性问题
+    .mfp-with-anim {
+        opacity: 1 !important; // ✅ 改为 1，确保始终可见
+        transform: scale(1);
+        position: relative;
+    }
+
+    // 动画过渡
+    .mfp-bg.mfp-ready {
+        opacity: 0.8;
+    }
+
+    .mfp-wrap.mfp-auto-cursor .mfp-content {
+        animation: mfp-scale-in 0.3s ease-out;
+    }
+
+    @keyframes mfp-scale-in {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+}
+
+//  Mobile - 移动端优化
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    #social-login-popup {
+        &.white-popup {
+            max-width: 95%;
+            margin: 0 auto;
+        }
+
+        .mp-social-popup {
+            padding: @indent__base;
+
+            .block-container .block-content .form-customer-login .fieldset .field,
+            .block-container .block-content .form-customer-create .fieldset .field,
+            .block-container .block-content .form-password-forget .fieldset .field,
+            .block-container .block-content .form-fake-email .fieldset .field {
+                padding: @indent__s;
+            }
+        }
+    }
+}

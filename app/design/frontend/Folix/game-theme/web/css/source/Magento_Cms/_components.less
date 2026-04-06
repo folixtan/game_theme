@@ -1,0 +1,423 @@
+// /**
+//  * Folix Game Theme - Custom Components
+//  * 
+//  * Hero Slider, Promo Banner, and other custom components
+//  */
+
+//
+//  Common (All devices)
+//  _____________________________________________
+
+& when (@media-common = true) {
+    
+    //
+    //  Hero Slider Component
+    //  _____________________________________________
+    
+    .hero-slider {
+        position: relative;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto @indent__xl;
+        border-radius: @folix-radius-lg;
+        overflow: hidden;
+        box-shadow: @folix-shadow-lg;
+        
+        .slider-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        
+        .slide {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            display: none;
+            background-size: cover;
+            background-position: center;
+            
+            &.active {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .slide-background {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-size: cover;
+                background-position: center;
+            }
+            
+            .slide-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.6) 100%);
+            }
+            
+            .slide-content {
+                position: relative;
+                z-index: 1;
+                text-align: center;
+                color: #FFFFFF;
+                max-width: 600px;
+                padding: 40px;
+            }
+            
+            .slide-badge {
+                display: inline-block;
+                padding: 8px 20px;
+                background: linear-gradient(135deg, #FF6B35 0%, #EA580C 100%);
+                color: #FFFFFF;
+                border-radius: 50px;
+                font-size: 13px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 16px;
+            }
+            
+            .slide-title {
+                font-size: 42px;
+                font-weight: 700;
+                margin-bottom: 12px;
+                text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                color: #FFFFFF;
+            }
+            
+            .slide-description {
+                font-size: 16px;
+                margin-bottom: 16px;
+                opacity: 0.95;
+                color: #E2E8F0;
+            }
+            
+            .slide-price {
+                font-size: 32px;
+                font-weight: 700;
+                color: #FFD700;
+                text-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+                margin-bottom: 24px;
+            }
+            
+            .action.slider-cta {
+                background: linear-gradient(135deg, #4A90E2 0%, #6C5CE7 100%);
+                display: inline-block;
+                padding: 14px 36px;
+                font-size: 16px;
+                font-weight: 600;
+                border-radius: 8px;
+                color: #FFFFFF;
+                text-decoration: none;
+                
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+                }
+            }
+        }
+        
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: #FFFFFF;
+            font-size: 28px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            &:hover {
+                background: rgba(255, 255, 255, 0.3);
+            }
+            
+            &.slider-arrow-prev {
+                left: 20px;
+            }
+            
+            &.slider-arrow-next {
+                right: 20px;
+            }
+        }
+        
+        .slider-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 2;
+            
+            .slider-dot {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.5);
+                border: none;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                
+                &.active {
+                    background: #FFFFFF;
+                    width: 32px;
+                    border-radius: 6px;
+                }
+            }
+        }
+    }
+    
+    //
+    //  Promo Banner Component
+    //  _____________________________________________
+    
+    .promo-banner {
+        background: @folix-gradient-secondary;
+        border-radius: @folix-radius-lg;
+        padding: @indent__xl;
+        margin-bottom: @indent__xl;
+        box-shadow: @folix-shadow-secondary;
+        position: relative;
+        overflow: hidden;
+        
+        &::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        .promo-banner__content {
+            position: relative;
+            z-index: 1;
+            color: @folix-bg-card;
+            max-width: 600px;
+        }
+        
+        .promo-banner__title {
+            font-size: 36px;
+            font-weight: @font-weight__bold;
+            margin-bottom: @indent__base;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .promo-banner__description {
+            font-size: 18px;
+            margin-bottom: @indent__base;
+            opacity: 0.95;
+        }
+        
+        .promo-banner__form {
+            display: flex;
+            gap: @indent__base;
+            max-width: 500px;
+            
+            input {
+                flex: 1;
+                padding: 14px 20px;
+                font-size: 16px;
+                border: 2px solid rgba(255, 255, 255, 0.3);
+                border-radius: @button__border-radius;
+                background: rgba(255, 255, 255, 0.2);
+                color: @folix-bg-card;
+                
+                &::placeholder {
+                    color: rgba(255, 255, 255, 0.7);
+                }
+                
+                &:focus {
+                    background: rgba(255, 255, 255, 0.3);
+                    border-color: @folix-bg-card;
+                }
+            }
+            
+            button {
+                padding: 14px 32px;
+                background: @folix-bg-card;
+                color: @theme__color__secondary;
+                font-size: 16px;
+                font-weight: @font-weight__bold;
+                border: none;
+                border-radius: @button__border-radius;
+                cursor: pointer;
+                transition: @folix-transition;
+                white-space: nowrap;
+                
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: @folix-shadow-lg;
+                }
+            }
+        }
+    }
+    
+    //
+    //  Game Badge Component
+    //  _____________________________________________
+    
+    .game-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        padding: 6px 14px;
+        border-radius: @folix-radius-full;
+        font-size: 12px;
+        font-weight: @font-weight__bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: @folix-shadow;
+        z-index: 1;
+        
+        &--direct {
+            background: @folix-gradient-primary;
+            color: @folix-bg-card;
+        }
+        
+        &--hot {
+            background: @folix-gradient-secondary;
+            color: @folix-bg-card;
+        }
+        
+        &--new {
+            background: linear-gradient(135deg, @folix-accent-light 0%, @folix-accent 100%);
+            color: @folix-bg-card;
+        }
+    }
+}
+
+//
+//  Mobile (< 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .hero-slider {
+        margin-left: @indent__s;
+        margin-right: @indent__s;
+        border-radius: @folix-radius-md;
+
+        .slide {
+            height: 240px;
+
+            .slide-content {
+                padding: 20px;
+                max-width: 100%;
+            }
+
+            .slide-badge {
+                font-size: 11px;
+                padding: 6px 14px;
+            }
+
+            .slide-title {
+                font-size: 24px;
+                line-height: 1.2;
+            }
+
+            .slide-description {
+                font-size: 13px;
+                margin-bottom: 12px;
+            }
+
+            .slide-price {
+                font-size: 20px;
+                margin-bottom: 16px;
+            }
+
+            .action.slider-cta {
+                padding: 10px 24px;
+                font-size: 14px;
+                min-height: 44px;
+            }
+        }
+
+        .slider-arrow {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+
+            &.slider-arrow-prev {
+                left: 8px;
+            }
+
+            &.slider-arrow-next {
+                right: 8px;
+            }
+        }
+
+        .slider-dots {
+            bottom: 12px;
+
+            .slider-dot {
+                width: 8px;
+                height: 8px;
+
+                &.active {
+                    width: 24px;
+                }
+            }
+        }
+    }
+
+    .promo-banner {
+        padding: @indent__base @indent__s;
+        margin-left: @indent__s;
+        margin-right: @indent__s;
+        border-radius: @folix-radius-md;
+
+        .promo-banner__title {
+            font-size: 20px;
+            line-height: 1.3;
+        }
+
+        .promo-banner__description {
+            font-size: 14px;
+        }
+
+        .promo-banner__form {
+            flex-direction: column;
+            gap: @indent__s;
+
+            input,
+            button {
+                width: 100%;
+            }
+
+            input {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+
+            button {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+    }
+
+    // Game Badge 移动端调整
+    .game-badge {
+        top: 8px;
+        right: 8px;
+        padding: 4px 10px;
+        font-size: 10px;
+    }
+}

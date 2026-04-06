@@ -1,0 +1,115 @@
+// /**
+//  * Folix Game Theme - Abstract Classes
+//  * 
+//  * 抽象类：需要通过 &:extend() 使用
+//  * 使用原生变量 + 扩展变量（渐变、阴影）
+//  */
+
+//
+//  Common (All devices)
+//  _____________________________________________
+
+& when (@media-common = true) {
+    
+    //
+    //  Folix Button - 渐变按钮
+    //  _____________________________________________
+    
+    .abs-folix-button {
+        background: @folix-gradient-primary;
+        border: none;
+        color: @folix-bg-card;
+        font-weight: @font-weight__semibold;
+        border-radius: @button__border-radius;
+        transition: @folix-transition;
+        
+        &:hover {
+            background: @folix-gradient-secondary;
+            color: @folix-bg-card;
+        }
+    }
+    
+    //
+    //  Folix Card - 游戏风格卡片
+    //  _____________________________________________
+    
+    .abs-folix-card {
+        background: @folix-bg-card;
+        border: 1px solid @border-color__base;
+        border-radius: @folix-radius-md;
+        box-shadow: @folix-shadow-sm;
+        transition: @folix-transition;
+        overflow: hidden;
+        
+        &:hover {
+            border-color: @theme__color__primary;
+            box-shadow: @folix-shadow-md;
+        }
+    }
+    
+    //
+    //  Folix Badge - 游戏徽章基础
+    //  _____________________________________________
+    
+    .abs-folix-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 4px 12px;
+        font-size: 12px;
+        font-weight: @font-weight__bold;
+        text-transform: uppercase;
+        border-radius: @folix-radius-sm;
+        z-index: 2;
+    }
+    
+    //
+    //  Folix Badge - Sale 促销
+    //  _____________________________________________
+    
+    .abs-folix-badge-sale {
+        &:extend(.abs-folix-badge all);
+        background: @theme__color__secondary;
+        color: @folix-bg-card;
+    }
+    
+    //
+    //  Folix Badge - New 新品
+    //  _____________________________________________
+    
+    .abs-folix-badge-new {
+        &:extend(.abs-folix-badge all);
+        background: @theme__color__primary;
+        color: @folix-bg-card;
+    }
+    
+    //
+    //  Folix Badge - Hot 热销
+    //  _____________________________________________
+    
+    .abs-folix-badge-hot {
+        &:extend(.abs-folix-badge all);
+        background: @folix-gradient-secondary;
+        color: @folix-bg-card;
+    }
+    
+    //
+    //  Folix Price - 强调价格
+    //  _____________________________________________
+    
+    .abs-folix-price {
+        color: @theme__color__secondary;
+        font-weight: @font-weight__bold;
+    }
+    
+    //
+    //  Folix Gradient Text - 渐变文字
+    //  _____________________________________________
+    
+    .abs-folix-gradient-text {
+        background: @folix-gradient-primary;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+}

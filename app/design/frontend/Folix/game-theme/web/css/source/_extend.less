@@ -1,0 +1,111 @@
+// /**
+//  * Folix Game Theme - Global Style Extend
+//  * 
+//  * 核心文件：扩展父主题样式
+//  * 
+//  * 文件组织结构：
+//  * - 全局样式：web/css/source/ （此文件所在位置）
+//  * - 模块样式：web/css/source/Magento_XXX/ （按模块分目录）
+//  * 
+//  * Magento 自动加载机制：
+//  * - _variables.less 和 _theme.less：自动加载，无需引入
+//  * - 此文件（_extend.less）：所有页面都会加载
+//  */
+
+//
+//  全局样式引入
+//  _____________________________________________
+
+@import '_global.less';       // 全局基础样式：body、html、链接、标题
+@import '_buttons.less';      // 全局按钮样式
+@import '_abstracts.less';    // 抽象类（需要 &:extend 使用）
+
+//
+//  模块样式引入
+//  _____________________________________________
+
+//  Theme 模块 - Header、Footer、Navigation、Login
+@import 'Magento_Theme/_header.less';
+@import 'Magento_Theme/_footer.less';
+@import 'Magento_Theme/_navigation.less';
+@import 'Magento_Theme/_login-dropdown.less';
+
+//  Catalog 模块 - 产品列表
+@import 'Magento_Catalog/_catalog.less';
+
+//  CMS 模块 - Slider、组件
+@import 'Magento_Cms/_slider.less';
+@import 'Magento_Cms/_components.less';
+
+//  Layered Navigation 模块 - 分层导航
+@import 'Magento_LayeredNavigation/_layered-navigation.less';
+
+//  Review 模块 - 评论
+@import 'Magento_Review/_review.less';
+
+//  Customer 模块 - 客户相关
+@import 'Magento_Customer/_customer.less';
+
+//  Checkout 模块 - 购物车（样式在 Folix_OneStepCheckout 模块中）
+@import 'Magento_Checkout/_cart.less';
+
+@import 'Magento_Theme/_social-login.less';
+// 注意：_checkout.less 已移除，样式已迁移到 Folix_OneStepCheckout 模块
+
+//
+//  Discount Code - 优惠券代码样式
+//  原则：只覆盖需要自定义的部分，其他复用原生
+//  注意：由于选择器优先级问题，此样式必须放在 _extend.less 中（最后加载）
+//  _____________________________________________
+
+.discount-code {
+    //  箭头标题颜色（原生是蓝色 #1979c3）
+    //  正确的选择器路径：.discount-code 下的 .payment-option-title
+    .payment-option-title .action-toggle {
+        color: @folix-text-primary;
+
+        //  箭头图标样式
+        //  原生已有：content: '\e622', font-family, font-size: 32px, display 等
+        //  我们只覆盖：颜色和添加旋转动画
+        &:after {
+            color: @folix-text-secondary; // 覆盖原生的 #8f8f8f
+            transition: transform 0.3s ease; // 原生没有动画
+        }
+
+        //  展开状态 - 旋转箭头（原生没有）
+        &._active:after {
+            transform: rotate(180deg);
+        }
+
+        //  悬停状态
+        //  原生只有 &:hover:after，我们补充文字 hover
+        &:hover {
+            color: @folix-primary;
+
+            &:after {
+                color: @folix-primary; // 覆盖原生的 #333
+            }
+        }
+    }
+
+    //  按钮样式
+    //  原生 .action-apply 没有 .primary 类，所以没有蓝色背景
+    //  直接应用主题蓝色样式（不使用 mixin）
+    .actions-toolbar .primary .action.action-apply {
+        background: @folix-primary;
+        border: 1px solid @folix-primary;
+        color: @color-white;
+        cursor: pointer;
+        display: inline-block;
+
+        &:hover {
+            background: @folix-primary-dark;
+            border-color: @folix-primary-dark;
+        }
+    }
+
+    //  清除 .primary 容器的白色背景（如果有的话）
+    .actions-toolbar > .primary {
+        background: none;
+    }
+}

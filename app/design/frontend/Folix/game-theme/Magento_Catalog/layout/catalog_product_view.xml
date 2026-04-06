@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Folix Game Theme - Product View Layout
+ *
+ * 产品详情页布局 - 60/40 两列布局
+ * 通过 move 指令重新组织现有 blocks
+ */
+-->
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- 创建产品详情主容器 -->
+        <referenceContainer name="content">
+            <!-- 产品详情主容器 - 用于 60/40 布局 -->
+            <container name="product.detail.wrapper" htmlTag="div" htmlClass="product-detail-wrapper" before="-">
+                <!-- 左列 60% - 产品图片 + Tabs -->
+                <container name="product.detail.left" htmlTag="div" htmlClass="product-detail-left">
+                </container>
+                
+                <!-- 右列 40% - 产品信息 -->
+                <container name="product.detail.right" htmlTag="div" htmlClass="product-detail-right">
+                </container>
+            </container>
+        </referenceContainer>
+
+        <!-- 移动原生 blocks 到新容器 -->
+        
+        <!-- 移动产品标题到右侧 -->
+        <move element="page.main.title" destination="product.detail.right" before="-"/>
+        
+        <!-- 移动产品主信息区域到右侧 -->
+        <move element="product.info.main" destination="product.detail.right" after="page.main.title"/>
+        
+        <!-- 移动产品图片区域到左侧（原生的 product.info.media 是 container，包含 Gallery） -->
+        <move element="product.info.media" destination="product.detail.left" before="-"/>
+        
+        <!-- 移动产品详情 Tabs 到左侧（在 Gallery 之后） -->
+        <move element="product.info.details" destination="product.detail.left" after="product.info.media"/>
+    </body>
+</page>

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- API客户端首选项 - 仅基础HTTP请求 -->
+    <preference for="FolixCode\BaseSyncService\Api\HttpClientInterface" type="FolixCode\BaseSyncService\Model\HttpClient"/>
+    <preference for="FolixCode\BaseSyncService\Api\ExternalApiClientInterface" type="FolixCode\BaseSyncService\Model\VirtualGoodsApiClient"/>
+
+    <!-- HttpClient 使用 Guzzle -->
+    <type name="FolixCode\BaseSyncService\Model\HttpClient">
+        <arguments>
+            <!-- Guzzle 配置 -->
+            <argument name="config" xsi:type="array">
+                <item name="timeout" xsi:type="number">30</item>
+                <item name="connect_timeout" xsi:type="number">10</item>
+                <item name="http_errors" xsi:type="boolean">false</item>
+                <item name="verify" xsi:type="boolean">false</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- API Client 配置 -->
+    <type name="FolixCode\BaseSyncService\Model\VirtualGoodsApiClient">
+        <arguments>
+            <argument name="apiBaseUrl" xsi:type="string"/>
+        </arguments>
+    </type>
+</config>

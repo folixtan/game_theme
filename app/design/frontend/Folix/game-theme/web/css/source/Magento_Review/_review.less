@@ -1,0 +1,139 @@
+// /**
+//  * Folix Game Theme - Review Styles
+//  *
+//  * 评论样式：进度条风格
+//  */
+
+//
+//  Common (All devices)
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    //
+    //  评论摘要 - 进度条
+    //  _____________________________________________
+
+    .product-reviews-summary {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        
+        &.empty {
+            display: none;
+        }
+        
+        .rating-summary {
+            display: flex;
+            align-items: center;
+        }
+        
+        .rating-result {
+            width: 60px;
+            height: 4px;
+            background: @folix-border;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+            
+            &:before {
+                display: none;
+            }
+            
+            > span {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                background: @folix-primary;
+                border-radius: 2px;
+                
+                &:before {
+                    display: none;
+                }
+            }
+        }
+        
+        .label {
+            display: none;
+        }
+        
+        .reviews-actions {
+            margin-left: 8px;
+            font-size: 11px;
+            color: @folix-text-muted;
+            
+            a {
+                color: @folix-text-muted;
+                &:hover {
+                    color: @folix-primary;
+                }
+            }
+        }
+    }
+
+    //
+    //  产品详情页
+    //  _____________________________________________
+
+    .product-info-main {
+        .product-reviews-summary {
+            .rating-result {
+                width: 80px;
+                height: 6px;
+            }
+            
+            .reviews-actions {
+                font-size: 13px;
+            }
+        }
+    }
+
+    //
+    //  评论列表
+    //  _____________________________________________
+
+    .review-list {
+        .review-items {
+            .review-item {
+                padding: 16px 0;
+                border-bottom: 1px solid @folix-border;
+                
+                &:last-child {
+                    border-bottom: none;
+                }
+                
+                .review-title {
+                    font-weight: @font-weight__semibold;
+                    color: @folix-text-primary;
+                    margin-bottom: 8px;
+                }
+                
+                .review-content {
+                    color: @folix-text-secondary;
+                    line-height: 1.6;
+                }
+                
+                .review-details {
+                    margin-top: 12px;
+                    font-size: 12px;
+                    color: @folix-text-muted;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile (< 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    
+    .product-reviews-summary {
+        .rating-result {
+            width: 50px;
+            height: 4px;
+        }
+    }
+}

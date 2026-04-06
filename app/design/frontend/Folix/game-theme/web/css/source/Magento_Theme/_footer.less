@@ -1,0 +1,226 @@
+// /**
+//  * Folix Game Theme - Footer Styles
+//  * 
+//  * 模块：Magento_Theme
+//  * 位置：Magento_Theme/web/css/source/extend/_footer.less
+//  * 
+//  * 深蓝渐变背景，与 Top Bar 一致
+//  */
+
+//
+//  Common (All devices)
+//  _____________________________________________
+
+& when (@media-common = true) {
+    
+    //
+    //  Page Footer - 页面底部
+    //  _____________________________________________
+    
+    .page-footer {
+        margin-top: 0;
+        color: @folix-text-on-dark;
+    }
+    
+    .copyright {
+        background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+    }
+    
+    //
+    //  Footer Content - 底部内容
+    //  _____________________________________________
+    
+    .footer.content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        border-top: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        align-items: flex-start;
+    }
+    
+    //
+    //  Newsletter - 订阅表单
+    //  _____________________________________________
+    
+    .page-footer .block.newsletter {
+        flex: 1;
+        min-width: 300px;
+        max-width: 400px;
+        
+        .title {
+            display: none;
+        }
+        
+        .content {
+            form {
+                display: flex;
+                gap: 12px;
+            }
+            
+            .field.newsletter {
+                flex: 1;
+                margin: 0;
+                
+                .control {
+                    width: 100%;
+                    
+                    label {
+                        display: flex;
+                        width: 100%;
+                    }
+                    
+                    .label {
+                        display: none;
+                    }
+                }
+            }
+            
+            input#newsletter {
+                width: 100%;
+                padding: 12px 0px 12px 30px;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: @folix-radius;
+                color: @folix-text-on-dark;
+                font-size: 14px;
+                margin-right: 0;
+                
+                &:focus {
+                    outline: none;
+                    border-color: @folix-primary;
+                    background: rgba(255, 255, 255, 0.15);
+                }
+                
+                &::placeholder {
+                    color: @folix-text-lighter;
+                }
+            }
+            
+            .actions {
+                flex-shrink: 0;
+            }
+            
+            .action.subscribe {
+                padding: 12px 24px;
+                background: @folix-secondary;
+                border: none;
+                border-radius: @folix-radius;
+                color: #FFFFFF;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                
+                &:hover {
+                    background: @folix-secondary-dark;
+                    transform: translateY(-1px);
+                }
+            }
+        }
+    }
+    
+    //
+    //  Footer Links - 底部链接
+    //  _____________________________________________
+    
+    .footer.links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        
+        li {
+            margin-bottom: 12px;
+            
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+        
+        a {
+            color: @folix-text-on-dark-muted;
+            font-size: 14px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            
+            &:hover {
+                color: @folix-secondary;
+            }
+        }
+    }
+}
+
+//
+//  Desktop (≥ 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .page-footer {
+        background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+    }
+    
+    .footer.content {
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        flex-flow: row-reverse;
+    }
+    
+    .footer.content .links a {
+        color: @text-highlight;
+        
+        &:active {
+            color: @color-text__secondary-light;
+        }
+        
+        &:hover {
+            color: @color-text__secondary;
+        }
+    }
+    
+    .page-footer .block.newsletter {
+        max-width: 350px;
+        
+        .field .control:before {
+            line-height: 2.5;
+        }
+    }
+}
+
+//
+//  Mobile (< 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .footer.content {
+        flex-direction: column;
+        padding: 30px 20px;
+    }
+    
+    .page-footer .block.newsletter {
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+        
+        .content form {
+            flex-direction: column;
+            
+            .actions {
+                width: 100%;
+                
+                .action.subscribe {
+                    width: 100%;
+                }
+            }
+        }
+    }
+    
+    .footer.content .links {
+        width: 100%;
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+    }
+}

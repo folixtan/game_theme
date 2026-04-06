@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="folixcode" translate="label" sortOrder="300">
+            <label>FolixCode</label>
+        </tab>
+        <section id="folixcode_basesyncservice" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>FolixCode BaseSyncService Settings</label>
+            <tab>folixcode</tab>
+            <resource>FolixCode_BaseSyncService::config_settings</resource>
+
+            <group id="settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>API Settings</label>
+
+                <field id="is_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Synchronization</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="api_base_url" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>API Base URL</label>
+                    <comment>Enter the base URL for the external API (e.g., https://api.example.com)</comment>
+                    <validate>validate-url</validate>
+                </field>
+
+                <field id="secret_id" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secret ID</label>
+                    <comment>Enter the secret ID for API authentication</comment>
+                </field>
+
+                <field id="secret_key" translate="label" type="obscure" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Secret Key</label>
+                    <comment>Enter the secret key for data encryption</comment>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+
+                <field id="sync_interval" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sync Interval (minutes)</label>
+                    <comment>How often to sync data via cron (default: 60 minutes)</comment>
+                    <validate>validate-number</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

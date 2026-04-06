@@ -1,0 +1,23 @@
+<!--
+/**
+ * Folix One Step Checkout - Place Order Button Template
+ * 
+ * 放在 sidebar 中（摘要底部）
+ * 直接调用选中支付方式组件的 placeOrder 方法
+ */
+-->
+<div class="folix-place-order place-order-toolbar">
+    <!-- Place Order 按钮 -->
+    <div class="primary">
+        <button type="submit"
+                id="folix-place-order-btn"
+                class="action primary checkout"
+                data-bind="
+                    click: placeOrder,
+                    attr: { title: $t('Place Order') },
+                    enable: isPlaceOrderActionAllowed()
+                ">
+            <span data-bind="i18n: 'Place Order'"></span>
+        </button>
+    </div>
+</div>

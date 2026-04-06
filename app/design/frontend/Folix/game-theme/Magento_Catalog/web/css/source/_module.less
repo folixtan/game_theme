@@ -1,0 +1,1097 @@
+// /**
+//  * Folix Game Theme - Catalog Module Override
+//  *
+//  * 完全覆盖父主题的 PDP 样式
+//  * 基于 product-page-60-40.html demo
+//  *
+//  * 文件结构：
+//  * - _variables.less: 继承父主题变量
+//  * - _module.less: 覆盖父主题样式（此文件）
+//  *
+//  * 注意：模块级 _module.less 优先级高于 _extend.less
+//  */
+
+//
+//  导入变量
+//  _____________________________________________
+
+@import '_variables.less';
+
+//
+//  导入子模块
+//  _____________________________________________
+
+@import 'module/_listings.less';
+@import 'module/_toolbar.less';
+
+//
+//  Common (All devices) - Mobile First
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    //
+    //  Product Detail Wrapper - 60/40 布局
+    //  _____________________________________________
+
+    .product-detail-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: @indent__l;
+        margin-bottom: @indent__xl;
+    }
+
+    .product-detail-left,
+    .product-detail-right {
+        width: 100%;
+    }
+
+    //
+    //  Product Media - 图片区域
+    //  _____________________________________________
+
+    .product.media {
+        background: @folix-bg-card;
+        border-radius: @folix-radius-lg;
+        overflow: hidden;
+        box-shadow: @folix-shadow;
+    }
+
+    // Fotorama 画廊
+    .gallery-placeholder {
+        position: relative;
+    }
+
+    .fotorama-item {
+        position: relative;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+
+    .fotorama__wrap {
+        position: relative;
+    }
+
+    .fotorama__stage {
+        position: relative;
+        min-height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .fotorama__stage__shaft {
+        min-height: 300px;
+    }
+
+    .fotorama__img {
+        max-width: 100%;
+        max-height: 300px;
+        object-fit: contain;
+    }
+
+    // 箭头 - 正确覆盖 Fotorama 箭头样式
+    // Fotorama 原始结构: .fotorama__arr > .fotorama__arr__arr
+    // .fotorama__arr 是容器，.fotorama__arr__arr 是内部图标
+    
+    .fotorama__arr {
+        width: 44px;
+        
+        &:hover {
+            .fotorama__arr__arr {
+                transform: scale(1.1);
+            }
+        }
+    }
+    
+    // 箭头内部图标 - 自定义样式覆盖 sprite
+    .fotorama__arr__arr {
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 50%;
+        box-shadow: @folix-shadow-md;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        
+        // 使用伪元素绘制箭头
+        background-image: none;
+        
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+    }
+    
+    // 前一个箭头
+    .fotorama__arr--prev {
+        left: 0;
+        
+        .fotorama__arr__arr {
+            &::before {
+                border-width: 6px 8px 6px 0;
+                border-color: transparent @folix-primary transparent transparent;
+            }
+            
+            &:hover::before {
+                border-right-color: @folix-secondary;
+            }
+        }
+    }
+    
+    // 后一个箭头
+    .fotorama__arr--next {
+        right: 0;
+        
+        .fotorama__arr__arr {
+            &::before {
+                border-width: 6px 0 6px 8px;
+                border-color: transparent transparent transparent @folix-primary;
+            }
+            
+            &:hover::before {
+                border-left-color: @folix-secondary;
+            }
+        }
+    }
+
+    // 缩略图导航
+    .fotorama__nav-wrap {
+        padding: @indent__m;
+        background: @folix-bg-card;
+    }
+
+    .fotorama__nav {
+        display: flex;
+        justify-content: center;
+        gap: @indent__s;
+    }
+
+    .fotorama__nav--thumbs {
+        align-items: center;
+    }
+
+    .fotorama__thumb {
+        width: 60px;
+        height: 60px;
+        border-radius: @folix-radius-md;
+        overflow: hidden;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        
+        &:hover {
+            border-color: @folix-primary;
+        }
+        
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .fotorama__thumb--active {
+        border-color: @folix-secondary;
+    }
+
+    .fotorama__thumb-border {
+        border-color: @folix-secondary;
+    }
+
+    // 隐藏不需要的元素
+    .fotorama__zoom-in,
+    .fotorama__zoom-out,
+    .fotorama__fullscreen-icon,
+    .fotorama__thumb__arr {
+        display: none;
+    }
+
+    //
+    //  游戏徽章覆盖层
+    //  _____________________________________________
+
+    .game-badge-overlay {
+        position: absolute;
+        top: @indent__m;
+        left: @indent__m;
+        display: flex;
+        align-items: center;
+        gap: @indent__s;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(8px);
+        padding: @indent__s @indent__m;
+        border-radius: @folix-radius-md;
+        z-index: 10;
+    }
+
+    .game-badge-icon {
+        width: 40px;
+        height: 40px;
+        background: @folix-gradient-primary;
+        border-radius: @folix-radius;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+    }
+
+    .game-badge-info {
+        color: #FFFFFF;
+    }
+
+    .game-badge-name {
+        font-weight: 600;
+        font-size: 13px;
+    }
+
+    .game-badge-developer {
+        font-size: 11px;
+        opacity: 0.8;
+    }
+
+    //
+    //  产品描述面板 - 手风琴设计
+    //  _____________________________________________
+
+    .product.info.detailed {
+        background: @folix-bg-card;
+        border-radius: @folix-radius-lg;
+        overflow: hidden;
+        box-shadow: @folix-shadow;
+    }
+
+    .product.data.items {
+        display: flex;
+        flex-direction: column;
+    }
+
+    // Tab 标题
+    .data.item.title {
+        border-bottom: 1px solid @folix-border;
+        background: @folix-bg-panel;
+        float: none;
+        width: 100%;
+        
+        a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: @indent__m @indent__l;
+            color: @folix-text-secondary;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+            
+            &:hover {
+                color: @folix-primary;
+                background: @folix-bg-hover;
+            }
+            
+            // 展开图标
+            &::after {
+                content: '▼';
+                font-size: 10px;
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+        }
+        
+        &.active a {
+            color: @folix-primary;
+            background: @folix-bg-card;
+            border-left-color: @folix-primary;
+            
+            &::after {
+                transform: rotate(180deg);
+            }
+        }
+    }
+
+    // Tab 内容 - 覆盖父主题的 float: right 和 margin-left: -100%
+    .product.data.items > .item.content,
+    .data.item.content {
+        float: none;
+        margin-left: 0;
+        margin-top: 0;
+        width: 100%;
+        padding: @indent__l;
+        background: @folix-bg-card;
+        box-sizing: border-box;
+    }
+
+    // 描述内容
+    .product.attribute.description .value {
+        color: @folix-text-secondary;
+        line-height: 1.8;
+        
+        p {
+            margin-bottom: @indent__m;
+        }
+        
+        ul {
+            list-style: disc;
+            padding-left: @indent__l;
+        }
+        
+        li {
+            margin-bottom: @indent__s;
+        }
+    }
+
+    // 特性网格
+    .product-features {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: @indent__m;
+        margin-top: @indent__l;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: flex-start;
+        gap: @indent__m;
+        padding: @indent__m;
+        background: @folix-bg-page;
+        border-radius: @folix-radius-md;
+        transition: all 0.2s ease;
+        
+        &:hover {
+            background: @folix-bg-hover;
+            transform: translateX(4px);
+        }
+    }
+
+    .feature-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(74, 144, 226, 0.1);
+        border-radius: @folix-radius;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+    }
+
+    .feature-content {
+        h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: @folix-text-primary;
+            margin-bottom: 2px;
+        }
+        
+        p {
+            font-size: 12px;
+            color: @folix-text-muted;
+            line-height: 1.5;
+        }
+    }
+
+    // 参数表格
+    .additional-attributes-wrapper {
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        tr {
+            border-bottom: 1px solid @folix-border;
+            transition: background 0.2s ease;
+            
+            &:hover {
+                background: @folix-bg-panel;
+            }
+            
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+        
+        th,
+        td {
+            padding: @indent__m;
+            text-align: left;
+        }
+        
+        th {
+            width: 40%;
+            color: @folix-text-secondary;
+            font-weight: 500;
+            background: rgba(74, 144, 226, 0.03);
+        }
+        
+        td {
+            color: @folix-text-primary;
+        }
+    }
+
+    //
+    //  产品信息区域 - 右侧
+    //  _____________________________________________
+
+    .product-info-main {
+        // 标题卡片
+        > div:first-child {
+            background: @folix-bg-card;
+            border-radius: @folix-radius-lg;
+            padding: @indent__m;
+            margin-bottom: @indent__m;
+            box-shadow: @folix-shadow;
+        }
+    }
+
+    // 产品标题
+    .page-title-wrapper.product {
+        margin-bottom: @indent__m;
+    }
+
+    .page-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: @folix-text-primary;
+        line-height: 1.3;
+        
+        .base {
+            font-size: inherit;
+            font-weight: inherit;
+        }
+    }
+
+    // 产品标签
+    .product-tags {
+        display: flex;
+        gap: @indent__s;
+        margin-bottom: @indent__m;
+        flex-wrap: wrap;
+    }
+
+    .product-tag {
+        padding: 4px @indent__m;
+        background: rgba(74, 144, 226, 0.1);
+        color: @folix-primary;
+        border-radius: @folix-radius-md;
+        font-size: 11px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        
+        &:hover {
+            background: rgba(74, 144, 226, 0.2);
+        }
+        
+        &.hot {
+            background: rgba(255, 107, 53, 0.1);
+            color: @folix-secondary;
+            
+            &:hover {
+                background: rgba(255, 107, 53, 0.2);
+            }
+        }
+    }
+
+    // 评价摘要
+    .product-reviews-summary {
+        display: flex;
+        align-items: center;
+        gap: @indent__m;
+        margin-bottom: @indent__m;
+        padding-bottom: @indent__m;
+        border-bottom: 1px solid @folix-border;
+    }
+
+    .rating-summary {
+        display: flex;
+        align-items: center;
+        gap: @indent__xs;
+    }
+
+    .rating-result {
+        display: flex;
+        gap: 2px;
+        
+        .star {
+            color: @folix-secondary;
+            font-size: 14px;
+        }
+    }
+
+    .rating-score {
+        font-weight: 600;
+        color: @folix-text-primary;
+        font-size: 14px;
+    }
+
+    .reviews-actions {
+        font-size: 13px;
+        color: @folix-text-secondary;
+        
+        a {
+            color: @folix-text-secondary;
+            
+            &:hover {
+                color: @folix-primary;
+            }
+        }
+    }
+
+    // 价格
+    .product-info-price {
+        display: flex;
+        align-items: baseline;
+        gap: @indent__m;
+        margin-bottom: @indent__m;
+    }
+
+    .price-box {
+        display: flex;
+        align-items: baseline;
+        gap: @indent__s;
+    }
+
+    .price-label {
+        font-size: 13px;
+        color: @folix-text-secondary;
+    }
+
+    .price-wrapper {
+        .price {
+            font-size: 22px;
+            font-weight: 700;
+            color: @folix-secondary;
+        }
+    }
+
+    .old-price {
+        .price {
+            font-size: 14px;
+            color: @folix-text-muted;
+            text-decoration: line-through;
+        }
+    }
+
+    // 库存 SKU
+    .product-info-stock-sku {
+        display: flex;
+        flex-wrap: wrap;
+        gap: @indent__m;
+        font-size: 13px;
+    }
+
+    .stock {
+        &.available {
+            color: @folix-success;
+            font-weight: 500;
+            
+            &::before {
+                content: '✓ ';
+            }
+        }
+    }
+
+    .product.attribute.sku {
+        display: flex;
+        gap: @indent__xs;
+        color: @folix-text-secondary;
+        
+        .value {
+            color: @folix-text-primary;
+        }
+    }
+
+    //
+    //  充值档位选择区
+    //  _____________________________________________
+
+    .product-options-wrapper {
+        background: @folix-bg-card;
+        border-radius: @folix-radius-lg;
+        padding: @indent__l;
+        margin-bottom: @indent__l;
+        box-shadow: @folix-shadow;
+    }
+
+    .swatch-opt {
+        display: flex;
+        flex-direction: column;
+        gap: @indent__m;
+    }
+
+    .swatch-attribute {
+        display: flex;
+        flex-direction: column;
+        gap: @indent__s;
+    }
+
+    .swatch-attribute-label {
+        font-weight: 600;
+        color: @folix-text-primary;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: @indent__s;
+        
+        &::before {
+            content: '💎';
+            font-size: 16px;
+        }
+    }
+
+    // 档位网格
+    .swatch-attribute-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: @indent__xs;
+    }
+
+    .swatch-option {
+        display: flex;
+        flex-direction: column;
+        padding: @indent__s;
+        border: 2px solid @folix-border;
+        border-radius: @folix-radius-sm;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: @folix-bg-card;
+        text-align: left;
+        position: relative;
+        overflow: hidden;
+        
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: transparent;
+            transition: background 0.2s ease;
+        }
+        
+        &:hover {
+            border-color: @folix-primary;
+            background: rgba(74, 144, 226, 0.03);
+            transform: translateY(-2px);
+            box-shadow: @folix-shadow-primary;
+        }
+        
+        &.selected {
+            border-color: @folix-secondary;
+            background: rgba(255, 107, 53, 0.05);
+            
+            &::before {
+                background: @folix-secondary;
+            }
+        }
+    }
+
+    .swatch-option-amount {
+        font-size: 13px;
+        font-weight: 600;
+        color: @folix-text-primary;
+        display: flex;
+        align-items: center;
+        gap: @indent__xs;
+    }
+
+    .swatch-option-bonus {
+        font-size: 10px;
+        color: @folix-secondary;
+        margin-top: 1px;
+    }
+
+    .swatch-option-price {
+        font-size: 13px;
+        font-weight: 700;
+        color: @folix-secondary;
+        margin-top: 2px;
+    }
+
+    .swatch-option-original {
+        font-size: 10px;
+        color: @folix-text-muted;
+        text-decoration: line-through;
+    }
+
+    //
+    //  订单信息卡片
+    //  _____________________________________________
+
+    .order-info-card {
+        background: @folix-bg-card;
+        border-radius: @folix-radius-lg;
+        overflow: hidden;
+        box-shadow: @folix-shadow-md;
+        margin-bottom: @indent__l;
+    }
+
+    .order-info-header {
+        padding: @indent__m @indent__l;
+        background: @folix-gradient-primary;
+        color: #FFFFFF;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: @indent__s;
+        
+        &::before {
+            content: '📋';
+            font-size: 18px;
+        }
+    }
+
+    .order-info-content {
+        padding: @indent__l;
+    }
+
+    // 表单字段
+    #product_addtocart_form,
+    .fieldset {
+        display: flex;
+        flex-direction: column;
+        gap: @indent__m;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: @indent__xs;
+        
+        .label {
+            font-weight: 500;
+            color: @folix-text-primary;
+            font-size: 13px;
+        }
+        
+        .control {
+            position: relative;
+        }
+        
+        input,
+        select {
+  
+            border: 1px solid @folix-border;
+            border-radius: @folix-radius-md;
+            font-size: 14px;
+            color: @folix-text-primary;
+            background: @folix-bg-card;
+            transition: all 0.2s ease;
+            
+            &:focus {
+                outline: none;
+                border-color: @folix-primary;
+                box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+            }
+            
+            &::placeholder {
+                color: @folix-text-muted;
+            }
+        }
+        
+        .note {
+            font-size: 11px;
+            color: @folix-text-muted;
+            margin-top: @indent__xs;
+        }
+    }
+
+    // 数量选择
+    .field.qty {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        
+        .label {
+            margin: 0;
+        }
+        
+        .control {
+            display: flex;
+            align-items: center;
+            border: 1px solid @folix-border;
+            border-radius: @folix-radius-md;
+            overflow: hidden;
+        }
+        
+        input {
+            width: 50px;
+            height: 36px;
+            border: none;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 0;
+        }
+    }
+
+    .qty-btn {
+        width: 36px;
+        height: 36px;
+        border: none;
+        background: @folix-bg-page;
+        cursor: pointer;
+        font-size: 16px;
+        color: @folix-text-secondary;
+        transition: all 0.2s ease;
+        
+        &:hover {
+            background: @folix-primary;
+            color: #FFFFFF;
+        }
+    }
+
+    // 订单总计
+    .order-total {
+        margin-top: @indent__l;
+        padding-top: @indent__m;
+        border-top: 1px solid @folix-border;
+    }
+
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: @indent__s;
+    }
+
+    .total-label {
+        color: @folix-text-secondary;
+        font-size: 13px;
+    }
+
+    .total-value {
+        font-weight: 600;
+        color: @folix-text-primary;
+        font-size: 13px;
+        
+        &.highlight {
+            color: @folix-secondary;
+            font-size: 18px;
+        }
+    }
+
+    .total-stars {
+        display: flex;
+        align-items: center;
+        gap: @indent__xs;
+        color: #FFA000;
+        font-size: 12px;
+    }
+
+    //
+    //  Add to Cart 按钮
+    //  _____________________________________________
+
+    .box-tocart {
+        margin-top: @indent__m;
+    }
+
+    .actions {
+        display: flex;
+        flex-direction: column;
+        gap: @indent__s;
+    }
+
+    .action.tocart {
+        width: 100%;
+        padding: @indent__l;
+        min-height: 50px;
+        background: @folix-gradient-secondary;
+        color: #FFFFFF;
+        border: none;
+        border-radius: @folix-radius-md;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: @indent__s;
+        position: relative;
+        overflow: hidden;
+        
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: @folix-shadow-secondary;
+            
+            &::before {
+                left: 100%;
+            }
+        }
+        
+        &:active {
+            transform: translateY(0);
+        }
+        
+        span {
+            font-size: inherit;
+        }
+    }
+
+    //
+    //  收藏/对比链接
+    //  _____________________________________________
+
+    .product-social-links {
+        margin-top: @indent__m;
+        padding-top: @indent__m;
+        border-top: 1px solid @folix-border;
+    }
+
+    .product-addto-links {
+        display: flex;
+        justify-content: center;
+        gap: @indent__l;
+        
+        .action {
+            display: flex;
+            align-items: center;
+            gap: @indent__xs;
+            color: @folix-text-secondary;
+            font-size: 13px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            
+            &:hover {
+                color: @folix-primary;
+            }
+        }
+    }
+}
+
+//
+//  Desktop (≥ 768px) - 两列布局
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    
+    //
+    //  60/40 两列布局
+    //  _____________________________________________
+    
+    .product-detail-wrapper {
+        flex-direction: row;
+        gap: @indent__xl;
+    }
+    
+    .product-detail-left {
+        flex: 0 0 60%;
+        width: 60%;
+    }
+    
+    .product-detail-right {
+        flex: 0 0 40%;
+        width: 40%;
+    }
+    
+    // 右侧 sticky
+    .product-info-main {
+        position: sticky;
+        top: @indent__l;
+    }
+    
+    //
+    //  图片区域
+    //  _____________________________________________
+    
+    .fotorama__stage {
+        min-height: 380px;
+    }
+    
+    .fotorama__stage__shaft {
+        min-height: 380px;
+    }
+    
+    .fotorama__img {
+        max-height: 380px;
+    }
+    
+    //
+    //  特性网格 - 两列
+    //  _____________________________________________
+    
+    .product-features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    //
+    //  产品标题
+    //  _____________________________________________
+    
+    .page-title {
+        font-size: 22px;
+    }
+    
+    .product-info-main > div:first-child {
+        padding: @indent__l;
+    }
+    
+    //
+    //  价格
+    //  _____________________________________________
+    
+    .price-wrapper .price {
+        font-size: 26px;
+    }
+    
+    //
+    //  档位网格
+    //  _____________________________________________
+
+    .swatch-option {
+        padding: @indent__s;
+    }
+
+    .swatch-option-amount {
+        font-size: 14px;
+    }
+
+    .swatch-option-bonus {
+        font-size: 11px;
+    }
+
+    .swatch-option-price {
+        font-size: 14px;
+    }
+
+    .swatch-option-original {
+        font-size: 11px;
+    }
+    
+    //
+    //  Tabs - 桌面端保持手风琴样式
+    //  _____________________________________________
+    
+    .product.data.items {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .product.data.items > .item.title {
+        float: none;
+        width: 100%;
+    }
+    
+    .product.data.items > .item.content {
+        float: none;
+        margin-left: 0;
+        margin-top: 0;
+        width: 100%;
+    }
+}

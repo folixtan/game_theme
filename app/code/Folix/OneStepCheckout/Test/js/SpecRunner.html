@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Virtual Checkout - Order Info Component Tests</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        #test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #4A90E2;
+            padding-bottom: 10px;
+        }
+        .test-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border-left: 4px solid #2196F3;
+        }
+        .test-info h3 {
+            margin-top: 0;
+            color: #1976D2;
+        }
+    </style>
+
+    <!-- KnockoutJS -->
+    <script src="../../../../lib/web/knockout/knockout.js"></script>
+
+    <!-- RequireJS -->
+    <script src="../../../../lib/web/requirejs/require.js"></script>
+
+    <!-- SquireJS for dependency injection -->
+    <script src="../../../../../../../vendor/magento/magento2-base/node_modules/squirejs/src/Squire.js"></script>
+
+    <!-- Jasmine -->
+    <script src="../../../../../../../vendor/magento/magento2-base/dev/tests/js/jasmine/spec_runner/tasks/jasmine.js"></script>
+    <script src="../../../../../../../vendor/magento/magento2-base/dev/tests/js/jasmine/spec_runner/tasks/jasmine-html.js"></script>
+    <script src="../../../../../../../vendor/magento/magento2-base/dev/tests/js/jasmine/spec_runner/tasks/boot.js"></script>
+</head>
+<body>
+    <div id="test-container">
+        <h1>Virtual Checkout - Order Info Component Tests</h1>
+
+        <div class="test-info">
+            <h3>Test Status</h3>
+            <p id="test-status">Loading tests...</p>
+        </div>
+    </div>
+
+    <script>
+        // Configure RequireJS
+        require.config({
+            baseUrl: '../../view/frontend/web/js',
+            paths: {
+                'jquery': '../../../../lib/web/jquery/jquery-3',
+                'knockout': 'knockout',
+                'Magento_Ui': '../../../../../vendor/magento/magento2-base/app/code/Magento/Ui/view/base/web/js',
+                'Magento_Checkout': '../../../../../vendor/magento/magento2-base/app/code/Magento/Checkout/view/frontend/web/js',
+                'Magento_Catalog': '../../../../../vendor/magento/magento2-base/app/code/Magento/Catalog/view/frontend/web/js'
+            },
+            map: {
+                '*': {
+                    'ko': 'knockout'
+                }
+            },
+            shim: {
+                'squirejs': {
+                    exports: 'Squire'
+                }
+            }
+        });
+
+        // Load tests
+        require(['test-main'], function() {
+            document.getElementById('test-status').innerHTML =
+                '<strong>Tests loaded. Please check the Jasmine report above for results.</strong>';
+        });
+    </script>
+</body>
+</html>

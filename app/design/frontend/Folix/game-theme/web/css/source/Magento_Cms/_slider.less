@@ -1,0 +1,354 @@
+// /**
+//  * Folix Game Theme - PageBuilder Slider Styles
+//  * 
+//  * 美化 Magento PageBuilder Slider 组件
+//  * 基于原生样式扩展
+//  */
+
+//
+//  Common (All devices)
+//  _____________________________________________
+
+& when (@media-common = true) {
+    
+    //
+    //  PageBuilder Slider - 主容器
+    //  原生选择器: div[data-content-type='slider']
+    //  _____________________________________________
+    
+    div[data-content-type='slider'] {
+        // 新增圆角和阴影
+        border-radius: @folix-radius-lg;
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        
+        // Slick List - 原生已有 min-height: inherit
+        .slick-list {
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        // Slick Track - 原生已有 display: flex
+        .slick-track {
+            left: 0;
+            margin: 0 auto;
+            position: relative;
+            top: 0;
+        }
+        
+        // Slick Slide - 原生已有 display: none, float: left
+        .slick-slide {
+            min-height: 400px;
+            
+            > div {
+                width: 100%;
+                min-height: inherit;
+                line-height: 0;
+                overflow: hidden;
+            }
+        }
+        
+        // Slick Dots - 导航点
+        .slick-dots {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: block;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            width: auto;
+            
+            li {
+                display: inline-block;
+                height: 14px;
+                margin: 0 6px;
+                padding: 0;
+                cursor: pointer;
+                vertical-align: middle;
+                
+                button {
+                    width: 12px;
+                    height: 12px;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.5);
+                    border: none;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    font-size: 0;
+                    line-height: 0;
+                    padding: 0;
+                    text-indent: -99999px;
+                    box-shadow: none;
+                    
+                    &:hover {
+                        background: rgba(255, 255, 255, 0.8);
+                    }
+                }
+                
+                &.slick-active button {
+                    background: #FFFFFF;
+                    width: 32px;
+                    border-radius: 6px;
+                }
+            }
+        }
+        
+        // Slick Prev - 导航箭头
+        .slick-prev {
+            left: 20px;
+            
+            &:before {
+                content: "‹";
+                font-size: 32px;
+                font-weight: 300;
+                color: #FFFFFF;
+            }
+        }
+        
+        // Slick Next - 导航箭头
+        .slick-next {
+            right: 20px;
+            
+            &:before {
+                content: "›";
+                font-size: 32px;
+                font-weight: 300;
+                color: #FFFFFF;
+            }
+        }
+        
+        // Slick Prev & Next - 公共样式
+        .slick-prev,
+        .slick-next {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            z-index: 10;
+            
+            &:hover,
+            &:focus {
+                background: rgba(255, 255, 255, 0.35);
+                
+                &:before {
+                    color: #FFFFFF;
+                }
+            }
+            
+            &.slick-disabled {
+                opacity: 0.3;
+                cursor: not-allowed;
+            }
+        }
+    }
+    
+    //
+    //  Slide Wrapper - 幻灯片包装器
+    //  _____________________________________________
+    
+    .pagebuilder-slide-wrapper {
+        min-height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    
+    //
+    //  Slide Overlay - 遮罩层
+    //  _____________________________________________
+    
+    .pagebuilder-overlay {
+        // 渐变遮罩 - 游戏风格
+        &.pagebuilder-poster-overlay {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.65) 100%);
+        }
+    }
+    
+    //
+    //  Slide Content - 幻灯片内容
+    //  _____________________________________________
+    
+    .pagebuilder-poster-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        color: #FFFFFF;
+        max-width: 700px;
+        padding: 40px;
+        
+        [data-element="content"] {
+            h1, h2, h3 {
+                color: #FFFFFF;
+                margin-bottom: 16px;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            }
+            
+            h2 {
+                font-size: 42px;
+                font-weight: 800;
+                line-height: 1.2;
+            }
+            
+            h3 {
+                font-size: 28px;
+                font-weight: 700;
+            }
+            
+            p {
+                font-size: 16px;
+                line-height: 1.6;
+                color: rgba(255, 255, 255, 0.9);
+                margin-bottom: 20px;
+            }
+            
+            .pagebuilder-button-primary {
+                display: inline-block;
+                padding: 14px 36px;
+                background: linear-gradient(135deg, @folix-primary, #6C5CE7);
+                color: #FFFFFF;
+                font-size: 16px;
+                font-weight: 600;
+                border-radius: @folix-radius;
+                border: none;
+                cursor: pointer;
+                box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                
+                &:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 10px 30px rgba(74, 144, 226, 0.5);
+                    text-decoration: none;
+                }
+            }
+            
+            .pagebuilder-button-secondary {
+                display: inline-block;
+                padding: 14px 36px;
+                background: transparent;
+                color: #FFFFFF;
+                font-size: 16px;
+                font-weight: 600;
+                border-radius: @folix-radius;
+                border: 2px solid rgba(255, 255, 255, 0.8);
+                cursor: pointer;
+                transition: all 0.3s ease;
+                
+                &:hover {
+                    background: rgba(255, 255, 255, 0.15);
+                    border-color: #FFFFFF;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Desktop (≥ 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    div[data-content-type='slider'] {
+        .slick-slide {
+            min-height: 450px;
+        }
+    }
+    
+    .pagebuilder-slide-wrapper {
+        min-height: 450px;
+    }
+    
+    .pagebuilder-poster-content {
+        padding: 60px;
+        
+        [data-element="content"] h2 {
+            font-size: 48px;
+        }
+    }
+}
+
+//
+//  Mobile (< 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    div[data-content-type='slider'] {
+        border-radius: 0;
+        
+        .slick-slide {
+            min-height: 300px;
+        }
+        
+        .slick-dots {
+            bottom: 16px;
+            
+            li {
+                margin: 0 4px;
+                
+                button {
+                    width: 10px;
+                    height: 10px;
+                }
+                
+                &.slick-active button {
+                    width: 24px;
+                }
+            }
+        }
+        
+        .slick-prev,
+        .slick-next {
+            width: 40px;
+            height: 40px;
+            
+            &:before {
+                font-size: 20px;
+            }
+        }
+        
+        .slick-prev {
+            left: 10px;
+        }
+        
+        .slick-next {
+            right: 10px;
+        }
+    }
+    
+    .pagebuilder-slide-wrapper {
+        min-height: 300px;
+    }
+    
+    .pagebuilder-poster-content {
+        padding: 24px;
+        max-width: 100%;
+        
+        [data-element="content"] {
+            h2 {
+                font-size: 28px;
+            }
+            
+            h3 {
+                font-size: 22px;
+            }
+            
+            p {
+                font-size: 14px;
+            }
+            
+            .pagebuilder-button-primary,
+            .pagebuilder-button-secondary {
+                padding: 12px 28px;
+                font-size: 14px;
+            }
+        }
+    }
+}

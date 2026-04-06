@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    <exchange name="magento">
+        <binding id="productImportBinding" topic="folixcode.product.import" destination="folixcode.product.import.queue"/>
+        <binding id="categoryImportBinding" topic="folixcode.category.import" destination="folixcode.category.import.queue"/>
+        <binding id="productDetailBinding" topic="folixcode.product.detail" destination="folixcode.product.detail.queue"/>
+    </exchange>
+</config>

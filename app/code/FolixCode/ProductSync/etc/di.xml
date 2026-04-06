@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- API服务首选项 -->
+    <preference for="FolixCode\ProductSync\Api\VirtualGoodsApiInterface" type="FolixCode\ProductSync\Service\VirtualGoodsApiService"/>
+    <preference for="FolixCode\ProductSync\Api\Message\PublisherInterface" type="FolixCode\ProductSync\Model\MessageQueue\Publisher"/>
+    <preference for="FolixCode\ProductSync\Api\Message\ProductImportMessageInterface" type="FolixCode\ProductSync\Model\Message\ProductImportMessage"/>
+    <preference for="FolixCode\ProductSync\Api\Message\CategoryImportMessageInterface" type="FolixCode\ProductSync\Model\Message\CategoryImportMessage"/>
+    <preference for="FolixCode\ProductSync\Api\Message\ProductDetailMessageInterface" type="FolixCode\ProductSync\Model\Message\ProductDetailMessage"/>
+
+    <!-- 命令行 -->
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="folixcode_sync_products" xsi:type="object">FolixCode\ProductSync\Console\Command\SyncCommand</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- VirtualGoodsApiService 配置 -->
+    <type name="FolixCode\ProductSync\Service\VirtualGoodsApiService">
+        <arguments>
+            <argument name="apiClient" xsi:type="object">FolixCode\BaseSyncService\Model\VirtualGoodsApiClient</argument>
+        </arguments>
+    </type>
+</config>

@@ -1,0 +1,559 @@
+// /**
+//  * Folix Game Theme - Login Dropdown Styles
+//  * 
+//  * 模块：Magento_Customer
+//  * 位置：Magento_Customer/web/css/source/extend/_login-dropdown.less
+//  * 
+//  * 设计理念：
+//  * - 扁平化设计，卡片风格
+//  * - 游戏时尚感：渐变色装饰、圆角、微阴影
+//  * - 登录/注册切换动画
+//  * - 第三方登录（Google、Facebook）
+//  */
+
+//
+//  Common (All devices)
+//  _____________________________________________
+
+& when (@media-common = true) {
+    
+    //
+    //  Login Dropdown Wrapper - 相对定位容器
+    //  _____________________________________________
+    
+    .login-dropdown-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+    
+    //
+    //  Login Trigger Button
+    //  _____________________________________________
+    
+    .login-dropdown-wrapper .login-trigger {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: @folix-secondary;
+        color: #FFFFFF;
+        border: none;
+        border-radius: @folix-radius;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        user-select: none;
+        
+        .login-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+        
+        .login-text {
+            color: #FFFFFF;
+        }
+        
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.3);
+        }
+    }
+    
+    .login-dropdown-wrapper .login-trigger:hover {
+        background: @folix-secondary-dark;
+        color: #FFFFFF;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        
+        .login-text {
+            color: #FFFFFF;
+        }
+    }
+    
+    .login-dropdown-wrapper .login-trigger.active {
+        background: @folix-secondary-dark;
+        color: #FFFFFF;
+        
+        .login-text {
+            color: #FFFFFF;
+        }
+    }
+    
+    //
+    //  Login Dropdown Panel
+    //  _____________________________________________
+    
+    .login-dropdown {
+        position: absolute;
+        top: calc(100% + 12px);
+        right: 0;
+        width: 380px;
+        background: #FFFFFF;
+        border-radius: @folix-radius-lg;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        z-index: 100;
+        pointer-events: none;
+        opacity: 0;
+        transform: translateY(-10px);
+        visibility: hidden;
+        transition: all 0.3s ease;
+        
+        &.open {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+            pointer-events: auto;
+        }
+        
+        .dropdown-decoration {
+            height: 4px;
+            background: linear-gradient(90deg, @folix-primary 0%, @folix-secondary 100%);
+        }
+        
+        .dropdown-tabs {
+            display: flex;
+            border-bottom: 1px solid @folix-border-light;
+            
+            .dropdown-tab {
+                flex: 1;
+                padding: 16px;
+                background: transparent;
+                border: none;
+                font-size: 14px;
+                font-weight: 600;
+                color: @folix-text-tertiary;
+                cursor: pointer;
+                position: relative;
+                transition: all 0.3s ease;
+                
+                &:hover {
+                    color: @folix-text-primary;
+                    background: @folix-bg-page;
+                }
+                
+                &.active {
+                    color: @folix-secondary;
+                    background: #FFFFFF;
+                    
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: 40px;
+                        height: 3px;
+                        background: @folix-secondary;
+                        border-radius: 3px 3px 0 0;
+                    }
+                }
+            }
+        }
+        
+        .dropdown-content {
+            padding: 24px;
+        }
+        
+        .dropdown-panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+            
+            &.active {
+                display: block;
+            }
+        }
+        
+        .field-group {
+            position: relative;
+            margin-bottom: 20px;
+            
+            .input-field {
+                width: 100%;
+                padding: 12px 16px;
+                background: @folix-bg-page;
+                border: 2px solid transparent;
+                border-radius: @folix-radius;
+                font-size: 14px;
+                color: @folix-text-primary;
+                transition: all 0.3s ease;
+                
+                &:focus {
+                    outline: none;
+                    border-color: @folix-primary;
+                    background: #FFFFFF;
+                    box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.1);
+                }
+                
+                &::placeholder {
+                    color: @folix-text-light;
+                }
+            }
+            
+            .field-label {
+                display: none;
+            }
+        }
+        
+        .field-row {
+            display: flex;
+            gap: 12px;
+            
+            .field-group {
+                flex: 1;
+            }
+        }
+        
+        .field-options {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+            
+            .forgot-link {
+                font-size: 13px;
+                color: @folix-primary;
+                text-decoration: none;
+                transition: color 0.3s ease;
+                
+                &:hover {
+                    color: @folix-secondary;
+                    text-decoration: underline;
+                }
+            }
+        }
+        
+        .btn-primary {
+            width: 100%;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, @folix-primary 0%, @folix-primary-dark 100%);
+            color: #FFFFFF;
+            border: none;
+            border-radius: @folix-radius;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(74, 144, 226, 0.3);
+            }
+            
+            &:active {
+                transform: translateY(0);
+            }
+        }
+        
+        .social-login {
+            margin-top: 24px;
+            
+            .social-divider {
+                display: flex;
+                align-items: center;
+                margin-bottom: 16px;
+                
+                &:before,
+                &:after {
+                    content: '';
+                    flex: 1;
+                    height: 1px;
+                    background: @folix-border-light;
+                }
+                
+                span {
+                    padding: 0 16px;
+                    font-size: 12px;
+                    color: @folix-text-tertiary;
+                    text-transform: uppercase;
+                }
+            }
+            
+            .social-buttons {
+                display: flex;
+                gap: 12px;
+                
+                .btn-social {
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                    padding: 10px 16px;
+                    background: @folix-bg-page;
+                    border: 1px solid @folix-border-light;
+                    border-radius: @folix-radius;
+                    font-size: 13px;
+                    font-weight: 500;
+                    color: @folix-text-primary;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    
+                    svg {
+                        width: 18px;
+                        height: 18px;
+                    }
+                    
+                    &:hover {
+                        background: #FFFFFF;
+                        transform: translateY(-1px);
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                    }
+                    
+                    &.btn-google:hover {
+                        border-color: #4285F4;
+                        color: #4285F4;
+                    }
+                    
+                    &.btn-facebook:hover {
+                        border-color: #1877F2;
+                        color: #1877F2;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  Animations
+//  _____________________________________________
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+//
+//  Desktop (≥ 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .login-dropdown {
+        width: 400px;
+    }
+    
+    .login-dropdown-wrapper {
+        order: 4;
+    }
+}
+
+//
+//  Mobile (< 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .login-trigger {
+        padding: 6px 12px;
+        
+        .login-text {
+            display: none;
+        }
+    }
+    
+    .login-dropdown {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        border-radius: @folix-radius-lg @folix-radius-lg 0 0;
+        max-height: 90vh;
+        overflow-y: auto;
+        transform: translateY(100%);
+        
+        &.open {
+            transform: translateY(0);
+        }
+    }
+}
+
+//
+//  Login Overlay (Mobile)
+//  _____________________________________________
+
+.login-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    animation: fadeIn 0.3s ease;
+}
+
+//
+//  Login Modal - 原生 mage.modal 适配
+//  用于 checkout sidebar 等使用原生 modal 的场景
+//  _____________________________________________
+
+.login-modal-container {
+    .modal-inner-wrap {
+        max-width: 500px;
+        border-radius: @folix-radius-lg;
+        overflow: hidden;
+        box-shadow: @folix-popup-shadow;
+    }
+
+    .modal-title {
+        display: none; // 隐藏原生标题，使用自定义 tabs
+    }
+
+    .modal-content {
+        padding: 0;
+    }
+
+    // Tabs
+    .modal-tabs {
+        display: flex;
+        background: @folix-bg-page;
+        border-bottom: 1px solid @folix-border-light;
+
+        .modal-tab {
+            flex: 1;
+            padding: @folix-space-4;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: @folix-text-tertiary;
+            transition: @folix-transition-smooth;
+
+            &:hover {
+                color: @folix-text-primary;
+                background: @folix-bg-hover;
+            }
+
+            &.active {
+                background: @folix-bg-card;
+                color: @folix-secondary;
+                position: relative;
+                
+                &:after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 40px;
+                    height: 3px;
+                    background: @folix-secondary;
+                    border-radius: 3px 3px 0 0;
+                }
+            }
+        }
+    }
+
+    // Panels
+    .modal-panel {
+        display: none;
+        padding: @folix-space-6;
+        animation: fadeIn 0.3s ease;
+
+        &.active {
+            display: block;
+        }
+    }
+
+    // Forms
+    .form-login,
+    .form-register {
+        .field {
+            margin-bottom: @folix-space-5;
+            position: relative;
+
+            .label {
+                display: block;
+                margin-bottom: @folix-space-2;
+                font-weight: 600;
+                color: @folix-text-primary;
+            }
+
+            .control {
+                input.input-text {
+                    width: 100%;
+                    padding: @folix-space-3 @folix-space-4;
+                    background: @folix-bg-page;
+                    border: 2px solid transparent;
+                    border-radius: @folix-radius;
+                    font-size: 14px;
+                    color: @folix-input-text;
+                    transition: @folix-transition-smooth;
+
+                    &:focus {
+                        outline: none;
+                        border-color: @folix-input-focus-border;
+                        background: @folix-bg-card;
+                        box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.1);
+                    }
+
+                    &::placeholder {
+                        color: @folix-input-placeholder;
+                    }
+                }
+            }
+        }
+
+        .actions-toolbar {
+            margin-top: @folix-space-6;
+            display: flex;
+            flex-direction: column;
+            gap: @folix-space-4;
+
+            .primary {
+                .action.login,
+                .action.register {
+                    width: 100%;
+                    padding: @folix-space-3 @folix-space-6;
+                    background: @folix-gradient-primary;
+                    color: #FFFFFF;
+                    border: none;
+                    border-radius: @folix-radius;
+                    font-size: 14px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: @folix-transition-smooth;
+
+                    &:hover {
+                        transform: translateY(-2px);
+                        box-shadow: @folix-shadow-primary;
+                    }
+
+                    &:active {
+                        transform: translateY(0);
+                    }
+                }
+            }
+
+            .secondary {
+                text-align: center;
+
+                .action.remind {
+                    font-size: 13px;
+                    color: @folix-primary;
+                    text-decoration: none;
+                    transition: @folix-transition;
+
+                    &:hover {
+                        color: @folix-secondary;
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+    }
+}

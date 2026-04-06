@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/queue.xsd">
+    <broker topic="folixcode.product.import" exchange="magento">
+        <queue name="folixcode.product.import.queue" consumer="folixcode.product.import.consumer" handler="FolixCode\ProductSync\Model\MessageQueue\Consumer\ProductImportConsumer::process"/>
+    </broker>
+    <broker topic="folixcode.category.import" exchange="magento">
+        <queue name="folixcode.category.import.queue" consumer="folixcode.category.import.consumer" handler="FolixCode\ProductSync\Model\MessageQueue\Consumer\CategoryImportConsumer::process"/>
+    </broker>
+    <broker topic="folixcode.product.detail" exchange="magento">
+        <queue name="folixcode.product.detail.queue" consumer="folixcode.product.detail.consumer" handler="FolixCode\ProductSync\Model\MessageQueue\Consumer\ProductDetailConsumer::process"/>
+    </broker>
+</config>

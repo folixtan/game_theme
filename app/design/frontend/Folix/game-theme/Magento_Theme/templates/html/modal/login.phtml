@@ -1,0 +1,179 @@
+<?php
+/**
+ * Folix Game Theme - Login/Register Modal
+ * 
+ * 位置：before.body.end
+ * 选择器：.login-modal
+ * 
+ * 功能：集成登录和注册的弹窗
+ */
+?>
+<div class="login-modal" id="login-modal" data-role="login-modal" style="display: none;">
+    <div class="modal-content" data-role="modal-content">
+        <div class="modal-tabs">
+            <button type="button" class="modal-tab active" data-tab="login">
+                <?= $block->escapeHtml(__('Sign In')) ?>
+            </button>
+            <button type="button" class="modal-tab" data-tab="register">
+                <?= $block->escapeHtml(__('Create Account')) ?>
+            </button>
+        </div>
+        
+        <!-- Login Form -->
+        <div class="modal-panel active" id="login-panel">
+            <form class="form form-login"
+                  action="<?= $block->escapeUrl($block->getUrl('customer/account/loginPost')) ?>"
+                  method="post"
+                  data-mage-init='{"validation": {}}'>
+                <input name="form_key" type="hidden" value="<?= $block->escapeHtmlAttr($block->getFormKey()) ?>" />
+                
+                <div class="field email required">
+                    <label class="label" for="login-email">
+                        <span><?= $block->escapeHtml(__('Email')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="email"
+                               name="login[username]"
+                               id="login-email"
+                               class="input-text"
+                               value=""
+                               placeholder="<?= $block->escapeHtmlAttr(__('Enter your email')) ?>"
+                               data-validate='{"required":true, "validate-email":true}'/>
+                    </div>
+                </div>
+                
+                <div class="field password required">
+                    <label class="label" for="login-password">
+                        <span><?= $block->escapeHtml(__('Password')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="password"
+                               name="login[password]"
+                               id="login-password"
+                               class="input-text"
+                               placeholder="<?= $block->escapeHtmlAttr(__('Enter your password')) ?>"
+                               data-validate='{"required":true}'/>
+                    </div>
+                </div>
+                
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <button type="submit" class="action login primary">
+                            <span><?= $block->escapeHtml(__('Sign In')) ?></span>
+                        </button>
+                    </div>
+                    <div class="secondary">
+                        <a href="<?= $block->escapeUrl($block->getUrl('customer/account/forgotpassword')) ?>" class="action remind">
+                            <span><?= $block->escapeHtml(__('Forgot Password?')) ?></span>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Register Form -->
+        <div class="modal-panel" id="register-panel">
+            <form class="form form-register"
+                  action="<?= $block->escapeUrl($block->getUrl('customer/account/createpost')) ?>"
+                  method="post"
+                  data-mage-init='{"validation": {}}'>
+                <input name="form_key" type="hidden" value="<?= $block->escapeHtmlAttr($block->getFormKey()) ?>" />
+                
+                <div class="field firstname required">
+                    <label class="label" for="register-firstname">
+                        <span><?= $block->escapeHtml(__('First Name')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="text"
+                               name="firstname"
+                               id="register-firstname"
+                               class="input-text"
+                               placeholder="<?= $block->escapeHtmlAttr(__('Enter your first name')) ?>"
+                               data-validate='{"required":true}'/>
+                    </div>
+                </div>
+                
+                <div class="field lastname required">
+                    <label class="label" for="register-lastname">
+                        <span><?= $block->escapeHtml(__('Last Name')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="text"
+                               name="lastname"
+                               id="register-lastname"
+                               class="input-text"
+                               placeholder="<?= $block->escapeHtmlAttr(__('Enter your last name')) ?>"
+                               data-validate='{"required":true}'/>
+                    </div>
+                </div>
+                
+                <div class="field email required">
+                    <label class="label" for="register-email">
+                        <span><?= $block->escapeHtml(__('Email')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="email"
+                               name="email"
+                               id="register-email"
+                               class="input-text"
+                               placeholder="<?= $block->escapeHtmlAttr(__('Enter your email')) ?>"
+                               data-validate='{"required":true, "validate-email":true}'/>
+                    </div>
+                </div>
+                
+                <div class="field password required">
+                    <label class="label" for="register-password">
+                        <span><?= $block->escapeHtml(__('Password')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="password"
+                               name="password"
+                               id="register-password"
+                               class="input-text"
+                               placeholder="<?= $block->escapeHtmlAttr(__('Create a password')) ?>"
+                               data-validate='{"required":true, "min-length":8}'/>
+                    </div>
+                </div>
+                
+                <div class="field confirmation required">
+                    <label class="label" for="register-confirmation">
+                        <span><?= $block->escapeHtml(__('Confirm Password')) ?></span>
+                    </label>
+                    <div class="control">
+                        <input type="password"
+                               name="password_confirmation"
+                               id="register-confirmation"
+                               class="input-text"
+                               placeholder="<?= $block->escapeHtmlAttr(__('Confirm your password')) ?>"
+                               data-validate='{"required":true, "equalTo":"#register-password"}'/>
+                    </div>
+                </div>
+                
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <button type="submit" class="action register primary">
+                            <span><?= $block->escapeHtml(__('Create Account')) ?></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+{
+    "[data-role=login-modal]": {
+        "Magento_Ui/js/modal/modal": {
+            "type": "popup",
+            "modalClass": "login-modal-container",
+            "responsive": true,
+            "title": "",
+            "buttons": []
+        }
+    },
+    "*": {
+        "Magento_Theme/js/login-modal-init": {}
+    }
+}
+</script>

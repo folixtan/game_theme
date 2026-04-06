@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Folix Game Theme - View Configuration
+ */
+-->
+<view xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/view.xsd">
+    <media>
+        <images module="Magento_Catalog">
+            <!-- Product list page images -->
+            <image id="category_page_grid" type="small_image">
+                <width>300</width>
+                <height>300</height>
+            </image>
+            <image id="category_page_list" type="small_image">
+                <width>240</width>
+                <height>300</height>
+            </image>
+            <!-- Product page images -->
+            <image id="product_page_image_medium" type="image">
+                <width>700</width>
+                <height>700</height>
+            </image>
+            <image id="product_page_image_large" type="image">
+                <width>1200</width>
+                <height>1200</height>
+            </image>
+        </images>
+    </media>
+    <vars module="Magento_Catalog">
+        <var name="gallery_switch_strategy">replace</var>
+    </vars>
+</view>

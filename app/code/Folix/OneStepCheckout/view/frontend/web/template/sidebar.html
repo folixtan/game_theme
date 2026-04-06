@@ -1,0 +1,31 @@
+<!--
+/**
+ * Folix One Step Checkout - Sidebar Template
+ * 
+ * 支持移动端折叠/展开订单摘要
+ */
+-->
+
+<div id="opc-sidebar"
+     class="opc-sidebar"
+     data-bind="afterRender: setModalElement, css: { 'active': isSummaryExpanded }">
+    
+    <!-- 移动端折叠切换按钮 -->
+    <div class="summary-toggle" data-bind="click: toggleSummary">
+        <span data-bind="i18n: 'Order Summary'"></span>
+        <span class="toggle-icon" data-bind="html: toggleIcon"></span>
+    </div>
+    
+    <!-- 订单摘要内容 -->
+    <div class="summary-content opc-block-summary" data-bind="css: { 'active': isSummaryExpanded }">
+        <!-- ko foreach: getRegion('summary') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+
+        <div class="opc-block-shipping-information">
+            <!-- ko foreach: getRegion('shipping-information') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+    </div>
+</div>

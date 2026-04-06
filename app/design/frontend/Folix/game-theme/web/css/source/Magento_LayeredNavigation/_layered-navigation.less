@@ -1,0 +1,557 @@
+// /**
+//  * Folix Game Theme - Layered Navigation (Filter) Styles
+//  *
+//  * 模块：Magento_LayeredNavigation
+//  * 位置：Magento_LayeredNavigation/web/css/source/_extend.less
+//  *
+//  * 设计理念：
+//  * - 卡片风格，圆角，微阴影
+//  * - 游戏主题色彩
+//  * - 移动优先
+//  *
+//  * 原生结构（保留）：
+//  * .block.filter
+//  *   .block-title.filter-title
+//  *   .block-content.filter-content
+//  *     .filter-current (当前筛选)
+//  *     .filter-actions (清除按钮)
+//  *     .filter-options (筛选选项)
+//  *       .filter-options-item
+//  *         .filter-options-title
+//  *         .filter-options-content
+//  */
+
+//
+//  Common (All devices)
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    //
+    //  Filter Block - 卡片风格
+    //  _____________________________________________
+
+    .block.filter {
+        margin-bottom: 0;
+        
+        // 移动端激活状态
+        &.active {
+            .filter-title {
+                strong {
+                    background: @folix-bg-card;
+                    border: none;
+                    box-shadow: none;
+                    color: transparent;
+                    font-size: 16px;
+                    padding: 12px 16px;
+                    line-height: 1;
+
+                    // 关闭图标
+                    &:after {
+                        content: '✕';
+                        color: @folix-text-tertiary;
+                        font-size: 16px;
+                    }
+                }
+            }
+            
+            .filter-subtitle {
+                background: @folix-gradient-primary;
+                color: #FFFFFF;
+                font-weight: @font-weight__semibold;
+            }
+        }
+    }
+
+    //
+    //  Filter Title
+    //  _____________________________________________
+
+    .filter-title {
+        strong {
+            background: @folix-secondary;
+            border: none;
+            border-radius: @folix-radius;
+            box-shadow: @folix-shadow-secondary;
+            color: #FFFFFF;
+            font-weight: @font-weight__semibold;
+            padding: 10px @indent__base;
+            
+            // 已选数量徽章
+            &[data-count]:after {
+                background: #FFFFFF;
+                color: @folix-secondary;
+                border-radius: @folix-radius-full;
+                font-weight: @font-weight__bold;
+                min-width: 20px;
+            }
+        }
+    }
+
+    //
+    //  Filter Content
+    //  _____________________________________________
+
+    .filter-content {
+        background: @folix-bg-card;
+        border-radius: @folix-radius-md;
+        box-shadow: @folix-shadow;
+    }
+
+    //
+    //  Filter Subtitle - "Shopping Options"
+    //  _____________________________________________
+
+    .filter-subtitle {
+        border-bottom: 1px solid @folix-border-light;
+        color: @folix-text-primary;
+        font-size: 14px;
+        font-weight: @font-weight__semibold;
+        padding: @indent__base;
+    }
+
+    //
+    //  Current Filters
+    //  _____________________________________________
+
+    .filter-current {
+        border-bottom: 1px solid @folix-border-light;
+        margin: 0;
+        padding: @indent__s @indent__base;
+        
+        .items {
+            padding: 0;
+        }
+        
+        .item {
+            align-items: center;
+            background: @folix-bg-selected;
+            border-radius: @folix-radius-full;
+            display: inline-flex;
+            margin: @indent__xs;
+            padding: 4px 12px 4px 24px;
+            position: relative;
+        }
+        
+        .filter-label {
+            color: @folix-text-secondary;
+            font-size: 12px;
+            font-weight: @font-weight__semibold;
+        }
+        
+        .filter-value {
+            color: @folix-primary;
+            font-weight: @font-weight__semibold;
+        }
+        
+        .action.remove {
+            background: @folix-text-muted;
+            border-radius: 50%;
+            height: 16px;
+            left: 4px;
+            line-height: 16px;
+            position: absolute;
+            text-align: center;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            
+            &:before {
+                color: #FFFFFF;
+                content: '✕';
+                font-size: 10px;
+            }
+            
+            &:hover {
+                background: @folix-secondary;
+            }
+            
+            span {
+                display: none;
+            }
+        }
+        
+        &-subtitle {
+            color: @folix-text-secondary;
+            font-size: 12px;
+            font-weight: @font-weight__semibold;
+            margin-bottom: @indent__s;
+            text-transform: uppercase;
+        }
+    }
+
+    //
+    //  Filter Actions - Clear All
+    //  _____________________________________________
+
+    .filter-actions {
+        padding: @indent__base;
+        text-align: center;
+        
+        .action.clear {
+            color: @folix-secondary;
+            font-size: 13px;
+            font-weight: @font-weight__semibold;
+            
+            &:hover {
+                color: @folix-secondary-dark;
+                text-decoration: underline;
+            }
+        }
+    }
+
+    //
+    //  Filter Options
+    //  _____________________________________________
+
+    .filter-options {
+        margin: 0;
+    }
+
+    .filter-options-item {
+        border-bottom: 1px solid @folix-border-light;
+        
+        &:last-child {
+            border-bottom: none;
+        }
+        
+        // 激活状态
+        &.active {
+            .filter-options-title {
+                color: @folix-secondary;
+                
+                &:after {
+                    content: '−';
+                    color: @folix-secondary;
+                }
+            }
+        }
+    }
+
+    .filter-options-title {
+        color: @folix-text-primary;
+        cursor: pointer;
+        font-weight: @font-weight__semibold;
+        padding: @indent__base;
+        position: relative;
+        transition: @folix-transition;
+        text-transform: none; // 移除原生大写
+        
+        &:hover {
+            background: @folix-bg-panel;
+            color: @folix-primary;
+        }
+        
+        // 展开/折叠图标
+        &:after {
+            color: @folix-text-muted;
+            content: '+';
+            font-family: inherit;
+            font-size: 18px;
+            position: absolute;
+            right: @indent__base;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+
+    .filter-options-content {
+        padding: 0 @indent__base @indent__base;
+        
+        .item {
+            margin: @indent__xs 0;
+        }
+        
+        a {
+            color: @folix-text-secondary;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: @indent__xs 0;
+            transition: @folix-transition;
+            
+            &:hover {
+                background: transparent;
+                color: @folix-primary;
+                padding-left: @indent__xs;
+            }
+        }
+        
+        .count {
+            color: @folix-text-muted;
+            font-weight: @font-weight__heavier;
+            
+            &:before {
+                content: '(';
+            }
+            
+            &:after {
+                content: ')';
+            }
+        }
+        
+        // Swatch 样式
+        .swatch-attribute-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: @indent__xs;
+        }
+        
+        .swatch-option {
+            background: @folix-bg-panel;
+            border: 1px solid @folix-border;
+            border-radius: @folix-radius-sm;
+            cursor: pointer;
+            font-size: 12px;
+            min-width: 48px;
+            padding: 6px @indent__s;
+            text-align: center;
+            transition: @folix-transition;
+            
+            &:hover {
+                border-color: @folix-primary;
+                color: @folix-primary;
+            }
+            
+            &.selected {
+                background: @folix-primary;
+                border-color: @folix-primary;
+                color: #FFFFFF;
+            }
+        }
+    }
+}
+
+//
+//  Mobile (< 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    
+    body.filter-active {
+        // 保持原生行为：隐藏 header 和内容
+    }
+    
+    .filter {
+        // 移动端隐藏状态
+        &:not(.active) {
+            .filter-title {
+                strong {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: @indent__xs;
+                    width: auto;
+                    
+                    &:before {
+                        content: '☰';
+                        font-size: 16px;
+                    }
+                    
+                    &[data-count]:after {
+                        position: static;
+                    }
+                }
+            }
+        }
+        
+        // 移动端激活状态
+        &.active {
+            .filter-options {
+                background: @folix-bg-card;
+                padding-top: @indent__base;
+            }
+            
+            .filter-options-item {
+                border-bottom: 1px solid @folix-border-light;
+                
+                &:first-child {
+                    border-top: 1px solid @folix-border-light;
+                }
+            }
+            
+            .filter-options-content {
+                background: @folix-bg-page;
+                margin: @indent__base;
+                border-radius: @folix-radius;
+            }
+        }
+    }
+    
+    // 当前筛选移动端样式
+    .filter-current {
+        &.active {
+            .items {
+                display: flex;
+                flex-wrap: wrap;
+            }
+        }
+        
+        &-subtitle {
+            display: block;
+            padding: @indent__base;
+            position: relative;
+            
+            &:after {
+                content: attr(data-count);
+                color: @folix-secondary;
+                font-size: 12px;
+                margin-left: @indent__xs;
+            }
+        }
+    }
+}
+
+//
+//  Desktop (>= 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    
+    .block.filter {
+        margin-bottom: @indent__xl;
+    }
+    
+    // 桌面端隐藏标题
+    .filter-title {
+        display: none;
+    }
+    
+    .filter-content {
+        background: transparent;
+        box-shadow: none;
+    }
+    
+    .filter-subtitle {
+        display: none;
+    }
+    
+    // 桌面端 Filter Options 始终显示
+    .filter-options {
+        background: @folix-bg-card;
+        border-radius: @folix-radius-md;
+        box-shadow: @folix-shadow;
+        display: block;
+        overflow: visible;
+        padding: @indent__s;
+    }
+    
+    .filter-options-item {
+        border-bottom: 1px solid @folix-border-light;
+        margin: 0;
+        padding: @indent__s;
+        
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+    
+    .filter-options-title {
+        padding: @indent__s;
+        
+        &:after {
+            right: @indent__s;
+        }
+    }
+    
+    .filter-options-content {
+        padding: @indent__s;
+        
+        a {
+            padding: @indent__xs;
+            border-radius: @folix-radius-sm;
+            
+            &:hover {
+                background: @folix-bg-selected;
+            }
+        }
+    }
+    
+    // 桌面端当前筛选
+    .filter-current {
+        background: @folix-bg-card;
+        border-radius: @folix-radius-md;
+        box-shadow: @folix-shadow;
+        margin-bottom: @indent__base;
+        padding: @indent__base;
+        
+        &-subtitle {
+            display: block;
+            margin-bottom: @indent__s;
+        }
+        
+        .items {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+    
+    .filter-actions {
+        padding: 0;
+        text-align: left;
+    }
+}
+
+//
+//  1 Column Layout (Full width filter)
+//  _____________________________________________
+
+.page-layout-1column {
+    .filter {
+        &.block {
+            border-top: 1px solid @folix-border;
+            margin-top: @indent__base;
+        }
+        
+        // 1列布局下，Filter 横向显示
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: @indent__m;
+        }
+        
+        .filter-options-item {
+            border-bottom: none;
+            position: relative;
+            
+            &.active {
+                z-index: 2;
+            }
+        }
+        
+        .filter-options-title {
+            padding: @indent__s @indent__m;
+            background: @folix-bg-panel;
+            border-radius: @folix-radius;
+            cursor: pointer;
+            
+            &:hover {
+                background: @folix-bg-selected;
+            }
+        }
+        
+        .filter-options-content {
+            background: @folix-bg-card;
+            border: 1px solid @folix-border;
+            border-radius: @folix-radius-md;
+            box-shadow: @folix-shadow-lg;
+            left: 0;
+            min-width: 200px;
+            padding: @indent__s;
+            position: absolute;
+            top: 100%;
+            z-index: 10;
+        }
+        
+        .filter-current {
+            display: inline-flex;
+            margin-bottom: 0;
+            margin-right: @indent__m;
+            padding: @indent__s;
+        }
+        
+        .filter-actions {
+            display: inline;
+        }
+    }
+}

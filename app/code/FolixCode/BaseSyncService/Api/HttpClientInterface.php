@@ -1,0 +1,50 @@
+<?php
+declare(strict_types=1);
+
+namespace FolixCode\BaseSyncService\Api;
+
+/**
+ * HTTP客户端接口
+ * 提供基础HTTP请求能力
+ */
+interface HttpClientInterface
+{
+    /**
+     * 发送GET请求
+     *
+     * @param string $url 请求URL
+     * @param array $params 查询参数
+     * @param array $headers 请求头
+     * @return array
+     */
+    public function get(string $url, array $params = [], array $headers = []): array;
+
+    /**
+     * 发送POST请求
+     *
+     * @param string $url 请求URL
+     * @param array $data 请求数据
+     * @param array $headers 请求头
+     * @return array
+     */
+    public function post(string $url, array $data = [], array $headers = []): array;
+
+    /**
+     * 发送PUT请求
+     *
+     * @param string $url 请求URL
+     * @param array $data 请求数据
+     * @param array $headers 请求头
+     * @return array
+     */
+    public function put(string $url, array $data = [], array $headers = []): array;
+
+    /**
+     * 发送DELETE请求
+     *
+     * @param string $url 请求URL
+     * @param array $headers 请求头
+     * @return array
+     */
+    public function delete(string $url, array $headers = []): array;
+}

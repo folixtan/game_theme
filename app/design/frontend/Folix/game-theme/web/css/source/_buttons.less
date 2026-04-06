@@ -1,0 +1,94 @@
+// /**
+//  * Folix Game Theme - Button Styles
+//  * 
+//  * 使用原生变量（通过 _theme.less 覆盖）
+//  */
+
+//
+//  Common (All devices)
+//  _____________________________________________
+
+& when (@media-common = true) {
+    
+    //
+    //  Primary Button - 主要按钮
+    //  _____________________________________________
+    
+    .action.primary,
+    button.action.primary,
+    button.primary {
+        background: @theme__color__primary;
+        border: 1px solid @theme__color__primary;
+        color: @folix-bg-card;
+        font-weight: @font-weight__semibold;
+        border-radius: @button__border-radius;
+        transition: @folix-transition;
+        
+        &:hover,
+        &:focus {
+            background: @theme__color__secondary;
+            border-color: @theme__color__secondary;
+            color: @folix-bg-card;
+        }
+        
+        &:active {
+            background: darken(@theme__color__secondary, 5%);
+            border-color: darken(@theme__color__secondary, 5%);
+        }
+    }
+    
+    //
+    //  Secondary Button - 次要按钮
+    //  _____________________________________________
+    
+    .action.secondary,
+    button.action.secondary,
+    button.secondary {
+        background: @folix-bg-card;
+        border: 2px solid @theme__color__primary;
+        color: @theme__color__primary;
+        font-weight: @font-weight__semibold;
+        border-radius: @button__border-radius;
+        transition: @folix-transition;
+        
+        &:hover,
+        &:focus {
+            background: @theme__color__primary;
+            color: @folix-bg-card;
+        }
+    }
+    
+    //
+    //  Add to Cart Button - 加入购物车按钮
+    //  _____________________________________________
+    
+    .action.tocart {
+        background: @theme__color__secondary;
+        border: 1px solid @theme__color__secondary;
+        color: @folix-bg-card;
+        font-weight: @font-weight__semibold;
+        border-radius: @button__border-radius;
+        
+        &:hover,
+        &:focus {
+            background: darken(@theme__color__secondary, 10%);
+            border-color: darken(@theme__color__secondary, 10%);
+            color: @folix-bg-card;
+        }
+    }
+    
+    //
+    //  Action Link Button - 链接样式按钮
+    //  _____________________________________________
+    
+    .abs-action-link-button {
+        background: @theme__color__primary;
+        border: none;
+        color: @folix-bg-card;
+        
+        &:hover {
+            background: @theme__color__secondary;
+            color: @folix-bg-card;
+        }
+    }
+}
