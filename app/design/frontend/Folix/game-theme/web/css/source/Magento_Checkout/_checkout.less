@@ -174,54 +174,216 @@
         }
     }
     .discount-code {
+        //  容器卡片样式
+        .payment-option {
+            background: @folix-bg-card;
+            border-radius: @button__border-radius;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
+            margin-bottom: @indent__base;
+            border: 1px solid @folix-border;
+            overflow: hidden;
+        }
+
         //  箭头标题颜色（原生是蓝色 #1979c3）
         //  正确的选择器路径：.discount-code 下的 .payment-option-title
-        .payment-option-title .action-toggle {
-            color: @folix-text-primary;
+        .payment-option-title {
+            padding: @indent__l;
+            background: @folix-bg-panel;
+            border-bottom: 1px solid @folix-border;
+            transition: all 0.2s ease;
 
-            //  箭头图标样式
-            //  原生已有：content: '\e622', font-family, font-size: 32px, display 等
-            //  我们只覆盖：颜色和添加旋转动画
-            &:after {
-                color: @folix-text-secondary; // 覆盖原生的 #8f8f8f
-                transition: transform 0.3s ease; // 原生没有动画
-            }
-
-            //  展开状态 - 旋转箭头（原生没有）
-            &._active:after {
-                transform: rotate(180deg);
-            }
-
-            //  悬停状态
-            //  原生只有 &:hover:after，我们补充文字 hover
             &:hover {
-                color: @folix-primary;
+                background: darken(@folix-bg-panel, 2%);
+            }
 
+            .action-toggle {
+                color: @folix-text-primary;
+                font-size: 15px;
+                font-weight: @font-weight__semibold;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+
+                //  箭头图标样式
                 &:after {
-                    color: @folix-primary; // 覆盖原生的 #333
+                    color: @folix-text-secondary;
+                    transition: transform 0.3s ease;
+                    font-size: 18px;
+                }
+
+                //  展开状态 - 旋转箭头
+                &._active:after {
+                    transform: rotate(180deg);
+                }
+
+                //  悬停状态
+                &:hover {
+                    color: @folix-primary;
+
+                    &:after {
+                        color: @folix-primary;
+                    }
                 }
             }
         }
 
-        //  按钮样式
-        //  原生 .action-apply 没有 .primary 类，所以没有蓝色背景
-        //  直接应用主题蓝色样式（不使用 mixin）
-        .actions-toolbar .primary .action.action-apply {
-            background: @folix-primary;
-            border: 1px solid @folix-primary;
-            color: @color-white;
-            cursor: pointer;
-            display: inline-block;
+        //  内容区域
+        .payment-option-content {
+            padding: @indent__l;
+            background: @color-white;
 
-            &:hover {
-                background: @folix-primary-dark;
-                border-color: @folix-primary-dark;
+            //  表单样式
+            .form-discount {
+                .payment-option-inner {
+                    margin-bottom: @indent__base;
+
+                    .field {
+                        margin-bottom: 0;
+
+                        .label {
+                            font-size: 14px;
+                            font-weight: @font-weight__semibold;
+                            color: @folix-text-primary;
+                            margin-bottom: @indent__xs;
+                        }
+
+                        .control {
+                            input.input-text {
+                                width: 100%;
+                                padding: @indent__s @indent__base;
+                                background: @color-white;
+                                border: 1px solid @folix-border;
+                                border-radius: @button__border-radius;
+                                font-size: 14px;
+                                color: @folix-text-primary;
+                                transition: all 0.2s ease;
+
+                                &:focus {
+                                    border-color: @folix-primary;
+                                    outline: none;
+                                    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+                                }
+
+                                &:disabled {
+                                    background: @folix-bg-panel;
+                                    color: @folix-text-light;
+                                    cursor: not-allowed;
+                                }
+
+                                &::placeholder {
+                                    color: @folix-text-light;
+                                    opacity: 0.7;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            //  操作按钮区域
+            .actions-toolbar {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: @indent__s;
+                margin: 0;
+
+                > .primary {
+                    background: none;
+                    padding: 0;
+                    margin: 0;
+                }
+
+                .primary .action.action-apply {
+                    padding: @indent__s @indent__l;
+                    background: @folix-primary;
+                    border: 1px solid @folix-primary;
+                    border-radius: @button__border-radius;
+                    color: @color-white;
+                    font-size: 14px;
+                    font-weight: @font-weight__semibold;
+                    cursor: pointer;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.2s ease;
+                    min-width: 100px;
+                    white-space: nowrap;
+
+                    &:hover {
+                        background: @folix-primary-dark;
+                        border-color: @folix-primary-dark;
+                        transform: translateY(-1px);
+                        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+                    }
+
+                    &:active {
+                        transform: translateY(0);
+                    }
+
+                    &:disabled {
+                        opacity: 0.5;
+                        cursor: not-allowed;
+                        background: @color-gray-middle1;
+                        border-color: @color-gray-middle1;
+                    }
+                }
+
+                //  取消优惠券按钮
+                .secondary {
+                    .action-cancel {
+                        padding: @indent__s @indent__base;
+                        background: @color-white;
+                        border: 1px solid @folix-border;
+                        border-radius: @button__border-radius;
+                        color: @folix-text-secondary;
+                        font-size: 14px;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+
+                        &:hover {
+                            background: @folix-bg-panel;
+                            color: @folix-error;
+                            border-color: @folix-error;
+                        }
+                    }
+                }
+            }
+
+            //  消息提示
+            .messages {
+                margin-bottom: @indent__base;
+
+                .message {
+                    padding: @indent__s @indent__base;
+                    border-radius: @button__border-radius;
+                    font-size: 14px;
+                    display: flex;
+                    align-items: center;
+                    gap: @indent__xs;
+
+                    &.message-error {
+                        background: @folix-error-bg;
+                        color: @folix-error;
+                        border: 1px solid @folix-error-border;
+                    }
+
+                    &.message-success {
+                        background: @folix-success-bg;
+                        color: @folix-success;
+                        border: 1px solid @folix-success-border;
+                    }
+                }
             }
         }
 
-        //  清除 .primary 容器的白色背景（如果有的话）
-        .actions-toolbar > .primary {
-            background: none;
+        //  展开状态样式
+        &._active {
+            .payment-option {
+                border-color: @folix-primary;
+                box-shadow: 0 2px 12px rgba(74, 144, 226, 0.15);
+            }
         }
     }
     //  Payment - 支付区域

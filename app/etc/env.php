@@ -1,14 +1,31 @@
 <?php
 return [
-    'backend' => [
-        'frontName' => 'admin_zdqpp5t'
+    'cache_types' => [
+        'compiled_config' => 1,
+        'config' => 1,
+        'layout' => 1,
+        'block_html' => 1,
+        'collections' => 1,
+        'reflection' => 1,
+        'db_ddl' => 1,
+        'eav' => 1,
+        'customer_notification' => 1,
+        'config_integration' => 1,
+        'config_integration_api' => 1,
+        'graphql_query_resolver_result' => 1,
+        'full_page' => 1,
+        'config_webservice' => 1,
+        'translate' => 1
     ],
     'remote_storage' => [
         'driver' => 'file'
     ],
+    'backend' => [
+        'frontName' => 'admin_zdqpp5t'
+    ],
     'cache' => [
         'graphql' => [
-            'id_salt' => '9FIzDbCi1sY2yNK8z3et2j5s2d0MtUs6'
+            'id_salt' => 'ujNpxrHTUm2DZpsJxgwUliOXds4bWM20'
         ],
         'frontend' => [
             'default' => [
@@ -27,7 +44,7 @@ return [
         'consumers_wait_for_messages' => 1
     ],
     'crypt' => [
-        'key' => 'base64EsS6ICGPDRwWKV2Rp+s7lRk/or0lqSH+s9vn+GIz10A='
+        'key' => 'base64VIX6J+DJUFEf6+EPq0t9TbfLEwK46DMldd/eavDTAWU='
     ],
     'db' => [
         'table_prefix' => '',
@@ -63,27 +80,10 @@ return [
     'directories' => [
         'document_root_is_pub' => true
     ],
-    'cache_types' => [
-        'config' => 1,
-        'layout' => 1,
-        'block_html' => 1,
-        'collections' => 1,
-        'reflection' => 1,
-        'db_ddl' => 1,
-        'compiled_config' => 1,
-        'eav' => 1,
-        'customer_notification' => 1,
-        'config_integration' => 1,
-        'config_integration_api' => 1,
-        'graphql_query_resolver_result' => 1,
-        'full_page' => 1,
-        'config_webservice' => 1,
-        'translate' => 1
-    ],
     'downloadable_domains' => [
         'game.eco.io'
     ],
     'install' => [
-        'date' => 'Sat, 04 Apr 2026 02:36:08 +0000'
+        'date' => 'Mon, 06 Apr 2026 12:10:56 +0000'
     ]
 ];
