@@ -47,18 +47,18 @@
     cursor: pointer;
 }
 
-// Sign In Button (黄色填充按钮)
+// Sign In Button (金色填充按钮)
 
 .header.panel .header.links .authorization-link a {
-    background: @folix-accent-color;
-    color: #fff;
-    border: 2px solid @folix-accent-color;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: #1E293B;
+    border: none;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
 
     &:hover {
-        background: @folix-accent-hover;
-        border-color: @folix-accent-hover;
+        background: linear-gradient(135deg, #FFED4A 0%, #FFD700 100%);
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
     }
 }
 
@@ -66,40 +66,40 @@
 
 .customer-logged-in .header.panel .header.links .authorization-link a {
     background: transparent;
-    color: @folix-text-color;
-    border: 2px solid @folix-header-border;
+    color: @folix-text-secondary;
+    border: 2px solid @folix-border;
 
     &:hover {
-        border-color: @folix-accent-color;
-        color: @folix-accent-color;
+        border-color: @folix-secondary;
+        color: @folix-secondary;
     }
 }
 
-// Register Button (黄色描边按钮)
+// Register Button (金色描边按钮)
 
 .header.panel .header.links .register-link a {
     background: transparent;
-    color: @folix-accent-color;
-    border: 2px solid @folix-accent-color;
+    color: @folix-secondary;
+    border: 2px solid @folix-secondary;
 
     &:hover {
-        background: @folix-accent-color;
-        color: #fff;
+        background: @folix-secondary;
+        color: #1E293B;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
     }
 }
 
 // My Account Link (已登录)
 
 .customer-logged-in .header.panel .header.links .my-account-link a {
-    color: @folix-text-color;
+    color: @folix-text-secondary;
     font-size: 13px;
     padding: 8px 20px;
     border: none;
 
     &:hover {
-        color: @folix-accent-color;
+        color: @folix-secondary;
     }
 }
 
@@ -115,19 +115,19 @@
 }
 
 .header.panel .switcher-store .actions .action.toggle {
-    color: @folix-text-color;
+    color: @folix-text-secondary;
     font-size: 13px;
     text-transform: uppercase;
     padding: 6px 12px;
-    border: 1px solid @folix-header-border;
+    border: 1px solid @folix-border;
     border-radius: 4px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 215, 0, 0.05);
     transition: all 0.3s ease;
 
     &:hover {
-        color: @folix-text-hover;
-        border-color: @folix-accent-color;
-        background: rgba(255, 152, 0, 0.1);
+        color: @folix-secondary;
+        border-color: @folix-secondary;
+        background: rgba(255, 215, 0, 0.1);
     }
 
     strong span {
@@ -136,8 +136,8 @@
 }
 
 .header.panel .switcher-store .switcher-dropdown {
-    background: #2d2d2d;
-    border: 1px solid @folix-header-border;
+    background: @folix-bg-panel;
+    border: 1px solid @folix-border;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     min-width: 180px;
     margin-top: 5px;
@@ -146,7 +146,7 @@
 }
 
 .header.panel .switcher-store .switcher-option a {
-    color: @folix-text-color;
+    color: @folix-text-secondary;
     font-size: 13px;
     padding: 10px 15px;
     display: block;
@@ -154,7 +154,7 @@
     transition: all 0.3s ease;
 
     &:hover {
-        color: @folix-accent-color;
-        background: rgba(255, 152, 0, 0.1);
+        color: @folix-secondary;
+        background: rgba(255, 215, 0, 0.1);
     }
 }
