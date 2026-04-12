@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folix Game Theme - Header</title>
+    <style>
+        /* ============================================
+             基础样式
+             ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        /* ============================================
+             PC 端样式
+             ============================================ */
+
+        /* Top Bar - 顶部栏 */
+        .header-panel {
+            background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+            height: 40px;
+            border-bottom: 1px solid #0f3460;
+        }
+
+        .header-panel-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .header-links-left {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-links-left a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 12px;
+            transition: color 0.3s;
+        }
+
+        .header-links-left a:hover {
+            color: #ffd700;
+        }
+
+        .header-links-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .app-link {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .app-link:hover {
+            color: #ffd700;
+        }
+
+        .store-language {
+            position: relative;
+        }
+
+        .store-language select {
+            background: transparent;
+            border: 1px solid #0f3460;
+            color: #e0e0e0;
+            padding: 3px 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .header-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 12px;
+            transition: color 0.3s;
+        }
+
+        .header-links a:hover {
+            color: #ffd700;
+        }
+
+        .header-links .greet.welcome {
+            color: #e0e0e0;
+            font-size: 12px;
+        }
+
+        .header-links .logged-in {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* Main Bar - 主导航栏 */
+        .header-wrapper {
+            background: #ffffff;
+            height: 70px;
+            border-bottom: 3px solid #ff6b35;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo a {
+            font-size: 24px;
+            font-weight: bold;
+            color: #16213e;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .logo a span {
+            color: #ffd700;
+        }
+
+        /* PC 端导航菜单 */
+        .desktop-nav {
+            flex: 1;
+            display: flex;
+        }
+
+        .desktop-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .desktop-nav ul li a {
+            color: #16213e;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .desktop-nav ul li a:hover {
+            color: #ffd700;
+        }
+
+        /* 搜索框 */
+        .header-search {
+            flex-shrink: 0;
+        }
+
+        .form.minisearch {
+            display: flex;
+            gap: 5px;
+        }
+
+        .input-text {
+            width: 250px;
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-text:focus {
+            border-color: #ffd700;
+        }
+
+        .action.search {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+            color: #ffd700;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+
+        .action.search:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        /* 汉堡菜单按钮（移动端） */
+        .nav-toggle {
+            display: none;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: 1px solid #16213e;
+            border-radius: 4px;
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            padding: 8px;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: #16213e;
+            transition: all 0.3s;
+        }
+
+        /* ============================================
+             移动端样式
+             ============================================ */
+
+        @media (max-width: 768px) {
+            /* 隐藏 PC 端元素 */
+            .header-links-left,
+            .app-link,
+            .header-links,
+            .desktop-nav,
+            .header-search {
+                display: none;
+            }
+
+            /* 显示汉堡菜单按钮 */
+            .nav-toggle {
+                display: flex;
+            }
+
+            /* Top Bar - 移动端隐藏 */
+            .header-panel {
+                display: none;
+            }
+
+            /* Main Bar - 移动端 */
+            .header-wrapper {
+                height: 60px;
+            }
+
+            .header-content {
+                padding: 0 15px;
+            }
+
+            .logo a {
+                font-size: 20px;
+            }
+
+            /* ============================================
+                 移动端侧滑导航抽屉
+                 ============================================ */
+
+            .mobile-sidebar {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 300px;
+                height: 100vh;
+                background: #16213e;
+                transition: left 0.3s ease;
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;
+                box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            }
+
+            .mobile-sidebar.active {
+                left: 0;
+            }
+
+            /* 顶部：品牌 + 关闭按钮 */
+            .mobile-sidebar-header {
+                padding: 20px;
+                background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+                border-bottom: 2px solid #ffd700;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .mobile-nav-logo {
+                .brand-name {
+                    color: #ffd700;
+                    font-size: 18px;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                }
+            }
+
+            .mobile-nav-close {
+                background: transparent;
+                border: none;
+                color: #ffd700;
+                font-size: 30px;
+                cursor: pointer;
+                padding: 0;
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: transform 0.3s;
+            }
+
+            .mobile-nav-close:hover {
+                transform: rotate(90deg);
+            }
+
+            /* 标签页区域 */
+            .section-items {
+                flex: 1;
+                overflow-y: auto;
+            }
+
+            .section-item-title {
+                padding: 15px 20px;
+                background: #0f3460;
+                border-bottom: 1px solid #16213e;
+                border-top: 1px solid #16213e;
+            }
+
+            .section-item-title:first-child {
+                border-top: none;
+            }
+
+            .nav-sections-item-switch {
+                color: #e0e0e0;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .nav-sections-item-switch::before {
+                content: '';
+                width: 20px;
+                height: 20px;
+                background: #ffd700;
+                border-radius: 50%;
+                display: inline-block;
+            }
+
+            .section-item-title.active .nav-sections-item-switch {
+                color: #ffd700;
+            }
+
+            .section-item-title.active .nav-sections-item-switch::before {
+                background: #fff;
+                box-shadow: 0 0 10px #ffd700;
+            }
+
+            .section-item-content {
+                display: none;
+                padding: 10px 0;
+                background: #1a1a2e;
+            }
+
+            .section-item-content.active {
+                display: block;
+            }
+
+            /* 导航菜单 */
+            .mobile-nav-menu {
+                list-style: none;
+                padding: 0;
+            }
+
+            .mobile-nav-menu li {
+                border-bottom: 1px solid #16213e;
+            }
+
+            .mobile-nav-menu li a {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 15px 20px;
+                color: #e0e0e0;
+                text-decoration: none;
+                font-size: 14px;
+                transition: all 0.3s;
+            }
+
+            .mobile-nav-menu li a:hover {
+                background: #0f3460;
+                color: #ffd700;
+                padding-left: 25px;
+            }
+
+            .mobile-nav-menu li a span.icon {
+                font-size: 18px;
+                width: 24px;
+                text-align: center;
+            }
+
+            /* 移动端用户信息 - 已登录 */
+            .mobile-account-info {
+                padding: 20px;
+            }
+
+            .account-header {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-bottom: 20px;
+                padding-bottom: 20px;
+                border-bottom: 1px solid #16213e;
+            }
+
+            .account-avatar {
+                width: 50px;
+                height: 50px;
+                background: linear-gradient(135deg, #ffd700 0%, #ff6b35 100%);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .account-avatar .avatar-text {
+                color: #16213e;
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            .account-name {
+                flex: 1;
+            }
+
+            .account-name .greeting {
+                display: block;
+                font-size: 12px;
+                color: #888;
+                margin-bottom: 5px;
+            }
+
+            .account-name .username {
+                display: block;
+                font-size: 16px;
+                font-weight: bold;
+                color: #ffd700;
+            }
+
+            .account-links {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .account-link {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 12px 15px;
+                color: #e0e0e0;
+                text-decoration: none;
+                border-radius: 8px;
+                transition: all 0.3s;
+            }
+
+            .account-link:hover {
+                background: #0f3460;
+                color: #ffd700;
+            }
+
+            .account-link .icon {
+                font-size: 18px;
+                width: 24px;
+                text-align: center;
+            }
+
+            .account-link.logout {
+                color: #ff6b35;
+            }
+
+            .account-link.logout:hover {
+                background: rgba(255, 107, 53, 0.1);
+                color: #ff6b35;
+            }
+
+            /* 移动端用户信息 - 未登录 */
+            .mobile-account-guest {
+                padding: 20px;
+            }
+
+            .guest-message {
+                text-align: center;
+                margin-bottom: 20px;
+                padding: 15px;
+                background: rgba(255, 215, 0, 0.1);
+                border: 1px solid #ffd700;
+                border-radius: 8px;
+            }
+
+            .guest-message p {
+                color: #ffd700;
+                font-size: 14px;
+            }
+
+            .guest-actions {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .guest-actions .action {
+                padding: 12px 20px;
+                border-radius: 8px;
+                text-align: center;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                transition: all 0.3s;
+            }
+
+            .guest-actions .action.primary {
+                background: linear-gradient(135deg, #ffd700 0%, #ff6b35 100%);
+                color: #16213e;
+            }
+
+            .guest-actions .action.primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            }
+
+            .guest-actions .action.secondary {
+                background: transparent;
+                border: 1px solid #ffd700;
+                color: #ffd700;
+            }
+
+            .guest-actions .action.secondary:hover {
+                background: rgba(255, 215, 0, 0.1);
+            }
+
+            /* 底部：搜索框 */
+            .mobile-sidebar-footer {
+                padding: 15px 20px;
+                background: #0f3460;
+                border-top: 1px solid #16213e;
+            }
+
+            .mobile-search .form.minisearch {
+                display: flex;
+                gap: 8px;
+            }
+
+            .mobile-search .input-text {
+                flex: 1;
+                padding: 10px 15px;
+                border: 1px solid #16213e;
+                background: #1a1a2e;
+                color: #e0e0e0;
+                border-radius: 8px;
+                font-size: 14px;
+            }
+
+            .mobile-search .input-text:focus {
+                border-color: #ffd700;
+                outline: none;
+            }
+
+            .mobile-search .input-text::placeholder {
+                color: #888;
+            }
+
+            .mobile-search .action.search {
+                padding: 10px 15px;
+                background: linear-gradient(135deg, #ffd700 0%, #ff6b35 100%);
+                color: #16213e;
+                border: none;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+
+            .mobile-search .action.search:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            }
+
+            /* 遮罩层 */
+            .nav-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+
+            .nav-overlay.active {
+                display: block;
+            }
+        }
+
+        /* ============================================
+             Demo Controls
+             ============================================ */
+
+        .demo-controls {
+            padding: 20px;
+            background: #0f3460;
+            margin-bottom: 20px;
+        }
+
+        .demo-controls h3 {
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .demo-controls p {
+            color: #e0e0e0;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .demo-controls button {
+            padding: 10px 20px;
+            margin-right: 10px;
+            background: #ffd700;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .demo-controls button:hover {
+            background: #ff6b35;
+            transform: translateY(-2px);
+        }
+
+        .demo-controls button.active {
+            background: #ff6b35;
+        }
+
+        .device-info {
+            padding: 10px 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid #ffd700;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #ffd700;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Controls -->
+    <div class="demo-controls">
+        <h3>🎮 Folix Game Theme - Header Demo</h3>
+        <p>选择登录状态和设备类型来查看不同的头部样式：</p>
+        <button id="btn-pc-guest" onclick="switchState('pc', 'guest')">PC - 未登录</button>
+        <button id="btn-pc-logged" onclick="switchState('pc', 'logged')">PC - 已登录</button>
+        <button id="btn-mobile-guest" onclick="switchState('mobile', 'guest')">移动端 - 未登录</button>
+        <button id="btn-mobile-logged" onclick="switchState('mobile', 'logged')">移动端 - 已登录</button>
+        <div class="device-info" id="device-info">当前显示：PC - 未登录</div>
+    </div>
+
+    <!-- ============================================
+         Header
+         ============================================ -->
+
+    <!-- Top Bar - 顶部栏 -->
+    <div class="header-panel">
+        <div class="header-panel-content">
+            <!-- 左侧链接 -->
+            <div class="header-links-left">
+                <a href="#">News</a>
+                <a href="#">Rewards</a>
+                <a href="#">Support</a>
+            </div>
+
+            <!-- 右侧链接 -->
+            <div class="header-links-right">
+                <a href="#" class="app-link">
+                    <span>📱</span> App
+                </a>
+                <div class="store-language">
+                    <select>
+                        <option>English</option>
+                        <option>中文</option>
+                    </select>
+                </div>
+
+                <!-- 登录/用户链接（PC 端） -->
+                <div class="header-links" id="pc-header-links-guest">
+                    <a href="#social-login-popup" class="social-login-btn">Sign In</a>
+                    <a href="#social-login-popup" class="social-login-btn">Create Account</a>
+                </div>
+
+                <div class="header-links" id="pc-header-links-logged" style="display: none;">
+                    <span class="greet welcome logged-in">Welcome, John!</span>
+                    <a href="/customer/account/logout">Sign Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Bar - 主导航栏 -->
+    <div class="header-wrapper">
+        <div class="header-content">
+            <!-- Logo -->
+            <div class="logo">
+                <a href="#">
+                    Folix<span>Game</span>
+                </a>
+            </div>
+
+            <!-- PC 端导航菜单 -->
+            <nav class="desktop-nav">
+                <ul>
+                    <li><a href="#">Top Up</a></li>
+                    <li><a href="#">New Games</a></li>
+                    <li><a href="#">Specials</a></li>
+                </ul>
+            </nav>
+
+            <!-- 搜索框（PC 端） -->
+            <div class="header-search">
+                <form class="form minisearch" action="/search" method="get">
+                    <input type="text" class="input-text" placeholder="Search games, products...">
+                    <button type="submit" class="action search">Search</button>
+                </form>
+            </div>
+
+            <!-- 汉堡菜单按钮（移动端） -->
+            <button type="button" class="nav-toggle" onclick="toggleMobileSidebar()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ============================================
+         Mobile Sidebar - 移动端侧滑导航抽屉
+         ============================================ -->
+
+    <!-- 遮罩层 -->
+    <div class="nav-overlay" id="nav-overlay" onclick="toggleMobileSidebar()"></div>
+
+    <!-- 侧滑抽屉 -->
+    <div class="mobile-sidebar" id="mobile-sidebar">
+        <!-- 顶部：品牌 + 关闭按钮 -->
+        <div class="mobile-sidebar-header">
+            <div class="mobile-nav-logo">
+                <span class="brand-name">FOLIX GAME</span>
+            </div>
+            <button type="button" class="mobile-nav-close" onclick="toggleMobileSidebar()">×</button>
+        </div>
+
+        <!-- 标签页区域 -->
+        <div class="section-items">
+            <!-- Menu tab -->
+            <div class="section-item-title active" onclick="switchTab('menu')">
+                <a class="nav-sections-item-switch" href="javascript:;">Menu</a>
+            </div>
+            <div class="section-item-content active" id="menu-content">
+                <ul class="mobile-nav-menu">
+                    <li>
+                        <a href="#">
+                            <span class="icon">🌟</span>
+                            <span>Top Up</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="icon">⚡</span>
+                            <span>New Games</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="icon">🎁</span>
+                            <span>Specials</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="icon">💳</span>
+                            <span>Recharge</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Account tab - 未登录 -->
+            <div class="section-item-title" onclick="switchTab('account-guest')" id="tab-account-guest">
+                <a class="nav-sections-item-switch" href="javascript:;">Account</a>
+            </div>
+            <div class="section-item-content" id="account-content-guest">
+                <div class="mobile-account-guest">
+                    <div class="guest-message">
+                        <p>Sign in to access your account</p>
+                    </div>
+                    <div class="guest-actions">
+                        <a href="#social-login-popup" class="action primary social-login-btn">Sign In</a>
+                        <a href="#social-login-popup" class="action secondary social-login-btn">Create an Account</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account tab - 已登录 -->
+            <div class="section-item-title" onclick="switchTab('account-logged')" id="tab-account-logged" style="display: none;">
+                <a class="nav-sections-item-switch" href="javascript:;">Account</a>
+            </div>
+            <div class="section-item-content" id="account-content-logged" style="display: none;">
+                <div class="mobile-account-info">
+                    <div class="account-header">
+                        <div class="account-avatar">
+                            <span class="avatar-text">JD</span>
+                        </div>
+                        <div class="account-name">
+                            <span class="greeting">Welcome,</span>
+                            <span class="username">John Doe</span>
+                        </div>
+                    </div>
+                    <div class="account-links">
+                        <a href="/customer/account" class="account-link">
+                            <span class="icon">👤</span>
+                            <span>My Account</span>
+                        </a>
+                        <a href="/sales/order/history" class="account-link">
+                            <span class="icon">📦</span>
+                            <span>My Orders</span>
+                        </a>
+                        <a href="/wishlist" class="account-link">
+                            <span class="icon">❤️</span>
+                            <span>Wishlist</span>
+                        </a>
+                        <a href="/customer/account/logout" class="account-link logout">
+                            <span class="icon">🚪</span>
+                            <span>Sign Out</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 底部：搜索框 -->
+        <div class="mobile-sidebar-footer">
+            <div class="mobile-search">
+                <form class="form minisearch" action="/search" method="get">
+                    <input type="text" class="input-text" placeholder="Search games...">
+                    <button type="submit" class="action search">🔍</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================
+         JavaScript
+         ============================================ -->
+
+    <script>
+        // 当前状态
+        let currentState = {
+            device: 'pc',
+            login: 'guest'
+        };
+
+        // 切换状态
+        function switchState(device, login) {
+            currentState = { device, login };
+
+            // 更新按钮状态
+            document.querySelectorAll('.demo-controls button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`btn-${device}-${login}`).classList.add('active');
+
+            // 更新设备信息
+            const deviceInfo = document.getElementById('device-info');
+            deviceInfo.textContent = `当前显示：${device === 'pc' ? 'PC' : '移动端'} - ${login === 'guest' ? '未登录' : '已登录'}`;
+
+            // 切换 PC 端登录状态
+            if (device === 'pc') {
+                document.getElementById('pc-header-links-guest').style.display = login === 'guest' ? 'flex' : 'none';
+                document.getElementById('pc-header-links-logged').style.display = login === 'logged' ? 'flex' : 'none';
+
+                // 移动端 tab 切换
+                document.getElementById('tab-account-guest').style.display = login === 'guest' ? 'block' : 'none';
+                document.getElementById('tab-account-logged').style.display = login === 'logged' ? 'block' : 'none';
+            }
+
+            // 移动端 tab 内容切换
+            if (login === 'guest') {
+                document.getElementById('account-content-guest').style.display = 'block';
+                document.getElementById('account-content-logged').style.display = 'none';
+            } else {
+                document.getElementById('account-content-guest').style.display = 'none';
+                document.getElementById('account-content-logged').style.display = 'block';
+            }
+
+            // 如果是移动端，打开侧滑抽屉
+            if (device === 'mobile') {
+                document.getElementById('mobile-sidebar').classList.add('active');
+                document.getElementById('nav-overlay').classList.add('active');
+            } else {
+                document.getElementById('mobile-sidebar').classList.remove('active');
+                document.getElementById('nav-overlay').classList.remove('active');
+            }
+        }
+
+        // 切换移动端 tab
+        function switchTab(tab) {
+            // 移除所有 active
+            document.querySelectorAll('.section-item-title').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.section-item-content').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // 添加 active
+            if (tab === 'menu') {
+                document.querySelector('.section-item-title').classList.add('active');
+                document.getElementById('menu-content').classList.add('active');
+            } else if (tab === 'account-guest') {
+                document.getElementById('tab-account-guest').classList.add('active');
+                document.getElementById('account-content-guest').classList.add('active');
+            } else if (tab === 'account-logged') {
+                document.getElementById('tab-account-logged').classList.add('active');
+                document.getElementById('account-content-logged').classList.add('active');
+            }
+        }
+
+        // 切换移动端侧滑抽屉
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('mobile-sidebar');
+            const overlay = document.getElementById('nav-overlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 默认状态：PC - 未登录
+            switchState('pc', 'guest');
+
+            // 监听窗口大小变化
+            window.addEventListener('resize', function() {
+                const width = window.innerWidth;
+                if (width > 768) {
+                    document.getElementById('mobile-sidebar').classList.remove('active');
+                    document.getElementById('nav-overlay').classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

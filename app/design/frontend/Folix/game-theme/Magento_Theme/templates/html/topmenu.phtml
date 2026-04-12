@@ -1,76 +1,50 @@
 <?php
 /**
- * Folix Game Theme - Top Menu
- *
- * 改造说明：
- * - 移动端优先设计
- * - 添加移动端侧边栏结构
- * - PC 端水平导航栏
- * - 简化 HTML 结构，便于 CSS 控制
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ * Top menu for store
  *
  * @var $block \Magento\Theme\Block\Html\Topmenu
  */
 
 $columnsLimit = $block->getColumnsLimit() ?: 0;
-$_menuHtml = $block->getHtml('level-top', 'submenu', $columnsLimit);
+$_menuHtml = $block->getHtml('level-top', 'submenu', $columnsLimit)
 ?>
 
 <!-- ============================================
-     汉堡菜单按钮（移动端）
+     PC 端导航（保持原生）
      ============================================ -->
-
-<button type="button" class="nav-toggle" aria-label="<?= $block->escapeHtmlAttr(__('Toggle Nav')) ?>">
-    <span><?= $block->escapeHtml(__('Toggle Nav')) ?></span>
-</button>
+<nav class="navigation" data-action="navigation">
+    <ul data-mage-init='{"menu":{"responsive":true, "expanded":true, "position":{"my":"left top","at":"left bottom"}}}'>
+        <?= /* @noEscape */ $_menuHtml?>
+        <?= $block->getChildHtml() ?>
+    </ul>
+</nav>
 
 <!-- ============================================
-     导航遮罩层（移动端）
+     移动端侧滑导航抽屉（新增）
      ============================================ -->
-
-<div class="nav-overlay"></div>
-
-<!-- ============================================
-     移动端侧边栏
-     ============================================ -->
-
 <div class="mobile-sidebar">
-    <!-- 侧边栏头部：Logo + 关闭按钮 -->
+    <!-- 顶部：品牌标识 + 关闭按钮 -->
     <div class="mobile-sidebar-header">
-        <a class="logo" href="<?= $block->escapeUrl($block->getBaseUrl()) ?>">
-            <?php if ($block->getLogoSrc()): ?>
-                <img src="<?= $block->escapeUrl($block->getLogoSrc()) ?>"
-                     alt="<?= $block->escapeHtmlAttr($block->getLogoAlt()) ?>"
-                     width="<?= $block->escapeHtmlAttr($block->getLogoWidth()) ?>"
-                     height="<?= $block->escapeHtmlAttr($block->getLogoHeight()) ?>">
-            <?php else: ?>
-                <?= $block->escapeHtml($block->getLogoAlt()) ?>
-            <?php endif; ?>
-        </a>
-        <button type="button" class="close-sidebar" aria-label="<?= $block->escapeHtmlAttr(__('Close')) ?>">
-            ×
-        </button>
+        <?= $block->getChildHtml('mobile.nav.header') ?>
     </div>
 
-    <!-- 侧边栏内容：导航菜单 -->
+    <!-- 中间：导航菜单 -->
     <div class="mobile-sidebar-content">
         <nav class="navigation" data-action="navigation">
             <ul data-mage-init='{"menu":{"responsive":false, "expanded":false}}'>
-                <?= /* @noEscape */ $_menuHtml ?>
-                <?= $block->getChildHtml() ?>
+                <?= /* @noEscape */ $_menuHtml?>
             </ul>
         </nav>
     </div>
-</div>
 
-<!-- ============================================
-     PC 端导航栏
-     ============================================ -->
-
-<div class="desktop-nav-wrapper">
-    <nav class="navigation" data-action="navigation">
-        <ul data-mage-init='{"menu":{"responsive":true, "expanded":true, "position":{"my":"left top","at":"left bottom"}}}'>
-            <?= /* @noEscape */ $_menuHtml ?>
-            <?= $block->getChildHtml() ?>
-        </ul>
-    </nav>
+    <!-- 底部：搜索 + 用户信息 -->
+    <div class="mobile-sidebar-footer">
+        <?= $block->getChildHtml('mobile.nav.search') ?>
+        <?= $block->getChildHtml('mobile.nav.footer') ?>
+    </div>
 </div>

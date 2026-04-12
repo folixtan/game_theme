@@ -94,12 +94,10 @@
     //  Header (已迁移到 _header.less 统一管理)
     //  _____________________________________________
 
-    //  Header 样式已移至 /css/source/_header.less
-    //  以下保留 logo 基础布局样式
+    // 引入 Header 样式
+    @import '_header.less';
 
-    .header.panel {
-        //  Panel 样式已移至 _header.less
-    }
+    // 以下保留 logo 基础布局样式（避免冲突）
     .logo {
         float: left;
         margin: 0 0 @indent__s @indent__xl;

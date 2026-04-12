@@ -1,0 +1,68 @@
+<?php
+/**
+ * Folix Game Theme - Top Bar Auth Section
+ *
+ * PC 端 Top Bar 右侧登录/用户信息区域
+ * - 未登录：显示登录和注册按钮
+ * - 已登录：显示用户头像和下拉菜单
+ *
+ * @var $block \Magento\Customer\Block\Account\Customer
+ */
+?>
+<?php
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$customerSession = $objectManager->get('Magento\Customer\Model\Session');
+$isLoggedIn = $customerSession->isLoggedIn();
+$customer = $objectManager->get('Magento\Customer\Model\Customer')->load($customerSession->getCustomerId());
+?>
+
+<div class="top-bar-auth">
+    <?php if ($isLoggedIn): ?>
+        <!-- 已登录：用户下拉菜单 -->
+        <div class="user-dropdown-wrapper">
+            <div class="user-dropdown-trigger" onclick="toggleUserDropdown()">
+                <div class="user-avatar">
+                    <?php
+                    $firstName = $customer->getFirstname();
+                    $lastName = $customer->getLastname();
+                    $initials = strtoupper(substr($firstName, 0, 1) . substr($lastName, 0, 1));
+                    echo $block->escapeHtml($initials);
+                    ?>
+                </div>
+                <span class="user-name">
+                    <?= $block->escapeHtml($customer->getName()) ?>
+                </span>
+                <span class="dropdown-arrow">▼</span>
+            </div>
+            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                <a href="<?= $block->escapeUrl($block->getUrl('customer/account')) ?>">
+                    <span class="menu-icon">👤</span>
+                    <span><?= $block->escapeHtml(__('个人中心')) ?></span>
+                </a>
+                <a href="<?= $block->escapeUrl($block->getUrl('sales/order/history')) ?>">
+                    <span class="menu-icon">📦</span>
+                    <span><?= $block->escapeHtml(__('我的订单')) ?></span>
+                </a>
+                <a href="<?= $block->escapeUrl($block->getUrl('wishlist')) ?>">
+                    <span class="menu-icon">❤️</span>
+                    <span><?= $block->escapeHtml(__('收藏夹')) ?></span>
+                </a>
+                <div class="menu-divider"></div>
+                <a href="<?= $block->escapeUrl($block->getUrl('customer/account/logout')) ?>" class="menu-logout">
+                    <span class="menu-icon">🚪</span>
+                    <span><?= $block->escapeHtml(__('退出登录')) ?></span>
+                </a>
+            </div>
+        </div>
+    <?php else: ?>
+        <!-- 未登录：登录和注册按钮 -->
+        <div class="auth-buttons">
+            <a href="#social-login-popup" class="btn-login social-login-btn">
+                <?= $block->escapeHtml(__('登录')) ?>
+            </a>
+            <a href="#social-login-popup" class="btn-register social-login-btn">
+                <?= $block->escapeHtml(__('注册')) ?>
+            </a>
+        </div>
+    <?php endif; ?>
+</div>

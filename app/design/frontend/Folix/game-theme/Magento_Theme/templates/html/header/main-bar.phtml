@@ -1,56 +1,34 @@
 <?php
 /**
- * Folix Game Theme - Header Main Bar
- * 
- * 主头部栏：
+ * Folix Game Theme - Header Main Bar (PC 端)
+ *
+ * PC 端主导航栏：
  * - Logo
  * - 导航菜单
  * - 搜索框
- * - 登录按钮
- * - 移动端菜单按钮
+ * - 购物车
  */
 ?>
 <div class="header-main-bar">
-    <div class="panel wrapper">
-        <div class="header-main-content">
-            
-            <!-- 左侧：Logo + Navigation -->
-            <div class="header-main-left">
-                <!-- Logo -->
-                <a href="<?= $block->escapeUrl($block->getBaseUrl()) ?>" class="logo" title="<?= $block->escapeHtmlAttr($block->getLogoAlt()) ?>">
-                    <?php if ($block->isHomePage()): ?>
-                        <strong><?= $block->getChildHtml('logo') ?></strong>
-                    <?php else: ?>
-                        <?= $block->getChildHtml('logo') ?>
-                    <?php endif; ?>
-                </a>
-                
-                <!-- Navigation -->
-                <nav class="navigation" data-action="navigation">
-                    <?= $block->getChildHtml('catalog.topnav') ?>
-                </nav>
-            </div>
-            
-            <!-- 右侧：Search + Login -->
-            <div class="header-main-right">
-                <!-- Search -->
-                <div class="header-search">
-                    <?= $block->getChildHtml('header_search') ?>
-                </div>
-                
-                <!-- Login Button -->
-                <div class="header-login">
-                    <?= $block->getChildHtml('login_button') ?>
-                </div>
-            </div>
-            
-            <!-- Mobile Menu Toggle -->
-            <button class="nav-toggle" data-action="toggle-nav" aria-label="<?= $block->escapeHtmlAttr(__('Toggle navigation')) ?>">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            
+    <div class="header-main-content">
+        <!-- Logo -->
+        <div class="header-logo">
+            <?= $block->getChildHtml('logo') ?>
+        </div>
+
+        <!-- 导航菜单 -->
+        <nav class="pc-navigation">
+            <?= $block->getChildHtml('pc-navigation') ?>
+        </nav>
+
+        <!-- 搜索框 -->
+        <div class="header-search">
+            <?= $block->getChildHtml('topSearch') ?>
+        </div>
+
+        <!-- 购物车 -->
+        <div class="header-minicart">
+            <?= $block->getChildHtml('minicart') ?>
         </div>
     </div>
 </div>

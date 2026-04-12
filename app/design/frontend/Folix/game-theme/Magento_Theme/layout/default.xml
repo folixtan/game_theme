@@ -2,122 +2,135 @@
 <!--
 /**
  * Folix Game Theme - Default Layout
- * 
- * 头部结构（严格按原型）：
- * 
- * Top Bar (header.panel) - 深蓝渐变背景，高度40px
- * ├── 左侧：新闻、奖励、支持链接
- * └── 右侧：APP下载、语言切换
- * 
- * Main Bar (header.content) - 白色背景，高度70px，底部橙色边框3px
- * ├── Logo
- * ├── 导航菜单
- * ├── 搜索框
- * └── 登录按钮
- * 
- * 注意：跑马灯不在header内，可能在page.top区域
+ *
+ * 基于 Magento 原生结构改造
+ *
+ * PC 端：
+ * - Top Bar (header.panel)：深蓝渐变背景，高度40px
+ *   ├── 左侧：新闻、奖励、支持
+ *   └── 右侧：APP、语言、登录/用户信息
+ * - Main Bar (header.content)：白色背景，高度70px，底部橙色边框3px
+ *   ├── Logo
+ *   ├── 导航菜单
+ *   ├── 搜索框
+ *   └── 购物车
+ *
+ * 移动端：
+ * - Header (mobile-header)：高度60px，底部橙色边框3px
+ *   ├── 左侧：汉堡菜单 ☰
+ *   └── 右侧：购物车 🛒
+ * - 侧边栏（navigation.sections）：
+ *   ├── 顶部：品牌 + 关闭按钮
+ *   ├── MENU 标签
+ *   ├── 菜单项
+ *   ├── Account 标签（登录/用户信息）
+ *   └── 搜索框
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <!-- =================================================================
-             TOP BAR - 顶部栏
+             HEADER PANEL - Top Bar
              深蓝渐变背景，高度40px
-             左侧：链接 | 右侧：APP + 语言切换
              ================================================================= -->
-        
-        <referenceContainer name="header.panel">
-            <!-- 左侧链接容器 -->
-            <container name="folix.top.left" label="Folix Top Left Links" htmlTag="div" htmlClass="header-links-left" before="-" />
-            
-            <!-- 中间容器（跑马灯或留空） -->
-            <container name="folix.top.center" label="Folix Top Center" htmlTag="div" htmlClass="header-links-center" after="folix.top.left" />
-            
-            <!-- 右侧容器 -->
-            <container name="folix.top.right" label="Folix Top Right" htmlTag="div" htmlClass="header-links-right" after="folix.top.center" />
-        </referenceContainer>
-        
+
         <!-- 移除不需要的原生元素 -->
-        <!-- 注意：不要移除 header.links，它在移动端会显示在 Account 标签页中 -->
         <referenceBlock name="skip_to_content" remove="true" />
         <referenceBlock name="catalog.compare.link" remove="true" />
         <referenceBlock name="currency" remove="true" />
-        
-        <!-- 移动语言切换到右侧容器 -->
-        <move element="store_language" destination="folix.top.right" />
-        
-        <!-- 左侧链接内容 -->
-        <referenceContainer name="folix.top.left">
-            <block class="Magento\Framework\View\Element\Template" name="folix.top.links" template="Magento_Theme::html/header/links-top-left.phtml" before="-" />
-        </referenceContainer>
-        
-        <!-- 右侧APP链接 -->
-        <referenceContainer name="folix.top.right">
-            <block class="Magento\Framework\View\Element\Template" name="folix.app.link" template="Magento_Theme::html/header/app-link.phtml" before="store_language" />
-        </referenceContainer>
-        
-        <!-- =================================================================
-             MAIN BAR - 主导航栏
-             Logo | 导航 | 搜索 | 登录按钮
+        <referenceBlock name="report.bugs" remove="true" />
+        <referenceBlock name="store_switcher" remove="true" />
 
-             统一导航方案：
-             1. 删除 navigation.sections（原生标签页导航）
-             2. 使用一套导航（catalog.topnav）
-             3. PC 端和移动端通过 CSS 控制显示方式
+        <!-- 隐藏原生的 header.links（我们用自定义的） -->
+        <referenceBlock name="header.links" remove="true" />
+
+        <!-- =================================================================
+             TOP BAR 内容
              ================================================================= -->
 
-        <!-- 删除原生标签页导航 -->
-        <referenceBlock name="navigation.sections" remove="true" />
+        <!-- 左侧链接 -->
+        <block class="Magento\Framework\View\Element\Template" name="folix.top.links" template="Magento_Theme::html/header/links-top-left.phtml" />
 
-        <!-- 移动搜索框到正确位置 -->
-        <move element="top.search" destination="header-wrapper" before="minicart" />
+        <!-- 右侧 APP 链接 -->
+        <block class="Magento\Framework\View\Element\Template" name="folix.app.link" template="Magento_Theme::html/header/app-link.phtml" />
 
-        <!-- 统一导航（PC 端水平导航 + 移动端侧边栏导航） -->
-        <referenceContainer name="page.top">
-            <block class="Magento\Theme\Block\Html\Topmenu"
-                   name="catalog.topnav"
-                   template="Magento_Theme::html/topmenu.phtml"
-                   ttl="3600"
-                   before="-">
-                <arguments>
-                    <argument name="css_class" xsi:type="string">folix-unified-nav</argument>
-                </arguments>
-                <!-- 移动端导航子块 -->
-                <block class="Magento\Framework\View\Element\Template" name="mobile.nav.header" template="Magento_Theme::html/header/mobile-nav-header.phtml" after="-" />
-                <block class="Magento\Framework\View\Element\Template" name="mobile.nav.search" template="Magento_Theme::html/header/mobile-nav-search.phtml" after="mobile.nav.header" />
-                <block class="Magento\Customer\Block\Account\Customer" name="mobile.nav.footer" template="Magento_Theme::html/header/mobile-nav-footer.phtml" after="mobile.nav.search" />
-            </block>
-        </referenceContainer>
+        <!-- 语言切换（原生，移到 header.panel） -->
+        <move element="store_language" destination="header.panel" after="folix.app.link" />
 
-        
-
-   
-        <!-- Body Class -->
-        <attribute name="body" value="folix-theme" />
+        <!-- 登录/用户信息 -->
+        <block class="Magento\Framework\View\Element\Template" name="folix.top.auth" template="Magento_Theme::html/header/top-bar-auth.phtml" />
 
         <!-- =================================================================
-             JAVASCRIPT - 移动端导航交互
+             MAIN BAR 内容
              ================================================================= -->
 
-        <referenceBlock name="requirejs">
-            <arguments>
-                <argument name="config" xsi:type="array">
-                    <item name="map" xsi:type="array">
-                        <item name="*" xsi:type="array">
-                            <item name="mobileNavigation" xsi:type="string">Folix/game-theme/js/mobile-navigation</item>
-                        </item>
-                    </item>
-                </argument>
-            </arguments>
-        </referenceBlock>
+        <!-- Logo（原生） -->
+        <move element="logo" destination="header.content" before="-" />
+
+        <!-- 导航菜单（原生） -->
+        <move element="catalog.topnav" destination="header.content" after="logo" />
+
+        <!-- 搜索框（原生） -->
+        <move element="top.search" destination="header.content" after="catalog.topnav" />
+
+        <!-- 购物车（原生） -->
+        <move element="minicart" destination="header.content" after="top.search" />
 
         <!-- =================================================================
-             MOBILE NAVIGATION OVERLAY - 导航遮罩层
+             MOBILE NAVIGATION SECTIONS
+             侧边栏（使用原生 navigation.sections）
              ================================================================= -->
 
         <referenceContainer name="after.body.start">
+            <block class="Magento\Framework\View\Element\Template"
+                   name="navigation.sections"
+                   template="Magento_Theme::html/sections.phtml"
+                   before="-">
+                <arguments>
+                    <argument name="group_name" xsi:type="string">navigation-sections</argument>
+                    <argument name="group_css" xsi:type="string">nav-sections mobile-sidebar</argument>
+                </arguments>
+
+                <!-- Menu 区块 -->
+                <block class="Magento\Framework\View\Element\Template"
+                       name="store.menu"
+                       group="navigation-sections"
+                       template="Magento_Theme::html/container.phtml">
+                    <arguments>
+                        <argument name="title" translate="true" xsi:type="string">Menu</argument>
+                    </arguments>
+                    <!-- Menu 内容：catalog.topnav -->
+                    <block class="Magento\Theme\Block\Html\Topmenu"
+                           name="catalog.topnav"
+                           template="Magento_Theme::html/topmenu.phtml"
+                           ttl="3600"
+                           before="-"/>
+                </block>
+
+                <!-- Account 区块 -->
+                <block class="Magento\Framework\View\Element\Template"
+                       name="store.links"
+                       group="navigation-sections"
+                       template="Magento_Theme::html/container.phtml">
+                    <arguments>
+                        <argument name="title" translate="true" xsi:type="string">Account</argument>
+                    </arguments>
+                    <!-- Account 内容：header.links -->
+                    <block class="Magento\Customer\Block\Account\Link" name="my-account-link"/>
+                    <block class="Magento\Customer\Block\Account\RegisterLink" name="register-link"/>
+                    <block class="Magento\Customer\Block\Account\AuthorizationLink" name="authorization-link"/>
+                </block>
+            </block>
+
+            <!-- 移动端导航遮罩层 -->
             <block class="Magento\Framework\View\Element\Template" name="mobile.nav.overlay" template="Magento_Theme::html/nav-overlay.phtml" />
         </referenceContainer>
+
+        <!-- =================================================================
+             BODY CLASS
+             ================================================================= -->
+
+        <attribute name="body" value="folix-theme" />
 
     </body>
 </page>

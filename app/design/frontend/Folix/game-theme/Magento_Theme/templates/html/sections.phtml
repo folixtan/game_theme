@@ -1,0 +1,63 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
+ *  Folix Game Theme - Mobile Navigation Sections
+ *
+ *  保留原生 PHP 逻辑，只改 HTML 结构
+ *  B 方案：移动端侧滑导航抽屉
+ */
+
+$group = $block->getGroupName();
+$groupCss = $block->getGroupCss();
+?>
+<?php if ($detailedInfoGroup = $block->getGroupChildNames($group)):?>
+    <!-- ============================================
+         移动端侧滑导航抽屉
+         ============================================ -->
+    <div class="sections <?= $block->escapeHtmlAttr($groupCss) ?> mobile-sidebar">
+        <?php $layout = $block->getLayout(); ?>
+
+        <!-- 顶部：品牌标识 + 关闭按钮 -->
+        <div class="mobile-sidebar-header">
+            <div class="mobile-nav-logo">
+                <span class="brand-name">FOLIX GAME</span>
+            </div>
+            <button type="button" class="mobile-nav-close" aria-label="<?= $block->escapeHtmlAttr(__('Close')) ?>" data-action="close-nav">
+                <span>×</span>
+            </button>
+        </div>
+
+        <!-- 标签页区域 -->
+        <div class="section-items <?= $block->escapeHtmlAttr($groupCss) ?>-items"
+             data-mage-init='{"tabs":{"openedState":"active"}}'>
+            <?php foreach ($detailedInfoGroup as $name):?>
+                <?php
+                    $html = $layout->renderElement($name);
+                if (!($html !== null && trim($html)) && ($block->getUseForce() != true)) {
+                    continue;
+                }
+                    $alias = $layout->getElementAlias($name);
+                    $label = $block->getChildData($alias, 'title');
+                ?>
+                <!-- 标签页标题 -->
+                <div class="section-item-title <?= $block->escapeHtmlAttr($groupCss) ?>-item-title"
+                     data-role="collapsible">
+                    <a class="<?= $block->escapeHtmlAttr($groupCss) ?>-item-switch"
+                       data-toggle="switch" href="#<?= $block->escapeHtmlAttr($alias) ?>">
+                        <?= /* @noEscape */ $label ?>
+                    </a>
+                </div>
+                <!-- 标签页内容 -->
+                <div class="section-item-content <?= $block->escapeHtmlAttr($groupCss) ?>-item-content"
+                     id="<?= $block->escapeHtmlAttr($alias) ?>"
+                     data-role="content">
+                    <?= /* @noEscape */ $html ?>
+                </div>
+            <?php endforeach;?>
+        </div>
+    </div>
+<?php endif; ?>

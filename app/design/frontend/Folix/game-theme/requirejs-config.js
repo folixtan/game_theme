@@ -41,6 +41,7 @@ var config = {
 
     // 页面加载时自动执行的模块
     deps: [
+        'Magento_Theme/js/header',
         'Magento_Theme/js/mobile-header',
         'Folix/game-theme/js/mobile-navigation'
     ]

@@ -19,8 +19,5 @@
 
         <!-- 更新 Account Navigation 模板 -->
         <referenceBlock name="customer_account_navigation" template="Magento_Customer::account/navigation.phtml"/>
-
-        <!-- 移动 header.links 到 folix.top.right -->
-        <move element="header.links" destination="folix.top.right" after="store_language" />
     </body>
 </page>

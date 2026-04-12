@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folix Game Theme - Header Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e;
+            color: #e0e0e0;
+        }
+
+        /* ============================================
+           Demo Controls
+           ============================================ */
+        .demo-controls {
+            padding: 20px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-bottom: 2px solid #4a90e2;
+            position: sticky;
+            top: 0;
+            z-index: 2000;
+        }
+
+        .demo-controls h2 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .demo-controls .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .demo-controls button {
+            padding: 10px 20px;
+            background: transparent;
+            border: 2px solid #4a90e2;
+            color: #4a90e2;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .demo-controls button:hover {
+            background: #4a90e2;
+            color: white;
+        }
+
+        .demo-controls button.active {
+            background: #4a90e2;
+            color: white;
+        }
+
+        .demo-controls button.active-pc {
+            border-color: #ff6b35;
+            background: #ff6b35;
+        }
+
+        .demo-controls button.active-mobile {
+            border-color: #ffd700;
+            background: #ffd700;
+            color: #1e293b;
+        }
+
+        .device-info {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background: rgba(74, 144, 226, 0.1);
+            border: 1px solid #4a90e2;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #4a90e2;
+        }
+
+        /* ============================================
+           Header Container
+           ============================================ */
+        .header-container {
+            max-width: 100%;
+        }
+
+        /* ============================================
+           PC 端样式
+           ============================================ */
+
+        /* Top Bar */
+        .header-panel {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            height: 40px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .panel.header {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        .header-links-left {
+            display: flex;
+            gap: 24px;
+        }
+
+        .header-links-left a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-links-left a:hover {
+            color: #ffd700;
+        }
+
+        .header-links-right {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .app-download-link {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .app-download-link:hover {
+            color: #ffd700;
+        }
+
+        .switcher-language {
+            position: relative;
+        }
+
+        .switcher-trigger {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #94a3b8;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .switcher-trigger:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Header Links (PC - Top Bar) */
+        .header-links {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .social-login-btn {
+            padding: 6px 16px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .authorization-link .social-login-btn {
+            background: #4a90e2;
+            color: white;
+            border: none;
+        }
+
+        .authorization-link .social-login-btn:hover {
+            background: #357abd;
+        }
+
+        .header-links li:not(.authorization-link) .social-login-btn {
+            background: transparent;
+            color: #94a3b8;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header-links li:not(.authorization-link) .social-login-btn:hover {
+            color: #ffd700;
+            border-color: #ffd700;
+        }
+
+        /* Main Bar */
+        .header-content {
+            background: #ffffff;
+            border-bottom: 3px solid #ff6b35;
+        }
+
+        .header-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        /* PC Logo */
+        .pc-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1e293b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .pc-logo span {
+            color: #ff6b35;
+        }
+
+        /* PC Navigation */
+        .pc-navigation {
+            display: flex;
+            gap: 30px;
+        }
+
+        .pc-navigation a {
+            color: #1e293b;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .pc-navigation a:hover {
+            background: #f1f5f9;
+            color: #ff6b35;
+        }
+
+        /* PC Search */
+        .pc-search {
+            display: flex;
+            gap: 8px;
+        }
+
+        .pc-search input {
+            padding: 8px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 200px;
+            transition: border-color 0.3s;
+        }
+
+        .pc-search input:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+
+        .pc-search button {
+            padding: 8px 16px;
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .pc-search button:hover {
+            background: #357abd;
+        }
+
+        /* PC Minicart */
+        .pc-minicart {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            color: #1e293b;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .pc-minicart:hover {
+            color: #ff6b35;
+        }
+
+        .pc-minicart .cart-icon {
+            font-size: 24px;
+        }
+
+        /* ============================================
+           PC User Dropdown
+           ============================================ */
+        .pc-user-dropdown {
+            position: relative;
+            display: none;
+        }
+
+        .user-dropdown-trigger {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .user-dropdown-trigger:hover {
+            background: #e2e8f0;
+        }
+
+        .user-dropdown-trigger .avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #ffd700 0%, #ff6b35 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e293b;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .user-dropdown-trigger .username {
+            color: #1e293b;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .user-dropdown-trigger .arrow {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .user-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            min-width: 200px;
+            padding: 8px 0;
+            display: none;
+            z-index: 1000;
+        }
+
+        .user-dropdown-menu.active {
+            display: block;
+        }
+
+        .user-dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            color: #475569;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .user-dropdown-menu a:hover {
+            background: #f1f5f9;
+            color: #4a90e2;
+        }
+
+        .user-dropdown-menu .divider {
+            height: 1px;
+            background: #e2e8f0;
+            margin: 8px 16px;
+        }
+
+        .user-dropdown-menu .logout {
+            color: #ef4444;
+        }
+
+        .user-dropdown-menu .logout:hover {
+            background: #fef2f2;
+            color: #ef4444;
+        }
+
+        /* ============================================
+           Mobile 端样式
+           ============================================ */
+
+        /* Mobile Header */
+        .mobile-header {
+            background: #ffffff;
+            height: 60px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            border-bottom: 3px solid #ff6b35;
+        }
+
+        .mobile-nav-toggle {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #1e293b;
+        }
+
+        .mobile-minicart {
+            font-size: 24px;
+            color: #1e293b;
+            cursor: pointer;
+        }
+
+        /* Mobile Sidebar */
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 300px;
+            height: 100vh;
+            background: #1e293b;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .mobile-sidebar.active {
+            left: 0;
+        }
+
+        /* Mobile Sidebar Header */
+        .mobile-sidebar-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-bottom: 2px solid #ffd700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-sidebar-header .brand-name {
+            color: #ffd700;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .mobile-sidebar-header .close-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            color: #ffd700;
+            font-size: 30px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .mobile-sidebar-header .close-btn:hover {
+            transform: rotate(90deg);
+        }
+
+        /* Mobile Menu Title Bar */
+        .mobile-menu-title {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .mobile-menu-title .indicator {
+            width: 20px;
+            height: 20px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .mobile-menu-title .title {
+            color: #ffd700;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* Mobile Menu Items */
+        .mobile-menu-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+
+        .mobile-menu-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .mobile-menu-item:hover {
+            background: #0f172a;
+            color: #ffd700;
+        }
+
+        .mobile-menu-item .icon {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .mobile-menu-item .text {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        /* Mobile Auth Section */
+        .mobile-auth-section {
+            padding: 20px;
+        }
+
+        .mobile-auth-guest .auth-btn {
+            display: block;
+            width: 100%;
+            padding: 14px 20px;
+            background: #1e293b;
+            border: 2px solid #ffd700;
+            border-radius: 8px;
+            color: #ffd700;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .mobile-auth-guest .auth-btn:hover {
+            background: #ffd700;
+            color: #1e293b;
+        }
+
+        /* Mobile Auth Logged In */
+        .mobile-auth-logged {
+            display: none;
+            padding: 20px;
+            background: #0f172a;
+            border-top: 1px solid #1e293b;
+        }
+
+        .mobile-user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .mobile-user-info .avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ffd700 0%, #ff6b35 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e293b;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .mobile-user-info .user-details {
+            flex: 1;
+        }
+
+        .mobile-user-info .greeting {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .mobile-user-info .username {
+            color: #ffd700;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .mobile-user-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mobile-user-links a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .mobile-user-links a:hover {
+            background: #1e293b;
+            color: #ffd700;
+        }
+
+        .mobile-user-links .logout {
+            color: #ef4444;
+        }
+
+        /* Mobile Search Footer */
+        .mobile-search-footer {
+            padding: 20px;
+            background: #0f172a;
+            border-top: 1px solid #1e293b;
+        }
+
+        .mobile-search-form {
+            display: flex;
+            gap: 8px;
+        }
+
+        .mobile-search-form input {
+            flex: 1;
+            padding: 12px 16px;
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .mobile-search-form input:focus {
+            outline: none;
+            border-color: #ffd700;
+        }
+
+        .mobile-search-form input::placeholder {
+            color: #64748b;
+        }
+
+        .mobile-search-form button {
+            padding: 12px 16px;
+            background: #ff6b35;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .mobile-search-form button:hover {
+            background: #ea580c;
+        }
+
+        /* Mobile Overlay */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+        }
+
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        /* ============================================
+           响应式控制
+           ============================================ */
+        .mode-pc .mobile-header {
+            display: none;
+        }
+
+        .mode-pc .mobile-sidebar {
+            display: none;
+        }
+
+        .mode-pc .pc-header {
+            display: block;
+        }
+
+        .mode-mobile .pc-header {
+            display: none;
+        }
+
+        .mode-mobile .mobile-header {
+            display: flex;
+        }
+
+        .mode-mobile .mobile-sidebar {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Demo Controls -->
+    <div class="demo-controls">
+        <h2>🎮 Folix Game Theme - Header Demo</h2>
+        <div class="btn-group">
+            <button class="active active-pc" onclick="switchMode('pc', 'guest')">PC - 未登录</button>
+            <button onclick="switchMode('pc', 'logged')">PC - 已登录</button>
+            <button onclick="switchMode('mobile', 'guest')">移动端 - 未登录</button>
+            <button onclick="switchMode('mobile', 'logged')">移动端 - 已登录</button>
+        </div>
+        <div class="device-info" id="device-info">当前显示：PC - 未登录</div>
+    </div>
+
+    <!-- Header Container -->
+    <div class="header-container mode-pc" id="header-container">
+
+        <!-- ============================================
+             PC Header
+             ============================================ -->
+        <div class="pc-header">
+            <!-- Top Bar -->
+            <div class="header-panel">
+                <div class="panel header">
+                    <!-- Left Links -->
+                    <div class="header-links-left">
+                        <a href="#">📰 新闻</a>
+                        <a href="#">⭐ 奖励</a>
+                        <a href="#">💬 支持</a>
+                    </div>
+
+                    <!-- Right Links -->
+                    <div class="header-links-right">
+                        <a href="#" class="app-download-link">📱 APP</a>
+                        <div class="switcher-language">
+                            <div class="switcher-trigger">🌐 中文 ▼</div>
+                        </div>
+
+                        <!-- PC - 未登录 -->
+                        <div class="header-links" id="pc-links-guest">
+                            <a href="#social-login-popup" class="social-login-btn">登录</a>
+                            <a href="#social-login-popup" class="social-login-btn">注册</a>
+                        </div>
+
+                        <!-- PC - 已登录（下拉菜单） -->
+                        <div class="pc-user-dropdown" id="pc-dropdown">
+                            <div class="user-dropdown-trigger" onclick="toggleUserDropdown()">
+                                <div class="avatar">JD</div>
+                                <span class="username">John Doe</span>
+                                <span class="arrow">▼</span>
+                            </div>
+                            <div class="user-dropdown-menu" id="user-dropdown-menu">
+                                <a href="/customer/account">
+                                    <span>👤</span>
+                                    <span>个人中心</span>
+                                </a>
+                                <a href="/sales/order/history">
+                                    <span>📦</span>
+                                    <span>我的订单</span>
+                                </a>
+                                <a href="/wishlist">
+                                    <span>❤️</span>
+                                    <span>收藏夹</span>
+                                </a>
+                                <div class="divider"></div>
+                                <a href="/customer/account/logout" class="logout">
+                                    <span>🚪</span>
+                                    <span>退出登录</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Bar -->
+            <div class="header-content">
+                <div class="header-main">
+                    <!-- Logo -->
+                    <div class="pc-logo">FOLIX <span>GAME</span></div>
+
+                    <!-- Navigation -->
+                    <nav class="pc-navigation">
+                        <a href="#">游戏充值</a>
+                        <a href="#">新游</a>
+                        <a href="#">特惠</a>
+                    </nav>
+
+                    <!-- Search -->
+                    <div class="pc-search">
+                        <input type="text" placeholder="搜索游戏...">
+                        <button>搜索</button>
+                    </div>
+
+                    <!-- Minicart -->
+                    <div class="pc-minicart">
+                        <span class="cart-icon">🛒</span>
+                        <span>购物车</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================
+             Mobile Header
+             ============================================ -->
+        <div class="mobile-header">
+            <!-- Left: Menu Toggle -->
+            <button class="mobile-nav-toggle" onclick="toggleMobileSidebar()">
+                ☰
+            </button>
+
+            <!-- Right: Minicart -->
+            <div class="mobile-minicart">
+                🛒
+            </div>
+        </div>
+
+        <!-- ============================================
+             Mobile Sidebar
+             ============================================ -->
+        <div class="mobile-sidebar" id="mobile-sidebar">
+            <!-- Header: Brand + Close -->
+            <div class="mobile-sidebar-header">
+                <span class="brand-name">FOLIX GAME</span>
+                <button class="close-btn" onclick="toggleMobileSidebar()">×</button>
+            </div>
+
+            <!-- Menu Title Bar -->
+            <div class="mobile-menu-title">
+                <div class="indicator"></div>
+                <span class="title">MENU</span>
+            </div>
+
+            <!-- Menu Items -->
+            <div class="mobile-menu-items">
+                <a href="#" class="mobile-menu-item">
+                    <span class="icon">🌟</span>
+                    <span class="text">Top Up</span>
+                </a>
+                <a href="#" class="mobile-menu-item">
+                    <span class="icon">⚡</span>
+                    <span class="text">New Games</span>
+                </a>
+                <a href="#" class="mobile-menu-item">
+                    <span class="icon">🎁</span>
+                    <span class="text">Specials</span>
+                </a>
+                <a href="#" class="mobile-menu-item">
+                    <span class="icon">💳</span>
+                    <span class="text">Recharge</span>
+                </a>
+            </div>
+
+            <!-- Auth Section - Guest -->
+            <div class="mobile-auth-section mobile-auth-guest" id="mobile-auth-guest">
+                <a href="#social-login-popup" class="auth-btn social-login-btn">
+                    Sign in to access your account
+                </a>
+            </div>
+
+            <!-- Auth Section - Logged In -->
+            <div class="mobile-auth-logged" id="mobile-auth-logged">
+                <div class="mobile-user-info">
+                    <div class="avatar">JD</div>
+                    <div class="user-details">
+                        <div class="greeting">Welcome,</div>
+                        <div class="username">John Doe</div>
+                    </div>
+                </div>
+                <div class="mobile-user-links">
+                    <a href="/customer/account">
+                        <span>👤</span>
+                        <span>个人中心</span>
+                    </a>
+                    <a href="/sales/order/history">
+                        <span>📦</span>
+                        <span>我的订单</span>
+                    </a>
+                    <a href="/wishlist">
+                        <span>❤️</span>
+                        <span>收藏夹</span>
+                    </a>
+                    <a href="/customer/account/logout" class="logout">
+                        <span>🚪</span>
+                        <span>退出登录</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Search Footer -->
+            <div class="mobile-search-footer">
+                <form class="mobile-search-form">
+                    <input type="text" placeholder="Search games...">
+                    <button type="submit">🔍</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Mobile Overlay -->
+        <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileSidebar()"></div>
+
+    </div>
+
+    <script>
+        // 当前状态
+        let currentMode = 'pc';
+        let currentLogin = 'guest';
+
+        // 切换模式
+        function switchMode(mode, login) {
+            currentMode = mode;
+            currentLogin = login;
+
+            // 更新按钮状态
+            document.querySelectorAll('.demo-controls button').forEach(btn => {
+                btn.classList.remove('active', 'active-pc', 'active-mobile');
+            });
+
+            const activeBtn = document.querySelector(`[onclick="switchMode('${mode}', '${login}')"]`);
+            activeBtn.classList.add('active');
+            if (mode === 'pc') {
+                activeBtn.classList.add('active-pc');
+            } else {
+                activeBtn.classList.add('active-mobile');
+            }
+
+            // 更新设备信息
+            const deviceInfo = document.getElementById('device-info');
+            deviceInfo.textContent = `当前显示：${mode === 'pc' ? 'PC' : '移动端'} - ${login === 'guest' ? '未登录' : '已登录'}`;
+
+            // 切换 PC/Mobile 模式
+            const container = document.getElementById('header-container');
+            container.className = `header-container mode-${mode}`;
+
+            // 切换登录状态
+            if (mode === 'pc') {
+                // PC 端
+                document.getElementById('pc-links-guest').style.display = login === 'guest' ? 'flex' : 'none';
+                document.getElementById('pc-dropdown').style.display = login === 'logged' ? 'block' : 'none';
+            } else {
+                // 移动端
+                document.getElementById('mobile-auth-guest').style.display = login === 'guest' ? 'block' : 'none';
+                document.getElementById('mobile-auth-logged').style.display = login === 'logged' ? 'block' : 'none';
+
+                // 自动打开侧边栏
+                setTimeout(() => {
+                    document.getElementById('mobile-sidebar').classList.add('active');
+                    document.getElementById('mobile-overlay').classList.add('active');
+                }, 100);
+            }
+
+            // 关闭所有下拉菜单
+            closeUserDropdown();
+        }
+
+        // 切换用户下拉菜单（PC 端）
+        function toggleUserDropdown() {
+            const menu = document.getElementById('user-dropdown-menu');
+            menu.classList.toggle('active');
+
+            // 点击外部关闭
+            if (menu.classList.contains('active')) {
+                document.addEventListener('click', closeDropdownOutside);
+            } else {
+                document.removeEventListener('click', closeDropdownOutside);
+            }
+        }
+
+        function closeDropdownOutside(e) {
+            const dropdown = document.getElementById('pc-dropdown');
+            if (!dropdown.contains(e.target)) {
+                closeUserDropdown();
+            }
+        }
+
+        function closeUserDropdown() {
+            const menu = document.getElementById('user-dropdown-menu');
+            menu.classList.remove('active');
+            document.removeEventListener('click', closeDropdownOutside);
+        }
+
+        // 切换移动端侧边栏
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('mobile-sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 默认：PC - 未登录
+            switchMode('pc', 'guest');
+        });
+    </script>
+
+</body>
+</html>
