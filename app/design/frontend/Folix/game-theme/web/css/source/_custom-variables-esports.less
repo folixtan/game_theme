@@ -75,6 +75,9 @@
 @folix-gradient-primary: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
 @folix-gradient-primary-hover: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
 
+//  Secondary Gradient（紫色系）
+@folix-gradient-secondary: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
+
 // ============================================================================
 //  BORDER COLORS - 边框色（电竞风透明）
 // ============================================================================
@@ -84,6 +87,7 @@
 @folix-border-dark: rgba(255, 255, 255, 0.2);
 @folix-border-gold: rgba(255, 215, 0, 0.3);
 @folix-border-red: rgba(255, 59, 48, 0.3);
+@folix-border-hover: rgba(255, 215, 0, 0.5);
 
 // ============================================================================
 //  BUTTON COLORS - 按钮色（电竞风渐变）
@@ -153,14 +157,21 @@
 // ============================================================================
 
 @folix-error: #FF3B30;
+@folix-error-bg: rgba(255, 59, 48, 0.1);
+@folix-error-border: rgba(255, 59, 48, 0.3);
 @folix-success: #059669;
+@folix-success-bg: rgba(5, 150, 105, 0.1);
+@folix-success-border: rgba(5, 150, 105, 0.3);
 @folix-warning: #F59E0B;
 @folix-info: #3B82F6;
+@folix-info-bg: rgba(59, 130, 246, 0.1);
+@folix-info-border: rgba(59, 130, 246, 0.3);
 
 // ============================================================================
 //  LAYOUT & SPACING - 布局与间距
 // ============================================================================
 
+@folix-radius: 6px;  // 默认圆角
 @folix-radius-sm: 4px;
 @folix-radius-md: 6px;
 @folix-radius-lg: 12px;
@@ -170,12 +181,15 @@
 //  SHADOWS - 阴影（电竞风）
 // ============================================================================
 
+@folix-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);  // 默认阴影
 @folix-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
 @folix-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.2);
 @folix-shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
 @folix-shadow-xl: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+@folix-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 12px 24px -8px rgba(0, 0, 0, 0.5);
 @folix-shadow-gold: 0 4px 12px rgba(255, 215, 0, 0.3);
 @folix-shadow-red: 0 4px 12px rgba(255, 59, 48, 0.3);
+@folix-shadow-secondary: 0 8px 16px -4px rgba(139, 92, 246, 0.4), 0 4px 8px -2px rgba(139, 92, 246, 0.3);
 
 // ============================================================================
 //  TRANSITIONS - 过渡动画
@@ -183,6 +197,7 @@
 
 @folix-transition: 0.3s ease;
 @folix-transition-fast: 0.2s ease;
+@folix-transition-slow: 0.5s ease;
 @folix-transition-smooth: 0.4s ease;
 
 // ============================================================================
