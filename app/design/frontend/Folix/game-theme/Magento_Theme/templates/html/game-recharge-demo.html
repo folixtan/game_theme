@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folix 游戏充值平台 - Demo</title>
+    <style>
+        /* ============================================
+           CSS Variables - Folix 游戏充值色系
+           按钮主色：紫色 + 橙色
+           ============================================ */
+        :root {
+            /* Primary - 紫色系 (主要按钮) */
+            --folix-primary: #6C5CE7;
+            --folix-primary-dark: #5A4FCF;
+            --folix-primary-light: #8B5CF6;
+            
+            /* Secondary - 橙色系 (次要按钮/价格) */
+            --folix-secondary: #FF6B35;
+            --folix-secondary-dark: #EA580C;
+            --folix-secondary-light: #FB923C;
+            
+            /* Accent - 蓝色系 */
+            --folix-accent: #4A90E2;
+            --folix-accent-dark: #357ABD;
+            
+            /* Text Colors */
+            --folix-text-primary: #1E293B;
+            --folix-text-secondary: #475569;
+            --folix-text-muted: #64748B;
+            --folix-text-light: #94A3B8;
+            --folix-text-on-dark: #F8FAFC;
+            --folix-text-on-dark-muted: #94A3B8;
+            
+            /* Background Colors */
+            --folix-bg-page: #F8FAFC;
+            --folix-bg-panel: #F1F5F9;
+            --folix-bg-card: #FFFFFF;
+            --folix-bg-hover: #E2E8F0;
+            --folix-bg-dark: #1E293B;
+            --folix-bg-dark-alt: #0F172A;
+            
+            /* Border Colors */
+            --folix-border: #E2E8F0;
+            --folix-border-dark: #CBD5E1;
+            
+            /* Status Colors */
+            --folix-success: #10B981;
+            --folix-warning: #F59E0B;
+            --folix-error: #EF4444;
+            
+            /* Gradients */
+            --folix-gradient-primary: linear-gradient(135deg, #6C5CE7 0%, #8B5CF6 100%);
+            --folix-gradient-secondary: linear-gradient(135deg, #FF6B35 0%, #EA580C 100%);
+            --folix-gradient-dark: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+            --folix-gradient-hero: linear-gradient(135deg, #6C5CE7 0%, #4A90E2 50%, #FF6B35 100%);
+            
+            /* Shadows */
+            --folix-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --folix-shadow-md: 0 4px 14px rgba(108, 92, 231, 0.12);
+            --folix-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --folix-shadow-primary: 0 4px 14px rgba(108, 92, 231, 0.25);
+            --folix-shadow-secondary: 0 4px 14px rgba(255, 107, 53, 0.25);
+            
+            /* Transitions */
+            --folix-transition-fast: 0.15s ease;
+            --folix-transition: 0.2s ease;
+            --folix-transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Border Radius */
+            --folix-radius: 6px;
+            --folix-radius-md: 8px;
+            --folix-radius-lg: 12px;
+            --folix-radius-xl: 16px;
+        }
+        
+        /* Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--folix-text-primary);
+            background-color: var(--folix-bg-page);
+        }
+        
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; }
+        
+        /* ============================================
+           PAGE WRAPPER
+           ============================================ */
+        .page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* ============================================
+           HEADER
+           ============================================ */
+        .page-header {
+            background: var(--folix-bg-card);
+            border-bottom: 3px solid var(--folix-secondary);
+            position: sticky;
+            top: 0;
+            z-index: 200;
+        }
+        
+        /* ============================================
+           TOP BAR - .panel.wrapper
+           多语言 + 货币切换 + 登录
+           ============================================ */
+        .panel.wrapper {
+            background: var(--folix-gradient-dark);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .panel.header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px 16px;
+            min-height: 40px;
+        }
+        
+        /* 左侧链接 */
+        .header-links-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .header-links-top {
+            display: flex;
+            gap: 16px;
+        }
+        
+        .header-links-top a {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--folix-text-on-dark-muted);
+            font-size: 12px;
+            transition: color var(--folix-transition-fast);
+        }
+        
+        .header-links-top a:hover {
+            color: var(--folix-secondary);
+        }
+        
+        /* 右侧：语言 + 货币 + 登录 */
+        .header-links-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        /* 语言切换器 - Magento 原生 .switcher */
+        .switcher {
+            position: relative;
+        }
+        
+        .switcher-label {
+            display: none;
+        }
+        
+        .switcher-trigger {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: var(--folix-radius);
+            cursor: pointer;
+            transition: all var(--folix-transition-fast);
+        }
+        
+        .switcher-trigger span {
+            color: var(--folix-text-on-dark-muted);
+            font-size: 12px;
+        }
+        
+        .switcher-trigger::after {
+            content: '▼';
+            font-size: 8px;
+            color: var(--folix-text-on-dark-muted);
+        }
+        
+        .switcher:hover .switcher-trigger {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .switcher-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            min-width: 120px;
+            background: var(--folix-bg-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--folix-radius);
+            padding: 8px 0;
+            margin-top: 4px;
+            display: none;
+            z-index: 100;
+        }
+        
+        .switcher:hover .switcher-dropdown {
+            display: block;
+        }
+        
+        .switcher-dropdown li a {
+            display: block;
+            padding: 8px 12px;
+            color: var(--folix-text-on-dark-muted);
+            font-size: 13px;
+            transition: all var(--folix-transition-fast);
+        }
+        
+        .switcher-dropdown li a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--folix-secondary);
+        }
+        
+        .switcher-dropdown li.active a {
+            color: var(--folix-secondary);
+        }
+        
+        /* 登录链接 */
+        .header.links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .authorization-link a {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 14px;
+            background: var(--folix-gradient-primary);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: var(--folix-radius);
+            transition: all var(--folix-transition-fast);
+        }
+        
+        .authorization-link a:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--folix-shadow-primary);
+        }
+        
+        .header.links li:not(.authorization-link) a {
+            padding: 5px 10px;
+            color: var(--folix-text-on-dark-muted);
+            font-size: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--folix-radius);
+            transition: all var(--folix-transition-fast);
+        }
+        
+        .header.links li:not(.authorization-link) a:hover {
+            color: var(--folix-secondary);
+            border-color: var(--folix-secondary);
+        }
+        
+        /* ============================================
+           MAIN BAR - .header.content
+           左：Logo | 中：导航 + 搜索 | 右：购物车
+           ============================================ */
+        .header.content {
+            display: flex;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 12px 16px;
+            gap: 16px;
+        }
+        
+        /* 移动端菜单按钮 */
+        .nav-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--folix-text-primary);
+            border-radius: var(--folix-radius);
+            transition: all var(--folix-transition-fast);
+            order: 1;
+        }
+        
+        .nav-toggle:hover {
+            background: var(--folix-bg-hover);
+            color: var(--folix-secondary);
+        }
+        
+        /* Logo */
+        .logo {
+            flex-shrink: 0;
+            order: 2;
+        }
+        
+        .logo img {
+            height: 36px;
+        }
+        
+        /* 导航容器 */
+        .folix-nav-wrapper {
+            display: none;
+            flex: 1;
+            order: 3;
+        }
+        
+        .navigation {
+            display: flex;
+        }
+        
+        .navigation ul {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+        
+        .navigation .level0 {
+            position: relative;
+        }
+        
+        .navigation .level0 > a {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--folix-text-primary);
+            border-radius: var(--folix-radius);
+            transition: all var(--folix-transition-fast);
+            white-space: nowrap;
+        }
+        
+        .navigation .level0 > a:hover {
+            color: white;
+            background: var(--folix-gradient-secondary);
+        }
+        
+        .navigation .level0.active > a {
+            color: var(--folix-secondary);
+        }
+        
+        /* 下拉菜单 */
+        .navigation .submenu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 180px;
+            background: white;
+            border: 1px solid var(--folix-border);
+            border-radius: var(--folix-radius-md);
+            box-shadow: var(--folix-shadow-lg);
+            padding: 8px 0;
+            margin-top: 4px;
+            display: none;
+            z-index: 100;
+        }
+        
+        .navigation .level0:hover > .submenu {
+            display: block;
+        }
+        
+        .navigation .submenu a {
+            display: block;
+            padding: 8px 16px;
+            font-size: 13px;
+            color: var(--folix-text-secondary);
+            transition: all var(--folix-transition-fast);
+        }
+        
+        .navigation .submenu a:hover {
+            background: var(--folix-bg-selected);
+            color: var(--folix-primary);
+        }
+        
+        /* 搜索框 */
+        .block-search {
+            display: none;
+            flex-shrink: 0;
+            width: 280px;
+            order: 4;
+        }
+        
+        .minisearch {
+            display: flex;
+            width: 100%;
+        }
+        
+        .minisearch .control {
+            flex: 1;
+        }
+        
+        .minisearch input {
+            width: 100%;
+            height: 38px;
+            padding: 0 12px;
+            border: 2px solid var(--folix-border);
+            border-right: none;
+            border-radius: var(--folix-radius-md) 0 0 var(--folix-radius-md);
+            font-size: 14px;
+            background: white;
+        }
+        
+        .minisearch input:focus {
+            outline: none;
+            border-color: var(--folix-primary);
+        }
+        
+        .minisearch input::placeholder {
+            color: var(--folix-text-light);
+        }
+        
+        .minisearch .action.search {
+            height: 38px;
+            padding: 0 16px;
+            background: var(--folix-gradient-secondary);
+            border: none;
+            border-radius: 0 var(--folix-radius-md) var(--folix-radius-md) 0;
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all var(--folix-transition-fast);
+        }
+        
+        .minisearch .action.search:hover {
+            filter: brightness(1.1);
+        }
+        
+        /* 购物车 */
+        .minicart-wrapper {
+            position: relative;
+            order: 5;
+            margin-left: auto;
+        }
+        
+        .action.showcart {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border: 2px solid var(--folix-border);
+            border-radius: var(--folix-radius);
+            color: var(--folix-text-primary);
+            font-weight: 600;
+            font-size: 13px;
+            transition: all var(--folix-transition-fast);
+        }
+        
+        .action.showcart:hover {
+            border-color: var(--folix-secondary);
+            color: var(--folix-secondary);
+        }
+        
+        .action.showcart .text {
+            display: none;
+        }
+        
+        .counter.qty {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            min-width: 18px;
+            height: 18px;
+            background: var(--folix-secondary);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+        }
+        
+        .counter.qty.empty {
+            display: none;
+        }
+        
+        /* ============================================
+           MOBILE NAVIGATION
+           ============================================ */
+        .mobile-nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--folix-bg-dark);
+            transform: translateX(-100%);
+            transition: transform var(--folix-transition-smooth);
+            z-index: 300;
+            overflow-y: auto;
+        }
+        
+        .mobile-nav-container.active {
+            transform: translateX(0);
+        }
+        
+        .mobile-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .mobile-nav-logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .mobile-nav-close {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: var(--folix-radius);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .mobile-nav-container .navigation {
+            padding: 16px;
+        }
+        
+        .mobile-nav-container .navigation ul {
+            flex-direction: column;
+            gap: 0;
+        }
+        
+        .mobile-nav-container .navigation .level0 > a {
+            padding: 12px 16px;
+            color: var(--folix-text-on-dark-muted);
+            border-radius: var(--folix-radius);
+        }
+        
+        .mobile-nav-container .navigation .level0 > a:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 遮罩层 */
+        .nav-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--folix-transition-smooth);
+            z-index: 250;
+        }
+        
+        .nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+        .page-main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px;
+            width: 100%;
+        }
+        
+        /* Messages */
+        .message {
+            padding: 12px 16px;
+            border-radius: var(--folix-radius);
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+        
+        .message.success {
+            background: #D1FAE5;
+            color: #065F46;
+            border-left: 4px solid var(--folix-success);
+        }
+        
+        .message.error {
+            background: #FEE2E2;
+            color: #991B1B;
+            border-left: 4px solid var(--folix-error);
+        }
+        
+        .message.info {
+            background: #DBEAFE;
+            color: #1E40AF;
+            border-left: 4px solid var(--folix-accent);
+        }
+        
+        /* ============================================
+           HERO BANNER
+           ============================================ */
+        .hero-banner {
+            background: var(--folix-gradient-hero);
+            border-radius: var(--folix-radius-lg);
+            padding: 32px 20px;
+            margin-bottom: 24px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        
+        .hero-banner h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .hero-banner p {
+            font-size: 14px;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        /* ============================================
+           BLOCK
+           ============================================ */
+        .block {
+            margin-bottom: 24px;
+        }
+        
+        .block-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--folix-primary);
+        }
+        
+        .block-title strong {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--folix-text-primary);
+        }
+        
+        .block-title a {
+            font-size: 13px;
+            color: var(--folix-primary);
+            font-weight: 600;
+        }
+        
+        /* ============================================
+           CATEGORY GRID
+           ============================================ */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .category-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 16px;
+            background: var(--folix-bg-card);
+            border: 2px solid var(--folix-border);
+            border-radius: var(--folix-radius-lg);
+            text-align: center;
+            transition: all var(--folix-transition-smooth);
+        }
+        
+        .category-card:hover {
+            border-color: var(--folix-primary);
+            box-shadow: var(--folix-shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .category-card .icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .category-card .name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--folix-text-primary);
+        }
+        
+        .category-card .count {
+            font-size: 12px;
+            color: var(--folix-text-muted);
+            margin-top: 4px;
+        }
+        
+        /* ============================================
+           PROMO BANNER
+           ============================================ */
+        .promo-banner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 16px;
+            background: var(--folix-gradient-secondary);
+            border-radius: var(--folix-radius-lg);
+            margin-bottom: 24px;
+            text-align: center;
+            color: white;
+        }
+        
+        .promo-banner h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .promo-banner p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 12px;
+        }
+        
+        .promo-banner .btn {
+            padding: 10px 24px;
+            background: white;
+            color: var(--folix-secondary);
+            font-weight: 700;
+            border-radius: var(--folix-radius);
+            transition: all var(--folix-transition-fast);
+        }
+        
+        .promo-banner .btn:hover {
+            transform: scale(1.05);
+        }
+        
+        /* ============================================
+           PRODUCT ITEMS
+           ============================================ */
+        .product-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .product-item {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .product-item-info {
+            display: flex;
+            flex-direction: column;
+            background: var(--folix-bg-card);
+            border: 2px solid var(--folix-border);
+            border-radius: var(--folix-radius-lg);
+            overflow: hidden;
+            transition: all var(--folix-transition-smooth);
+            height: 100%;
+        }
+        
+        .product-item-info:hover {
+            border-color: var(--folix-primary);
+            box-shadow: var(--folix-shadow-lg);
+            transform: translateY(-4px);
+        }
+        
+        .product-item-photo {
+            display: block;
+            position: relative;
+            padding-top: 100%;
+            background: linear-gradient(135deg, var(--folix-bg-panel) 0%, var(--folix-bg-hover) 100%);
+            overflow: hidden;
+        }
+        
+        .product-item-photo img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-item-photo .game-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+        }
+        
+        .product-item-photo .badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: var(--folix-radius);
+            color: white;
+            text-transform: uppercase;
+        }
+        
+        .badge-hot {
+            background: var(--folix-gradient-secondary);
+        }
+        
+        .badge-new {
+            background: var(--folix-gradient-primary);
+        }
+        
+        .badge-sale {
+            background: linear-gradient(135deg, var(--folix-success) 0%, #059669 100%);
+        }
+        
+        .product-item-details {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        
+        .product-item-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--folix-text-primary);
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+        
+        .product-item-name a {
+            color: inherit;
+            transition: color var(--folix-transition-fast);
+        }
+        
+        .product-item-name a:hover {
+            color: var(--folix-primary);
+        }
+        
+        .product-item-description {
+            font-size: 12px;
+            color: var(--folix-text-muted);
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .price-box {
+            margin-bottom: 8px;
+        }
+        
+        .price-box .price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--folix-secondary);
+        }
+        
+        .price-box .old-price .price {
+            font-size: 14px;
+            color: var(--folix-text-muted);
+            text-decoration: line-through;
+            margin-right: 6px;
+        }
+        
+        .price-box .special-price .price {
+            color: var(--folix-secondary);
+        }
+        
+        .product-item-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .actions-primary {
+            flex: 1;
+        }
+        
+        .action.tocart,
+        .action.primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 10px 16px;
+            background: var(--folix-gradient-primary);
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--folix-radius);
+            cursor: pointer;
+            transition: all var(--folix-transition-fast);
+        }
+        
+        .action.tocart:hover,
+        .action.primary:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--folix-shadow-primary);
+        }
+        
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .page-footer {
+            background: var(--folix-gradient-dark);
+            color: var(--folix-text-on-dark-muted);
+            margin-top: auto;
+        }
+        
+        .footer.content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 16px;
+        }
+        
+        .footer-blocks {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .footer-block h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--folix-text-on-dark);
+            margin-bottom: 12px;
+        }
+        
+        .footer.links {
+            list-style: none;
+        }
+        
+        .footer.links li {
+            margin-bottom: 8px;
+        }
+        
+        .footer.links a {
+            font-size: 13px;
+            color: var(--folix-text-on-dark-muted);
+            transition: color var(--folix-transition-fast);
+        }
+        
+        .footer.links a:hover {
+            color: var(--folix-secondary);
+        }
+        
+        .block.newsletter {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--folix-radius-lg);
+            padding: 20px;
+        }
+        
+        .block.newsletter .title strong {
+            font-size: 14px;
+            color: var(--folix-text-on-dark);
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .block.newsletter .content {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .block.newsletter input {
+            flex: 1;
+            height: 40px;
+            padding: 0 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--folix-radius);
+            background: transparent;
+            color: white;
+            font-size: 14px;
+        }
+        
+        .block.newsletter input::placeholder {
+            color: var(--folix-text-on-dark-muted);
+        }
+        
+        .block.newsletter .action.subscribe {
+            height: 40px;
+            padding: 0 16px;
+            background: var(--folix-gradient-primary);
+            border: none;
+            border-radius: var(--folix-radius);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 12px;
+        }
+        
+        /* ============================================
+           DESKTOP (>= 768px)
+           ============================================ */
+        @media (min-width: 768px) {
+            /* Header */
+            .nav-toggle {
+                display: none;
+            }
+            
+            .logo img {
+                height: 42px;
+            }
+            
+            .folix-nav-wrapper {
+                display: flex;
+            }
+            
+            .block-search {
+                display: block;
+            }
+            
+            .minicart-wrapper {
+                margin-left: 0;
+            }
+            
+            .action.showcart .text {
+                display: inline;
+            }
+            
+            /* Hero */
+            .hero-banner {
+                padding: 48px 32px;
+            }
+            
+            .hero-banner h1 {
+                font-size: 32px;
+            }
+            
+            .hero-banner p {
+                font-size: 16px;
+            }
+            
+            /* Products Grid */
+            .product-items {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+            }
+            
+            /* Category Grid */
+            .category-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+            }
+            
+            /* Promo Banner */
+            .promo-banner {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+                padding: 32px;
+            }
+            
+            .promo-banner p {
+                margin-bottom: 0;
+            }
+            
+            /* Footer */
+            .footer-blocks {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        /* ============================================
+           LARGE DESKTOP (>= 1024px)
+           ============================================ */
+        @media (min-width: 1024px) {
+            .product-items {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .product-item-details {
+                padding: 16px;
+            }
+            
+            .product-item-name {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- ============================================
+             HEADER
+             ============================================ -->
+        <header class="page-header">
+            <!-- Top Bar: 语言 + 货币 + 登录 -->
+            <div class="panel wrapper">
+                <div class="panel header">
+                    <div class="header-links-left">
+                        <ul class="header-links-top">
+                            <li><a href="#">📰 新闻</a></li>
+                            <li><a href="#">⭐ 奖励</a></li>
+                            <li><a href="#">💬 客服</a></li>
+                        </ul>
+                    </div>
+                    <div class="header-links-right">
+                        <!-- 语言切换 -->
+                        <div class="switcher language" id="switcher-language">
+                            <span class="switcher-label">Language</span>
+                            <div class="switcher-trigger">
+                                <span>中文</span>
+                            </div>
+                            <ul class="switcher-dropdown">
+                                <li class="active"><a href="#">中文</a></li>
+                                <li><a href="#">English</a></li>
+                                <li><a href="#">日本語</a></li>
+                            </ul>
+                        </div>
+                        
+                        <!-- 货币切换 -->
+                        <div class="switcher currency" id="switcher-currency">
+                            <span class="switcher-label">Currency</span>
+                            <div class="switcher-trigger">
+                                <span>CNY ¥</span>
+                            </div>
+                            <ul class="switcher-dropdown">
+                                <li class="active"><a href="#">CNY ¥</a></li>
+                                <li><a href="#">USD $</a></li>
+                                <li><a href="#">EUR €</a></li>
+                            </ul>
+                        </div>
+                        
+                        <!-- 登录链接 -->
+                        <ul class="header links">
+                            <li class="authorization-link">
+                                <a href="#">登录</a>
+                            </li>
+                            <li>
+                                <a href="#">注册</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Bar: Logo | 导航 + 搜索 | 购物车 -->
+            <div class="header content">
+                <!-- 移动端菜单按钮 -->
+                <button class="nav-toggle" id="nav-toggle">☰</button>
+                
+                <!-- Logo -->
+                <a class="logo" href="#">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 36'%3E%3Ctext x='0' y='28' font-size='28' font-weight='bold' fill='%236C5CE7'%3EFOLIX%3C/text%3E%3C/svg%3E" alt="Folix" width="120">
+                </a>
+                
+                <!-- 导航 -->
+                <div class="folix-nav-wrapper">
+                    <nav class="navigation">
+                        <ul>
+                            <li class="level0 active"><a href="#">热门游戏</a></li>
+                            <li class="level0">
+                                <a href="#">新品上架</a>
+                            </li>
+                            <li class="level0">
+                                <a href="#">特惠专区</a>
+                            </li>
+                            <li class="level0"><a href="#">点卡充值</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                
+                <!-- 搜索框 -->
+                <div class="block block-search">
+                    <form class="form minisearch">
+                        <div class="control">
+                            <input type="text" placeholder="搜索游戏..." aria-label="搜索">
+                        </div>
+                        <button class="action search" type="submit">搜索</button>
+                    </form>
+                </div>
+                
+                <!-- 购物车 -->
+                <div class="minicart-wrapper">
+                    <a class="action showcart" href="#">
+                        <span>🛒</span>
+                        <span class="text">购物车</span>
+                    </a>
+                    <span class="counter qty">3</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- 移动端导航 -->
+        <div class="nav-overlay" id="nav-overlay"></div>
+        <div class="mobile-nav-container" id="mobile-nav">
+            <div class="mobile-nav-header">
+                <span class="mobile-nav-logo">🎮 FOLIX</span>
+                <button class="mobile-nav-close" id="nav-close">×</button>
+            </div>
+            <nav class="navigation">
+                <ul>
+                    <li class="level0 active"><a href="#">热门游戏</a></li>
+                    <li class="level0"><a href="#">新品上架</a></li>
+                    <li class="level0"><a href="#">特惠专区</a></li>
+                    <li class="level0"><a href="#">点卡充值</a></li>
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- ============================================
+             MAIN CONTENT
+             ============================================ -->
+        <main class="page-main">
+            <!-- Hero Banner -->
+            <div class="hero-banner">
+                <h1>🎮 游戏充值中心</h1>
+                <p>安全快捷 · 即时到账 · 超值优惠</p>
+            </div>
+            
+            <!-- Category Grid -->
+            <div class="category-grid">
+                <a href="#" class="category-card">
+                    <span class="icon">🎯</span>
+                    <span class="name">热门游戏</span>
+                    <span class="count">128款</span>
+                </a>
+                <a href="#" class="category-card">
+                    <span class="icon">🆕</span>
+                    <span class="name">新品上架</span>
+                    <span class="count">24款</span>
+                </a>
+                <a href="#" class="category-card">
+                    <span class="icon">💰</span>
+                    <span class="name">特惠专区</span>
+                    <span class="count">56款</span>
+                </a>
+                <a href="#" class="category-card">
+                    <span class="icon">💳</span>
+                    <span class="name">点卡充值</span>
+                    <span class="count">89款</span>
+                </a>
+            </div>
+            
+            <!-- Promo Banner -->
+            <div class="promo-banner">
+                <div>
+                    <h3>🔥 限时特惠</h3>
+                    <p>全场游戏充值满100减10，满200减25！</p>
+                </div>
+                <a href="#" class="btn">立即抢购</a>
+            </div>
+            
+            <!-- Products Block -->
+            <div class="block">
+                <div class="block-title">
+                    <strong>热门游戏</strong>
+                    <a href="#">查看全部 →</a>
+                </div>
+                
+                <ol class="product-items">
+                    <li class="product-item">
+                        <div class="product-item-info">
+                            <a href="#" class="product-item-photo">
+                                <span class="game-icon">🎮</span>
+                                <span class="badge badge-hot">HOT</span>
+                            </a>
+                            <div class="product-item-details">
+                                <strong class="product-item-name">
+                                    <a href="#">原神 创世结晶</a>
+                                </strong>
+                                <p class="product-item-description">米哈游官方充值，安全可靠</p>
+                                <div class="price-box">
+                                    <span class="price">¥68.00</span>
+                                </div>
+                                <div class="product-item-actions">
+                                    <div class="actions-primary">
+                                        <button class="action tocart">立即购买</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="product-item">
+                        <div class="product-item-info">
+                            <a href="#" class="product-item-photo">
+                                <span class="game-icon">⚔️</span>
+                                <span class="badge badge-new">NEW</span>
+                            </a>
+                            <div class="product-item-details">
+                                <strong class="product-item-name">
+                                    <a href="#">王者荣耀 点券</a>
+                                </strong>
+                                <p class="product-item-description">腾讯官方充值通道</p>
+                                <div class="price-box">
+                                    <span class="old-price"><span class="price">¥100</span></span>
+                                    <span class="special-price"><span class="price">¥95</span></span>
+                                </div>
+                                <div class="product-item-actions">
+                                    <div class="actions-primary">
+                                        <button class="action tocart">立即购买</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="product-item">
+                        <div class="product-item-info">
+                            <a href="#" class="product-item-photo">
+                                <span class="game-icon">🚀</span>
+                                <span class="badge badge-sale">-15%</span>
+                            </a>
+                            <div class="product-item-details">
+                                <strong class="product-item-name">
+                                    <a href="#">和平精英 UC</a>
+                                </strong>
+                                <p class="product-item-description">绝地求生官方充值</p>
+                                <div class="price-box">
+                                    <span class="price">¥50.00</span>
+                                </div>
+                                <div class="product-item-actions">
+                                    <div class="actions-primary">
+                                        <button class="action tocart">立即购买</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="product-item">
+                        <div class="product-item-info">
+                            <a href="#" class="product-item-photo">
+                                <span class="game-icon">🎲</span>
+                            </a>
+                            <div class="product-item-details">
+                                <strong class="product-item-name">
+                                    <a href="#">Steam 钱包充值</a>
+                                </strong>
+                                <p class="product-item-description">全球游戏平台通用</p>
+                                <div class="price-box">
+                                    <span class="price">¥100.00</span>
+                                </div>
+                                <div class="product-item-actions">
+                                    <div class="actions-primary">
+                                        <button class="action tocart">立即购买</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="product-item">
+                        <div class="product-item-info">
+                            <a href="#" class="product-item-photo">
+                                <span class="game-icon">🎪</span>
+                                <span class="badge badge-hot">HOT</span>
+                            </a>
+                            <div class="product-item-details">
+                                <strong class="product-item-name">
+                                    <a href="#">崩坏：星穹铁道</a>
+                                </strong>
+                                <p class="product-item-description">星琼充值，官方直充</p>
+                                <div class="price-box">
+                                    <span class="price">¥30.00</span>
+                                </div>
+                                <div class="product-item-actions">
+                                    <div class="actions-primary">
+                                        <button class="action tocart">立即购买</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    <li class="product-item">
+                        <div class="product-item-info">
+                            <a href="#" class="product-item-photo">
+                                <span class="game-icon">🏆</span>
+                            </a>
+                            <div class="product-item-details">
+                                <strong class="product-item-name">
+                                    <a href="#">英雄联盟 点券</a>
+                                </strong>
+                                <p class="product-item-description">LOL官方充值通道</p>
+                                <div class="price-box">
+                                    <span class="price">¥50.00</span>
+                                </div>
+                                <div class="product-item-actions">
+                                    <div class="actions-primary">
+                                        <button class="action tocart">立即购买</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </main>
+        
+        <!-- ============================================
+             FOOTER
+             ============================================ -->
+        <footer class="page-footer">
+            <div class="footer content">
+                <div class="footer-blocks">
+                    <div class="footer-block">
+                        <h4>关于我们</h4>
+                        <ul class="footer links">
+                            <li><a href="#">公司介绍</a></li>
+                            <li><a href="#">联系我们</a></li>
+                            <li><a href="#">加入我们</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-block">
+                        <h4>帮助中心</h4>
+                        <ul class="footer links">
+                            <li><a href="#">充值指南</a></li>
+                            <li><a href="#">常见问题</a></li>
+                            <li><a href="#">退款政策</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-block">
+                        <h4>支付方式</h4>
+                        <ul class="footer links">
+                            <li><a href="#">支付宝</a></li>
+                            <li><a href="#">微信支付</a></li>
+                            <li><a href="#">银行卡</a></li>
+                        </ul>
+                    </div>
+                    <div class="block newsletter">
+                        <div class="title">
+                            <strong>订阅优惠信息</strong>
+                        </div>
+                        <div class="content">
+                            <input type="email" placeholder="输入邮箱地址">
+                            <button class="action subscribe">订阅</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <span>© 2024 Folix 游戏充值平台. All rights reserved.</span>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- JavaScript for Mobile Navigation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navToggle = document.getElementById('nav-toggle');
+            const navClose = document.getElementById('nav-close');
+            const mobileNav = document.getElementById('mobile-nav');
+            const navOverlay = document.getElementById('nav-overlay');
+            
+            function openNav() {
+                mobileNav.classList.add('active');
+                navOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            function closeNav() {
+                mobileNav.classList.remove('active');
+                navOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            navToggle.addEventListener('click', openNav);
+            navClose.addEventListener('click', closeNav);
+            navOverlay.addEventListener('click', closeNav);
+        });
+    </script>
+</body>
+</html>

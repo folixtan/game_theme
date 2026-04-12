@@ -1,7 +1,6 @@
 // /**
 //  * Folix Game Theme - Button Styles
-//  * 
-//  * 使用原生变量（通过 _theme.less 覆盖）
+//  * 方案B：电竞风（深蓝 + 金色 + 电竞红）
 //  */
 
 //
@@ -9,86 +8,392 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-    
+
     //
-    //  Primary Button - 主要按钮
+    //  Primary Button - 金色按钮（主要操作、充值、购买）
     //  _____________________________________________
-    
+
     .action.primary,
     button.action.primary,
     button.primary {
-        background: @theme__color__primary;
-        border: 1px solid @theme__color__primary;
-        color: @folix-bg-card;
+        background: @folix-btn-primary-bg;
+        border: none;
+        color: @folix-btn-primary-text;
         font-weight: @font-weight__semibold;
-        border-radius: @button__border-radius;
-        transition: @folix-transition;
-        
+        border-radius: @folix-radius-full;
+        padding: 12px 32px;
+        font-size: @font-size__s;
+        transition: all @folix-transition-fast;
+        box-shadow: @folix-btn-primary-shadow;
+
         &:hover,
         &:focus {
-            background: @theme__color__secondary;
-            border-color: @theme__color__secondary;
-            color: @folix-bg-card;
+            background: @folix-btn-primary-hover-bg;
+            color: @folix-btn-primary-text;
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
         }
-        
+
         &:active {
-            background: darken(@theme__color__secondary, 5%);
-            border-color: darken(@theme__color__secondary, 5%);
+            transform: translateY(0);
+            box-shadow: @folix-btn-primary-shadow;
+        }
+
+        &:disabled {
+            background: @folix-bg-hover;
+            color: @folix-text-muted;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
         }
     }
-    
+
     //
-    //  Secondary Button - 次要按钮
+    //  Secondary Button - 电竞红按钮（热销、促销）
     //  _____________________________________________
-    
+
     .action.secondary,
     button.action.secondary,
     button.secondary {
-        background: @folix-bg-card;
-        border: 2px solid @theme__color__primary;
-        color: @theme__color__primary;
-        font-weight: @font-weight__semibold;
-        border-radius: @button__border-radius;
-        transition: @folix-transition;
-        
-        &:hover,
-        &:focus {
-            background: @theme__color__primary;
-            color: @folix-bg-card;
-        }
-    }
-    
-    //
-    //  Add to Cart Button - 加入购物车按钮
-    //  _____________________________________________
-    
-    .action.tocart {
-        background: @theme__color__secondary;
-        border: 1px solid @theme__color__secondary;
-        color: @folix-bg-card;
-        font-weight: @font-weight__semibold;
-        border-radius: @button__border-radius;
-        
-        &:hover,
-        &:focus {
-            background: darken(@theme__color__secondary, 10%);
-            border-color: darken(@theme__color__secondary, 10%);
-            color: @folix-bg-card;
-        }
-    }
-    
-    //
-    //  Action Link Button - 链接样式按钮
-    //  _____________________________________________
-    
-    .abs-action-link-button {
-        background: @theme__color__primary;
+        background: @folix-btn-secondary-bg;
         border: none;
-        color: @folix-bg-card;
-        
-        &:hover {
-            background: @theme__color__secondary;
-            color: @folix-bg-card;
+        color: @folix-btn-secondary-text;
+        font-weight: @font-weight__semibold;
+        border-radius: @folix-radius-full;
+        padding: 12px 32px;
+        font-size: @font-size__s;
+        transition: all @folix-transition-fast;
+        box-shadow: @folix-btn-secondary-shadow;
+
+        &:hover,
+        &:focus {
+            background: @folix-btn-secondary-hover-bg;
+            color: @folix-btn-secondary-text;
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(255, 59, 48, 0.5);
         }
+
+        &:active {
+            transform: translateY(0);
+            box-shadow: @folix-btn-secondary-shadow;
+        }
+
+        &:disabled {
+            background: @folix-bg-hover;
+            color: @folix-text-muted;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+    }
+
+    //
+    //  Add to Cart Button - 加入购物车（金色）
+    //  _____________________________________________
+
+    .action.tocart,
+    button.action.tocart,
+    button.tocart {
+        background: @folix-btn-primary-bg;
+        border: none;
+        color: @folix-btn-primary-text;
+        font-weight: @font-weight__semibold;
+        border-radius: @folix-radius-full;
+        padding: 12px 32px;
+        font-size: @font-size__s;
+        transition: all @folix-transition-fast;
+        position: relative;
+        overflow: hidden;
+        box-shadow: @folix-btn-primary-shadow;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left @folix-transition-slow;
+        }
+
+        &:hover,
+        &:focus {
+            background: @folix-btn-primary-hover-bg;
+            color: @folix-btn-primary-text;
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+
+            &::before {
+                left: 100%;
+            }
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+
+    //
+    //  Ghost Button - 透明按钮（次要操作）
+    //  _____________________________________________
+
+    .action.ghost,
+    button.action.ghost,
+    button.ghost,
+    .btn-ghost {
+        background: @folix-btn-ghost-bg;
+        border: 1px solid @folix-btn-ghost-border;
+        color: @folix-btn-ghost-text;
+        font-weight: @font-weight__medium;
+        border-radius: @folix-radius-full;
+        padding: 12px 32px;
+        font-size: @font-size__s;
+        transition: all @folix-transition-fast;
+
+        &:hover,
+        &:focus {
+            background: @folix-btn-ghost-hover-bg;
+            color: @folix-btn-ghost-text;
+            border-color: @folix-secondary;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+
+    //
+    //  Link Button - 链接样式按钮
+    //  _____________________________________________
+
+    .abs-action-link-button,
+    .btn-link {
+        background: transparent;
+        border: none;
+        color: @folix-secondary;
+        font-weight: @font-weight__medium;
+        padding: 0;
+        transition: all @folix-transition-fast;
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: @folix-secondary;
+            transition: width @folix-transition;
+        }
+
+        &:hover {
+            color: @folix-secondary-light;
+
+            &::after {
+                width: 100%;
+            }
+        }
+
+        &:active {
+            transform: scale(0.98);
+        }
+    }
+
+    //
+    //  Small Button - 小号按钮
+    //  _____________________________________________
+
+    .btn-sm,
+    .action.small {
+        padding: 8px 16px;
+        font-size: @font-size__xs;
+        border-radius: @folix-radius-sm;
+    }
+
+    //
+    //  Large Button - 大号按钮
+    //  _____________________________________________
+
+    .btn-lg,
+    .action.large {
+        padding: 16px 48px;
+        font-size: @font-size__base;
+    }
+
+    //
+    //  Block Button - 块级按钮
+    //  _____________________________________________
+
+    .btn-block,
+    .action.block {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    //
+    //  Icon Button - 图标按钮
+    //  _____________________________________________
+
+    .btn-icon,
+    .action.icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 24px;
+
+        .icon {
+            font-size: 18px;
+        }
+    }
+
+    //
+    //  Button Group - 按钮组
+    //  _____________________________________________
+
+    .btn-group {
+        display: flex;
+        gap: 12px;
+
+        .action {
+            flex: 1;
+
+            &.icon-only {
+                flex: 0 0 auto;
+                width: 44px;
+                padding: 12px;
+            }
+        }
+    }
+
+    //
+    //  Loading Button - 加载状态
+    //  _____________________________________________
+
+    .action.loading {
+        position: relative;
+        pointer-events: none;
+        opacity: 0.7;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        &.text-only {
+            padding-left: 32px;
+        }
+
+        &::after {
+            opacity: 0.5;
+        }
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    //
+    //  Button with Badge - 带徽章的按钮
+    //  _____________________________________________
+
+    .btn-badge {
+        position: relative;
+
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: @folix-btn-secondary-bg;
+            color: @folix-btn-secondary-text;
+            font-size: 10px;
+            font-weight: @font-weight__bold;
+            min-width: 18px;
+            height: 18px;
+            border-radius: @folix-radius-full;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.1);
+        }
+    }
+
+    //
+    //  Price Button - 价格按钮
+    //  _____________________________________________
+
+    .btn-price {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 20px;
+        gap: 16px;
+
+        .price-label {
+            font-size: @font-size__s;
+            opacity: 0.9;
+        }
+
+        .price-amount {
+            font-size: @font-size__l;
+            font-weight: @font-weight__bold;
+        }
+    }
+}
+
+//
+//  Mobile (≤ 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .action.primary,
+    .action.secondary,
+    .action.tocart {
+        padding: 10px 20px;
+        font-size: @font-size__xs;
+    }
+
+    .btn-lg {
+        padding: 14px 32px;
+        font-size: @font-size__s;
+    }
+}
+
+//
+//  Desktop (≥ 769px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .action.primary:hover,
+    .action.secondary:hover,
+    .action.tocart:hover {
+        transform: translateY(-2px);
     }
 }

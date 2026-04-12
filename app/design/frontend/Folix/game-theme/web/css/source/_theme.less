@@ -1,141 +1,221 @@
 // /**
-//  * Folix Game Theme - Theme Variables Override
-//  * 
-//  * 规则：
-//  * - 此文件只覆盖父主题已存在的变量
-//  * - 新变量在 _variables.less 中定义
-//  * - 保持色系不变：蓝色(#4A90E2) + 橙色(#FF6B35) + 紫色(#6C5CE7)
+//  * Copyright © Magento, Inc. All rights reserved.
+//  * See COPYING.txt for license details.
 //  */
 
-// ============================================================================
-//  PRIMARY COLORS - 主色系
-// ============================================================================
+//
+//  Folix Game Theme - Theme Variables Override
+//  _____________________________________________
+//
+//  规则：
+//  * - 此文件只覆盖父主题已存在的变量
+//  * - 新变量在 _custom-variables-esports.less 中定义
+//  * - 使用自定义变量覆盖原生变量，便于换肤
+//  * - 色系：电竞风（深蓝 + 金色 + 电竞红）
+//
 
-@theme__color__primary: #4A90E2;            // 蓝色 - 主色
-@theme__color__primary-alt: #6C5CE7;        // 紫色 - 搭配色
-@theme__color__secondary: #FF6B35;          // 橙色 - 强调色
+//  Import custom variables
+@import '_custom-variables-esports.less';
 
-// ============================================================================
-//  TEXT COLORS - 文字色
-// ============================================================================
-
-@primary__color: #1E293B;                   // 主文字
-@primary__color__lighter: #64748B;          // 次文字
-@primary__color__light: #94A3B8;            // 弱化文字
-
-// ============================================================================
-//  BACKGROUND COLORS - 背景色
-// ============================================================================
-
-@page__background-color: #F8FAFC;           // 页面背景
-@panel__background-color: #F1F5F9;          // 面板背景
-@secondary__color: #E2E8F0;                 // 次要背景
-
-// ============================================================================
-//  BORDER COLORS - 边框色
-// ============================================================================
-
-@border-color__base: #E2E8F0;               // 基础边框色
-
-// ============================================================================
+//
 //  TYPOGRAPHY - 排版
-// ============================================================================
+//  ---------------------------------------------
 
-//  Font Family
-@font-family-name__base: 'Inter';
-@font-family__base: @font-family-name__base, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+//  Fonts
+@icons__font-path: '@{baseDir}fonts/Luma-Icons';
+@icons__font-name: 'luma-icons';
 
-//  Font Weights
-@font-weight__heavier: 500;
-@font-weight__semibold: 600;
+//  Color nesting
+@panel__background-color: @folix-bg-panel;
+@border-color__base: @folix-border;
+
+//  Headings
+@h3__font-weight: @font-weight__semibold;
+@h3__margin-top: @indent__base;
+@h1__font-weight: @font-weight__bold;
+@h2__font-weight: @font-weight__semibold;
+
+//  Primary colors
+@primary__color: @folix-text-primary;
+@primary__color__lighter: @folix-text-secondary;
+@primary__color__light: @folix-text-tertiary;
+
+//  Theme colors
+@theme__color__primary: @folix-primary;
+@theme__color__primary-alt: @folix-purple;
+@theme__color__secondary: @folix-secondary;
 
 //  Links
 @link__color: @theme__color__primary;
 @link__hover__color: @theme__color__secondary;
 @link__active__color: @theme__color__secondary;
+
+//  Focus
 @focus__color: @theme__color__primary;
 
-//  Headings
-@h1__font-weight: @font-weight__bold;
-@h2__font-weight: @font-weight__semibold;
-@h3__font-weight: @font-weight__semibold;
-@h3__margin-top: @indent__base;
+//
+//  Tables
+//  ---------------------------------------------
 
-// ============================================================================
-//  BUTTONS - 按钮
-// ============================================================================
+@table-cell__padding-vertical: 11px;
+@table-cell-stripped__background-color: @table-cell__hover__background-color;
+@table-responsive-th__background-color: @table-cell-stripped__background-color;
+@table-responsive-cell__padding: @indent__xs @indent__s;
+@table-cell__hover__background-color: @panel__background-color;
+@table-td__color: @primary__color;
+@table-th__color: @primary__color;
 
-@button__border-radius: 6px;
+//
+//  Layout grid
+//  ---------------------------------------------
+
+@total-columns: 24;
+
+//  Variables for layout columns
+@layout-column__sidebar-width: 5;
+@sidebar__background-color: @folix-bg-panel;
+@content__background: @folix-bg-panel;
+
+//  Checkout columns width
+@layout-column-checkout__width-left: 6;
+
+//
+//  Navigation
+//  ---------------------------------------------
+
+@navigation__background: @folix-nav-mobile-bg;
+@navigation-level0-item__active__color: @folix-secondary;
+
+@submenu-item__active__color: @navigation-level0-item__active__color;
+
+//  Desktop navigation
+@navigation-desktop__background: @folix-nav-desktop-bg;
+@navigation-desktop-level0-item__line-height: 47px;
+@navigation-desktop-level0-item__color: @folix-text-primary;
+@navigation-desktop-level0-item__hover__color: @folix-secondary;
+@navigation-desktop-level0-item__active__color: @folix-secondary;
+@navigation-desktop-level0-item__active__border-color: @folix-secondary;
+
+@submenu-desktop__font-weight: @font-weight__regular;
+@submenu-desktop-item__active__color: @navigation-level0-item__active__color;
+@submenu-item__color: @folix-text-primary;
+@submenu-item__active__border-color: @folix-secondary;
+@submenu-desktop__background: @folix-bg-panel;
+@submenu-desktop__border-color: @folix-border;
+@submenu-desktop-item__color: @folix-text-primary;
+@submenu-desktop-item__hover__background: @folix-bg-hover;
+@submenu-desktop-item__hover__color: @folix-secondary;
+@submenu-desktop-item__active__color: @folix-secondary;
+@submenu-desktop-item__active__border-color: @folix-secondary;
+
+//  Tabs
+@tab-control__color: @folix-text-secondary;
+@tab-control__font-weight: @font-weight__regular;
+@tab-control__height: @indent__base*2;
+@tab-control__margin-right: -1px;
+@tab-control__padding-top: 1px;
+@tab-control__padding-right: 35px;
+@tab-control__background-color: @folix-bg-panel;
+@tab-control__hover__background-color: @folix-bg-hover;
+@tab-control__hover__color: @folix-text-secondary;
+@tab-control__active__background-color: @folix-bg-panel;
+@tab-control__active__color: @folix-text-primary;
+
+//  Tabs content
+@tab-content__padding-top: 35px;
+@tab-content__padding-right: @tab-control__padding-right;
+@tab-content__background-color: @folix-bg-panel;
+
+//
+//  Accordion
+//  ---------------------------------------------
+
+@accordion-control__font-family: false;
+@accordion-control__font-size: @font-size__base;
+@accordion-control__font-style: false;
+@accordion-control__font-weight: @font-weight__semibold;
+@accordion-control__border-right: false;
+@accordion-control__border-bottom: false;
+@accordion-control__border-left: false;
+@accordion-control__background-color: @folix-bg-panel;
+@accordion-control__color: @folix-text-secondary;
+@accordion-control__hover__background-color: @folix-bg-hover;
+@accordion-control__hover__color: @accordion-control__color;
+@accordion-control__active__background-color: @folix-bg-panel;
+@accordion-control__active__color: @folix-text-primary;
+@accordion-control__margin-bottom: 0;
+@accordion-control__padding-right: @indent__s;
+@accordion-control__padding-left: @indent__s;
+@accordion-content__border: false;
+@accordion-content__margin: 0;
+@accordion-content__padding: @indent__s @indent__s @indent__l;
+
+//
+//  Buttons
+//  ---------------------------------------------
+
 @button__font-weight: @font-weight__semibold;
+@button__border-radius: 6px;
 
-//  Default Button (Secondary)
-@button__background: #F2F2F2;
-@button__border: 1px solid #CDCDCD;
-@button__hover__background: #E2E2E2;
-@button__hover__color: #555555;
+//  Default = secondary button
+@button__background: @folix-bg-hover;
+@button__border: 1px solid @folix-border-gold;
+@button__hover__color: @folix-secondary;
+@button__hover__background: @folix-bg-selected;
+@button__active__background: @folix-bg-selected;
 
-//  Primary Button
-@button-primary__background: @theme__color__primary;
-@button-primary__border: 1px solid @theme__color__primary;
-@button-primary__color: #FFFFFF;
-@button-primary__hover__background: @theme__color__secondary;
-@button-primary__hover__border: 1px solid @theme__color__secondary;
-@button-primary__hover__color: #FFFFFF;
-@button-primary__active__background: @theme__color__secondary;
-@button-primary__active__border: 1px solid @theme__color__secondary;
-@button-primary__active__color: #FFFFFF;
+//  Primary button
+@button-primary__background: @folix-btn-primary-bg;
+@button-primary__border: 1px solid @folix-secondary;
+@button-primary__color: @folix-btn-primary-text;
+@button-primary__hover__color: @folix-btn-primary-text;
+@button-primary__hover__background: @folix-btn-primary-hover-bg;
+@button-primary__hover__border: 1px solid @folix-secondary-light;
+@button-primary__active__background: @folix-btn-primary-hover-bg;
+@button-primary__active__border: 1px solid @folix-secondary-light;
+@button-primary__active__color: @folix-btn-primary-text;
+
+//  Button with icon
+@button-icon__line-height: @icon-font__line-height;
 
 //  Button Shadow
 @button__shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 @button__shadow-active: 0 1px 2px rgba(0, 0, 0, 0.15);
 
-// ============================================================================
-//  NAVIGATION - 导航
-// ============================================================================
+//
+//  Icons
+//  ---------------------------------------------
 
-//  Mobile Navigation
-@navigation__background: #FFFFFF;
-@navigation-level0-item__color: #575757;
-@navigation-level0-item__hover__color: @theme__color__primary;
-@navigation-level0-item__active__color: @theme__color__secondary;
-@navigation-level0-item__active__border-color: @theme__color__secondary;
+@icon-wishlist-empty: false;
+@icon-comment-reflected: false;
+@icon-compare-empty: false;
+@icon-arrow-up-thin: false;
+@icon-arrow-right-thin: false;
+@icon-arrow-left-thin: false;
+@icon-arrow-down-thin: false;
+@icon-wishlist-empty: '\e601';
 
-//  Desktop Navigation
-@navigation-desktop__background: #FFFFFF;
-@navigation-desktop-level0-item__line-height: 47px;
-@navigation-desktop-level0-item__color: #575757;
-@navigation-desktop-level0-item__hover__color: @theme__color__secondary;
-@navigation-desktop-level0-item__active__color: @theme__color__secondary;
-@navigation-desktop-level0-item__active__border-color: @theme__color__secondary;
+@icon-success: '\e60e';
+@icon-error: '\e61f';
+@icon-edit: '\e601';
+@icon-print: '\e624';
+@icon-star-empty: '\e625';
+@icon-download: '\e626';
+@icon-private: '\e629';
+@icon-present: '\e62a';
+@icon-gift-registry: '\e62b';
 
-//  Submenu
-@submenu-item__color: #575757;
-@submenu-item__active__color: @theme__color__secondary;
-@submenu-item__active__border-color: @theme__color__secondary;
-@submenu-desktop__font-weight: @font-weight__regular;
-@submenu-desktop__background: #FFFFFF;
-@submenu-desktop__border-color: @border-color__base;
-@submenu-desktop-item__color: #575757;
-@submenu-desktop-item__hover__background: @secondary__color;
-@submenu-desktop-item__hover__color: @theme__color__secondary;
-@submenu-desktop-item__active__color: @navigation-level0-item__active__color;
-@submenu-desktop-item__active__border-color: @theme__color__secondary;
+//
+//  Messages
+//  ---------------------------------------------
 
-// ============================================================================
-//  FORMS - 表单
-// ============================================================================
-
-@form-element-input__background: #FFFFFF;
-@form-element-input__border-color: @border-color__base;
-@form-element-input__border-radius: 6px;
-@form-element-input__height: 38px;
-@form-element-input-placeholder__color: #94A3B8;
-@form-element-input__focus__border: 1px solid @theme__color__primary;
-@select__background: @form-element-input__background url('../images/select-bg.svg') no-repeat 100% 45%;
-
-// ============================================================================
-//  MESSAGES - 消息提示
-// ============================================================================
+@message__padding: 12px @indent__base 12px @indent__m;
+@message__line-height: false;
+@message-icon__font-size: 24px;
+@message-icon__inner-padding-left: 45px;
+@message-icon__top: 22px;
+@message-error-icon: @icon-error;
+@message-success-icon: @icon-success;
 
 //  Info
 @message-info__color: #92400E;
@@ -156,14 +236,6 @@
 @message-success-icon__color-inner: #D1FAE5;
 
 //  Message Global
-@message__padding: 12px @indent__base 12px @indent__m;
-@message-icon__font-size: 10px;
-@message-icon__inner-padding-left: 45px;
-@message-icon__top: 22px;
-@message-error-icon: @icon-error;
-@message-success-icon: @icon-success;
-
-//  Global Messages
 @message-global-note__background: @message-info__background;
 @message-global-note__border-color: @message-info-icon__background;
 @message-global-note__color: @message-info__color;
@@ -171,189 +243,219 @@
 @message-global-caution__border-color: @message-error-icon__background;
 @message-global-caution__color: @message-error__color;
 
-// ============================================================================
-//  TABLES - 表格
-// ============================================================================
+//
+//  Loaders
+//  ---------------------------------------------
 
-@table-cell__padding-vertical: 12px;
-@table-cell__hover__background-color: @panel__background-color;
-@table-td__color: @primary__color;
-@table-th__color: @primary__color;
-@table-cell-stripped__background-color: @table-cell__hover__background-color;
-@table-responsive-th__background-color: @table-cell-stripped__background-color;
-@table-responsive-cell__padding: @indent__xs @indent__s;
+@loader-overlay__background-color: rgba(0, 0, 0, .8);
 
-// ============================================================================
-//  POPUPS & OVERLAY - 弹窗和遮罩
-// ============================================================================
+//
+//  Forms
+//  ---------------------------------------------
 
-@popup__background: #FFFFFF;
-@popup__border-color: @border-color__base;
-@popup__shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-@overlay__background: rgba(0, 0, 0, 0.5);
 
-// ============================================================================
-//  TABS & ACCORDION - 标签页和手风琴
-// ============================================================================
+//  Select
+@select__background: @folix-input-bg url('../images/select-bg.svg') no-repeat 100% 45%;
+@select__border: 1px solid @folix-input-border;
+@select__height: 32px;
+@select__padding: 4px 25px @indent__xs @indent__s;
 
-//  Tabs
-@tab-control__font-weight: @font-weight__semibold;
-@tab-control__background-color: @panel__background-color;
-@tab-control__color: @primary__color__lighter;
-@tab-control__hover__background-color: #F8FAFC;
-@tab-control__hover__color: @primary__color__lighter;
-@tab-control__active__background-color: #FFFFFF;
-@tab-control__active__color: @primary__color;
-@tab-content__background-color: #FFFFFF;
-@tab-control__height: @indent__base * 2;
-@tab-control__margin-right: -1px;
-@tab-control__padding-top: 1px;
-@tab-control__padding-right: 35px;
-@tab-content__padding-top: 35px;
-@tab-content__padding-right: @tab-control__padding-right;
+//  Form element
+@form-element-input__background: @folix-input-bg;
+@form-element-input__border-color: @folix-input-border;
+@form-element-input__border-radius: 6px;
+@form-element-input__height: 38px;
+@form-element-input-placeholder__color: @folix-input-placeholder;
+@form-element-input__focus__border: 1px solid @folix-input-focus-border;
 
-//  Accordion
-@accordion-control__font-weight: @font-weight__semibold;
-@accordion-control__background-color: @panel__background-color;
-@accordion-control__color: @primary__color__lighter;
-@accordion-control__hover__background-color: #F8FAFC;
-@accordion-control__hover__color: @accordion-control__color;
-@accordion-control__active__background-color: #FFFFFF;
-@accordion-control__active__color: @primary__color;
-@accordion-control__font-family: false;
-@accordion-control__font-size: @font-size__base;
-@accordion-control__font-style: false;
-@accordion-control__border-right: false;
-@accordion-control__border-bottom: false;
-@accordion-control__border-left: false;
-@accordion-control__margin-bottom: 0;
-@accordion-control__padding-right: @indent__s;
-@accordion-control__padding-left: @indent__s;
-@accordion-content__border: false;
-@accordion-content__margin: 0;
-@accordion-content__padding: @indent__s @indent__s @indent__l;
+//  Form fieldset
+@form-fieldset-legend__font-size: 18px;
+@form-fieldset-legend__font-weight: @font-weight__light;
+@form-fieldset-legend__margin: 0 0 @indent__base;
+@form-fieldset-legend__padding: 0 0 @indent__s;
+@form-fieldset-legend__width: 100%;
 
-// ============================================================================
-//  BREADCRUMBS - 面包屑
-// ============================================================================
+//  Form field
+@form-field-type-revert: false;
+@form-field__additional-vertical-indent: @indent__s;
 
-@breadcrumbs__container-margin: 0 0 15px;
-@breadcrumbs-icon__font-size: 10px;
-@breadcrumbs-icon__font-margin: 0 @indent__s;
-@breadcrumbs-current__color: @primary__color__light;
-@breadcrumbs-link__color: @link__color;
-@breadcrumbs-link__visited__color: @breadcrumbs-link__color;
-@breadcrumbs-link__hover__color: @breadcrumbs-link__color;
-@breadcrumbs-link__active__color: @breadcrumbs-link__color;
+//  Form field label
+@form-field-label__font-weight: @font-weight__semibold;
+@form-field-type-label-block__margin: 0 0 8px;
 
-// ============================================================================
-//  DROPDOWNS - 下拉菜单
-// ============================================================================
+//  Form field note icon
+@form-field-note-icon-font__content: false;
 
-@dropdown-list__background: #FFFFFF;
-@dropdown-list__border: 1px solid @border-color__base;
-@dropdown-list-item__hover: @secondary__color;
+//
+//  Pager
+//  ---------------------------------------------
 
-// ============================================================================
-//  PAGER - 分页
-// ============================================================================
+@pager__font-weight: @font-weight__regular;
+@pager__line-height: @indent__l;
+@pager-item__margin: 0 8px 0 0;
+@pager-item__padding: 0 @indent__xs;
 
+//  Pager current page
+@pager-current__background: @color-gray90;
+
+//  Pager link.action
+@pager-icon__font-margin: 0;
+@pager-icon__font-size: 16px;
 @pager-current__color: @primary__color;
 @pager__color: @link__color;
 @pager__hover__color: @link__hover__color;
 @pager-action__border: @border-width__base solid @border-color__base;
 @pager-action__color: @primary__color__lighter;
-@pager-icon__font-size: 16px;
 
-// ============================================================================
-//  RATING - 评分
-// ============================================================================
+//  Pager link.action visited
+@pager-action__visited__color: @text__color__muted;
 
-@rating-icon__color: #E2E8F0;
-@rating-icon__active__color: @theme__color__secondary;
+//  Pager link.action hover
+@pager-action__hover__color: @text__color__muted;
 
-// ============================================================================
-//  TOOLTIPS - 工具提示
-// ============================================================================
+//  Pager link.action active
+@pager-action__active__color: @text__color__muted;
 
-@tooltip__background: #FFFFFF;
-@tooltip__border-color: @border-color__base;
-@tooltip__color: @primary__color;
+//
+//  Rating
+//  ---------------------------------------------
 
-// ============================================================================
-//  HEADER & FOOTER - 头部和底部
-// ============================================================================
+@rating-icon__font-size: 16px;
+@rating-icon__letter-spacing: 2px;
+@rating-icon__color: rgba(255, 255, 255, 0.1);
+@rating-icon__active__color: @folix-secondary;
 
+//
+//  Dropdowns
+//  ---------------------------------------------
+
+@dropdown-toggle-icon__content: @icon-down;
+@dropdown-toggle-icon__active__content: @icon-up;
+@dropdown-toggle-icon__font-size: 12px;
+
+//  Split dropdown
+@dropdown-split-actions__padding: 0 @indent__xs;
+@dropdown-split-toggle__actions__padding: false;
+
+//  Dropdown list
+@dropdown-list__background: @folix-bg-panel;
+@dropdown-list__border: 1px solid @folix-border;
+@dropdown-list-item__hover: @folix-bg-hover;
+
+//  Actions-toolbar
+@actions-toolbar-actions__position: left;
+@actions-toolbar-actions-primary__margin: 0 15px 0 0;
+
+//
+//  Breadcrumbs
+//  ---------------------------------------------
+
+@breadcrumbs__container-margin: 0 0 15px;
+@breadcrumbs-icon__font-size: 10px;
+@breadcrumbs-icon__font-margin: 0 @indent__s;
+
+@breadcrumbs-current__color: @folix-text-tertiary;
+@breadcrumbs-link__color: @folix-text-secondary;
+@breadcrumbs-link__visited__color: @breadcrumbs-link__color;
+@breadcrumbs-link__hover__color: @folix-secondary;
+@breadcrumbs-link__active__color: @folix-secondary;
+
+//
+//  Popups
+//  ---------------------------------------------
+
+@popup__background: @folix-popup-bg;
+@popup__border-color: @folix-popup-border;
+@popup__border: 1px solid @popup__border-color;
+@popup__shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+@popup-title-headings__level: h2;
+
+//  Popup icons
+@popup-icon-font__size: 16px;
+@popup-icon-font__line-height: 16px;
+@popup-icon-font__color: @color-gray55;
+@popup-icon-font__color-hover: darken(@popup-icon-font__color, 10%);
+@popup-icon-font__color-active: @popup-icon-font__color-hover;
+
+//  Window overlay
+@overlay__background: @folix-popup-overlay;
+@overlay__opacity: .8;
+@overlay__opacity-old: 80;
+
+@gallery-thumb-border-color-active: @active__color;
+
+//  Checkout tooltip icon
+@checkout-tooltip-icon__font-size: 21px;
+
+//  Checkout Payment Option icon
+@checkout-payment-option-title-icon__font-size: 14px;
+@checkout-payment-option-title-icon__line-height: 16px;
+@checkout-payment-option-title-icon__margin: 0 0 0 @indent__s;
+
+//  Checkout Sidebar Shipping Information
+@checkout-sidebar-shipping-information-edit-icon__content: @icon-edit;
+@checkout-sidebar-shipping-information-edit-icon__font-size: 18px;
+@checkout-sidebar-shipping-information-edit-icon__line-height: 20px;
+@checkout-sidebar-shipping-information-edit-icon__top: @indent__s;
+
+//  Checkout
+@checkout-sidebar__columns: 8;
+
+//
 //  Header
-@header__background-color: #FFFFFF;
-@header-icons-color: @primary__color;
-@header-icons-color-hover: @theme__color__secondary;
-@header-panel__background-color: #1E293B;
-@header-panel__text-color: #E2E8F0;
+//  ---------------------------------------------
 
+@header__background-color: @folix-gradient-header;
+@header-icons-color: @folix-text-primary;
+@header-icons-color-hover: @folix-secondary;
+@header-panel__background-color: @folix-header-top-bg;
+@header-panel__text-color: @folix-header-top-text;
+
+//
 //  Footer
-@footer__background-color: @color-gray-light01;
-@footer-links-color: @color-gray34;
-@footer-links-color-hover: @color-gray20;
-@footer-links-color-current: @primary__color__light;
-@footer-links-separator-border-color: @color-gray-light4;
+//  ---------------------------------------------
 
-//  Copyright
-@copyright__background-color: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
-@copyright__border-color: rgba(255, 255, 255, 0.1);
-@copyright__color: #E2E8F0;
+@footer__background-color: @folix-footer-bg;
+@footer-links-color: @folix-footer-link;
+@footer-links-color-hover: @folix-footer-link-hover;
+@footer-links-color-current: @folix-text-tertiary;
+@footer-links-separator-border-color: @folix-footer-border;
 
-// ============================================================================
-//  PRODUCT LISTING - 产品列表
-// ============================================================================
+@copyright__background-color: @folix-gradient-purple;
+@copyright__border-color: @folix-footer-border;
+@copyright__color: @folix-text-lighter;
 
-@filter-link: @primary__color;
-@filter-link-hover: @theme__color__secondary;
-@filter-quantity: @primary__color__light;
-@filter-title-background-color: @panel__background-color;
-@addto-color: @primary__color__lighter;
-@addto-hover-color: @theme__color__secondary;
+//
+//  Product Listing
+//  ---------------------------------------------
 
-// ============================================================================
-//  LAYOUT - 布局
-// ============================================================================
+@filter-link: @folix-text-primary;
+@filter-link-hover: @folix-secondary;
+@filter-quantity: @folix-text-tertiary;
+@filter-title-background-color: @folix-bg-panel;
+@addto-color: @folix-text-secondary;
+@addto-hover-color: @folix-secondary;
 
-@total-columns: 24;
-@layout-column__sidebar-width: 5;
-@layout-column-checkout__width-left: 6;
-@sidebar__background-color: #F1F5F9;
-@content__background: #FFFFFF;
+//
+//  Tooltips
+//  ---------------------------------------------
 
-// ============================================================================
-//  OTHERS - 其他
-// ============================================================================
+@tooltip__background: @folix-bg-panel;
+@tooltip__border-color: @folix-border;
+@tooltip__color: @folix-text-primary;
 
-@active__color: @theme__color__secondary;
-@error__color: #EF4444;
+//
+//  Page Background
+//  ---------------------------------------------
+
+@page__background-color: @folix-bg-page;
+@secondary__color: @folix-bg-hover;
+
+//
+//  Other Variables
+//  ---------------------------------------------
+
+@active__color: @folix-secondary;
+@error__color: @folix-error;
 @customer-welcome__z-index: 200;
-@loader-overlay__background-color: rgba(255, 255, 255, .7);
-@block-items__counter__color: @primary__color__lighter;
-
-// ============================================================================
-//  ICONS - 图标（继承自父主题）
-// ============================================================================
-
-@icons__font-path: '@{baseDir}fonts/Luma-Icons';
-@icons__font-name: 'luma-icons';
-
-@icon-success: '\e60e';
-@icon-error: '\e61f';
-@icon-edit: '\e601';
-@icon-print: '\e624';
-@icon-star-empty: '\e625';
-@icon-download: '\e626';
-@icon-private: '\e629';
-@icon-present: '\e62a';
-@icon-gift-registry: '\e62b';
-@icon-wishlist-empty: '\e601';
-@icon-comment-reflected: false;
-@icon-compare-empty: false;
-@icon-arrow-up-thin: false;
-@icon-arrow-right-thin: false;
-@icon-arrow-left-thin: false;
-@icon-arrow-down-thin: false;
+@block-items__counter__color: @folix-text-tertiary;

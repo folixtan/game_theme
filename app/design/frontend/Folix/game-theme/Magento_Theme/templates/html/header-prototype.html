@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folix Game Theme - Header Prototype (基于现有结构)</title>
+    <style>
+        /* ============================================
+           CSS Variables - Folix 颜色体系
+           来源: _variables.less
+           ============================================ */
+        :root {
+            /* Primary - 蓝色系 */
+            --folix-primary: #4A90E2;
+            --folix-primary-dark: #357ABD;
+            --folix-primary-light: #60A5FA;
+            
+            /* Secondary - 橙色系 */
+            --folix-secondary: #FF6B35;
+            --folix-secondary-dark: #EA580C;
+            --folix-secondary-light: #FB923C;
+            
+            /* Accent - 紫色系 */
+            --folix-accent: #6C5CE7;
+            --folix-accent-dark: #5A4FCF;
+            
+            /* Text Colors */
+            --folix-text-primary: #1E293B;
+            --folix-text-secondary: #475569;
+            --folix-text-muted: #64748B;
+            --folix-text-light: #94A3B8;
+            --folix-text-on-dark: #F8FAFC;
+            --folix-text-on-dark-muted: #94A3B8;
+            
+            /* Background Colors */
+            --folix-bg-page: #F8FAFC;
+            --folix-bg-panel: #F1F5F9;
+            --folix-bg-card: #FFFFFF;
+            --folix-bg-hover: #E2E8F0;
+            --folix-bg-dark: #1E293B;
+            --folix-bg-dark-alt: #0F172A;
+            
+            /* Border Colors */
+            --folix-border: #E2E8F0;
+            --folix-border-dark: #CBD5E1;
+            
+            /* Gradients */
+            --folix-gradient-dark: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+            --folix-gradient-primary: linear-gradient(135deg, #4A90E2 0%, #6C5CE7 100%);
+            
+            /* Shadows */
+            --folix-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            --folix-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --folix-shadow-primary: 0 4px 14px rgba(74, 144, 226, 0.25);
+            
+            /* Transitions */
+            --folix-transition-fast: 0.15s ease;
+            --folix-transition: 0.2s ease;
+            
+            /* Border Radius */
+            --folix-radius: 6px;
+            --folix-radius-md: 8px;
+            --folix-radius-lg: 12px;
+        }
+        
+        /* Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--folix-text-primary);
+            background-color: var(--folix-bg-page);
+        }
+        
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        
+        /* ============================================
+           Page Header - 匹配现有结构
+           ============================================ */
+        .page-header {
+            background-color: var(--folix-bg-card);
+            box-shadow: var(--folix-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 200;
+        }
+        
+        /* ============================================
+           TOP BAR - .panel.wrapper
+           深蓝渐变背景，高度40px
+           ============================================ */
+        .panel.wrapper {
+            background: var(--folix-gradient-dark);
+            color: var(--folix-text-on-dark-muted);
+        }
+        
+        .panel.header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 8px 24px;
+            min-height: 40px;
+        }
+        
+        /* Left Links */
+        .header-links-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-links-top {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .header-links-top li a {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--folix-text-on-dark-muted);
+            font-size: 13px;
+            transition: color var(--folix-transition-fast);
+        }
+        
+        .header-links-top li a:hover {
+            color: var(--folix-text-on-dark);
+        }
+        
+        .link-icon {
+            font-size: 14px;
+        }
+        
+        /* Right Links */
+        .header-links-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        /* App Download Link */
+        .app-download-link {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--folix-text-on-dark-muted);
+            font-size: 13px;
+            padding: 4px 8px;
+            border-radius: var(--folix-radius);
+            transition: all var(--folix-transition-fast);
+        }
+        
+        .app-download-link:hover {
+            color: var(--folix-text-on-dark);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Language Switcher */
+        .switcher-language {
+            position: relative;
+        }
+        
+        .switcher-label {
+            display: none;
+        }
+        
+        .switcher-trigger {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: var(--folix-radius);
+            font-size: 13px;
+            color: var(--folix-text-on-dark-muted);
+            transition: all var(--folix-transition-fast);
+        }
+        
+        .switcher-trigger:hover {
+            color: var(--folix-text-on-dark);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .switcher-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: var(--folix-bg-card);
+            color: var(--folix-text-primary);
+            border-radius: var(--folix-radius);
+            box-shadow: var(--folix-shadow-lg);
+            min-width: 100px;
+            padding: 8px 0;
+            display: none;
+            z-index: 100;
+            margin-top: 4px;
+        }
+        
+        .switcher-language:hover .switcher-dropdown {
+            display: block;
+        }
+        
+        .switcher-option a {
+            display: block;
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+        
+        .switcher-option a:hover {
+            background-color: var(--folix-bg-panel);
+        }
+        
+        /* Header Links (Sign In / Create Account) */
+        .header.links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .header.links .greet.welcome {
+            display: none; /* 隐藏 welcome message */
+        }
+        
+        /* Mageplaza Social Login Button */
+        .social-login-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: var(--folix-radius);
+            transition: all var(--folix-transition-fast);
+            cursor: pointer;
+        }
+        
+        .authorization-link .social-login-btn {
+            background-color: var(--folix-primary);
+            color: white;
+            border: none;
+        }
+        
+        .authorization-link .social-login-btn:hover {
+            background-color: var(--folix-primary-dark);
+        }
+        
+        /* Create Account Link */
+        .header.links li:not(.authorization-link) .social-login-btn {
+            background-color: transparent;
+            color: var(--folix-text-on-dark-muted);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .header.links li:not(.authorization-link) .social-login-btn:hover {
+            color: var(--folix-text-on-dark);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* ============================================
+           MAIN BAR - .header.content
+           白色背景，底部橙色边框3px
+           ============================================ */
+        .header.content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 12px 24px;
+            gap: 24px;
+            border-bottom: 3px solid var(--folix-secondary);
+        }
+        
+        /* Nav Toggle (Mobile) */
+        .nav-toggle {
+            display: none;
+            padding: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .nav-toggle span {
+            display: none;
+        }
+        
+        .nav-toggle::before {
+            content: '☰';
+            font-size: 24px;
+            color: var(--folix-text-primary);
+        }
+        
+        /* Logo */
+        .logo {
+            flex-shrink: 0;
+        }
+        
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+        
+        /* Search Block */
+        .block-search {
+            flex: 1;
+            max-width: 400px;
+        }
+        
+        .block-search .block-title {
+            display: none;
+        }
+        
+        .minisearch {
+            display: flex;
+            align-items: center;
+        }
+        
+        .minisearch .field.search {
+            flex: 1;
+        }
+        
+        .minisearch .label {
+            display: none;
+        }
+        
+        .minisearch .control {
+            position: relative;
+        }
+        
+        .minisearch .input-text {
+            width: 100%;
+            padding: 10px 16px;
+            padding-right: 44px;
+            border: 2px solid var(--folix-border);
+            border-radius: var(--folix-radius-md);
+            font-size: 14px;
+            transition: border-color var(--folix-transition-fast);
+        }
+        
+        .minisearch .input-text:focus {
+            outline: none;
+            border-color: var(--folix-primary);
+        }
+        
+        .minisearch .input-text::placeholder {
+            color: var(--folix-text-light);
+        }
+        
+        .minisearch .nested {
+            display: none;
+        }
+        
+        .minisearch .actions {
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .minisearch .action.search {
+            padding: 8px 12px;
+            background-color: var(--folix-primary);
+            color: white;
+            border: none;
+            border-radius: var(--folix-radius);
+            cursor: pointer;
+            transition: background-color var(--folix-transition-fast);
+        }
+        
+        .minisearch .action.search:hover {
+            background-color: var(--folix-primary-dark);
+        }
+        
+        .minisearch .action.search span {
+            display: none;
+        }
+        
+        .minisearch .action.search::before {
+            content: '🔍';
+        }
+        
+        /* Minicart */
+        .minicart-wrapper {
+            position: relative;
+        }
+        
+        .action.showcart {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            color: var(--folix-text-secondary);
+            transition: color var(--folix-transition-fast);
+        }
+        
+        .action.showcart:hover {
+            color: var(--folix-primary);
+        }
+        
+        .action.showcart .text {
+            display: none;
+        }
+        
+        .action.showcart::before {
+            content: '🛒';
+            font-size: 20px;
+        }
+        
+        .counter.qty {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--folix-secondary);
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            min-width: 16px;
+            height: 16px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .counter.qty.empty {
+            display: none;
+        }
+        
+        /* Navigation */
+        .folix-nav-wrapper {
+            flex-shrink: 0;
+        }
+        
+        .navigation {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navigation ul {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .navigation .level0 {
+            position: relative;
+        }
+        
+        .navigation .level-top {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 10px 16px;
+            color: var(--folix-text-primary);
+            font-weight: 500;
+            border-radius: var(--folix-radius);
+            transition: all var(--folix-transition-fast);
+        }
+        
+        .navigation .level-top:hover {
+            color: var(--folix-secondary);
+            background-color: var(--folix-bg-panel);
+        }
+        
+        .navigation .ui-menu-icon {
+            font-size: 10px;
+        }
+        
+        /* Submenu */
+        .navigation .submenu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: var(--folix-bg-card);
+            border-radius: var(--folix-radius-md);
+            box-shadow: var(--folix-shadow-lg);
+            min-width: 200px;
+            padding: 8px 0;
+            display: none;
+            z-index: 100;
+            margin-top: 4px;
+        }
+        
+        .navigation .level0:hover > .submenu {
+            display: block;
+        }
+        
+        .navigation .level1 a {
+            display: block;
+            padding: 8px 16px;
+            font-size: 13px;
+            color: var(--folix-text-secondary);
+        }
+        
+        .navigation .level1 a:hover {
+            color: var(--folix-primary);
+            background-color: var(--folix-bg-panel);
+        }
+        
+        /* ============================================
+           Mageplaza Social Login Popup
+           复用现有结构，只修改样式
+           ============================================ */
+        .white-popup {
+            background-color: var(--folix-bg-card);
+            border-radius: var(--folix-radius-lg);
+            box-shadow: var(--folix-shadow-lg);
+            max-width: 420px;
+            margin: 0 auto;
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        .mp-social-popup {
+            padding: 24px !important;
+        }
+        
+        .social-login-title h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--folix-text-primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .social-login .block-title {
+            margin-bottom: 16px;
+        }
+        
+        .social-login .fieldset {
+            margin-bottom: 16px;
+        }
+        
+        .social-login .field {
+            margin-bottom: 16px;
+        }
+        
+        .social-login .label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--folix-text-secondary);
+        }
+        
+        .social-login .input-text {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--folix-border);
+            border-radius: var(--folix-radius);
+            font-size: 14px;
+            transition: border-color var(--folix-transition-fast);
+        }
+        
+        .social-login .input-text:focus {
+            outline: none;
+            border-color: var(--folix-primary);
+        }
+        
+        .social-login .actions-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-top: 16px;
+        }
+        
+        .social-login .action.login.primary,
+        .social-login .action.create.primary {
+            flex: 1;
+            padding: 12px 24px;
+            background: var(--folix-gradient-primary);
+            color: white;
+            border: none;
+            border-radius: var(--folix-radius);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform var(--folix-transition-fast), box-shadow var(--folix-transition-fast);
+        }
+        
+        .social-login .action.login.primary:hover,
+        .social-login .action.create.primary:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--folix-shadow-primary);
+        }
+        
+        .social-login .action.remind,
+        .social-login .action.create,
+        .social-login .action.back {
+            font-size: 13px;
+            color: var(--folix-primary);
+        }
+        
+        /* Social Buttons Container */
+        #mp-popup-social-content {
+            padding: 24px;
+            border-left: 1px solid var(--folix-border);
+        }
+        
+        #mp-popup-social-content .block-title {
+            font-size: 13px;
+            color: var(--folix-text-secondary);
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .social-btn {
+            margin-bottom: 12px;
+        }
+        
+        .btn-social {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--folix-border);
+            border-radius: var(--folix-radius);
+            background-color: var(--folix-bg-card);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--folix-transition-fast);
+        }
+        
+        .btn-social:hover {
+            border-color: var(--folix-primary);
+            background-color: var(--folix-bg-panel);
+        }
+        
+        .btn-google {
+            color: #DB4437;
+        }
+        
+        .btn-facebook {
+            color: #1877F2;
+        }
+        
+        .fa {
+            font-style: normal;
+        }
+        
+        .fa-google::before { content: 'G'; font-weight: bold; }
+        .fa-facebook::before { content: 'f'; font-weight: bold; }
+        
+        /* ============================================
+           Mobile Navigation
+           ============================================ */
+        .mobile-nav-container {
+            display: none;
+        }
+        
+        /* ============================================
+           Demo Content
+           ============================================ */
+        .demo-content {
+            max-width: 1280px;
+            margin: 32px auto;
+            padding: 0 24px;
+        }
+        
+        .demo-section {
+            background-color: var(--folix-bg-card);
+            border-radius: var(--folix-radius-lg);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--folix-shadow);
+        }
+        
+        .demo-section h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        
+        .demo-card {
+            background-color: var(--folix-bg-panel);
+            border-radius: var(--folix-radius-md);
+            padding: 16px;
+        }
+        
+        .demo-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .demo-card p {
+            font-size: 13px;
+            color: var(--folix-text-secondary);
+            line-height: 1.6;
+        }
+        
+        .demo-card code {
+            display: block;
+            background-color: var(--folix-bg-dark);
+            color: var(--folix-text-on-dark);
+            padding: 8px 12px;
+            border-radius: var(--folix-radius);
+            font-size: 12px;
+            margin-top: 8px;
+            overflow-x: auto;
+        }
+        
+        /* ============================================
+           Responsive
+           ============================================ */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+            
+            .folix-nav-wrapper {
+                display: none;
+            }
+            
+            .block-search {
+                display: none;
+            }
+            
+            .header.content {
+                padding: 12px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ============================================
+         Page Header - 匹配现有 Magento 结构
+         ============================================ -->
+    <header class="page-header">
+        <!-- TOP BAR: .panel.wrapper -->
+        <div class="panel wrapper">
+            <div class="panel header">
+                <!-- 左侧链接 -->
+                <div class="header-links-left">
+                    <ul class="header-links-top">
+                        <li>
+                            <a href="/news/" title="Folix 新闻">
+                                <span class="link-icon">📰</span>
+                                <span>Folix 新闻</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/rewards/" title="STAR 奖励">
+                                <span class="link-icon">⭐</span>
+                                <span>STAR 奖励</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/support/" title="支持">
+                                <span class="link-icon">💬</span>
+                                <span>支持</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 右侧链接 -->
+                <div class="header-links-right">
+                    <!-- APP 下载 -->
+                    <a href="/app/" class="app-download-link" title="下载 Folix APP">
+                        <span>📱</span>
+                        <span>Folix.APP</span>
+                    </a>
+                    
+                    <!-- 语言切换 -->
+                    <div class="switcher language switcher-language" id="switcher-language">
+                        <strong class="label switcher-label"><span>Language</span></strong>
+                        <div class="actions dropdown options switcher-options">
+                            <div class="action toggle switcher-trigger" id="switcher-language-trigger">
+                                <strong class="view-default">
+                                    <span>English</span>
+                                </strong>
+                            </div>
+                            <ul class="dropdown switcher-dropdown">
+                                <li class="view-cn_zh switcher-option">
+                                    <a href="#">中文</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- 登录链接 (Mageplaza) -->
+                    <ul class="header links">
+                        <li class="link authorization-link" data-label="or">
+                            <a href="#social-login-popup" class="social-login-btn">Sign In</a>
+                        </li>
+                        <li>
+                            <a href="#social-login-popup" class="social-login-btn">Create an Account</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- MAIN BAR: .header.content -->
+        <div class="header content">
+            <!-- 移动端菜单按钮 -->
+            <span data-action="toggle-nav" class="action nav-toggle">
+                <span>Toggle Nav</span>
+            </span>
+            
+            <!-- Logo -->
+            <a class="logo" href="/" title="Folix" aria-label="store logo">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 170 40'%3E%3Ctext x='10' y='30' font-size='28' font-weight='bold' fill='%234A90E2'%3EFOLIX%3C/text%3E%3C/svg%3E" alt="Folix" width="170">
+            </a>
+            
+            <!-- 搜索框 -->
+            <div class="block block-search">
+                <div class="block block-title"><strong>Search</strong></div>
+                <div class="block block-content">
+                    <form class="form minisearch" id="search_mini_form" action="/catalogsearch/result/" method="get">
+                        <div class="field search">
+                            <label class="label" for="search"><span>Search</span></label>
+                            <div class="control">
+                                <input id="search" type="text" name="q" value="" placeholder="Search entire store here..." class="input-text" maxlength="128">
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <button type="submit" title="Search" class="action search" aria-label="Search">
+                                <span>Search</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- 购物车 -->
+            <div data-block="minicart" class="minicart-wrapper">
+                <a class="action showcart" href="/checkout/cart/">
+                    <span class="text">My Cart</span>
+                    <span class="counter qty empty">
+                        <span class="counter-number">0</span>
+                    </span>
+                </a>
+            </div>
+            
+            <!-- 导航菜单 -->
+            <div class="folix-nav-wrapper">
+                <nav class="navigation desktop-nav" data-action="navigation">
+                    <ul>
+                        <li class="level0 nav-1 category-item first level-top">
+                            <a href="/what-is-new.html" class="level-top"><span>What's New</span></a>
+                        </li>
+                        <li class="level0 nav-2 category-item level-top parent">
+                            <a href="/women.html" class="level-top">
+                                <span>Women</span>
+                                <span class="ui-menu-icon">▼</span>
+                            </a>
+                            <ul class="level0 submenu">
+                                <li class="level1"><a href="/women/tops-women.html"><span>Tops</span></a></li>
+                                <li class="level1"><a href="/women/bottoms-women.html"><span>Bottoms</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="level0 nav-3 category-item level-top parent">
+                            <a href="/men.html" class="level-top">
+                                <span>Men</span>
+                                <span class="ui-menu-icon">▼</span>
+                            </a>
+                            <ul class="level0 submenu">
+                                <li class="level1"><a href="/men/tops-men.html"><span>Tops</span></a></li>
+                                <li class="level1"><a href="/men/bottoms-men.html"><span>Bottoms</span></a></li>
+                            </ul>
+                        </li>
+                        <li class="level0 nav-4 category-item level-top">
+                            <a href="/gear.html" class="level-top"><span>Gear</span></a>
+                        </li>
+                        <li class="level0 nav-5 category-item level-top">
+                            <a href="/training.html" class="level-top"><span>Training</span></a>
+                        </li>
+                        <li class="level0 nav-6 category-item last level-top">
+                            <a href="/sale.html" class="level-top" style="color: var(--folix-secondary);"><span>Sale</span></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <!-- ============================================
+         Mageplaza Social Login Popup
+         复用现有结构
+         ============================================ -->
+    <div id="social-login-popup" class="white-popup mfp-with-anim mfp-hide" style="display: block; position: relative; margin: 40px auto;">
+        <div class="mp-social-popup" style="display: flex; padding: 0;">
+            <!-- 左侧：登录表单 -->
+            <div class="social-login block-container authentication" style="flex: 1;">
+                <div class="social-login-title">
+                    <h2 class="login-title">Sign In</h2>
+                </div>
+                <div class="block social-login-customer-authentication">
+                    <div class="block-content">
+                        <form class="form-customer-login" id="social-form-login">
+                            <fieldset class="fieldset login">
+                                <div class="field email required">
+                                    <label class="label" for="social_login_email"><span>Email</span></label>
+                                    <div class="control">
+                                        <input name="username" id="social_login_email" type="email" class="input-text" placeholder="Enter your email">
+                                    </div>
+                                </div>
+                                <div class="field password required">
+                                    <label for="pass" class="label"><span>Password</span></label>
+                                    <div class="control">
+                                        <input name="password" id="social_login_pass" type="password" class="input-text" placeholder="Enter your password">
+                                    </div>
+                                </div>
+                                <div class="actions-toolbar">
+                                    <div class="primary">
+                                        <button type="button" class="action login primary" id="bnt-social-login-authentication">
+                                            <span>Login</span>
+                                        </button>
+                                    </div>
+                                    <div class="secondary">
+                                        <a class="action remind" href="#"><span>Forgot Password?</span></a>
+                                    </div>
+                                </div>
+                                <div class="actions-toolbar">
+                                    <div class="primary">
+                                        <a class="action create" href="#"><span>Create New Account?</span></a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右侧：社交登录按钮 -->
+            <div id="mp-popup-social-content">
+                <div class="block social-login-authentication-channel">
+                    <div class="block-title">Or Sign In With</div>
+                    <div class="block-content">
+                        <div class="actions-toolbar social-btn google-login">
+                            <a class="btn btn-block btn-social btn-google">
+                                <span class="fa fa-google"></span>
+                                Sign in with Google
+                            </a>
+                        </div>
+                        <!-- 可以添加更多社交登录 -->
+                        <div class="actions-toolbar social-btn facebook-login">
+                            <a class="btn btn-block btn-social btn-facebook">
+                                <span class="fa fa-facebook"></span>
+                                Sign in with Facebook
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ============================================
+         Demo Content
+         ============================================ -->
+    <main class="demo-content">
+        <section class="demo-section">
+            <h2>✅ 重构建议：复用 Mageplaza 社交登录</h2>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h3>现有集成状态</h3>
+                    <p>Mageplaza 社交登录已完整集成：</p>
+                    <ul style="margin-top: 8px; padding-left: 16px; list-style: disc;">
+                        <li>登录/注册/忘记密码表单</li>
+                        <li>社交登录按钮 (Google)</li>
+                        <li>BroadcastChannel 通信</li>
+                        <li>表单验证</li>
+                    </ul>
+                </div>
+                <div class="demo-card">
+                    <h3>需要修改的部分</h3>
+                    <p>只需修改样式，不需要重写逻辑：</p>
+                    <ul style="margin-top: 8px; padding-left: 16px; list-style: disc;">
+                        <li>Top Bar 样式 (深蓝渐变)</li>
+                        <li>Main Bar 样式 (橙色边框)</li>
+                        <li>.social-login-btn 按钮样式</li>
+                        <li>#social-login-popup 弹窗样式</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section class="demo-section">
+            <h2>📋 现有 HTML 结构映射</h2>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h3>Top Bar 选择器</h3>
+                    <code>.panel.wrapper { background: @folix-gradient-dark; }
+.panel.header { display: flex; }
+.header-links-left { /* 左侧链接 */ }
+.header-links-right { /* 右侧链接 */ }
+.social-login-btn { /* 登录按钮 */ }</code>
+                </div>
+                <div class="demo-card">
+                    <h3>Main Bar 选择器</h3>
+                    <code>.header.content { border-bottom: 3px solid @folix-secondary; }
+.block-search { /* 搜索框 */ }
+.minicart-wrapper { /* 购物车 */ }
+.folix-nav-wrapper { /* 导航 */ }</code>
+                </div>
+            </div>
+        </section>
+        
+        <section class="demo-section">
+            <h2>🎨 Mageplaza 弹窗样式覆盖</h2>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h3>弹窗容器</h3>
+                    <code>#social-login-popup {
+  background: @folix-bg-card;
+  border-radius: @folix-radius-lg;
+  box-shadow: @folix-shadow-lg;
+}
+.mp-social-popup {
+  display: flex;
+}</code>
+                </div>
+                <div class="demo-card">
+                    <h3>社交按钮</h3>
+                    <code>#mp-popup-social-content {
+  border-left: 1px solid @folix-border;
+}
+.btn-social {
+  border: 1px solid @folix-border;
+  border-radius: @folix-radius;
+}</code>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

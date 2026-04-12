@@ -1,0 +1,129 @@
+<?php
+/**
+ * Folix Game Theme - Mobile Navigation Footer
+ * 
+ * 移动端导航底部区域：语言 + 货币 + 登录
+ * 
+ * @var $block \Magento\Framework\View\Element\Template
+ */
+?>
+<div class="mobile-nav-footer">
+    <!-- 分隔线 -->
+    <div class="mobile-nav-divider"></div>
+    
+    <!-- 语言切换 -->
+    <div class="mobile-nav-section mobile-nav-language">
+        <div class="mobile-nav-section-header" data-toggle="language-dropdown">
+            <span class="icon">🌐</span>
+            <span class="label"><?= $block->escapeHtml(__('Language')) ?></span>
+            <span class="value" id="mobile-current-language">中文</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="mobile-nav-section-content" id="language-dropdown">
+            <?php 
+            // 获取语言切换块
+            $languageBlock = $block->getLayout()->getBlock('store_language');
+            if ($languageBlock) {
+                echo $languageBlock->toHtml();
+            }
+            ?>
+        </div>
+    </div>
+    
+    <!-- 货币切换 -->
+    <div class="mobile-nav-section mobile-nav-currency">
+        <div class="mobile-nav-section-header" data-toggle="currency-dropdown">
+            <span class="icon">💰</span>
+            <span class="label"><?= $block->escapeHtml(__('Currency')) ?></span>
+            <span class="value" id="mobile-current-currency">CNY ¥</span>
+            <span class="arrow">▼</span>
+        </div>
+        <div class="mobile-nav-section-content" id="currency-dropdown">
+            <?php 
+            // 获取货币切换块
+            $currencyBlock = $block->getLayout()->getBlock('currency');
+            if ($currencyBlock) {
+                echo $currencyBlock->toHtml();
+            }
+            ?>
+        </div>
+    </div>
+    
+    <!-- 分隔线 -->
+    <div class="mobile-nav-divider"></div>
+    
+    <!-- 登录/注册 -->
+    <div class="mobile-nav-auth">
+        <?php 
+        // 获取登录状态
+        $customerSession = \Magento\Framework\App\ObjectManager::getInstance()
+            ->get(\Magento\Customer\Model\Session::class);
+        
+        if ($customerSession->isLoggedIn()):
+            // 已登录
+            $customerName = $customerSession->getCustomer()->getName();
+        ?>
+            <div class="mobile-nav-user">
+                <span class="icon">👤</span>
+                <span class="name"><?= $block->escapeHtml($customerName) ?></span>
+            </div>
+            <a href="<?= $block->getUrl('customer/account/logout') ?>" class="mobile-nav-link mobile-nav-logout">
+                <?= $block->escapeHtml(__('Sign Out')) ?>
+            </a>
+        <?php else: ?>
+            <!-- 未登录：显示登录/注册按钮 -->
+            <a href="#social-login-popup" class="mobile-nav-btn mobile-nav-login social-login-btn">
+                <span class="icon">👤</span>
+                <span><?= $block->escapeHtml(__('Sign In')) ?></span>
+            </a>
+            <a href="#social-login-popup" class="mobile-nav-btn mobile-nav-register social-login-btn">
+                <?= $block->escapeHtml(__('Create an Account')) ?>
+            </a>
+        <?php endif; ?>
+    </div>
+</div>
+
+<script>
+    // 手风琴交互
+    require(['jquery'], function($) {
+        'use strict';
+        
+        $(document).ready(function() {
+            // 语言/货币切换手风琴
+            $('.mobile-nav-section-header').on('click', function(e) {
+                e.preventDefault();
+                var $header = $(this);
+                var $section = $header.closest('.mobile-nav-section');
+                var $content = $section.find('.mobile-nav-section-content');
+                var isOpen = $section.hasClass('open');
+                
+                // 关闭其他打开的区域
+                $('.mobile-nav-section.open').not($section).removeClass('open')
+                    .find('.mobile-nav-section-content').slideUp(200);
+                
+                // 切换当前区域
+                if (isOpen) {
+                    $section.removeClass('open');
+                    $content.slideUp(200);
+                } else {
+                    $section.addClass('open');
+                    $content.slideDown(200);
+                }
+            });
+            
+            // 更新当前语言显示
+            var $currentLang = $('#mobile-current-language');
+            var langText = $('.switcher-language .switcher-trigger span').first().text();
+            if (langText) {
+                $currentLang.text(langText);
+            }
+            
+            // 更新当前货币显示
+            var $currentCurrency = $('#mobile-current-currency');
+            var currencyText = $('.switcher-currency .switcher-trigger span').first().text();
+            if (currencyText) {
+                $currentCurrency.text(currencyText);
+            }
+        });
+    });
+</script>
