@@ -147,11 +147,10 @@ class Data extends AbstractHelper
                 return base64_encode($jsonData);
             }
 
-            // 规范化密钥为32字节（AES-256）
-            $normalizedKey = $this->normalizeKey($key);
-
-            // 随机生成长16字节的初始向量iv（每次加密都不同）
-            $iv = random_bytes(16);
+           // 2. 随机生成 16 字节的初始向量 (IV)
+            // openssl_cipher_iv_length($method) 会自动返回 16，写死也可以，但动态获取更严谨
+            $ivLength = openssl_cipher_iv_length(static::ENCRYPT_METHOD);
+            $iv = openssl_random_pseudo_bytes($ivLength);
 
             // 使用AES-256-CBC加密，OPENSSL_RAW_DATA表示不自动base64编码
           //  var_dump(static::ENCRYPT_METHOD, $normalizedKey, $iv);exit;
@@ -195,29 +194,6 @@ class Data extends AbstractHelper
         }
     }
 
-    /**
-     * 规范化密钥为32字节（AES-256）
-     *
-     * @param string $key
-     * @return string
-     */
-    private function normalizeKey(string $key): string
-    {
-        // 如果密钥正好32字节，直接返回
-        if (strlen($key) === 32) {
-            return $key;
-        }
-
-        // 如果密钥超过32字节，截断
-        if (strlen($key) > 32) {
-            $this->_logger->warning('Key is longer than 32 bytes, truncating', ['original_length' => strlen($key)]);
-            return substr($key, 0, 32);
-        }
-
-        // 如果密钥少于32字节，用零填充
-        $this->_logger->warning('Key is shorter than 32 bytes, padding', ['original_length' => strlen($key)]);
-        return str_pad($key, 32, "\0");
-    }
 
     /**
      * 解密响应数据（按照API文档的规范）
@@ -243,10 +219,7 @@ class Data extends AbstractHelper
                 $this->_logger->warning('Secret Key is not configured, attempting base64 decode');
                 return $this->json->unserialize(base64_decode($encryptedData));
             }
-
-            // 规范化密钥为32字节（AES-256）
-            $normalizedKey = $this->normalizeKey($key);
-
+ 
             // 第一步：将data密文进行base64解码，得到JSON
             $jsonPayload = base64_decode($encryptedData);
 
@@ -276,8 +249,8 @@ class Data extends AbstractHelper
             // 第五步：使用key和iv，对encryptedString进行AES-256-CBC解密
             $decrypted = openssl_decrypt(
                 $encryptedString,
-                'AES-256-CBC',
-                $normalizedKey,
+                static::ENCRYPT_METHOD,
+                $key,
                 OPENSSL_RAW_DATA,
                 $iv
             );
@@ -288,7 +261,7 @@ class Data extends AbstractHelper
 
             $data = $this->json->unserialize($decrypted);
 
-            $this->_logger->info('Response data decrypted successfully', ['method' => 'AES-256-CBC']);
+            $this->_logger->info('Response data decrypted successfully', ['method' => static::ENCRYPT_METHOD]);
 
             return is_array($data) ? $data : [];
 
