@@ -14,37 +14,9 @@ $columnsLimit = $block->getColumnsLimit() ?: 0;
 $_menuHtml = $block->getHtml('level-top', 'submenu', $columnsLimit)
 ?>
 
-<!-- ============================================
-     PC 端导航（保持原生）
-     ============================================ -->
 <nav class="navigation" data-action="navigation">
-    <ul data-mage-init='{"menu":{"responsive":true, "expanded":true, "position":{"my":"left top","at":"left bottom"}}}'>
+    <ul >
         <?= /* @noEscape */ $_menuHtml?>
         <?= $block->getChildHtml() ?>
     </ul>
 </nav>
-
-<!-- ============================================
-     移动端侧滑导航抽屉（新增）
-     ============================================ -->
-<div class="mobile-sidebar">
-    <!-- 顶部：品牌标识 + 关闭按钮 -->
-    <div class="mobile-sidebar-header">
-        <?= $block->getChildHtml('mobile.nav.header') ?>
-    </div>
-
-    <!-- 中间：导航菜单 -->
-    <div class="mobile-sidebar-content">
-        <nav class="navigation" data-action="navigation">
-            <ul data-mage-init='{"menu":{"responsive":false, "expanded":false}}'>
-                <?= /* @noEscape */ $_menuHtml?>
-            </ul>
-        </nav>
-    </div>
-
-    <!-- 底部：搜索 + 用户信息 -->
-    <div class="mobile-sidebar-footer">
-        <?= $block->getChildHtml('mobile.nav.search') ?>
-        <?= $block->getChildHtml('mobile.nav.footer') ?>
-    </div>
-</div>

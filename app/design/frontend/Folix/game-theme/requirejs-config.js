@@ -39,10 +39,9 @@ var config = {
         }
     },
 
-    // 页面加载时自动执行的模块
+    // 页面加载时自动执行的模块（可选）
     deps: [
-        'Magento_Theme/js/header',
-        'Magento_Theme/js/mobile-header',
-        'Magento_Theme/js/mobile-nav'
+        // 自动加载导航初始化脚本
+        'Magento_Theme/js/navigation-init'
     ]
 };
