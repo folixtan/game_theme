@@ -91,62 +91,15 @@
     }
 
     //
-    //  Header
+    //  Header (已迁移到 _header.less 统一管理)
     //  _____________________________________________
 
-    .page-header {
-        .lib-css(background-color, @header__background-color);
-        border-bottom: 1px solid @border-color__base;
-        margin-bottom: @indent__base;
-
-        .panel.wrapper {
-            .lib-css(background-color, @header-panel__background-color);
-            .lib-css(color, @header-panel__text-color);
-        }
-    }
+    //  Header 样式已移至 /css/source/_header.less
+    //  以下保留 logo 基础布局样式
 
     .header.panel {
-        > .header.links {
-            .lib-list-inline();
-            float: right;
-            font-size: 0;
-            margin-left: auto;
-            margin-right: @indent__base;
-
-            > li {
-                font-size: @font-size__base;
-                margin: 0 0 0 15px;
-
-                &.customer-welcome {
-                    margin: 0 0 0 5px;
-                }
-
-                > a {
-                    .lib-link(
-                        @_link-color: @header-panel__text-color,
-                        @_link-text-decoration: none,
-                        @_link-color-visited: @header-panel__text-color,
-                        @_link-text-decoration-visited: none,
-                        @_link-color-hover: @header-panel__text-color,
-                        @_link-text-decoration-hover: underline,
-                        @_link-color-active: @header-panel__text-color,
-                        @_link-text-decoration-active: underline
-                    );
-                }
-            }
-        }
+        //  Panel 样式已移至 _header.less
     }
-
-    .header {
-        &.content:extend(.abs-add-clearfix all) {
-            padding-top: @indent__s;
-            position: relative;
-        }
-    }
-   .panel.header > .header.links
-       {
-          display:none;
-       }
     .logo {
         float: left;
         margin: 0 0 @indent__s @indent__xl;
