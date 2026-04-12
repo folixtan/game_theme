@@ -3,12 +3,23 @@
 /**
  * Folix Game Theme - Customer Module Layout
  *
- * 移动 header.links 到 folix.top.right
- * header.links 包含登录、注册、客户菜单
+ * 电竞风定制 - Customer 模块布局
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
+        <!-- 更新 Authorization Link 模板 -->
+        <referenceBlock name="authorization-link" template="Magento_Customer::account/link/authorization.phtml"/>
+
+        <!-- 更新 Customer Block 模板 -->
+        <referenceBlock name="customer" template="Magento_Customer::account/customer.phtml"/>
+
+        <!-- 更新 Authentication Popup 模板 -->
+        <referenceBlock name="authentication-popup" template="Magento_Customer::account/authentication-popup.phtml"/>
+
+        <!-- 更新 Account Navigation 模板 -->
+        <referenceBlock name="customer_account_navigation" template="Magento_Customer::account/navigation.phtml"/>
+
         <!-- 移动 header.links 到 folix.top.right -->
         <move element="header.links" destination="folix.top.right" after="store_language" />
     </body>

@@ -1,0 +1,19 @@
+<?php
+/**
+ * Folix Game Theme - Customer Account Navigation
+ *
+ * 电竞风定制 - 账户导航菜单
+ */
+?>
+<div class="block account-nav folix-account-nav">
+    <div class="title folix-account-nav-title">
+        <strong><?= $block->escapeHtml(__('My Account')) ?></strong>
+    </div>
+    <div class="content folix-account-nav-content">
+        <nav class="account-nav">
+            <ul class="nav items folix-account-nav-list">
+                <?= $block->getChildHtml() ?>
+            </ul>
+        </nav>
+    </div>
+</div>

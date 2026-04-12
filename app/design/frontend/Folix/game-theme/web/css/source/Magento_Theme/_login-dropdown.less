@@ -1,12 +1,12 @@
 // /**
 //  * Folix Game Theme - Login Dropdown Styles
-//  * 
+//  *
 //  * 模块：Magento_Customer
-//  * 位置：Magento_Customer/web/css/source/extend/_login-dropdown.less
-//  * 
+//  * 位置：Magento_Customer/web/css/source/Magento_Theme/_login-dropdown.less
+//  *
 //  * 设计理念：
 //  * - 扁平化设计，卡片风格
-//  * - 游戏时尚感：渐变色装饰、圆角、微阴影
+//  * - 电竞风格：金色渐变、深色背景、微阴影
 //  * - 登录/注册切换动画
 //  * - 第三方登录（Google、Facebook）
 //  */
@@ -16,34 +16,35 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-    
+
     //
     //  Login Dropdown Wrapper - 相对定位容器
     //  _____________________________________________
-    
+
     .login-dropdown-wrapper {
         position: relative;
         display: inline-block;
     }
-    
+
     //
     //  Login Trigger Button
     //  _____________________________________________
-    
+
     .login-dropdown-wrapper .login-trigger {
         display: flex;
         align-items: center;
         gap: 8px;
         padding: 8px 16px;
-        background: @folix-secondary;
+        background: @folix-gradient-gold;
         color: @folix-text-on-gold;
         border: none;
-        border-radius: @folix-radius;
+        border-radius: @folix-radius-md;
         font-size: 14px;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
         user-select: none;
+        box-shadow: @folix-shadow-sm;
 
         .login-icon {
             display: flex;
@@ -62,15 +63,15 @@
 
         &:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.3);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.3);
         }
     }
 
     .login-dropdown-wrapper .login-trigger:hover {
-        background: @folix-secondary-dark;
+        background: @folix-btn-primary-hover-bg;
         color: @folix-text-on-gold;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        box-shadow: @folix-btn-primary-shadow;
 
         .login-text {
             color: @folix-text-on-gold;
@@ -78,7 +79,7 @@
     }
 
     .login-dropdown-wrapper .login-trigger.active {
-        background: @folix-secondary-dark;
+        background: @folix-btn-primary-hover-bg;
         color: @folix-text-on-gold;
 
         .login-text {
@@ -97,256 +98,239 @@
         width: 380px;
         background: @folix-bg-panel;
         border-radius: @folix-radius-lg;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-        overflow: hidden;
-        z-index: 100;
-        pointer-events: none;
+        border: 1px solid @folix-border;
+        box-shadow: @folix-shadow-xl;
         opacity: 0;
-        transform: translateY(-10px);
         visibility: hidden;
+        transform: translateY(-10px);
         transition: all 0.3s ease;
-        
-        &.open {
+        z-index: @folix-z-dropdown;
+
+        &.active {
             opacity: 1;
-            transform: translateY(0);
             visibility: visible;
-            pointer-events: auto;
+            transform: translateY(0);
         }
-        
+
+        // 顶部装饰条
         .dropdown-decoration {
             height: 4px;
-            background: linear-gradient(90deg, @folix-primary 0%, @folix-secondary 100%);
+            background: @folix-gradient-gold;
+            border-radius: @folix-radius-lg @folix-radius-lg 0 0;
         }
-        
+
+        // 标签切换
         .dropdown-tabs {
             display: flex;
-            border-bottom: 1px solid @folix-border-light;
-            
+            border-bottom: 1px solid @folix-border;
+
             .dropdown-tab {
                 flex: 1;
-                padding: 16px;
+                padding: 14px 16px;
                 background: transparent;
                 border: none;
-                font-size: 14px;
-                font-weight: 600;
-                color: @folix-text-tertiary;
+                color: @folix-text-secondary;
+                font-size: 15px;
+                font-weight: @font-weight__semibold;
                 cursor: pointer;
-                position: relative;
                 transition: all 0.3s ease;
-                
-                &:hover {
-                    color: @folix-text-primary;
-                    background: @folix-bg-page;
-                }
-                
+                position: relative;
+
                 &.active {
                     color: @folix-secondary;
-                    background: #FFFFFF;
-                    
-                    &:after {
+
+                    &::after {
                         content: '';
                         position: absolute;
                         bottom: 0;
-                        left: 50%;
-                        transform: translateX(-50%);
-                        width: 40px;
+                        left: 0;
+                        width: 100%;
                         height: 3px;
                         background: @folix-secondary;
-                        border-radius: 3px 3px 0 0;
+                        border-radius: 2px 2px 0 0;
                     }
+                }
+
+                &:hover {
+                    color: @folix-text-primary;
                 }
             }
         }
-        
+
+        // 内容区域
         .dropdown-content {
             padding: 24px;
-        }
-        
-        .dropdown-panel {
-            display: none;
-            animation: fadeIn 0.3s ease;
-            
-            &.active {
-                display: block;
+
+            .dropdown-panel {
+                display: none;
+
+                &.active {
+                    display: block;
+                }
             }
         }
-        
+
+        // 输入框组
         .field-group {
-            position: relative;
-            margin-bottom: 20px;
-            
+            margin-bottom: 16px;
+
             .input-field {
                 width: 100%;
                 padding: 12px 16px;
-                background: @folix-bg-page;
-                border: 2px solid transparent;
-                border-radius: @folix-radius;
-                font-size: 14px;
+                background: @folix-input-bg;
+                border: 1px solid @folix-input-border;
+                border-radius: @folix-radius-md;
                 color: @folix-text-primary;
+                font-size: 14px;
                 transition: all 0.3s ease;
-                
+                box-sizing: border-box;
+
                 &:focus {
+                    border-color: @folix-secondary;
+                    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
                     outline: none;
-                    border-color: @folix-primary;
-                    background: #FFFFFF;
-                    box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.1);
                 }
-                
+
                 &::placeholder {
-                    color: @folix-text-light;
+                    color: @folix-input-placeholder;
                 }
             }
-            
+
             .field-label {
-                display: none;
+                display: block;
+                margin-bottom: 8px;
+                color: @folix-text-secondary;
+                font-size: 14px;
+                font-weight: @font-weight__semibold;
             }
         }
-        
-        .field-row {
-            display: flex;
-            gap: 12px;
-            
-            .field-group {
-                flex: 1;
-            }
-        }
-        
+
+        // 选项区域
         .field-options {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 20px;
-            
+            margin-bottom: 16px;
+
             .forgot-link {
+                color: @folix-secondary;
                 font-size: 13px;
-                color: @folix-primary;
                 text-decoration: none;
-                transition: color 0.3s ease;
-                
+                transition: all 0.3s ease;
+
                 &:hover {
-                    color: @folix-secondary;
-                    text-decoration: underline;
+                    color: @folix-secondary-dark;
                 }
             }
         }
-        
-        .btn-primary {
+
+        // 按钮
+        .btn-primary.btn-login {
             width: 100%;
-            padding: 12px 24px;
-            background: @folix-btn-primary-bg;
-            color: @folix-btn-primary-text;
+            padding: 14px 24px;
+            background: @folix-gradient-gold;
+            color: @folix-text-on-gold;
             border: none;
-            border-radius: @folix-radius;
-            font-size: 14px;
-            font-weight: 600;
+            border-radius: @folix-radius-md;
+            font-size: 15px;
+            font-weight: @font-weight__bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             cursor: pointer;
             transition: all 0.3s ease;
 
             &:hover {
+                background: @folix-btn-primary-hover-bg;
                 transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+                box-shadow: @folix-btn-primary-shadow;
             }
 
             &:active {
                 transform: translateY(0);
             }
         }
-        
+
+        // 第三方登录
         .social-login {
-            margin-top: 24px;
-            
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid @folix-border;
+
             .social-divider {
-                display: flex;
-                align-items: center;
+                text-align: center;
                 margin-bottom: 16px;
-                
-                &:before,
-                &:after {
-                    content: '';
-                    flex: 1;
-                    height: 1px;
-                    background: @folix-border-light;
-                }
-                
+                position: relative;
+
                 span {
-                    padding: 0 16px;
-                    font-size: 12px;
-                    color: @folix-text-tertiary;
-                    text-transform: uppercase;
+                    color: @folix-text-secondary;
+                    font-size: 13px;
+                    position: relative;
+                    padding: 0 12px;
+                    background: @folix-bg-panel;
+
+                    &::before,
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        width: 60px;
+                        height: 1px;
+                        background: @folix-border;
+                    }
+
+                    &::before {
+                        left: -70px;
+                    }
+
+                    &::after {
+                        right: -70px;
+                    }
                 }
             }
-            
+
             .social-buttons {
                 display: flex;
-                gap: 12px;
-                
+                flex-direction: column;
+                gap: 10px;
+
                 .btn-social {
-                    flex: 1;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    gap: 8px;
-                    padding: 10px 16px;
-                    background: @folix-bg-page;
-                    border: 1px solid @folix-border-light;
-                    border-radius: @folix-radius;
-                    font-size: 13px;
-                    font-weight: 500;
+                    gap: 12px;
+                    padding: 12px 16px;
+                    background: @folix-bg-card;
+                    border: 1px solid @folix-border;
+                    border-radius: @folix-radius-md;
                     color: @folix-text-primary;
+                    font-size: 14px;
+                    font-weight: @font-weight__semibold;
                     cursor: pointer;
                     transition: all 0.3s ease;
-                    
-                    svg {
-                        width: 18px;
-                        height: 18px;
-                    }
-                    
+                    text-decoration: none;
+
                     &:hover {
-                        background: #FFFFFF;
-                        transform: translateY(-1px);
-                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                        background: @folix-bg-hover;
+                        border-color: @folix-secondary;
+                        color: @folix-secondary;
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
                     }
-                    
-                    &.btn-google:hover {
-                        border-color: #4285F4;
-                        color: #4285F4;
+
+                    svg {
+                        width: 20px;
+                        height: 20px;
                     }
-                    
-                    &.btn-facebook:hover {
-                        border-color: #1877F2;
-                        color: #1877F2;
+
+                    &.btn-google {
+                        border-left: 3px solid #4285F4;
+                    }
+
+                    &.btn-facebook {
+                        border-left: 3px solid #1877F2;
                     }
                 }
             }
         }
-    }
-}
-
-//
-//  Animations
-//  _____________________________________________
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-//
-//  Desktop (≥ 768px)
-//  _____________________________________________
-
-.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-    .login-dropdown {
-        width: 400px;
-    }
-    
-    .login-dropdown-wrapper {
-        order: 4;
     }
 }
 
@@ -355,205 +339,8 @@
 //  _____________________________________________
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-    .login-trigger {
-        padding: 6px 12px;
-        
-        .login-text {
-            display: none;
-        }
-    }
-    
     .login-dropdown {
-        position: fixed;
-        top: auto;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        border-radius: @folix-radius-lg @folix-radius-lg 0 0;
-        max-height: 90vh;
-        overflow-y: auto;
-        transform: translateY(100%);
-        
-        &.open {
-            transform: translateY(0);
-        }
-    }
-}
-
-//
-//  Login Overlay (Mobile)
-//  _____________________________________________
-
-.login-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 99;
-    animation: fadeIn 0.3s ease;
-}
-
-//
-//  Login Modal - 原生 mage.modal 适配
-//  用于 checkout sidebar 等使用原生 modal 的场景
-//  _____________________________________________
-
-.login-modal-container {
-    .modal-inner-wrap {
-        max-width: 500px;
-        border-radius: @folix-radius-lg;
-        overflow: hidden;
-        box-shadow: @folix-popup-shadow;
-    }
-
-    .modal-title {
-        display: none; // 隐藏原生标题，使用自定义 tabs
-    }
-
-    .modal-content {
-        padding: 0;
-    }
-
-    // Tabs
-    .modal-tabs {
-        display: flex;
-        background: @folix-bg-page;
-        border-bottom: 1px solid @folix-border-light;
-
-        .modal-tab {
-            flex: 1;
-            padding: @folix-space-4;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-weight: 600;
-            color: @folix-text-tertiary;
-            transition: @folix-transition-smooth;
-
-            &:hover {
-                color: @folix-text-primary;
-                background: @folix-bg-hover;
-            }
-
-            &.active {
-                background: @folix-bg-card;
-                color: @folix-secondary;
-                position: relative;
-                
-                &:after {
-                    content: '';
-                    position: absolute;
-                    bottom: 0;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    width: 40px;
-                    height: 3px;
-                    background: @folix-secondary;
-                    border-radius: 3px 3px 0 0;
-                }
-            }
-        }
-    }
-
-    // Panels
-    .modal-panel {
-        display: none;
-        padding: @folix-space-6;
-        animation: fadeIn 0.3s ease;
-
-        &.active {
-            display: block;
-        }
-    }
-
-    // Forms
-    .form-login,
-    .form-register {
-        .field {
-            margin-bottom: @folix-space-5;
-            position: relative;
-
-            .label {
-                display: block;
-                margin-bottom: @folix-space-2;
-                font-weight: 600;
-                color: @folix-text-primary;
-            }
-
-            .control {
-                input.input-text {
-                    width: 100%;
-                    padding: @folix-space-3 @folix-space-4;
-                    background: @folix-bg-page;
-                    border: 2px solid transparent;
-                    border-radius: @folix-radius;
-                    font-size: 14px;
-                    color: @folix-input-text;
-                    transition: @folix-transition-smooth;
-
-                    &:focus {
-                        outline: none;
-                        border-color: @folix-input-focus-border;
-                        background: @folix-bg-card;
-                        box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.1);
-                    }
-
-                    &::placeholder {
-                        color: @folix-input-placeholder;
-                    }
-                }
-            }
-        }
-
-        .actions-toolbar {
-            margin-top: @folix-space-6;
-            display: flex;
-            flex-direction: column;
-            gap: @folix-space-4;
-
-            .primary {
-                .action.login,
-                .action.register {
-                    width: 100%;
-                    padding: @folix-space-3 @folix-space-6;
-                    background: @folix-btn-primary-bg;
-                    color: @folix-btn-primary-text;
-                    border: none;
-                    border-radius: @folix-radius;
-                    font-size: 14px;
-                    font-weight: 600;
-                    cursor: pointer;
-                    transition: @folix-transition-smooth;
-
-                    &:hover {
-                        transform: translateY(-2px);
-                        box-shadow: @folix-btn-primary-shadow;
-                    }
-
-                    &:active {
-                        transform: translateY(0);
-                    }
-                }
-            }
-
-            .secondary {
-                text-align: center;
-
-                .action.remind {
-                    font-size: 13px;
-                    color: @folix-primary;
-                    text-decoration: none;
-                    transition: @folix-transition;
-
-                    &:hover {
-                        color: @folix-secondary;
-                        text-decoration: underline;
-                    }
-                }
-            }
-        }
+        width: 320px;
+        right: -20px;
     }
 }

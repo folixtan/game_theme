@@ -58,44 +58,31 @@
         
         <!-- =================================================================
              MAIN BAR - 主导航栏
-             白色背景，底部橙色边框3px
              Logo | 导航 | 搜索 | 登录按钮
-             
-             移动端重构：
-             1. 删除navigation.sections（标签页导航）
-             2. PC端菜单和移动端菜单分离
+
+             统一导航方案：
+             1. 删除 navigation.sections（原生标签页导航）
+             2. 使用一套导航（catalog.topnav）
+             3. PC 端和移动端通过 CSS 控制显示方式
              ================================================================= -->
-        
+
         <!-- 删除原生标签页导航 -->
         <referenceBlock name="navigation.sections" remove="true" />
-        
+
         <!-- 移动搜索框到正确位置 -->
         <move element="top.search" destination="header-wrapper" before="minicart" />
-        
-        <!-- PC端导航菜单 -->
-        <referenceContainer name="header-wrapper">
-            <container name="folix.nav.container" htmlTag="div" htmlClass="folix-nav-wrapper" before="top.search">
-                <block class="Magento\Theme\Block\Html\Topmenu" name="folix.topmenu" template="Magento_Theme::html/topmenu.phtml">
-                    <arguments>
-                        <argument name="css_class" xsi:type="string">desktop-nav</argument>
-                    </arguments>
-                </block>
-            </container>
-        </referenceContainer>
 
-        <!-- 移动端导航菜单（独立容器） -->
+        <!-- 统一导航（PC 端水平导航 + 移动端侧边栏导航） -->
         <referenceContainer name="page.top">
-            <container name="mobile.nav.container" label="Mobile Navigation Container" htmlTag="div" htmlClass="mobile-nav-container" after="header.container">
-                <!-- Logo 和关闭按钮 -->
-                <block class="Magento\Framework\View\Element\Template" name="mobile.nav.header" template="Magento_Theme::html/header/mobile-nav-header.phtml" before="-" />
-
-                <!-- 主菜单 - 使用原生模板，不启用 menu widget -->
-                <block class="Magento\Theme\Block\Html\Topmenu" name="mobile.catalog.topnav" template="Magento_Theme::html/topmenu.phtml" after="mobile.nav.header">
-                    <arguments>
-                        <argument name="css_class" xsi:type="string">mobile-nav</argument>
-                    </arguments>
-                </block>
-            </container>
+            <block class="Magento\Theme\Block\Html\Topmenu"
+                   name="catalog.topnav"
+                   template="Magento_Theme::html/topmenu.phtml"
+                   ttl="3600"
+                   before="-">
+                <arguments>
+                    <argument name="css_class" xsi:type="string">folix-unified-nav</argument>
+                </arguments>
+            </block>
         </referenceContainer>
 
         
@@ -103,6 +90,30 @@
    
         <!-- Body Class -->
         <attribute name="body" value="folix-theme" />
-        
+
+        <!-- =================================================================
+             JAVASCRIPT - 移动端导航交互
+             ================================================================= -->
+
+        <referenceBlock name="requirejs">
+            <arguments>
+                <argument name="config" xsi:type="array">
+                    <item name="map" xsi:type="array">
+                        <item name="*" xsi:type="array">
+                            <item name="mobileNavigation" xsi:type="string">Folix/game-theme/js/mobile-navigation</item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+
+        <!-- =================================================================
+             MOBILE NAVIGATION OVERLAY - 导航遮罩层
+             ================================================================= -->
+
+        <referenceContainer name="after.body.start">
+            <block class="Magento\Framework\View\Element\Template" name="mobile.nav.overlay" template="Magento_Theme::html/nav-overlay.phtml" />
+        </referenceContainer>
+
     </body>
 </page>

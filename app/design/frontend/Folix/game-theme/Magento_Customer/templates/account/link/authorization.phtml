@@ -1,0 +1,20 @@
+<?php
+/**
+ * Folix Game Theme - Authorization Link
+ *
+ * 电竞风定制 - 登录按钮
+ */
+$dataPostParam = '';
+if ($block->isLoggedIn()) {
+    $dataPostParam = sprintf(" data-post='%s'", $block->getPostParams());
+}
+?>
+<li class="link authorization-link folix-auth-link" data-label="<?= $escaper->escapeHtml(__('or')) ?>">
+    <a <?= /* @noEscape */ $block->getLinkAttributes() ?>
+       <?= /* @noEscape */ $dataPostParam ?>>
+        <svg class="folix-user-icon" width="18" height="18" viewBox="0 0 18 18">
+            <path d="M9 9C11.21 9 13 7.21 13 5C13 2.79 11.21 1 9 1C6.79 1 5 2.79 5 5C5 7.21 6.79 9 9 9ZM9 11C6.33 11 1 12.34 1 15V17H17V15C17 12.34 11.67 11 9 11Z" fill="currentColor"/>
+        </svg>
+        <span><?= $escaper->escapeHtml($block->getLabel()) ?></span>
+    </a>
+</li>

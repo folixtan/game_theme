@@ -1,0 +1,46 @@
+<?php
+/**
+ * Folix Game Theme - Customer Block
+ *
+ * 电竞风定制 - 登录后下拉菜单
+ */
+?>
+<?php if ($block->customerLoggedIn()) : ?>
+    <li class="customer-welcome folix-customer-welcome">
+        <span class="customer-name"
+              role="link"
+              tabindex="0"
+              data-mage-init='{"dropdown":{}}'
+              data-toggle="dropdown"
+              data-trigger-keypress-button="true"
+              data-bind="scope: 'customer'">
+            <button type="button"
+                    class="action switch folix-customer-btn"
+                    tabindex="-1"
+                    data-action="customer-menu-toggle">
+                <span><?= $block->escapeHtml(__('Account')) ?></span>
+                <svg class="folix-dropdown-icon" width="12" height="12" viewBox="0 0 12 12">
+                    <path d="M6 8L1 3h10L6 8z" fill="currentColor"/>
+                </svg>
+            </button>
+        </span>
+        <script type="text/x-magento-init">
+        {
+            "*": {
+                "Magento_Ui/js/core/app": {
+                    "components": {
+                        "customer": {
+                            "component": "Magento_Customer/js/view/customer"
+                        }
+                    }
+                }
+            }
+        }
+        </script>
+        <?php if ($block->getChildHtml()) :?>
+            <div class="customer-menu folix-customer-dropdown" data-target="dropdown">
+                <?= $block->getChildHtml() ?>
+            </div>
+        <?php endif; ?>
+    </li>
+<?php endif; ?>
