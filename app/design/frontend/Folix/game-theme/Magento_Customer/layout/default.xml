@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Folix Game Theme - Customer Module Layout
+ *
+ * 处理 authorization-link：
+ * - 移动到 header-wrapper
+ * - 覆盖模板（在 templates 目录）
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- 移动 authorization-link 到 header-wrapper -->
+        <move element="authorization-link" destination="header-wrapper" after="minicart" />
+    </body>
+</page>

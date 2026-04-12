@@ -1,0 +1,26 @@
+<?php
+/**
+ * Folix Game Theme - Authorization Link
+ *
+ * 自定义登录/注册链接模板
+ * 输出: <a> 链接（不带 <li>）
+ *
+ * @var \Magento\Customer\Block\Account\AuthorizationLink $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<?php
+$dataPostParam = '';
+if ($block->isLoggedIn()) {
+    $dataPostParam = sprintf(" data-post='%s'", $block->getPostParams());
+}
+?>
+<a class="authorization-link" <?= /* @noEscape */ $block->getLinkAttributes() ?> <?= /* @noEscape */ $dataPostParam ?>>
+    <span class="login-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+    </span>
+    <span class="login-text"><?= $escaper->escapeHtml($block->getLabel()) ?></span>
+</a>

@@ -1,0 +1,82 @@
+// /**
+//  * Folix Game Theme - Authorization Link Styles
+//  *
+//  * 覆盖原生 authorization-link 样式
+//  * 匹配主题的登录按钮风格
+//  *
+//  * HTML 结构: <a class="authorization-link" href="...">
+//  */
+
+//
+//  Common (All devices)
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    //
+    //  Authorization Link - 登录/注册链接
+    //  _____________________________________________
+
+    .authorization-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: @folix-secondary;
+        color: #FFFFFF !important;
+        border: none;
+        border-radius: @folix-radius;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+
+        .login-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        .login-text {
+            color: #FFFFFF;
+        }
+
+        &:hover {
+            background: @folix-secondary-dark;
+            color: #FFFFFF !important;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.3);
+        }
+    }
+}
+
+//
+//  Desktop (≥ 1024px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    .authorization-link {
+        padding: 10px 20px;
+    }
+}
+
+//
+//  Mobile (< 1024px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__l) {
+    .authorization-link {
+        padding: 10px 16px;
+    }
+}

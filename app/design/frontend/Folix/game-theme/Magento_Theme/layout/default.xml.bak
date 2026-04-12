@@ -72,6 +72,10 @@
         <!-- 移动搜索框到正确位置 -->
         <move element="top.search" destination="header-wrapper" before="minicart" />
         
+        <!-- 移动原生 authorization-link 到 header-wrapper -->
+        <!-- 注意：Luma 已将 authorization-link 移动到 top.links，我们再移动到 header-wrapper -->
+        <move element="authorization-link" destination="header-wrapper" after="minicart" />
+        
         <!-- PC端导航菜单 -->
         <referenceContainer name="header-wrapper">
             <container name="folix.nav.container" htmlTag="div" htmlClass="folix-nav-wrapper" before="top.search">
@@ -103,6 +107,6 @@
    
         <!-- Body Class -->
         <attribute name="body" value="folix-theme" />
-        
+
     </body>
 </page>
