@@ -65,16 +65,16 @@
                 position: relative;
                 z-index: 1;
                 text-align: center;
-                color: #FFFFFF;
+                color: @folix-text-primary;
                 max-width: 600px;
                 padding: 40px;
             }
-            
+
             .slide-badge {
                 display: inline-block;
                 padding: 8px 20px;
-                background: linear-gradient(135deg, #FF6B35 0%, #EA580C 100%);
-                color: #FFFFFF;
+                background: @folix-gradient-red;
+                color: @folix-text-on-red;
                 border-radius: 50px;
                 font-size: 13px;
                 font-weight: 700;
@@ -82,47 +82,47 @@
                 letter-spacing: 1px;
                 margin-bottom: 16px;
             }
-            
+
             .slide-title {
                 font-size: 42px;
                 font-weight: 700;
                 margin-bottom: 12px;
                 text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-                color: #FFFFFF;
+                color: @folix-text-primary;
             }
-            
+
             .slide-description {
                 font-size: 16px;
                 margin-bottom: 16px;
                 opacity: 0.95;
-                color: #E2E8F0;
+                color: @folix-text-lighter;
             }
-            
+
             .slide-price {
                 font-size: 32px;
                 font-weight: 700;
-                color: #FFD700;
+                color: @folix-secondary;
                 text-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
                 margin-bottom: 24px;
             }
-            
+
             .action.slider-cta {
-                background: linear-gradient(135deg, #4A90E2 0%, #6C5CE7 100%);
+                background: @folix-btn-primary-bg;
                 display: inline-block;
                 padding: 14px 36px;
                 font-size: 16px;
                 font-weight: 600;
                 border-radius: 8px;
-                color: #FFFFFF;
+                color: @folix-btn-primary-text;
                 text-decoration: none;
-                
+
                 &:hover {
                     transform: translateY(-2px);
-                    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+                    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
                 }
             }
         }
-        
+
         .slider-arrow {
             position: absolute;
             top: 50%;
@@ -130,7 +130,7 @@
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
             border: none;
-            color: #FFFFFF;
+            color: @folix-text-primary;
             font-size: 28px;
             width: 50px;
             height: 50px;
@@ -141,7 +141,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            
+
             &:hover {
                 background: rgba(255, 255, 255, 0.3);
             }

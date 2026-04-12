@@ -36,7 +36,7 @@
         gap: 8px;
         padding: 8px 16px;
         background: @folix-secondary;
-        color: #FFFFFF;
+        color: @folix-text-on-gold;
         border: none;
         border-radius: @folix-radius;
         font-size: 14px;
@@ -44,58 +44,58 @@
         cursor: pointer;
         transition: all 0.3s ease;
         user-select: none;
-        
+
         .login-icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            
+
             svg {
                 width: 18px;
                 height: 18px;
             }
         }
-        
+
         .login-text {
-            color: #FFFFFF;
+            color: @folix-text-on-gold;
         }
-        
+
         &:focus {
             outline: none;
             box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.3);
         }
     }
-    
+
     .login-dropdown-wrapper .login-trigger:hover {
         background: @folix-secondary-dark;
-        color: #FFFFFF;
+        color: @folix-text-on-gold;
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
-        
+
         .login-text {
-            color: #FFFFFF;
+            color: @folix-text-on-gold;
         }
     }
-    
+
     .login-dropdown-wrapper .login-trigger.active {
         background: @folix-secondary-dark;
-        color: #FFFFFF;
-        
+        color: @folix-text-on-gold;
+
         .login-text {
-            color: #FFFFFF;
+            color: @folix-text-on-gold;
         }
     }
-    
+
     //
     //  Login Dropdown Panel
     //  _____________________________________________
-    
+
     .login-dropdown {
         position: absolute;
         top: calc(100% + 12px);
         right: 0;
         width: 380px;
-        background: #FFFFFF;
+        background: @folix-bg-panel;
         border-radius: @folix-radius-lg;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
         overflow: hidden;
@@ -232,20 +232,20 @@
         .btn-primary {
             width: 100%;
             padding: 12px 24px;
-            background: linear-gradient(135deg, @folix-primary 0%, @folix-primary-dark 100%);
-            color: #FFFFFF;
+            background: @folix-btn-primary-bg;
+            color: @folix-btn-primary-text;
             border: none;
             border-radius: @folix-radius;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            
+
             &:hover {
                 transform: translateY(-2px);
-                box-shadow: 0 6px 20px rgba(74, 144, 226, 0.3);
+                box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
             }
-            
+
             &:active {
                 transform: translateY(0);
             }
@@ -519,8 +519,8 @@
                 .action.register {
                     width: 100%;
                     padding: @folix-space-3 @folix-space-6;
-                    background: @folix-gradient-primary;
-                    color: #FFFFFF;
+                    background: @folix-btn-primary-bg;
+                    color: @folix-btn-primary-text;
                     border: none;
                     border-radius: @folix-radius;
                     font-size: 14px;
@@ -530,7 +530,7 @@
 
                     &:hover {
                         transform: translateY(-2px);
-                        box-shadow: @folix-shadow-primary;
+                        box-shadow: @folix-btn-primary-shadow;
                     }
 
                     &:active {

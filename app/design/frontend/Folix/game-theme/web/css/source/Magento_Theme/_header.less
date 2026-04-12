@@ -157,18 +157,18 @@
                     gap: 6px;
                     padding: 6px 14px;
                     background: @folix-secondary;
-                    color: #FFFFFF !important;
+                    color: @folix-text-on-gold !important;
                     border-radius: @folix-radius;
                     font-size: 13px;
                     font-weight: 600;
-                    
+
                     &:hover {
                         background: @folix-secondary-dark;
-                        color: #FFFFFF !important;
+                        color: @folix-text-on-gold !important;
                     }
                 }
             }
-            
+
             // register-link 样式
             .register-link {
                 > a {
@@ -176,30 +176,30 @@
                     align-items: center;
                     padding: 6px 14px;
                     background: transparent;
-                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    border: 1px solid @folix-border-dark;
                     border-radius: @folix-radius;
-                    
+
                     &:hover {
-                        border-color: #FF6B35;
-                        color: #FF6B35;
+                        border-color: @folix-secondary;
+                        color: @folix-secondary;
                     }
                 }
             }
         }
-        
+
         .app-download-link {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            color: #E2E8F0;
+            color: @folix-text-lighter;
             font-size: 13px;
             font-weight: 500;
             text-decoration: none;
             transition: color 0.2s ease;
             white-space: nowrap;
-            
+
             &:hover {
-                color: #FF6B35;
+                color: @folix-secondary;
             }
         }
         
@@ -376,72 +376,72 @@
                             font-size: 10px;
                             margin-left: 4px;
                         }
-                        
+
                         &:hover {
-                            color: #FFFFFF;
-                            background: linear-gradient(135deg, #EA580C, #C2410C);
+                            color: @folix-text-primary;
+                            background: @folix-gradient-red;
                         }
                     }
-                    
+
                     &.active > .level-top {
-                        color: #FF6B35;
+                        color: @folix-secondary;
                     }
                 }
-                
+
                 // 二级菜单
                 .level0.submenu {
                     position: absolute;
                     top: calc(100% + 5px);
                     left: 0;
-                    background: #FFFFFF;
-                    border: 1px solid #E5E7EB;
+                    background: @folix-bg-panel;
+                    border: 1px solid @folix-border;
                     border-radius: 6px;
-                    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+                    box-shadow: @folix-shadow-xl;
                     min-width: 180px;
                     padding: 8px 0;
                     z-index: 100;
-                    
+
                     .level1 {
                         position: relative;
-                        
+
                         a {
                             display: flex;
                             align-items: center;
                             justify-content: space-between;
                             padding: 10px 16px;
-                            color: #1E293B;
+                            color: @folix-text-primary;
                             font-size: 14px;
                             text-decoration: none;
                             transition: all 0.2s ease;
-                            
+
                             &:hover {
-                                background: #DBEAFE;
-                                color: #4A90E2;
+                                background: @folix-bg-hover;
+                                color: @folix-secondary;
                             }
                         }
-                        
+
                         // 三级菜单
                         .submenu {
                             position: absolute;
                             top: 0;
                             left: 100%;
-                            background: #FFFFFF;
-                            border: 1px solid #E5E7EB;
+                            background: @folix-bg-panel;
+                            border: 1px solid @folix-border;
                             border-radius: 6px;
-                            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+                            box-shadow: @folix-shadow-xl;
                             min-width: 150px;
                             padding: 8px 0;
                             margin-left: 5px;
                             z-index: 101;
-                            
+
                             .level2 a {
                                 padding: 10px 16px;
-                                color: #1E293B;
+                                color: @folix-text-primary;
                                 font-size: 14px;
-                                
+
                                 &:hover {
-                                    background: #DBEAFE;
-                                    color: #4A90E2;
+                                    background: @folix-bg-hover;
+                                    color: @folix-secondary;
                                 }
                             }
                         }
@@ -552,7 +552,7 @@
                         background: linear-gradient(90deg, @folix-secondary 0%, #EA580C 100%) !important;
                         border: none !important;
                         border-radius: 0 8px 8px 0;
-                        color: #FFFFFF;
+                        color: @folix-text-on-red;
                         font-size: 14px;
                         font-weight: 600;
                         cursor: pointer;
@@ -568,7 +568,7 @@
                             clip: auto !important;
                             height: auto !important;
                             width: auto !important;
-                            color: #FFFFFF;
+                            color: @folix-text-on-red;
                             font-size: 14px;
                         }
 
@@ -620,8 +620,8 @@
                 }
                 
                 .counter {
-                    background: #FF6B35;
-                    color: #FFFFFF;
+                    background: @folix-accent;
+                    color: @folix-text-on-red;
                     border-radius: 10px;
                     padding: 2px 8px;
                     font-size: 12px;
@@ -629,7 +629,7 @@
                     
                     .counter-number,
                     .counter-label {
-                        color: #FFFFFF;
+                        color: @folix-text-on-red;
                     }
                 }
                 
@@ -886,7 +886,7 @@
                         background: linear-gradient(90deg, #FF6B35 0%, #EA580C 100%);
                         border: none;
                         border-radius: @folix-radius-md;
-                        color: #FFFFFF;
+                        color: @folix-text-on-red;
                         font-size: 14px;
                         font-weight: 600;
                         cursor: pointer;
@@ -894,7 +894,7 @@
                         
                         span {
                             display: inline !important;
-                            color: #FFFFFF;
+                            color: @folix-text-on-red;
                         }
                         
                         &:hover {

@@ -56,8 +56,8 @@
             }
             
             .filter-subtitle {
-                background: @folix-gradient-primary;
-                color: #FFFFFF;
+                background: @folix-gradient-purple;
+                color: @folix-text-primary;
                 font-weight: @font-weight__semibold;
             }
         }
@@ -72,14 +72,14 @@
             background: @folix-secondary;
             border: none;
             border-radius: @folix-radius;
-            box-shadow: @folix-shadow-secondary;
-            color: #FFFFFF;
+            box-shadow: @folix-btn-primary-shadow;
+            color: @folix-text-on-gold;
             font-weight: @font-weight__semibold;
             padding: 10px @indent__base;
-            
+
             // 已选数量徽章
             &[data-count]:after {
-                background: #FFFFFF;
+                background: @folix-text-primary;
                 color: @folix-secondary;
                 border-radius: @folix-radius-full;
                 font-weight: @font-weight__bold;
@@ -157,7 +157,7 @@
             width: 16px;
             
             &:before {
-                color: #FFFFFF;
+                color: @folix-text-primary;
                 content: '✕';
                 font-size: 10px;
             }
@@ -316,7 +316,7 @@
             &.selected {
                 background: @folix-primary;
                 border-color: @folix-primary;
-                color: #FFFFFF;
+                color: @folix-text-primary;
             }
         }
     }
