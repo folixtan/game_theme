@@ -448,7 +448,11 @@
 //  Page Background
 //  ---------------------------------------------
 
-@page__background-color: @folix-gradient-bg;
+// 注意：@page__background-color 必须是纯色，不能是渐变
+// 因为父主题有 darken(@page__background-color, 6%) 调用
+// 使用 B 方案的页面基础色 @folix-bg-page-base
+// 实际的渐变背景在 _global.less 的 body 和 .page-wrapper 中应用
+@page__background-color: @folix-bg-page-base;
 @secondary__color: @folix-bg-hover;
 
 //
