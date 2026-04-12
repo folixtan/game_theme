@@ -113,14 +113,79 @@
     }
     
     // ========================================================================
-    //  右侧容器 - APP + 语言切换
+    //  右侧容器 - APP + 语言切换 + header.links
     //  ========================================================================
-    
+
     .header-links-right {
         display: flex;
         align-items: center;
         gap: 16px;
         flex-shrink: 0;
+        
+        // header.links 样式（移动到 folix.top.right 后）
+        .header.links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            
+            > li {
+                margin: 0;
+                padding: 0;
+                
+                > a {
+                    color: #E2E8F0;
+                    font-size: 13px;
+                    font-weight: 500;
+                    text-decoration: none;
+                    transition: color 0.2s ease;
+                    white-space: nowrap;
+                    
+                    &:hover {
+                        color: #FF6B35;
+                    }
+                }
+            }
+            
+            // authorization-link 样式
+            .authorization-link {
+                > a {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    padding: 6px 14px;
+                    background: @folix-secondary;
+                    color: #FFFFFF !important;
+                    border-radius: @folix-radius;
+                    font-size: 13px;
+                    font-weight: 600;
+                    
+                    &:hover {
+                        background: @folix-secondary-dark;
+                        color: #FFFFFF !important;
+                    }
+                }
+            }
+            
+            // register-link 样式
+            .register-link {
+                > a {
+                    display: inline-flex;
+                    align-items: center;
+                    padding: 6px 14px;
+                    background: transparent;
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    border-radius: @folix-radius;
+                    
+                    &:hover {
+                        border-color: #FF6B35;
+                        color: #FF6B35;
+                    }
+                }
+            }
+        }
         
         .app-download-link {
             display: inline-flex;
