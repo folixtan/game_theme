@@ -157,7 +157,7 @@ class Data extends AbstractHelper
             $encrypted = openssl_encrypt(
                 $jsonData,
                 static::ENCRYPT_METHOD,
-                $normalizedKey,
+                $key,
                 OPENSSL_RAW_DATA,
                 $iv
             );
