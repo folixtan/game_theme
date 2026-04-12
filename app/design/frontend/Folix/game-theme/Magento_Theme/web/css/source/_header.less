@@ -58,6 +58,28 @@
         display: flex;
         gap: 16px;
         align-items: center;
+
+        // 未登录：显示 header.links
+        .header-links-guest {
+            display: flex;
+            gap: 12px;
+        }
+
+        // 已登录：显示用户信息
+        .header-links-logged {
+            display: none;
+        }
+    }
+
+    // 根据登录状态控制显示
+    &.customer-logged-in {
+        .header-links-guest {
+            display: none;
+        }
+
+        .header-links-logged {
+            display: block;
+        }
     }
 
     // APP 链接

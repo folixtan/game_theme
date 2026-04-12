@@ -1,0 +1,47 @@
+<?php
+/**
+ * Folix Game Theme - Header Customer Info (已登录)
+ *
+ * PC 端 Top Bar 用户下拉菜单
+ *
+ * @var $block \Magento\Customer\Block\Account\Customer
+ */
+?>
+<?php if ($block->customerLoggedIn()): ?>
+    <div class="user-dropdown-wrapper">
+        <div class="user-dropdown-trigger" onclick="toggleUserDropdown()">
+            <div class="user-avatar">
+                <?php
+                $customer = $block->getCustomer();
+                $firstName = $customer->getFirstname();
+                $lastName = $customer->getLastname();
+                $initials = strtoupper(substr($firstName, 0, 1) . substr($lastName, 0, 1));
+                echo $block->escapeHtml($initials);
+                ?>
+            </div>
+            <span class="user-name">
+                <?= $block->escapeHtml($customer->getName()) ?>
+            </span>
+            <span class="dropdown-arrow">▼</span>
+        </div>
+        <div class="user-dropdown-menu" id="user-dropdown-menu">
+            <a href="<?= $block->escapeUrl($block->getUrl('customer/account')) ?>">
+                <span class="menu-icon">👤</span>
+                <span><?= $block->escapeHtml(__('个人中心')) ?></span>
+            </a>
+            <a href="<?= $block->escapeUrl($block->getUrl('sales/order/history')) ?>">
+                <span class="menu-icon">📦</span>
+                <span><?= $block->escapeHtml(__('我的订单')) ?></span>
+            </a>
+            <a href="<?= $block->escapeUrl($block->getUrl('wishlist')) ?>">
+                <span class="menu-icon">❤️</span>
+                <span><?= $block->escapeHtml(__('收藏夹')) ?></span>
+            </a>
+            <div class="menu-divider"></div>
+            <a href="<?= $block->escapeUrl($block->getUrl('customer/account/logout')) ?>" class="menu-logout">
+                <span class="menu-icon">🚪</span>
+                <span><?= $block->escapeHtml(__('退出登录')) ?></span>
+            </a>
+        </div>
+    </div>
+<?php endif; ?>

@@ -1,34 +1,36 @@
 <?php
 /**
- * Folix Game Theme - Header Main Bar (PC 端)
+ * Folix Game Theme - Header Main Bar
  *
- * PC 端主导航栏：
- * - Logo
- * - 导航菜单
- * - 搜索框
- * - 购物车
+ * HTML 结构：
+ * <div class="folix-header-main">
+ *     <div class="folix-header-main-inner">
+ *         <div class="folix-header-left">
+ *             <?php echo $this->getChildHtml('logo') ?>
+ *         </div>
+ *         <div class="folix-header-center">
+ *             <?php echo $this->getChildHtml('pc.topnav') ?>
+ *         </div>
+         * <div class="folix-header-right">
+ *             <?php echo $this->getChildHtml('top.search') ?>
+ *             <?php echo $this->getChildHtml('minicart') ?>
+ *         </div>
+ *     </div>
+ * </div>
  */
 ?>
-<div class="header-main-bar">
-    <div class="header-main-content">
-        <!-- Logo -->
-        <div class="header-logo">
-            <?= $block->getChildHtml('logo') ?>
+
+<div class="folix-header-main">
+    <div class="folix-header-main-inner">
+        <div class="folix-header-left">
+            <?php echo $block->getChildHtml('logo') ?>
         </div>
-
-        <!-- 导航菜单 -->
-        <nav class="pc-navigation">
-            <?= $block->getChildHtml('pc-navigation') ?>
-        </nav>
-
-        <!-- 搜索框 -->
-        <div class="header-search">
-            <?= $block->getChildHtml('topSearch') ?>
+        <div class="folix-header-center">
+            <?php echo $block->getChildHtml('pc.topnav') ?>
         </div>
-
-        <!-- 购物车 -->
-        <div class="header-minicart">
-            <?= $block->getChildHtml('minicart') ?>
+        <div class="folix-header-right">
+            <?php echo $block->getChildHtml('top.search') ?>
+            <?php echo $block->getChildHtml('minicart') ?>
         </div>
     </div>
 </div>

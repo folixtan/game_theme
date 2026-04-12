@@ -1,0 +1,645 @@
+//
+// Folix Game Theme - Header Styles
+// ======================================
+// 电竞风格：深色背景 + 金色/橙色强调色
+// 响应式断点：768px
+// ======================================
+
+// 导入登录样式
+@import '_header-login.less';
+
+// ----------------------------------
+// Variables
+// ----------------------------------
+
+@folix-header-bg: #1a1a1a;
+@folix-header-border: #2d2d2d;
+@folix-text-color: #e0e0e0;
+@folix-text-hover: #ff9800;
+@folix-accent-color: #ff9800;
+@folix-accent-hover: #ffb74d;
+
+@folix-top-bar-height: 40px;
+@folix-main-bar-height: 70px;
+
+@folix-mobile-breakpoint: 768px;
+
+// ----------------------------------
+// Mixins
+// ----------------------------------
+
+.flex-center() {
+    display: flex;
+    align-items: center;
+}
+
+.flex-between() {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+// ----------------------------------
+// Header Container
+// ----------------------------------
+
+.page-header {
+    background: @folix-header-bg;
+    border-bottom: 2px solid @folix-header-border;
+    margin: 0;
+    padding: 0;
+}
+
+// ----------------------------------
+// Header Panel (Top Bar)
+// ----------------------------------
+
+.header.panel {
+    background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+    height: @folix-top-bar-height;
+    border-bottom: 1px solid @folix-header-border;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+// Left Links
+
+.folix-top-links {
+    display: flex;
+    align-items: center;
+}
+
+.folix-top-links-list {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.folix-top-links-link {
+    color: @folix-text-color;
+    font-size: 13px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+    font-weight: 500;
+
+    &:hover {
+        color: @folix-text-hover;
+    }
+}
+
+// APP Link
+
+.folix-app-link {
+    display: flex;
+    align-items: center;
+}
+
+.folix-app-link-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: @folix-accent-color;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid @folix-accent-color;
+
+    &:hover {
+        background: @folix-accent-color;
+        color: #000;
+    }
+}
+
+.folix-app-icon {
+    display: flex;
+    align-items: center;
+}
+
+// Language Switcher (store_language)
+// Store Switcher (store_switcher) - 样式已移到 _header-login.less
+
+.header.panel .switcher-language {
+    margin-left: 20px;
+}
+
+.header.panel .switcher-language .switcher-label {
+    display: none;
+}
+
+.header.panel .switcher-language .actions .action.toggle {
+    color: @folix-text-color;
+    font-size: 13px;
+    text-transform: uppercase;
+
+    &:hover {
+        color: @folix-text-hover;
+    }
+}
+
+// Header Links (top.links - Customer module)
+// 样式已移到 _header-login.less
+
+// ----------------------------------
+// Header Wrapper (Main Bar)
+// ----------------------------------
+
+.header.content {
+    background: #fff;
+    height: @folix-main-bar-height;
+    border-bottom: 3px solid @folix-accent-color;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    justify-content: space-between;
+}
+
+// Logo
+
+.logo {
+    display: flex;
+    align-items: center;
+
+    img {
+        max-height: 50px;
+        width: auto;
+    }
+}
+
+// PC Navigation (catalog.topnav)
+
+.desktop-nav {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin: 0 auto;
+}
+
+.desktop-nav .navigation {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.desktop-nav .navigation ul {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.desktop-nav .navigation li {
+    margin: 0;
+}
+
+.desktop-nav .navigation a {
+    color: #333;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: @folix-accent-color;
+    }
+
+    &.active {
+        color: @folix-accent-color;
+    }
+}
+
+// Desktop Navigation Dropdown
+
+.desktop-nav .navigation .submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    min-width: 220px;
+    padding: 15px 0;
+    border: 1px solid @folix-header-border;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.desktop-nav .navigation li:hover .submenu {
+    display: block;
+}
+
+.desktop-nav .navigation .submenu a {
+    color: #333;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 8px 20px;
+    display: block;
+    text-transform: none;
+
+    &:hover {
+        color: @folix-accent-color;
+        background: #f5f5f5;
+    }
+}
+
+// Search (top.search)
+
+.header.content .block-search {
+    position: relative;
+    width: 250px;
+}
+
+.header.content .block-search input {
+    width: 100%;
+    height: 40px;
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    color: #333;
+    font-size: 14px;
+    padding: 0 45px 0 20px;
+    outline: none;
+    transition: all 0.3s ease;
+
+    &:focus {
+        border-color: @folix-accent-color;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.1);
+    }
+
+    &::placeholder {
+        color: #999;
+    }
+}
+
+.header.content .block-search button {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: @folix-accent-color;
+    font-size: 18px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: @folix-accent-hover;
+    }
+}
+
+// Minicart
+
+.header.content .minicart-wrapper {
+    position: relative;
+    margin-left: 20px;
+}
+
+.header.content .minicart-wrapper .action.showcart {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: @folix-accent-color;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+        background: @folix-accent-hover;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+    }
+}
+
+.header.content .minicart-wrapper .counter.qty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    background: #fff;
+    color: @folix-accent-color;
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+// Minicart Dropdown
+
+.header.content .minicart-wrapper .block-minicart {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 320px;
+    background: #fff;
+    border: 1px solid @folix-header-border;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+    margin-top: 10px;
+}
+
+.header.content .minicart-wrapper.active .block-minicart {
+    display: block;
+}
+
+// ----------------------------------
+// Mobile Navigation (page.top)
+// ----------------------------------
+
+.folix-nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    position: relative;
+    z-index: 10001;
+    padding: 0;
+}
+
+.folix-nav-toggle-icon {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: @folix-text-color;
+    position: relative;
+    transition: all 0.3s ease;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        width: 24px;
+    }
+}
+
+.folix-nav-toggle-icon::before {
+    height: 2px;
+    background: @folix-text-color;
+    top: -8px;
+    transition: all 0.3s ease;
+}
+
+.folix-nav-toggle-icon::after {
+    height: 2px;
+    background: @folix-text-color;
+    top: 8px;
+    transition: all 0.3s ease;
+}
+
+.folix-nav-toggle.active .folix-nav-toggle-icon {
+    background: transparent;
+
+    &::before {
+        top: 0;
+        transform: rotate(45deg);
+    }
+
+    &::after {
+        top: 0;
+        transform: rotate(-45deg);
+    }
+}
+
+.folix-nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9998;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.folix-nav-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+// Navigation Sections (Mobile Sidebar)
+
+.navigation.sections {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    width: 300px;
+    height: 100%;
+    background: @folix-header-bg;
+    z-index: 9999;
+    overflow-y: auto;
+    transition: right 0.3s ease;
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.3);
+}
+
+.navigation.sections.active {
+    right: 0;
+}
+
+// Mobile Sidebar Header
+
+.navigation.sections .section-item-title {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    height: 60px;
+    border-bottom: 1px solid @folix-header-border;
+    background: #0f0c29;
+}
+
+.navigation.sections .section-item-title a {
+    color: @folix-text-color;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    flex: 1;
+
+    &:hover {
+        color: @folix-accent-color;
+    }
+}
+
+// Mobile Sidebar Content
+
+.navigation.sections .section-item-content {
+    padding: 20px;
+    border-bottom: 1px solid @folix-header-border;
+}
+
+.navigation.sections .section-item-content.active {
+    display: block;
+}
+
+// Mobile Menu Links
+
+.navigation.sections .nav.items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navigation.sections .nav.items li {
+    margin: 0;
+}
+
+.navigation.sections .nav.items a {
+    display: block;
+    color: @folix-text-color;
+    font-size: 14px;
+    padding: 12px 0;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: @folix-accent-color;
+    }
+}
+
+// ----------------------------------
+// Responsive Design (768px Breakpoint)
+// ----------------------------------
+
+@media (max-width: @folix-mobile-breakpoint) {
+    // Hide PC elements
+    .header.panel {
+        display: none;
+    }
+
+    .desktop-nav {
+        display: none;
+    }
+
+    .header.content .block-search {
+        display: none;
+    }
+
+    // Mobile Header
+    .header.content {
+        height: 60px;
+        padding: 0 15px;
+    }
+
+    // Mobile Logo
+    .logo img {
+        max-height: 35px;
+    }
+
+    // Mobile Nav Toggle
+    .folix-nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        order: -1;
+        margin-right: 15px;
+    }
+
+    // Mobile Minicart
+    .header.content .minicart-wrapper {
+        margin-left: 15px;
+    }
+
+    .header.content .minicart-wrapper .action.showcart {
+        padding: 8px 15px;
+        font-size: 13px;
+    }
+
+    // Mobile Sidebar
+    .navigation.sections {
+        right: -320px;
+    }
+
+    .navigation.sections.active {
+        right: 0;
+    }
+}
+
+// Hide navigation.sections on PC
+@media (min-width: 769px) {
+    .navigation.sections {
+        display: none;
+    }
+
+    .folix-nav-toggle {
+        display: none;
+    }
+
+    .folix-nav-overlay {
+        display: none;
+    }
+}
+
+// ----------------------------------
+// Mageplaza Social Login Support
+// ----------------------------------
+
+// Header Links Social Login
+.header.panel .header.links .authorization-link a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+// Hide social login on PC (optional)
+// .header.panel .header.links .social-login-links {
+//     display: none;
+// }
+
+// Show social login on mobile
+@media (max-width: @folix-mobile-breakpoint) {
+    .header.panel {
+        display: none;
+    }
+}
+
+// Authentication Popup Social Buttons
+.authentication-popup .social-buttons {
+    margin-bottom: 20px;
+}
+
+.authentication-popup .social-buttons .social-login {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.authentication-popup .social-buttons .social-login button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.authentication-popup .social-buttons .social-login button:hover {
+    transform: translateY(-2px);
+}

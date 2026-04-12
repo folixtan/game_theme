@@ -43,6 +43,6 @@ var config = {
     deps: [
         'Magento_Theme/js/header',
         'Magento_Theme/js/mobile-header',
-        'Folix/game-theme/js/mobile-navigation'
+        'Magento_Theme/js/mobile-nav'
     ]
 };

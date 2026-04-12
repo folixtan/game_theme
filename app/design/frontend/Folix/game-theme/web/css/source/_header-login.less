@@ -1,0 +1,160 @@
+//
+// Folix Game Theme - Header Login Styles
+// ======================================
+// 控制 Top Bar 登录/注册按钮的显示
+// ======================================
+
+// Header Panel Links (top.links)
+
+.header.panel .header.links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-left: 20px;
+}
+
+.header.panel .header.links li {
+    margin: 0;
+}
+
+// 未登录状态：隐藏 My Account
+.header.panel .header.links .authorization-link ~ .my-account-link {
+    display: none;
+}
+
+// 已登录状态：隐藏 Sign In 和 Create an Account
+.customer-logged-in .header.panel .header.links .authorization-link,
+.customer-logged-in .header.panel .header.links .register-link {
+    display: none;
+}
+
+// Sign In / Register Button
+
+.header.panel .header.links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+// Sign In Button (黄色填充按钮)
+
+.header.panel .header.links .authorization-link a {
+    background: @folix-accent-color;
+    color: #fff;
+    border: 2px solid @folix-accent-color;
+
+    &:hover {
+        background: @folix-accent-hover;
+        border-color: @folix-accent-hover;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+    }
+}
+
+// Sign Out Button (已登录)
+
+.customer-logged-in .header.panel .header.links .authorization-link a {
+    background: transparent;
+    color: @folix-text-color;
+    border: 2px solid @folix-header-border;
+
+    &:hover {
+        border-color: @folix-accent-color;
+        color: @folix-accent-color;
+    }
+}
+
+// Register Button (黄色描边按钮)
+
+.header.panel .header.links .register-link a {
+    background: transparent;
+    color: @folix-accent-color;
+    border: 2px solid @folix-accent-color;
+
+    &:hover {
+        background: @folix-accent-color;
+        color: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+    }
+}
+
+// My Account Link (已登录)
+
+.customer-logged-in .header.panel .header.links .my-account-link a {
+    color: @folix-text-color;
+    font-size: 13px;
+    padding: 8px 20px;
+    border: none;
+
+    &:hover {
+        color: @folix-accent-color;
+    }
+}
+
+// Store Switcher (放在登录按钮之前，在语言切换之后)
+
+.header.panel .switcher-store {
+    margin-left: 15px;
+    margin-right: 10px;
+}
+
+.header.panel .switcher-store .switcher-label {
+    display: none;
+}
+
+.header.panel .switcher-store .actions .action.toggle {
+    color: @folix-text-color;
+    font-size: 13px;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border: 1px solid @folix-header-border;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+
+    &:hover {
+        color: @folix-text-hover;
+        border-color: @folix-accent-color;
+        background: rgba(255, 152, 0, 0.1);
+    }
+
+    strong span {
+        font-weight: 500;
+    }
+}
+
+.header.panel .switcher-store .switcher-dropdown {
+    background: #2d2d2d;
+    border: 1px solid @folix-header-border;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    min-width: 180px;
+    margin-top: 5px;
+    position: absolute;
+    right: 0;
+}
+
+.header.panel .switcher-store .switcher-option a {
+    color: @folix-text-color;
+    font-size: 13px;
+    padding: 10px 15px;
+    display: block;
+    text-decoration: none;
+    transition: all 0.3s ease;
+
+    &:hover {
+        color: @folix-accent-color;
+        background: rgba(255, 152, 0, 0.1);
+    }
+}

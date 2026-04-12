@@ -120,6 +120,21 @@ define([
     }
 
     /**
+     * 检测登录状态并添加 body class
+     */
+    function initLoginState() {
+        var isLoggedIn = $('.header-links-logged').length > 0 && $('.header-links-logged').find('.user-dropdown-wrapper').length > 0;
+
+        if (isLoggedIn) {
+            $('body').addClass('customer-logged-in');
+            console.log('[Folix] User is logged in');
+        } else {
+            $('body').removeClass('customer-logged-in');
+            console.log('[Folix] User is not logged in');
+        }
+    }
+
+    /**
      * 响应式处理
      */
     function initResponsive() {
@@ -154,5 +169,6 @@ define([
     }
 
     // 初始化
+    initLoginState();
     initResponsive();
 });
