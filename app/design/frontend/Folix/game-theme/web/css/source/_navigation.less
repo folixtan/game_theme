@@ -17,24 +17,34 @@
         background: transparent;
         border: none;
 
-        .level0 {
-            display: inline-flex;
+        ul {
+            display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .level0 {
+            position: relative;
             margin: 0;
             padding: 0;
 
             > .level-top {
-                padding: 8px 16px;
+                padding: 10px 18px;
                 border-radius: @folix-radius-md;
-                color: @folix-nav-text;
+                color: @folix-text-primary;
                 text-decoration: none;
-                font-weight: @font-weight__medium;
-                font-size: @font-size__s;
+                font-weight: @font-weight__semibold;
+                font-size: @font-size__base;
                 transition: all @folix-transition-fast;
                 position: relative;
                 border: none;
                 background: transparent;
+                display: flex;
+                align-items: center;
+                gap: 6px;
 
                 &::before {
                     content: '';
@@ -50,8 +60,8 @@
 
                 &.has-active,
                 &.active {
-                    color: @folix-nav-active-text;
-                    background: @folix-nav-active-bg;
+                    color: @folix-secondary;
+                    background: @folix-bg-selected;
 
                     &::before {
                         width: 80%;
@@ -59,8 +69,8 @@
                 }
 
                 &:hover {
-                    color: @folix-nav-hover-text;
-                    background: @folix-nav-active-bg;
+                    color: @folix-secondary;
+                    background: @folix-bg-selected;
 
                     &::before {
                         width: 80%;
@@ -74,20 +84,27 @@
                 }
 
                 .ui-menu-icon {
-                    color: @folix-text-secondary;
+                    color: @folix-secondary;
                     margin-left: 4px;
                     transition: transform @folix-transition;
+                    font-size: 12px;
                 }
             }
 
-            //  Dropdown Menu
+            //  Dropdown Menu - 一级下拉
             .submenu {
+                position: absolute;
+                top: 100%;
+                left: 0;
                 background: @folix-bg-panel;
                 border: 1px solid @folix-border;
                 border-radius: @folix-radius-lg;
                 box-shadow: @folix-shadow-xl;
-                padding: 8px;
+                padding: 8px 0;
                 min-width: 220px;
+                z-index: 1000;
+                display: none;
+                margin-top: 8px;
 
                 &:before,
                 &:after {
@@ -95,6 +112,9 @@
                 }
 
                 li {
+                    position: relative;
+                    margin: 0;
+
                     > a {
                         padding: 12px 16px;
                         color: @folix-text-primary;
@@ -105,6 +125,7 @@
                         transition: all @folix-transition-fast;
                         border-radius: @folix-radius-sm;
                         font-size: @font-size__s;
+                        width: 100%;
 
                         &:hover {
                             background: @folix-bg-hover;
@@ -115,7 +136,7 @@
                         &.has-active,
                         &.active {
                             color: @folix-secondary;
-                            background: @folix-nav-active-bg;
+                            background: @folix-bg-hover;
                             border-left: 3px solid @folix-secondary;
                         }
 
@@ -127,33 +148,52 @@
 
                         .ui-menu-icon {
                             color: @folix-text-secondary;
+                            font-size: 12px;
                         }
                     }
 
-                    //  Nested Submenu
+                    //  Nested Submenu - 二级下拉
                     .submenu {
-                        position: static;
-                        box-shadow: none;
-                        border: none;
-                        background: @folix-bg-hover;
-                        margin-top: 4px;
-                        padding: 4px;
+                        position: absolute;
+                        left: 100%;
+                        top: 0;
+                        box-shadow: @folix-shadow-xl;
+                        border: 1px solid @folix-border;
+                        background: @folix-bg-panel;
+                        margin-top: 0;
+                        margin-left: 8px;
+                        padding: 8px 0;
+                        min-width: 200px;
 
                         li {
+                            margin: 0;
+
                             a {
-                                padding: 10px 16px 10px 32px;
-                                font-size: @font-size__xs;
+                                padding: 10px 16px;
+                                font-size: @font-size__s;
+                                color: @folix-text-primary;
+
+                                &:hover {
+                                    background: @folix-bg-hover;
+                                    color: @folix-secondary;
+                                }
                             }
                         }
+                    }
+
+                    &:hover > .submenu {
+                        display: block;
+                        opacity: 1;
+                        visibility: visible;
                     }
                 }
             }
 
             //  Hover Effect for Dropdown
             &:hover > .submenu {
+                display: block;
                 opacity: 1;
                 visibility: visible;
-                transform: translateY(0);
 
                 > .level-top .ui-menu-icon {
                     transform: rotate(180deg);
@@ -178,8 +218,8 @@
 
         &:hover {
             background: @folix-btn-ghost-hover-bg;
-            color: @folix-btn-ghost-text;
-            border-color: @folix-btn-ghost-border;
+            color: @folix-secondary;
+            border-color: @folix-secondary;
         }
 
         &:before {
@@ -211,6 +251,11 @@
         .navigation {
             background: transparent;
             padding: 8px 0;
+
+            ul {
+                display: block;
+                gap: 0;
+            }
         }
 
         .level0 {
@@ -221,7 +266,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                font-size: @font-size__s;
+                font-size: @font-size__base;
                 border-left: 3px solid transparent;
 
                 &.has-active,
@@ -235,7 +280,6 @@
                     color: @folix-secondary;
                     background: @folix-bg-hover;
                     border-left-color: @folix-secondary;
-                    padding-left: 24px;
                 }
             }
 
@@ -245,6 +289,7 @@
                 border: none;
                 background: @folix-bg-hover;
                 padding: 4px;
+                margin-top: 0;
 
                 > li {
                     > a {

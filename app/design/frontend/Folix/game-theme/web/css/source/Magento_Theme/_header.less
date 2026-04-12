@@ -193,75 +193,7 @@
         height: 100%;
     }
 
-    // PC 端导航样式
-    .navigation {
-        height: 100%;
-        display: flex;
-        align-items: center;
-
-        ul {
-            display: flex;
-            gap: 30px;
-            margin: 0;
-            padding: 0;
-            list-style: none;
-
-            li {
-                margin: 0;
-
-                a {
-                    color: @primary-darker;
-                    text-decoration: none;
-                    font-size: 14px;
-                    font-weight: 500;
-                    padding: 8px 16px;
-                    border-radius: 4px;
-                    transition: all 0.3s;
-
-                    &:hover {
-                        background: #f1f5f9;
-                        color: @accent-orange;
-                    }
-                }
-
-                // 子菜单样式
-                .submenu {
-                    position: absolute;
-                    top: 100%;
-                    left: 0;
-                    background: #ffffff;
-                    border: 1px solid #e2e8f0;
-                    border-radius: 4px;
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                    min-width: 200px;
-                    padding: 8px 0;
-                    display: none;
-                    z-index: 1000;
-
-                    li {
-                        margin: 0;
-
-                        a {
-                            padding: 10px 20px;
-                            display: block;
-                        }
-                    }
-
-                    .submenu {
-                        left: 100%;
-                        top: 0;
-                        margin-left: 4px;
-                    }
-                }
-
-                &:hover > .submenu {
-                    display: block;
-                }
-            }
-        }
-    }
-
-    // 隐藏 Account 导航
+    // 隐藏 Account 导航（PC端）
     #store.links {
         display: none;
     }
