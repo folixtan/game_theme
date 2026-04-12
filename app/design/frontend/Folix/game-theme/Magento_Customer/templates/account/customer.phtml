@@ -1,11 +1,12 @@
 <?php
 /**
- * Folix Game Theme - Customer Block
- *
- * 电竞风定制 - 登录后下拉菜单
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
  */
+
+/** @var Magento\Customer\Block\Account\Customer $block */
 ?>
-<?php if ($block->isLoggedIn()) : ?>
+<?php if ($block->customerLoggedIn()) : ?>
     <li class="customer-welcome folix-customer-welcome">
         <span class="customer-name"
               role="link"
@@ -18,7 +19,7 @@
                     class="action switch folix-customer-btn"
                     tabindex="-1"
                     data-action="customer-menu-toggle">
-                <span><?= $block->escapeHtml(__('Account')) ?></span>
+                <span><?= $block->escapeHtml(__('Change')) ?></span>
                 <svg class="folix-dropdown-icon" width="12" height="12" viewBox="0 0 12 12">
                     <path d="M6 8L1 3h10L6 8z" fill="currentColor"/>
                 </svg>

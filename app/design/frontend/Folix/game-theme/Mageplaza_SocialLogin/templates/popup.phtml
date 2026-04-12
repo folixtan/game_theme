@@ -1,141 +1,42 @@
 <?php
 /**
- * Folix Game Theme - Mageplaza Social Login Popup Template
+ * Mageplaza
  *
- * 模块：Mageplaza_SocialLogin
- * 功能：社交登录弹窗 - 电竞风设计
+ * NOTICE OF LICENSE
  *
- * @var $block \Mageplaza\SocialLogin\Block\Popup
+ * This source file is subject to the Mageplaza.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.mageplaza.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Mageplaza
+ * @package     Mageplaza_SocialLogin
+ * @copyright   Copyright (c) Mageplaza (https://www.mageplaza.com/)
+ * @license     https://www.mageplaza.com/LICENSE.txt
  */
 ?>
-
-<div id="social-login-popup" class="white-popup mfp-hide mp-popup-esports">
-    <!-- 标题栏 -->
-    <div class="social-login-title">
-        <h2><?= $block->escapeHtml(__('Social Login')) ?></h2>
+<?php /** @var \Mageplaza\SocialLogin\Block\Popup $block */
+if ($block->isEnabled() && $block->isEnabled() === 'popup_login'): ?>
+    <div id="social-login-popup" class="white-popup mfp-with-anim mfp-hide mp-popup-esports"
+         data-mage-init='{"socialPopupForm": <?= /* @noEscape */ $block->getFormParams() ?>}'>
+        <?= $block->getChildHtml('popup.email') ?>
+        <div class="mp-social-popup" style="padding-top: 15px">
+            <?= $block->getChildHtml('popup.authentication') ?>
+            <?= $block->getChildHtml('popup.create') ?>
+            <?= $block->getChildHtml('popup.forgot') ?>
+        </div>
+        <?= $block->getChildHtml('popup.authentication.social') ?>
+        <?= $block->getChildHtml('popup.additional.info') ?>
     </div>
-
-    <!-- 主内容区 -->
-    <div class="mp-social-popup">
-        <!-- 登录表单 -->
-        <div class="block-container authentication">
-            <div class="block-title">
-                <span><?= $block->escapeHtml(__('Login to your account')) ?></span>
-            </div>
-            <div class="block-content">
-                <?= $block->getChildHtml('customer.form.login.extra') ?>
-                <form class="form-customer-login"
-                      action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>"
-                      method="post"
-                      id="social-form-login"
-                      data-mage-init='{"validation":{}}'>
-                    <?= $block->getBlockHtml('formkey') ?>
-                    <fieldset class="fieldset login" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>">
-                        <div class="field email required">
-                            <label class="label" for="email"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
-                            <div class="control">
-                                <input name="login[username]"
-                                       value="<?= $block->escapeHtmlAttr($block->getUsername()) ?>"
-                                       id="email"
-                                       type="email"
-                                       class="input-text"
-                                       title="<?= $block->escapeHtmlAttr(__('Email')) ?>"
-                                       data-mage-init='{"mage/trim-input":{}}'
-                                       data-validate="{required:true, 'validate-email':true}"
-                                />
-                            </div>
-                        </div>
-                        <div class="field password required">
-                            <label class="label" for="pass"><span><?= $block->escapeHtml(__('Password')) ?></span></label>
-                            <div class="control">
-                                <input name="login[password]"
-                                       type="password"
-                                       id="pass"
-                                       class="input-text"
-                                       data-validate="{required:true}"
-                                />
-                            </div>
-                        </div>
-                        <?= $block->getChildHtml('form.additional.info') ?>
-                        <div class="actions-toolbar">
-                            <div class="primary">
-                                <button type="submit"
-                                        class="action login primary"
-                                        name="send"
-                                        id="bnt-social-login-authentication">
-                                    <span><?= $block->escapeHtml(__('Sign In')) ?></span>
-                                </button>
-                            </div>
-                            <div class="secondary">
-                                <a class="action remind"
-                                   href="<?= $block->escapeUrl($block->getForgotPasswordUrl()) ?>">
-                                    <span><?= $block->escapeHtml(__('Forgot Your Password?')) ?></span>
-                                </a>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
-        </div>
-
-        <!-- 注册表单 -->
-        <div class="block-container create">
-            <div class="block-title">
-                <span><?= $block->escapeHtml(__('Create an account')) ?></span>
-            </div>
-            <div class="block-content">
-                <form class="form-customer-create"
-                      action="<?= $block->escapeUrl($block->getPostActionUrl()) ?>"
-                      method="post"
-                      id="social-form-create"
-                      data-mage-init='{"validation":{}}'>
-                    <?= $block->getBlockHtml('formkey') ?>
-                    <fieldset class="fieldset create account" data-hasrequired="<?= $block->escapeHtmlAttr(__('* Required Fields')) ?>">
-                        <?= $block->getChildHtml('customer.form.register.extra') ?>
-                        <div class="field required">
-                            <label class="label" for="social-email-create"><span><?= $block->escapeHtml(__('Email')) ?></span></label>
-                            <div class="control">
-                                <input type="email"
-                                       name="email"
-                                       id="social-email-create"
-                                       value="<?= $block->escapeHtmlAttr($block->getEmailAddress()) ?>"
-                                       title="<?= $block->escapeHtmlAttr(__('Email')) ?>"
-                                       class="input-text"
-                                       data-validate="{required:true, 'validate-email':true}"
-                                />
-                            </div>
-                        </div>
-                        <?= $block->getChildHtml('form.additional.info') ?>
-                        <div class="actions-toolbar">
-                            <div class="primary">
-                                <button type="submit"
-                                        class="action create primary"
-                                        id="button-create-social">
-                                    <span><?= $block->escapeHtml(__('Create an Account')) ?></span>
-                                </button>
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
-        </div>
-
-        <!-- 社交登录按钮区域 -->
-        <div id="mp-popup-social-content">
-            <div class="block-title">
-                <span><?= $block->escapeHtml(__('Or login with')) ?></span>
-            </div>
-            <?= $block->getChildHtml('popup.social.link') ?>
-        </div>
+    <div style="clear: both"></div>
+<?php elseif ($block->isCheckMode()): ?>
+    <div id="social-login-popup" class="white-popup mfp-with-anim mfp-hide mp-popup-esports"
+         data-mage-init='{"socialPopupForm": <?= /* @noEscape */ $block->getFormParams() ?>}'>
+        <?= $block->getChildHtml('popup.email') ?>
     </div>
-</div>
-
-<script type="text/x-magento-init">
-{
-    "*": {
-        "Mageplaza_SocialLogin/js/social-popup": {
-            "isPopupDisplayHome": <?= (int)$block->isPopupDisplayHomePage() ?>
-        }
-    }
-}
-</script>
+    <div style="clear: both"></div>
+<?php endif; ?>

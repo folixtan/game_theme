@@ -82,6 +82,10 @@
                 <arguments>
                     <argument name="css_class" xsi:type="string">folix-unified-nav</argument>
                 </arguments>
+                <!-- 移动端导航子块 -->
+                <block class="Magento\Framework\View\Element\Template" name="mobile.nav.header" template="Magento_Theme::html/header/mobile-nav-header.phtml" after="-" />
+                <block class="Magento\Framework\View\Element\Template" name="mobile.nav.search" template="Magento_Theme::html/header/mobile-nav-search.phtml" after="mobile.nav.header" />
+                <block class="Magento\Customer\Block\Account\Customer" name="mobile.nav.footer" template="Magento_Theme::html/header/mobile-nav-footer.phtml" after="mobile.nav.search" />
             </block>
         </referenceContainer>
 
