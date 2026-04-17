@@ -108,13 +108,13 @@ class Data extends AbstractHelper
      * 获取同步间隔（分钟）
      *
      * @return int
+     * @deprecated 此方法已移至 ProductSync 模块的业务 Helper
      */
     public function getSyncInterval(): int
     {
-        return (int)$this->scopeConfig->getValue(
-            self::XML_PATH_SYNC_INTERVAL,
-            ScopeInterface::SCOPE_STORE
-        ) ?: 60;
+        // 为了向后兼容，暂时保留但返回默认值
+        // 建议调用方迁移到 FolixCode\ProductSync\Helper\Data
+        return 60;
     }
 
     /**
@@ -297,24 +297,37 @@ class Data extends AbstractHelper
      * 获取最后一次同步时间戳
      *
      * @return int
+     * @deprecated 此方法已移至 ProductSync 模块的业务 Helper
      */
     public function getLastSyncTimestamp(): int
     {
-        return (int)$this->scopeConfig->getValue(
-            'folixcode_basesyncservice/settings/last_sync_timestamp',
-            ScopeInterface::SCOPE_STORE
-        );
+        // 为了向后兼容，暂时保留但返回默认值
+        // 建议调用方迁移到 FolixCode\ProductSync\Helper\Data
+        return 0;
     }
 
     /**
      * 设置最后一次同步时间戳
      *
      * @param int $timestamp
-     * @return $this
+     * @return void
+     * @deprecated 此方法已移至 ProductSync 模块的业务 Helper
      */
-    public function setLastSyncTimestamp(int $timestamp): self
+    public function setLastSyncTimestamp(int $timestamp): void
     {
-        // 这里需要通过配置模型来保存
-        return $this;
+        // TODO: 实现配置保存逻辑
+        // 需要通过 Magento 的配置资源模型来持久化配置
+        // 示例实现（需要注入 ConfigResource）：
+        // $this->configResource->saveConfig(
+        //     'folixcode_basesyncservice/settings/last_sync_timestamp',
+        //     $timestamp,
+        //     ScopeInterface::SCOPE_STORE,
+        //     0
+        // );
+        
+        $this->_logger->info('Last sync timestamp updated (not persisted)', [
+            'timestamp' => $timestamp,
+            'note' => 'Configuration persistence not implemented yet. Migrate to ProductSync module.'
+        ]);
     }
 }

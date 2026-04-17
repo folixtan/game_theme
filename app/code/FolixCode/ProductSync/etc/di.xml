@@ -16,10 +16,72 @@
         </arguments>
     </type>
 
-    <!-- VirtualGoodsApiService 配置 -->
+    <!-- VirtualGoodsApiService 配置 - 使用统一的 ApiClient -->
     <type name="FolixCode\ProductSync\Service\VirtualGoodsApiService">
         <arguments>
-            <argument name="apiClient" xsi:type="object">FolixCode\BaseSyncService\Model\VirtualGoodsApiClient</argument>
+            <argument name="apiClient" xsi:type="object">FolixCode\BaseSyncService\Api\ExternalApiClientInterface</argument>
+        </arguments>
+    </type>
+
+    <!-- Publisher Logger 配置 -->
+    <virtualType name="FolixCodeProductSyncPublisherLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="name" xsi:type="string">mq_publisher</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">FolixCodeProductSyncPublisherLogHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="FolixCodeProductSyncPublisherLogHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+            <argument name="fileName" xsi:type="string">/var/log/mq_publisher.log</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- 通用 Logger（用于 Publisher 的第一个 logger 参数） -->
+    <virtualType name="FolixCodeProductSyncGeneralLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="name" xsi:type="string">productsync</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">FolixCodeProductSyncGeneralLogHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="FolixCodeProductSyncGeneralLogHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+            <argument name="fileName" xsi:type="string">/var/log/productsync.log</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="FolixCode\ProductSync\Model\MessageQueue\Publisher">
+        <arguments>
+            <argument name="logger" xsi:type="object">FolixCodeProductSyncGeneralLogger</argument>
+            <argument name="publisherLogger" xsi:type="object">FolixCodeProductSyncPublisherLogger</argument>
+        </arguments>
+    </type>
+
+    <!-- CategoryImporter 配置 -->
+    <type name="FolixCode\ProductSync\Service\CategoryImporter">
+        <arguments>
+            <argument name="categoryService" xsi:type="object">FolixCode\ProductSync\Service\CategoryService</argument>
+        </arguments>
+    </type>
+
+    <!-- CategoryService 配置 -->
+    <type name="FolixCode\ProductSync\Service\CategoryService">
+        <arguments>
+            <argument name="categoryFactory" xsi:type="object">Magento\Catalog\Model\CategoryFactory</argument>
+        </arguments>
+    </type>
+
+    <!-- ProductImporter 配置 - 使用 CategoryService -->
+    <type name="FolixCode\ProductSync\Service\ProductImporter">
+        <arguments>
+            <argument name="categoryService" xsi:type="object">FolixCode\ProductSync\Service\CategoryService</argument>
         </arguments>
     </type>
 </config>

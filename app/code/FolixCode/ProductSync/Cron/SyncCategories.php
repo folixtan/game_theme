@@ -10,12 +10,12 @@ use FolixCode\BaseSyncService\Helper\Data as BaseHelper;
 use Psr\Log\LoggerInterface;
 
 /**
- * Cron任务 - 定时同步产品数据（独立任务）
+ * Cron任务 - 定时同步分类数据（独立任务）
  * 
  * 职责：从 API 获取数据并发布到消息队列
  * 注意：实际的导入工作由 Consumer 异步完成
  */
-class SyncProducts
+class SyncCategories
 {
     private VirtualGoodsApiService $apiService;
     private PublisherInterface $publisher;
@@ -38,11 +38,11 @@ class SyncProducts
     }
 
     /**
-     * 执行产品同步任务
+     * 执行分类同步任务
      * 
      * 流程：
-     * 1. 从外部 API 获取产品列表
-     * 2. 将每个产品发布到消息队列
+     * 1. 从外部 API 获取分类列表
+     * 2. 将每个分类发布到消息队列
      * 3. Consumer 会异步处理导入
      *
      * @return void
@@ -52,52 +52,51 @@ class SyncProducts
         try {
             // 检查是否启用
             if (!$this->baseHelper->isEnabled()) {
-                $this->logger->info('ProductSync Products Cron: Synchronization is disabled, skipping.');
+                $this->logger->info('ProductSync Categories Cron: Synchronization is disabled, skipping.');
                 return;
             }
 
-            $this->logger->info('ProductSync Products Cron: Starting product synchronization...');
+            $this->logger->info('ProductSync Categories Cron: Starting category synchronization...');
 
             // 获取最后一次同步时间戳（增量同步）- 使用业务 Helper
             $lastSyncTimestamp = $this->productSyncHelper->getLastSyncTimestamp();
 
-            // 1. 从 API 获取产品列表
-            $productsData = $this->apiService->getProductList([
-                'timestamp' => $lastSyncTimestamp,
-                'limit' => 100
+            // 1. 从 API 获取分类列表
+            $categoriesData = $this->apiService->getCategoryList([
+                'timestamp' => $lastSyncTimestamp
             ]);
 
-            if (empty($productsData)) {
-                $this->logger->info('ProductSync Products Cron: No products to sync.');
+            if (empty($categoriesData)) {
+                $this->logger->info('ProductSync Categories Cron: No categories to sync.');
                 return;
             }
 
-            $this->logger->info('ProductSync Products Cron: Fetched products from API', [
-                'count' => count($productsData)
+            $this->logger->info('ProductSync Categories Cron: Fetched categories from API', [
+                'count' => count($categoriesData)
             ]);
 
-            // 2. 将每个产品发布到消息队列（异步导入）
+            // 2. 将每个分类发布到消息队列（异步导入）
             $publishedCount = 0;
-            foreach ($productsData as $productData) {
+            foreach ($categoriesData as $categoryData) {
                 try {
-                    $this->publisher->publishProductImport($productData);
+                    $this->publisher->publishCategoryImport($categoryData);
                     $publishedCount++;
                 } catch (\Exception $e) {
-                    $this->logger->error('ProductSync Products Cron: Failed to publish product to MQ', [
-                        'product_id' => $productData['id'] ?? 'unknown',
+                    $this->logger->error('ProductSync Categories Cron: Failed to publish category to MQ', [
+                        'category_id' => $categoryData['id'] ?? 'unknown',
                         'error' => $e->getMessage()
                     ]);
                 }
             }
 
-            $this->logger->info('ProductSync Products Cron: Products published to message queue', [
-                'total_fetched' => count($productsData),
+            $this->logger->info('ProductSync Categories Cron: Categories published to message queue', [
+                'total_fetched' => count($categoriesData),
                 'published_to_mq' => $publishedCount,
                 'note' => 'Actual import will be handled by Consumer asynchronously'
             ]);
 
         } catch (\Exception $e) {
-            $this->logger->error('ProductSync Products Cron: Product synchronization failed', [
+            $this->logger->error('ProductSync Categories Cron: Category synchronization failed', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);

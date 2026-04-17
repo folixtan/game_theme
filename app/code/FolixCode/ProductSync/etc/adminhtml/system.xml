@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="folixcode_productsync" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>FolixCode ProductSync Settings</label>
+            <tab>folixcode</tab>
+            <resource>FolixCode_ProductSync::config_settings</resource>
+
+            <group id="settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Synchronization Settings</label>
+
+                <field id="sync_interval" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Sync Interval (minutes)</label>
+                    <comment>How often to sync data via cron (default: 60 minutes)</comment>
+                    <validate>validate-number</validate>
+                </field>
+
+                <field id="batch_size" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Batch Size</label>
+                    <comment>Number of products to process in one batch (default: 100)</comment>
+                    <validate>validate-number validate-digits validate-greater-than-zero</validate>
+                </field>
+
+                <field id="last_sync_timestamp" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Last Sync Timestamp</label>
+                    <comment>Internal use only - tracks the last successful synchronization time</comment>
+                    <frontend_model>Magento\Config\Block\System\Config\Form\Field\Disabled</frontend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

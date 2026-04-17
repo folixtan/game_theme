@@ -6,8 +6,6 @@ namespace FolixCode\ProductSync\Service;
 use FolixCode\ProductSync\Service\VirtualGoodsApiService;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Psr\Log\LoggerInterface;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 
 /**
  * 产品详情导入服务
@@ -18,7 +16,6 @@ class ProductDetailImporter
     private ProductRepositoryInterface $productRepository;
     private ProductImporter $productImporter;
     private LoggerInterface $logger;
-    private LoggerInterface $detailLogger;
 
     public function __construct(
         VirtualGoodsApiService $apiService,
@@ -30,11 +27,6 @@ class ProductDetailImporter
         $this->productRepository = $productRepository;
         $this->productImporter = $productImporter;
         $this->logger = $logger;
-
-        // 创建独立的产品详情导入日志记录器
-        $this->detailLogger = new Logger('product_detail_importer');
-        $logPath = BP . '/var/log/product_detail_importer.log';
-        $this->detailLogger->pushHandler(new StreamHandler($logPath, Logger::DEBUG));
     }
 
     /**
@@ -50,7 +42,6 @@ class ProductDetailImporter
                 throw new \InvalidArgumentException('Product ID is required');
             }
 
-            $this->detailLogger->info('Fetching product detail', ['product_id' => $productId]);
             $this->logger->info('Fetching product detail', ['product_id' => $productId]);
 
             // 从API获取产品详情
@@ -59,14 +50,9 @@ class ProductDetailImporter
             // 导入产品（使用ProductImporter）
             $this->productImporter->import($productDetail);
 
-            $this->detailLogger->info('Product detail imported successfully', ['product_id' => $productId]);
             $this->logger->info('Product detail imported successfully', ['product_id' => $productId]);
 
         } catch (\Exception $e) {
-            $this->detailLogger->error('Failed to import product detail', [
-                'product_id' => $productId,
-                'error' => $e->getMessage()
-            ]);
             $this->logger->error('Failed to import product detail', [
                 'product_id' => $productId,
                 'error' => $e->getMessage()

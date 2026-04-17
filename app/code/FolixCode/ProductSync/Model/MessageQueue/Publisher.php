@@ -9,8 +9,6 @@ use FolixCode\ProductSync\Api\Message\CategoryImportMessageInterface;
 use FolixCode\ProductSync\Api\Message\ProductDetailMessageInterface;
 use Magento\Framework\MessageQueue\PublisherInterface as MqPublisher;
 use Psr\Log\LoggerInterface;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 
 /**
  * 消息队列发布者实现
@@ -34,18 +32,15 @@ class Publisher implements PublisherInterface
         ProductImportMessageInterface $productMessageFactory,
         CategoryImportMessageInterface $categoryMessageFactory,
         ProductDetailMessageInterface $productDetailMessageFactory,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        LoggerInterface $publisherLogger
     ) {
         $this->mqPublisher = $mqPublisher;
         $this->productMessageFactory = $productMessageFactory;
         $this->categoryMessageFactory = $categoryMessageFactory;
         $this->productDetailMessageFactory = $productDetailMessageFactory;
         $this->logger = $logger;
-
-        // 创建独立的消息发布日志记录器
-        $this->publisherLogger = new Logger('mq_publisher');
-        $logPath = BP . '/var/log/mq_publisher.log';
-        $this->publisherLogger->pushHandler(new StreamHandler($logPath, Logger::DEBUG));
+        $this->publisherLogger = $publisherLogger;
     }
 
     /**
