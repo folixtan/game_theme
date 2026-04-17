@@ -147,18 +147,17 @@ class Data extends AbstractHelper
                 return base64_encode($jsonData);
             }
 
-            // 规范化密钥为32字节（AES-256）
-            $normalizedKey = $this->normalizeKey($key);
 
             // 随机生成长16字节的初始向量iv（每次加密都不同）
-            $iv = random_bytes(16);
+            $ivLength = openssl_cipher_iv_length(static::ENCRYPT_METHOD);
+             $iv = openssl_random_pseudo_bytes($ivLength);
 
             // 使用AES-256-CBC加密，OPENSSL_RAW_DATA表示不自动base64编码
           //  var_dump(static::ENCRYPT_METHOD, $normalizedKey, $iv);exit;
             $encrypted = openssl_encrypt(
                 $jsonData,
                 static::ENCRYPT_METHOD,
-                $normalizedKey,
+                $key,
                 OPENSSL_RAW_DATA,
                 $iv
             );
@@ -195,29 +194,6 @@ class Data extends AbstractHelper
         }
     }
 
-    /**
-     * 规范化密钥为32字节（AES-256）
-     *
-     * @param string $key
-     * @return string
-     */
-    private function normalizeKey(string $key): string
-    {
-        // 如果密钥正好32字节，直接返回
-        if (strlen($key) === 32) {
-            return $key;
-        }
-
-        // 如果密钥超过32字节，截断
-        if (strlen($key) > 32) {
-            $this->_logger->warning('Key is longer than 32 bytes, truncating', ['original_length' => strlen($key)]);
-            return substr($key, 0, 32);
-        }
-
-        // 如果密钥少于32字节，用零填充
-        $this->_logger->warning('Key is shorter than 32 bytes, padding', ['original_length' => strlen($key)]);
-        return str_pad($key, 32, "\0");
-    }
 
     /**
      * 解密响应数据（按照API文档的规范）
