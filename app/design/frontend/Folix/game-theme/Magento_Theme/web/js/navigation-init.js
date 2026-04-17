@@ -28,6 +28,7 @@ require([
         function _open() {
             $('body').addClass('nav-open');
             $('.sections.nav-sections').addClass('active');
+            $('.nav-overlay').addClass('active');
             $('body').css('overflow', 'hidden');
         }
 
@@ -35,8 +36,15 @@ require([
         function _close() {
             $('body').removeClass('nav-open');
             $('.sections.nav-sections').removeClass('active');
+            $('.nav-overlay').removeClass('active');
             $('body').css('overflow', '');
         }
+
+        // 点击遮罩层关闭侧边栏
+        $(document).on('click', '.nav-overlay', function(e) {
+            e.preventDefault();
+            _close();
+        });
 
         // 点击关闭按钮关闭侧边栏
         $(document).on('click', '.section-item-title.nav-sections-item-title', function(e) {
@@ -49,7 +57,8 @@ require([
         $(document).on('click', function(e) {
             if ($('.sections.nav-sections.active').length &&
                 $(e.target).closest('.sections.nav-sections').length === 0 &&
-                $(e.target).closest('.nav-toggle').length === 0) {
+                $(e.target).closest('.nav-toggle').length === 0 &&
+                $(e.target).closest('.nav-overlay').length === 0) {
                 _close();
             }
         });

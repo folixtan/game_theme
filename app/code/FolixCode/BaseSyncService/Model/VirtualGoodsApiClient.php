@@ -173,4 +173,9 @@ class VirtualGoodsApiClient implements ExternalApiClientInterface
     {
         return $this->apiBaseUrl;
     }
+
+    private function validateResponse(array $response): array {
+      
+        $this->baseHelper->encryptRequestData();
+    }
 }

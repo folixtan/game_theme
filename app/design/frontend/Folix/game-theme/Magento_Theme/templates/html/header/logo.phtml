@@ -19,7 +19,7 @@ $logoHeight = $logoSizeResolver !== null && $logoSizeResolver->getHeight()
     ? $logoSizeResolver->getHeight()
     : $block->getLogoHeight();
 ?>
-<span data-action="toggle-nav" class="action nav-toggle"><span><?= $block->escapeHtml(__('Toggle Nav')) ?></span></span>
+<span data-action="toggle-nav" class="action nav-toggle" ><span><?= $block->escapeHtml(__('Toggle Nav')) ?></span></span>
 <a
     class="logo"
     href="<?= $block->escapeUrl($block->getUrl('')) ?>"

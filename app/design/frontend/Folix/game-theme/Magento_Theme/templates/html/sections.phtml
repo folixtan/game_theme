@@ -6,6 +6,7 @@
 
 /**
  *  General template for displaying group of blocks divided into sections
+ *  Folix Theme: 添加遮罩层支持和导航初始化
  */
 
 $group = $block->getGroupName();
@@ -13,10 +14,11 @@ $groupCss = $block->getGroupCss();
 
 ?>
 <?php if ($detailedInfoGroup = $block->getGroupChildNames($group)):?>
+   
     <div class="sections <?= $block->escapeHtmlAttr($groupCss) ?>">
         <?php $layout = $block->getLayout(); ?>
         <div class="section-items <?= $block->escapeHtmlAttr($groupCss) ?>-items"
-            >
+             data-mage-init='{"tabs":{"openedState":"active"}, "navigationInit":{}}'>
             <?php foreach ($detailedInfoGroup as $name):?>
                 <?php
                     $html = $layout->renderElement($name);
@@ -39,6 +41,11 @@ $groupCss = $block->getGroupCss();
                     <?= /* @noEscape */ $html ?>
                 </div>
             <?php endforeach;?>
+          
+          
         </div>
+          <div class="folix-top-search">
+                <?php echo $layout->renderElement('folix.top.search');?>
+            </div>
     </div>
 <?php endif; ?>

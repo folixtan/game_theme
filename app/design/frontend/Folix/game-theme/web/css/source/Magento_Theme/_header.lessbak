@@ -1,0 +1,677 @@
+// /**
+//  * Folix Game Theme - Header Styles
+//  *
+//  * 模块：Magento_Theme
+//  * 位置：Magento_Theme/web/css/source/Magento_Theme/_header.less
+//  *
+//  * 电竞风格：深色背景 + 金色/橙色强调色
+//  * 响应式断点：768px
+//  */
+
+//
+//  Common (All devices)
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    //
+    //  Page Header - 页面头部
+    //  _____________________________________________
+
+    .page-header {
+        background: @folix-gradient-header-page; 
+        backdrop-filter: blur(10px);
+        border-bottom: 2px solid @folix-border-gold;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        // Top Bar - 深蓝渐变
+        .panel.wrapper {
+           background: rgba(10, 22, 40, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            .switcher  {
+               position: relative;
+               order:1;
+                .switcher-label {
+                     display: none;
+                }
+                .options {
+                   cursor: pointer;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    padding: 6px 14px;
+                    background: @folix-bg-light;
+                    border: 1px solid @folix-border;
+                    border-radius: @folix-radius-md;
+                    color: @folix-text-secondary;
+                    font-size: 13px;
+                    transition: all @folix-transition;
+                    &:valid {
+                        color: @folix-text-secondary;
+                    }
+                }
+            }
+        }
+ 
+     
+
+       }
+
+
+         
+        
+    }
+
+    //
+    //  Header Content - 主栏
+    //  _____________________________________________
+
+    .page-header .header.content {
+        border-bottom: 3px solid @folix-accent;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 20px;
+        min-height: 70px;
+    }
+
+    //
+    //  Navigation Container - 导航容器（包含 Logo + 菜单）
+    //  _____________________________________________
+
+    .folix-nav-container {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        justify-content: flex-start;
+        gap: 40px;
+        order: 1; // 第一个显示
+
+        // 隐藏移动端汉堡菜单按钮
+        .action.nav-toggle {
+            display: none;
+        }
+
+        // Logo
+        .logo {
+            margin-right: 0;
+            flex-shrink: 0;
+
+            img {
+                max-height: 50px;
+            }
+        }
+
+        // 导航菜单 - 桌面端显示
+        .sections.nav-sections {
+            display: block;
+            flex: 1;
+        }
+
+        .nav-sections-items {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-sections-item-title {
+            display: inline-block;
+
+            .nav-sections-item-switch {
+                display: inline-block;
+                padding: 8px 12px;
+                color: @folix-text-primary;
+                font-size: 14px;
+                font-weight: 600;
+                text-decoration: none;
+                transition: color @folix-transition-fast;
+
+                &:hover {
+                    color: @folix-secondary;
+                }
+            }
+        }
+
+        // 导航列表
+        .navigation {
+            display: flex;
+            align-items: center;
+
+            > ul {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+
+                > li {
+                    position: relative;
+
+                    > a.level-top {
+                        display: inline-block;
+                        padding: 8px 12px;
+                        color: @folix-text-primary;
+                        font-size: 14px;
+                        font-weight: 600;
+                        text-decoration: none;
+                        white-space: nowrap;
+                        transition: color @folix-transition-fast;
+
+                        &:hover {
+                            color: @folix-secondary;
+                        }
+
+                        // 下拉箭头
+                        .ui-menu-icon {
+                            margin-left: 4px;
+                            font-size: 10px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //
+    //  Search - 搜索框（电竞风定制）
+    //  _____________________________________________
+
+    .block-search {
+        flex: 0 0 auto;
+        max-width: 320px;
+        margin-bottom: 0;
+        order: 2; // 第二个显示
+
+        // 隐藏标题（Magento 标准）
+        .block-title {
+            display: none;
+        }
+
+        // 内容区域
+        .block-content {
+            margin-bottom: 0;
+        }
+
+        // 搜索表单
+        .form.minisearch {
+            display: flex;
+            align-items: center;
+
+            // 搜索字段
+            .field.search {
+                flex: 1;
+                display: flex;
+                margin: 0;
+
+                // 隐藏标签（无障碍但仍存在）
+                .label {
+                    display: none;
+
+                    > span {
+                        border: 0;
+                        clip: rect(0, 0, 0, 0);
+                        height: 1px;
+                        margin: -1px;
+                        overflow: hidden;
+                        padding: 0;
+                        position: absolute;
+                        width: 1px;
+                    }
+                }
+
+                // 输入控制区
+                .control {
+                    flex: 1;
+                    display: flex;
+                    gap: 8px;
+                    width: 100%;
+                    background: @folix-bg-card;
+                    border: 2px solid @folix-border;
+                    border-right: none;
+                    border-radius: @folix-radius-lg 0 0 @folix-radius-lg;
+                    overflow: hidden;
+                    transition: all @folix-transition;
+
+                    &:focus-within {
+                        border-color: @folix-secondary;
+                        box-shadow: @folix-shadow-gold;
+                    }
+
+                    // 搜索输入框
+                    input {
+                        width: 100%;
+                        height: 46px;
+                        padding: 0 16px;
+                        background: transparent;
+                        border: none;
+                        color: @folix-text-primary;
+                        font-size: 14px;
+                        margin: 0;
+                        position: static;
+
+                        &::placeholder {
+                            color: @folix-text-muted;
+                        }
+
+                        &::-webkit-input-placeholder {
+                            color: @folix-text-muted;
+                        }
+
+                        &:-moz-placeholder {
+                            color: @folix-text-muted;
+                        }
+
+                        &::-moz-placeholder {
+                            color: @folix-text-muted;
+                        }
+
+                        &:-ms-input-placeholder {
+                            color: @folix-text-muted;
+                        }
+
+                        &:focus {
+                            outline: none;
+                        }
+                    }
+
+                    // 自动完成下拉
+                    #search_autocomplete {
+                        display: none;
+                    }
+
+                    // 高级搜索链接（隐藏）
+                    .nested {
+                        display: none;
+                    }
+                }
+            }
+
+            // 搜索按钮操作区
+            .actions {
+                display: flex;
+
+                // 搜索按钮
+                .action.search {
+                    height: 46px;
+                    padding: 0 28px;
+                    background: @folix-btn-primary-bg;
+                    border: none;
+                    border-radius: 0 @folix-radius-lg @folix-radius-lg 0;
+                    color: @folix-btn-primary-text;
+                    font-size: 14px;
+                    font-weight: 700;
+                    cursor: pointer;
+                    box-shadow: @folix-shadow-gold;
+                    transition: all @folix-transition;
+                    position: relative;
+
+                    // 隐藏按钮文本（使用图标）
+                    > span {
+                        border: 0;
+                        clip: rect(0, 0, 0, 0);
+                        height: 1px;
+                        margin: -1px;
+                        overflow: hidden;
+                        padding: 0;
+                        position: absolute;
+                        width: 1px;
+                    }
+
+                    // 使用图标字体
+                    &:before {
+                        -webkit-font-smoothing: antialiased;
+                        -moz-osx-font-smoothing: grayscale;
+                        font-size: 16px;
+                        line-height: 46px;
+                        color: @folix-btn-primary-text;
+                        content: '\e615';
+                        font-family: 'luma-icons';
+                        margin: 0;
+                        vertical-align: top;
+                        display: inline-block;
+                        font-weight: normal;
+                        overflow: hidden;
+                        text-align: center;
+                    }
+
+                    &:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 4px 30px rgba(255, 215, 0, 0.5);
+
+                        &:before {
+                            color: @folix-btn-primary-text;
+                        }
+                    }
+
+                    &:active {
+                        transform: translateY(0);
+
+                        &:before {
+                            color: @folix-btn-primary-text;
+                        }
+                    }
+
+                    &:focus {
+                        outline: none;
+
+                        &:before {
+                            color: @folix-btn-primary-text;
+                        }
+                    }
+
+                    // 禁用状态
+                    &.disabled,
+                    &[disabled],
+                    fieldset[disabled] & {
+                        pointer-events: none;
+                        opacity: 0.5;
+                    }
+                }
+            }
+        }
+    }
+
+    // 搜索自动完成下拉样式
+    .search-autocomplete {
+        display: none;
+        margin-top: -15px;
+        overflow: hidden;
+        position: absolute;
+        z-index: 3;
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            &:not(:empty) {
+                background: @folix-bg-card;
+                border: 1px solid @folix-border;
+                border-top: 0;
+                border-radius: 0 0 @folix-radius-md @folix-radius-md;
+                box-shadow: @folix-shadow-xl;
+            }
+
+            li {
+                border-top: 1px solid @folix-border;
+                cursor: pointer;
+                margin: 0;
+                padding: 12px 16px;
+                position: relative;
+                color: @folix-text-primary;
+                font-size: 14px;
+                transition: all @folix-transition-fast;
+
+                &:hover {
+                    background: @folix-bg-light;
+                    color: @folix-secondary;
+                }
+
+                &:first-child {
+                    border-top: none;
+                }
+            }
+        }
+    }
+
+    //
+    //  Minicart - 迷你购物车
+    //  _____________________________________________
+
+    .minicart-wrapper {
+        flex-shrink: 0;
+        order: 3; // 第三个显示（最右侧）
+
+        .action.showcart {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: @folix-bg-light; // 修复：使用变量替代硬编码 #334155
+            border: 2px solid @folix-border-gold;
+            border-radius: @folix-radius-lg;
+            color: @folix-text-primary; // 修复：使用主文字颜色
+            font-size: 14px;
+            font-weight: 600;
+            transition: all @folix-transition;
+
+            &:hover {
+                background: @folix-secondary;
+                color: @folix-text-on-gold;
+                box-shadow: @folix-btn-primary-shadow;
+                
+                &::before {
+                    color: @folix-purple-dark;
+                }
+            }
+
+            .text {
+                font-size: 14px;
+                font-weight: @font-weight__medium;
+            }
+
+            .counter.qty {
+                background: @folix-accent;
+                color: white;
+                border-radius: 12px;
+                padding: 4px 10px;
+                font-size: 12px;
+                font-weight: 700;
+                box-shadow: @folix-btn-secondary-shadow;
+            }
+        }
+    }
+}
+
+//
+//  Desktop (≥ 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    // Header Content 高度和布局
+    .page-header .header.content {
+        height: 70px;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; // 从左到右排列
+        gap: 20px;
+    }
+
+    // Navigation Container - Logo + 导航菜单
+    .folix-nav-container {
+        order: 1; // 第一个显示
+        flex: 1; // 占据剩余空间
+        display: flex;
+        align-items: center;
+        gap: 40px;
+        min-width: 0; // 允许缩小
+    }
+
+    // Search - 搜索框
+    .block-search {
+        order: 2; // 第二个显示
+        flex-shrink: 0;
+        max-width: 320px;
+
+        .form.minisearch {
+            .field.search {
+                .control {
+                    border-right: none;
+                    border-radius: @folix-radius-lg 0 0 @folix-radius-lg;
+                }
+            }
+
+            .actions {
+                display: flex;
+
+                .action.search {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    > span {
+                        // 保持隐藏文本
+                    }
+
+                    &:before {
+                        // 显示图标
+                    }
+                }
+            }
+        }
+    }
+
+    // Minicart - 购物车（最右侧）
+    .minicart-wrapper {
+        order: 3; // 第三个显示（最右侧）
+        flex-shrink: 0;
+    }
+}
+
+//
+//  Mobile (< 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    // Top Bar - 隐藏
+    .page-header .panel.wrapper {
+        display: none;
+    }
+
+    // Main Bar - 简化
+    .page-header .header.content {
+        padding: 0 16px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between; // 移动端两端对齐
+        gap: 12px;
+    }
+
+    // Navigation Container - 移动端简化
+    .folix-nav-container {
+        order: 1;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 12px;
+        min-width: 0;
+    }
+
+    // 汉堡菜单按钮 - Magento 原生
+    .action.nav-toggle {
+        display: inline-block;
+        padding: 8px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        
+        > span {
+            border: 0;
+            clip: rect(0, 0, 0, 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+        }
+
+        &:before {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-size: 26px;
+            line-height: 26px;
+            color: @folix-text-primary;
+            content: '\e61c'; // 汉堡菜单图标
+            font-family: 'luma-icons';
+            margin: 0;
+            vertical-align: top;
+            display: inline-block;
+            font-weight: normal;
+            overflow: hidden;
+            text-align: center;
+        }
+    }
+
+    // Logo
+    .logo {
+        margin: 0;
+        flex-shrink: 0;
+
+        img {
+            max-height: 40px;
+        }
+    }
+
+    // 移动端隐藏桌面端导航
+    .sections.nav-sections {
+        display: none;
+    }
+
+    // Mobile Search - 简化版本
+    .block-search {
+        order: 2;
+        flex-shrink: 0;
+        width: auto;
+        max-width: 180px;
+
+        .form.minisearch {
+            .field.search {
+                .control {
+                    border-radius: @folix-radius-lg;
+                    border-right: 2px solid @folix-border;
+                    height: 40px;
+
+                    input {
+                        height: 40px;
+                        padding: 0 12px;
+                        font-size: 13px;
+                    }
+                }
+            }
+
+            .actions {
+                display: none; // 移动端隐藏按钮
+            }
+        }
+    }
+
+    // Mobile Minicart
+    .minicart-wrapper {
+        order: 3;
+        flex-shrink: 0;
+
+        .action.showcart {
+            padding: 8px;
+
+            .text {
+                display: none;
+            }
+
+            .counter.qty {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 20px;
+                height: 20px;
+                background: @folix-accent;
+                color: white;
+                border-radius: 50%;
+                font-size: 12px;
+                font-weight: @font-weight__bold;
+                margin-left: 4px;
+
+                &.empty {
+                    display: none;
+                }
+            }
+        }
+    }
+}

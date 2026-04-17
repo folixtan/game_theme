@@ -244,8 +244,6 @@ class Data extends AbstractHelper
                 return $this->json->unserialize(base64_decode($encryptedData));
             }
 
-            // 规范化密钥为32字节（AES-256）
-            $normalizedKey = $this->normalizeKey($key);
 
             // 第一步：将data密文进行base64解码，得到JSON
             $jsonPayload = base64_decode($encryptedData);
@@ -277,7 +275,7 @@ class Data extends AbstractHelper
             $decrypted = openssl_decrypt(
                 $encryptedString,
                 'AES-256-CBC',
-                $normalizedKey,
+                $key,
                 OPENSSL_RAW_DATA,
                 $iv
             );

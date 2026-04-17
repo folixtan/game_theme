@@ -110,7 +110,7 @@ class SyncManager
     {
         $limit = $params['limit'] ?? 100;
         $page = $params['page'] ?? 1;
-        $timestamp = $params['timestamp'] ?: $this->timezone->scopeTimeStamp();
+        $timestamp = $params['timestamp'] ?: $this->timezone->date()->getTimestamp();
 
         $this->syncLogger->info('Syncing products', [
             'limit' => $limit,
@@ -156,13 +156,13 @@ class SyncManager
      */
     private function syncCategories(array $params): int
     {
-        $timestamp = $params['timestamp'] ?? 0;
+        $timestamp = $params['timestamp'] ?: $this->timezone->date()->getTimestamp();
 
         $this->syncLogger->info('Syncing categories', [
-            'timestamp' => $timestamp ?: $this->timezone->scopeTimeStamp()
+            'timestamp' => $timestamp ?: $this->timezone->date()->getTimestamp()
         ]);
         $this->logger->info('Syncing categories', [
-            'timestamp' => $timestamp ?: $this->timezone->scopeTimeStamp()
+            'timestamp' => $timestamp ?: $this->timezone->date()->getTimestamp()
         ]);
 
         // 获取分类列表

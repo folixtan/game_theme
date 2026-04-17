@@ -1,0 +1,531 @@
+// /**
+//  * Folix Game Theme - Mobile Navigation V2 (游戏化设计)
+//  * 
+//  * 设计理念:
+//  * - 游戏化视觉风格 (霓虹发光、科幻感)
+//  * - 搜索固定在菜单底部
+//  * - 卡片式菜单项,更现代
+//  * - 左侧发光边框动画
+//  */
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m)  { 
+
+    // ==============================================
+    // 1. 导航容器整体布局
+    // ==============================================
+    
+    .nav-sections {
+        background: @folix-bg-page !important;
+        padding-bottom: 80px; // 为底部搜索留出空间
+        
+        .nav-sections-items {
+            background: linear-gradient(180deg, @folix-bg-card 0%, @folix-bg-page 100%);
+            padding: 0;
+            position: relative;
+
+            .nav-sections-item-title {
+                flex: 1;
+                padding: 16px 24px;
+                margin: 0;
+                border: none !important;
+                background: transparent;
+                transition: all @folix-transition;
+                cursor: pointer;
+                position: relative;
+
+                // 底部发光边框
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 0;
+                    height: 3px;
+                    background: @folix-secondary;
+                    box-shadow: 0 0 10px @folix-secondary;
+                    transition: all @folix-transition;
+                }
+
+                a {
+                    color: @folix-text-secondary;
+                    font-size: 16px;
+                    font-weight: 600;
+                    text-decoration: none;
+                    transition: all @folix-transition;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+
+                // 激活态 - Menu
+                &.active {
+                    background: rgba(255, 215, 0, 0.05);
+
+                    a {
+                        color: @folix-secondary;
+                        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+                    }
+
+                    &::after {
+                        width: 60%;
+                    }
+                }
+
+                // Hover态
+                &:hover:not(.active) {
+                    background: rgba(255, 255, 255, 0.03);
+
+                    a {
+                        color: @folix-text-primary;
+                    }
+                }
+            }
+        }
+    }
+
+    // ==============================================
+    // 2. 菜单内容区
+    // ==============================================
+    
+    .nav-sections-item-content {
+        display: none;
+        background: transparent;
+        padding: 16px 12px;
+
+        &[aria-hidden="false"] {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+    }
+
+    // ==============================================
+    // 3. 游戏化导航菜单
+    // ==============================================
+    
+    .navigation {
+        background: transparent;
+        padding: 0;
+
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        // 一级菜单项 - 游戏卡片风格
+        li.level0 {
+            margin: 10px 0;
+            border-radius: @folix-radius-md;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 1px solid @folix-border;
+            transition: all @folix-transition;
+            position: relative;
+            overflow: hidden; // 限制发光边框不溢出到子菜单
+
+            // 左侧发光边框 - 只在当前一级项显示
+            &::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                width: 0;
+                background: @folix-secondary;
+                box-shadow: 0 0 20px @folix-secondary;
+                transition: all @folix-transition;
+                z-index: 2;
+                border-radius: @folix-radius-md 0 0 @folix-radius-md;
+            }
+
+            > a.level-top {
+                display: block; // 改为block,不用flex
+                padding-top: 16px;
+                padding-bottom: 16px;
+                padding-left: 20px;
+                padding-right: 20px;
+                color: @folix-text-primary;
+                font-size: 15px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                text-decoration: none;
+                transition: all @folix-transition;
+                position: relative;
+                z-index: 1;
+
+                // 箭头图标 - 绝对定位靠右
+                .ui-menu-icon {
+                    position: absolute;
+                    right: 20px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: @folix-text-secondary;
+                    font-size: 18px;
+                    transition: all @folix-transition;
+                }
+            }
+
+            // 激活态 - 左侧发光边框
+            &.active,
+            &.has-active {
+                border-color: @folix-secondary;
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.2), inset 0 0 20px rgba(255, 215, 0, 0.05);
+
+
+                > a.level-top {
+                    color: @folix-secondary;
+                    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+
+                    .ui-menu-icon {
+                        color: @folix-secondary;
+                        transform: translateY(-50%) rotate(90deg);
+                    }
+                }
+            }
+
+            // Hover态
+            &:hover {
+                border-color: rgba(255, 215, 0, 0.3);
+                transform: translateX(4px);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+
+                &::before {
+                    width: 4px;
+                    opacity: 0.5;
+                }
+
+                > a.level-top .ui-menu-icon {
+                    color: @folix-secondary;
+                }
+            }
+        }
+
+        // Sale 特殊样式 - 火焰+发光
+        li.nav-6 {
+            background: linear-gradient(135deg, rgba(255, 59, 48, 0.15) 0%, rgba(30, 41, 59, 0.8) 100%);
+            border-color: rgba(255, 59, 48, 0.3);
+
+            > a.level-top {
+                color: @folix-text-primary;
+
+                // 火焰图标
+                &::after {
+                    content: '🔥';
+                    margin-left: 12px;
+                    font-size: 18px;
+                    animation: pulse 2s ease-in-out infinite;
+                }
+            }
+
+            &:hover {
+                border-color: @folix-accent;
+                box-shadow: 0 0 20px rgba(255, 59, 48, 0.3);
+            }
+        }
+
+        // 子菜单 - 科幻折叠效果
+        .submenu {
+            display: none;
+            background: rgba(15, 23, 42, 0.5);
+            border-top: 1px solid @folix-border;
+            padding: 8px 0;
+
+            &[aria-hidden="false"],
+            &.expanded {
+                display: block;
+                animation: expandMenu 0.3s ease;
+            }
+
+            // "All XXX" 链接 - 紧跟在父级下方
+            .all-category {
+                background: rgba(255, 215, 0, 0.05);
+                border-bottom: 1px solid @folix-border;
+                margin: 0; // 去除外边距
+
+                a {
+                    display: block;
+                    padding: 12px 20px;
+                    color: @folix-secondary;
+                    font-size: 13px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    text-decoration: none;
+                    transition: all @folix-transition;
+
+                    &:hover {
+                        background: rgba(255, 215, 0, 0.1);
+                        color: lighten(@folix-secondary, 10%);
+                        padding-left: 24px;
+                    }
+                }
+            }
+
+            // 二级菜单 - 带左侧指示器
+            li.level1 {
+                margin: 4px 8px;
+                border-radius: @folix-radius-sm;
+                background: rgba(26, 35, 50, 0.6);
+                border: none; // 去掉边框,只在一级菜单有边框
+                position: relative;
+                transition: all @folix-transition;
+
+                // 左侧指示器
+                &::before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 0;
+                    height: 60%;
+                    background: @folix-secondary;
+                    border-radius: 0 2px 2px 0;
+                    transition: all @folix-transition;
+                }
+
+                > a {
+                    display: block; // 改为block
+                    padding-top: 14px;
+                    padding-bottom: 14px;
+                    padding-left: 20px;
+                    padding-right: 40px; // 给箭头留空间
+                    color: @folix-text-secondary;
+                    font-size: 14px;
+                    font-weight: 600;
+                    text-decoration: none;
+                    transition: all @folix-transition;
+                    position: relative;
+                    z-index: 1;
+
+                    // 箭头图标 - 绝对定位
+                    .ui-menu-icon {
+                        position: absolute;
+                        right: 18px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        color: @folix-text-muted;
+                        font-size: 16px;
+                        transition: all @folix-transition;
+                    }
+
+                    &:hover {
+                        color: @folix-secondary;
+
+                        .ui-menu-icon {
+                            color: @folix-secondary;
+                        }
+                    }
+                }
+
+                &:hover {
+                    background: rgba(255, 215, 0, 0.05); // 只改变背景色,不加边框
+
+                    &::before {
+                        width: 3px;
+                    }
+                }
+
+                // 有子菜单的激活态
+                &.active,
+                &.has-active {
+                    background: rgba(255, 215, 0, 0.08); // 只改变背景色,不加边框
+
+                    &::before {
+                        width: 3px;
+                    }
+
+                    > a {
+                        color: @folix-secondary;
+
+                        .ui-menu-icon {
+                            color: @folix-secondary;
+                            transform: translateY(-50%) rotate(90deg);
+                        }
+                    }
+                }
+            }
+
+            // 三级菜单 - 更深的缩进
+            li.level2 {
+                margin: 3px 8px 3px 20px;
+
+                > a {
+                    display: block;
+                    padding-top: 12px;
+                    padding-bottom: 12px;
+                    padding-left: 16px;
+                    padding-right: 18px;
+                    color: @folix-text-muted;
+                    font-size: 13px;
+                    font-weight: 500;
+                    text-decoration: none;
+                    transition: all @folix-transition;
+
+                    &:hover {
+                        color: @folix-secondary;
+                        padding-left: 20px;
+                    }
+                }
+            }
+        }
+    }
+
+    // ==============================================
+    // 4. 底部固定搜索框
+    // ==============================================
+    
+    .folix-top-search {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(180deg, transparent 0%, @folix-bg-page 20%);
+        padding: 20px 16px 16px;
+        z-index: 1000;
+
+        .block-search {
+            margin: 0;
+            max-width: 600px;
+            margin: 0 auto;
+
+           
+            .block-title {
+                display: none;
+            }
+
+            .block-content {
+                padding: 0;
+            }
+
+            .form.minisearch {
+               
+                .search {
+                     label {
+                         display: none;
+                     }
+                }
+                .control {
+                    #search_autocomplete {
+                         display: none !important;
+                    }
+                }
+                // 覆盖原生的绝对定位
+                .block-search input,
+                input#search {
+                    position: relative !important; // 覆盖原生的绝对定位
+                    width: 100%;
+                    left: 0;
+                    height: 48px;
+                    padding: 0 50px 0 20px;
+                    background: @folix-bg-card;
+                    border: 2px solid @folix-border;
+                    border-radius: 50px; // 胶囊形
+                    color: @folix-text-primary;
+                    font-size: 15px;
+                    transition: all @folix-transition;
+                    box-sizing: border-box; // 确保padding不影响宽度
+
+                    &::placeholder {
+                        color: @folix-text-muted;
+                    }
+
+                    &:focus {
+                        outline: none;
+                        border-color: @folix-secondary;
+                        box-shadow: 0 0 20px rgba(255, 215, 0, 0.3), inset 0 0 10px rgba(255, 215, 0, 0.05);
+                        background: rgba(30, 41, 59, 0.95);
+                    }
+                }
+
+                
+
+                // 搜索按钮
+                .actions {
+                    margin: 0;
+                  
+                    .action.search {
+                        position: absolute;
+                        right: 16px;
+                        top: 52%;
+                        transform: translateY(-50%);
+                        width: 46px;
+                        height: 46px;
+                        min-width: 46px; // 确保最小宽度
+                        min-height: 46px; // 确保最小高度
+                        padding: 0;
+                        background: @folix-secondary;
+                        border: none;
+                        border-radius: 50%;
+                        cursor: pointer;
+                        transition: all @folix-transition;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        line-height: 1; // 确保图标居中
+
+                        span {
+                            display: none; // 隐藏文字
+                        }
+
+                        &::before {
+                            font-family: 'luma-icons';
+                            content: '\e615'; // search icon
+                            color: @folix-btn-primary-text;
+                            font-size: 16px;
+                            display: block;
+                            line-height: 1;
+                        }
+
+                        &:hover {
+                            background: lighten(@folix-secondary, 10%);
+                            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+                            transform: translateY(-50%) scale(1.1);
+                        }
+
+                        &:disabled {
+                            opacity: 0.5;
+                            cursor: not-allowed;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // ==============================================
+    // 5. 动画
+    // ==============================================
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes expandMenu {
+        from {
+            opacity: 0;
+            max-height: 0;
+        }
+        to {
+            opacity: 1;
+            max-height: 500px;
+        }
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.2);
+        }
+    }
+
+}

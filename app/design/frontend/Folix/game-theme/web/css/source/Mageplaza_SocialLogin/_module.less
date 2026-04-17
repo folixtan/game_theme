@@ -27,15 +27,14 @@
     #social-login-popup {
         &.white-popup {
             // 渐变背景
-            background: @folix-bg-card !important;
             background: linear-gradient(
                 135deg,
                 @folix-bg-dark 0%,
                 fade(@folix-bg-dark, 95%) 50%,
                 @folix-bg-card 100%
-            ) !important;
+            ) ;
 
-            border-radius: @folix-radius-lg !important;
+            border-radius: @folix-radius-lg;
 
             // 发光效果
             box-shadow:
@@ -135,8 +134,8 @@
 
         // 主内容区
         .mp-social-popup {
-            background: transparent !important;
-            padding: 28px;
+            background: transparent;
+            padding: 20px;
 
             // 块容器
             .block-container {
@@ -198,7 +197,7 @@
             .form-customer-login,
             .form-customer-create {
                 .field {
-                    margin-bottom: 18px;
+                    margin-bottom: 10px;
 
                     &.required {
                         > .label {
@@ -390,8 +389,11 @@
 
         #mp-popup-social-content {
             margin-top: 24px;
-            padding-top: 24px;
+       
             border-top: 2px solid @folix-border;
+            .social-login-authentication-channel {
+                margin-top: 36px;
+            }
 
             .block-title {
                 font-size: 16px;
@@ -435,7 +437,6 @@
                 }
 
                 .btn {
-                    background: @folix-input-bg !important;
                     background: linear-gradient(
                         180deg,
                         @folix-bg-dark 0%,
@@ -444,16 +445,16 @@
 
                     border: 2px solid @folix-border !important;
                     color: @folix-text-primary !important;
-                    padding: 14px 24px;
+                   
                     border-radius: @folix-radius-md;
                     font-size: 15px;
                     font-weight: @font-weight__semibold;
                     cursor: pointer;
                     transition: all 0.3s ease;
-                    width: 100%;
+                    width: 76%;
                     display: flex;
                     align-items: center;
-                    justify-content: center;
+                    
                     gap: 14px;
                     text-decoration: none;
                     position: relative;
@@ -499,8 +500,7 @@
                 }
 
                 &.google-login .btn {
-                    border-left: 4px solid #4285F4 !important;
-
+                   
                     &:before {
                         background: linear-gradient(135deg, #4285F4, #34A853);
                     }

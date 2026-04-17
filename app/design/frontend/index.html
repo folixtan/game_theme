@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folix Game Theme - Mobile Menu (Existing Classes Only)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0A1628 0%, #1E3A8A 50%, #0F172A 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Demo wrapper - 仅用于展示 */
+        .demo-wrapper {
+            width: 425px;
+            height: 700px;
+            background: #0F172A;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                0 0 40px rgba(255, 215, 0, 0.15);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        /* ============================================================================
+           SECTIONS CONTAINER
+           ============================================================================ */
+        
+        .sections.nav-sections {
+            background: #0F172A;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-items.nav-sections-items {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* ============================================================================
+           TAB TITLES - 横向双Tab
+           ============================================================================ */
+        
+        .section-item-title.nav-sections-item-title {
+            background: linear-gradient(180deg, #1E3A8A 0%, #0A1628 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 18px 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 两个Tab横向排列 */
+        .section-items.nav-sections-items > .section-item-title.nav-sections-item-title {
+            width: 50%;
+            display: inline-block;
+        }
+
+        /* Active Tab */
+        .section-item-title.nav-sections-item-title.active {
+            background: linear-gradient(135deg, 
+                rgba(255, 215, 0, 0.15) 0%, 
+                rgba(255, 165, 0, 0.1) 100%);
+            border-bottom: 2px solid #FFD700;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.25);
+        }
+
+        /* Active Tab Glow Line */
+        .section-item-title.nav-sections-item-title.active::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                #FFD700, 
+                #FFED4A, 
+                #FFD700, 
+                transparent);
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* Hover Effect */
+        .section-item-title.nav-sections-item-title:hover:not(.active) {
+            background: linear-gradient(180deg, #2546a0 0%, #152a4e 100%);
+        }
+
+        /* Shimmer Effect on Hover */
+        .section-item-title.nav-sections-item-title::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 215, 0, 0.1), 
+                transparent);
+            transition: left 0.6s;
+        }
+
+        .section-item-title.nav-sections-item-title:hover::before {
+            left: 100%;
+        }
+
+        .nav-sections-item-switch {
+            color: #64748B;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-item-title.nav-sections-item-title.active .nav-sections-item-switch {
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+
+        .section-item-title.nav-sections-item-title:hover .nav-sections-item-switch {
+            color: #FFED4A;
+        }
+
+        /* ============================================================================
+           TAB CONTENT
+           ============================================================================ */
+        
+        .section-item-content.nav-sections-item-content {
+            flex: 1;
+            overflow-y: auto;
+            background: linear-gradient(180deg, 
+                rgba(15, 23, 42, 0.95) 0%, 
+                rgba(10, 22, 40, 0.98) 100%);
+            display: none;
+        }
+
+        .section-item-content.nav-sections-item-content[aria-hidden="false"] {
+            display: block;
+            animation: slideDown 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ============================================================================
+           NAVIGATION
+           ============================================================================ */
+        
+        .navigation {
+            padding: 12px;
+        }
+
+        .navigation ul.ui-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* ============================================================================
+           LEVEL 0 - 主分类卡片
+           ============================================================================ */
+        
+        .level0.category-item {
+            margin-bottom: 8px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+        }
+
+        /* Card Hover Effect */
+        .level0.category-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 8px 24px rgba(255, 215, 0, 0.2),
+                0 0 15px rgba(255, 215, 0, 0.1);
+            border-color: rgba(255, 215, 0, 0.4);
+        }
+
+        .level-top.ui-menu-item-wrapper {
+            display: flex;
+            align-items: center;
+            padding: 18px 20px;
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        /* Gradient Text on Hover */
+        .level0.category-item:hover .level-top.ui-menu-item-wrapper > span:not(.ui-menu-icon) {
+            background: linear-gradient(135deg, #FFD700 0%, #FFED4A 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.4));
+        }
+
+        .ui-menu-icon.ui-icon {
+            margin-right: 12px;
+            color: rgba(148, 163, 184, 0.5);
+            font-size: 18px;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .ui-menu-icon.ui-icon::before {
+            content: "›";
+            font-size: 24px;
+            font-weight: 300;
+        }
+
+        .level0.category-item:hover .ui-menu-icon.ui-icon {
+            color: #FFD700;
+            transform: rotate(90deg) scale(1.2);
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+        }
+
+        /* First and Last Items */
+        .level0.category-item.first {
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .level0.category-item.last {
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            margin-bottom: 0;
+        }
+
+        /* ============================================================================
+           SUBMENU - 子菜单
+           ============================================================================ */
+        
+        .submenu {
+            background: rgba(10, 22, 40, 0.8);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .submenu[aria-hidden="false"] {
+            max-height: 600px;
+        }
+
+        /* All Category Link */
+        .ui-menu-item.all-category {
+            background: linear-gradient(135deg, 
+                rgba(255, 215, 0, 0.15) 0%, 
+                rgba(255, 165, 0, 0.08) 100%);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+            margin: 0;
+        }
+
+        .ui-menu-item.all-category a {
+            display: block;
+            padding: 14px 20px;
+            color: #FFD700;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .ui-menu-item.all-category a:hover {
+            background: rgba(255, 215, 0, 0.1);
+            letter-spacing: 4px;
+        }
+
+        /* ============================================================================
+           LEVEL 1 - 二级分类
+           ============================================================================ */
+        
+        .level1.category-item {
+            background: rgba(30, 41, 59, 0.5);
+            margin: 6px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .level1.category-item:hover {
+            background: rgba(255, 215, 0, 0.08);
+            border-color: rgba(255, 215, 0, 0.3);
+            transform: translateX(6px);
+        }
+
+        .level1 .ui-menu-item-wrapper {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            color: #CBD5E1;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+        }
+
+        .level1.category-item:hover .ui-menu-item-wrapper {
+            color: #FFD700;
+        }
+
+        .level1 .ui-menu-icon.ui-icon {
+            margin-right: 10px;
+            color: rgba(100, 116, 139, 0.5);
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .level1.category-item:hover .ui-menu-icon.ui-icon {
+            color: #FFD700;
+            transform: rotate(90deg);
+        }
+
+        .level1.category-item.first {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .level1.category-item.last {
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            margin-bottom: 6px;
+        }
+
+        /* ============================================================================
+           LEVEL 2 - 三级分类
+           ============================================================================ */
+        
+        .level2.category-item {
+            background: rgba(10, 22, 40, 0.5);
+            margin: 3px 10px;
+            border: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .level2.category-item:hover {
+            background: rgba(255, 215, 0, 0.06);
+        }
+
+        .level2 .ui-menu-item-wrapper {
+            display: block;
+            padding: 12px 18px 12px 32px;
+            color: rgba(148, 163, 184, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .level2 .ui-menu-item-wrapper::before {
+            content: "◆";
+            position: absolute;
+            left: 18px;
+            color: rgba(139, 92, 246, 0.4);
+            font-size: 8px;
+            transition: all 0.3s;
+        }
+
+        .level2.category-item:hover .ui-menu-item-wrapper {
+            color: #FFED4A;
+            padding-left: 36px;
+        }
+
+        .level2.category-item:hover .ui-menu-item-wrapper::before {
+            color: #FFD700;
+            transform: scale(1.5) rotate(45deg);
+        }
+
+        .level2.category-item.first {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .level2.category-item.last {
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            margin-bottom: 3px;
+        }
+
+        /* ============================================================================
+           ACTIVE ITEM
+           ============================================================================ */
+        
+        .ui-menu-item.active > .ui-menu-item-wrapper {
+            background: rgba(255, 215, 0, 0.15);
+            color: #FFD700;
+            border-left: 3px solid #FFD700;
+        }
+
+        .has-active > .ui-menu-item-wrapper {
+            border-left: 3px solid rgba(255, 215, 0, 0.3);
+        }
+
+        /* ============================================================================
+           SALE CATEGORY - 特殊红色
+           ============================================================================ */
+        
+        .level0.nav-6.category-item {
+            background: linear-gradient(135deg, 
+                rgba(255, 59, 48, 0.2) 0%, 
+                rgba(255, 107, 107, 0.1) 100%);
+            border-color: rgba(255, 59, 48, 0.4);
+            position: relative;
+        }
+
+        .level0.nav-6 .level-top.ui-menu-item-wrapper {
+            color: #FF6B6B;
+        }
+
+        .level0.nav-6.category-item:hover {
+            box-shadow: 
+                0 8px 24px rgba(255, 59, 48, 0.3),
+                0 0 15px rgba(255, 59, 48, 0.2);
+            border-color: rgba(255, 59, 48, 0.6);
+        }
+
+        .level0.nav-6.category-item:hover .level-top.ui-menu-item-wrapper {
+            color: #FF3B30;
+            text-shadow: 0 0 15px rgba(255, 59, 48, 0.6);
+        }
+
+        /* Sale Fire Emoji */
+        .level0.nav-6 .level-top.ui-menu-item-wrapper::after {
+            content: "🔥";
+            margin-left: auto;
+            font-size: 20px;
+            animation: firePulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes firePulse {
+            0%, 100% { transform: scale(1) rotate(-5deg); }
+            50% { transform: scale(1.2) rotate(5deg); }
+        }
+
+        /* ============================================================================
+           SCROLLBAR
+           ============================================================================ */
+        
+        .section-item-content.nav-sections-item-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .section-item-content.nav-sections-item-content::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 3px;
+        }
+
+        .section-item-content.nav-sections-item-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #FFD700 0%, #FFA500 100%);
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* ============================================================================
+           DEMO INFO
+           ============================================================================ */
+        
+        .demo-info {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(30, 58, 138, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            max-width: 350px;
+            color: #cbd5e1;
+        }
+
+        .demo-info h2 {
+            color: #FFD700;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .demo-info p {
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-info">
+        <h2>🎮 Futuristic Menu - Existing Classes Only</h2>
+        <p>✅ 严格使用原有HTML结构和class</p>
+        <p>✅ 无任何新增class</p>
+        <p>✅ 纯CSS实现所有炫酷效果</p>
+        <p>✅ 电竞色系完整应用</p>
+    </div>
+
+    <div class="demo-wrapper">
+        <div class="sections nav-sections active">
+            <div class="section-items nav-sections-items mage-tabs-disabled" role="tablist">
+                
+                <!-- TAB 1: Menu (Active) -->
+                <div class="section-item-title nav-sections-item-title active" 
+                     data-role="collapsible" 
+                     role="tab" 
+                     data-collapsible="true" 
+                     aria-controls="store.menu" 
+                     aria-selected="true" 
+                     aria-expanded="true" 
+                     tabindex="0">
+                    <a class="nav-sections-item-switch" data-toggle="switch" href="#store.menu">
+                        Menu
+                    </a>
+                </div>
+
+                <!-- TAB 2: Account (Inactive) -->
+                <div class="section-item-title nav-sections-item-title" 
+                     data-role="collapsible" 
+                     role="tab" 
+                     data-collapsible="true" 
+                     aria-controls="store.links" 
+                     aria-selected="false" 
+                     aria-expanded="false" 
+                     tabindex="0">
+                    <a class="nav-sections-item-switch" data-toggle="switch" href="#store.links">
+                        Account
+                    </a>
+                </div>
+
+                <!-- CONTENT 1: Menu -->
+                <div class="section-item-content nav-sections-item-content" 
+                     id="store.menu" 
+                     data-role="content" 
+                     role="tabpanel" 
+                     aria-hidden="false">
+                    
+                    <nav class="navigation" data-action="navigation">
+                        <ul id="ui-id-1" role="menu" tabindex="0" class="ui-menu ui-widget ui-widget-content">
+                            
+                            <!-- What's New -->
+                            <li class="level0 nav-1 category-item first level-top ui-menu-item">
+                                <a href="#" class="level-top ui-menu-item-wrapper" role="menuitem">
+                                    <span>What's New</span>
+                                </a>
+                            </li>
+
+                            <!-- Women -->
+                            <li class="level0 nav-2 category-item level-top parent ui-menu-item">
+                                <a href="#" class="level-top ui-menu-item-wrapper" aria-haspopup="true" role="menuitem">
+                                    <span class="ui-menu-icon ui-icon ui-icon-caret-1-e"></span>
+                                    <span>Women</span>
+                                </a>
+                                <ul class="level0 submenu ui-menu ui-widget ui-widget-content ui-front" role="menu" aria-expanded="false" aria-hidden="true">
+                                    <li class="ui-menu-item all-category">
+                                        <a href="#">All Women</a>
+                                    </li>
+                                    <li class="level1 nav-2-1 category-item first parent ui-menu-item">
+                                        <a href="#" aria-haspopup="true" role="menuitem" class="ui-menu-item-wrapper">
+                                            <span class="ui-menu-icon ui-icon ui-icon-caret-1-e"></span>
+                                            <span>Tops</span>
+                                        </a>
+                                        <ul class="level1 submenu ui-menu ui-widget ui-widget-content ui-front expanded" role="menu" aria-hidden="true" aria-expanded="false">
+                                            <li class="level2 nav-2-1-1 category-item first ui-menu-item">
+                                                <a href="#" role="menuitem" class="ui-menu-item-wrapper">Jackets</a>
+                                            </li>
+                                            <li class="level2 nav-2-1-2 category-item ui-menu-item">
+                                                <a href="#" role="menuitem" class="ui-menu-item-wrapper">Hoodies & Sweatshirts</a>
+                                            </li>
+                                            <li class="level2 nav-2-1-3 category-item ui-menu-item">
+                                                <a href="#" role="menuitem" class="ui-menu-item-wrapper">Tees</a>
+                                            </li>
+                                            <li class="level2 nav-2-1-4 category-item last ui-menu-item">
+                                                <a href="#" role="menuitem" class="ui-menu-item-wrapper">Bras & Tanks</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="level1 nav-2-2 category-item last parent ui-menu-item">
+                                        <a href="#" aria-haspopup="true" role="menuitem" class="ui-menu-item-wrapper">
+                                            <span class="ui-menu-icon ui-icon ui-icon-caret-1-e"></span>
+                                            <span>Bottoms</span>
+                                        </a>
+                                        <ul class="level1 submenu ui-menu ui-widget ui-widget-content ui-front expanded" role="menu" aria-hidden="true" aria-expanded="false">
+                                            <li class="level2 nav-2-2-1 category-item first ui-menu-item">
+                                                <a href="#" role="menuitem" class="ui-menu-item-wrapper">Pants</a>
+                                            </li>
+                                            <li class="level2 nav-2-2-2 category-item last ui-menu-item">
+                                                <a href="#" role="menuitem" class="ui-menu-item-wrapper">Shorts</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!-- Men -->
+                            <li class="level0 nav-3 category-item level-top parent ui-menu-item has-active">
+                                <a href="#" class="level-top ui-menu-item-wrapper" aria-haspopup="true" role="menuitem">
+                                    <span class="ui-menu-icon ui-icon ui-icon-caret-1-e"></span>
+                                    <span>Men</span>
+                                </a>
+                                <ul class="level0 submenu ui-menu ui-widget ui-widget-content ui-front" role="menu" aria-expanded="false" aria-hidden="true">
+                                    <li class="ui-menu-item all-category">
+                                        <a href="#">All Men</a>
+                                    </li>
+                                    <li class="level1 nav-3-1 category-item first parent ui-menu-item has-active">
+                                        <a href="#" aria-haspopup="true" role="menuitem" class="ui-menu-item-wrapper">
+                                            <span class="ui-menu-icon ui-icon ui-icon-caret-1-e"></span>
+                                            <span>Tops</span>
+                                        </a>
+                                        <ul class="level1 submenu ui-menu ui-widget ui-widget-content ui-front expanded" role="menu" aria-hidden="true" aria-expanded="false">
+                                            <li class="level2 nav-3-1-1 category-item first ui-menu-item">
+                                                <a href="#" role="menuitem" class="ui-menu-item-wrapper">Jackets</a>
+                                            </li>
+                                            <li class="level2 nav-3-1-2 category-item ui-menu-item active">
+                                                <a href="#" role="menuitem" class="ui-menu-item-wrapper">Hoodies & Sweatshirts</a>
+                                            </li>
+                                            <li class="level2 nav-3-1-3 category-item ui-menu-item">
+                                                <a href="#" role="menuitem" class="ui-menu-item-wrapper">Tees</a>
+                                            </li>
+                                            <li class="level2 nav-3-1-4 category-item last ui-menu-item">
+                                                <a href="#" role="menuitem" class="ui-menu-item-wrapper">Tanks</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="level1 nav-3-2 category-item last parent ui-menu-item">
+                                        <a href="#" aria-haspopup="true" role="menuitem" class="ui-menu-item-wrapper">
+                                            <span class="ui-menu-icon ui-icon ui-icon-caret-1-e"></span>
+                                            <span>Bottoms</span>
+                                        </a>
+                                        <ul class="level1 submenu ui-menu ui-widget ui-widget-content ui-front expanded" role="menu" aria-hidden="true" aria-expanded="false">
+                                            <li class="level2 nav-3-2-1 category-item first ui-menu-item">
+                                                <a href="#" role="menuitem" class="ui-menu-item-wrapper">Pants</a>
+                                            </li>
+                                            <li class="level2 nav-3-2-2 category-item last ui-menu-item">
+                                                <a href="#" role="menuitem" class="ui-menu-item-wrapper">Shorts</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!-- Gear -->
+                            <li class="level0 nav-4 category-item level-top parent ui-menu-item">
+                                <a href="#" class="level-top ui-menu-item-wrapper" aria-haspopup="true" role="menuitem">
+                                    <span class="ui-menu-icon ui-icon ui-icon-caret-1-e"></span>
+                                    <span>Gear</span>
+                                </a>
+                                <ul class="level0 submenu ui-menu ui-widget ui-widget-content ui-front" role="menu" aria-expanded="false" aria-hidden="true">
+                                    <li class="ui-menu-item all-category">
+                                        <a href="#">All Gear</a>
+                                    </li>
+                                    <li class="level1 nav-4-1 category-item first ui-menu-item">
+                                        <a href="#" role="menuitem" class="ui-menu-item-wrapper">Bags</a>
+                                    </li>
+                                    <li class="level1 nav-4-2 category-item ui-menu-item">
+                                        <a href="#" role="menuitem" class="ui-menu-item-wrapper">Fitness Equipment</a>
+                                    </li>
+                                    <li class="level1 nav-4-3 category-item last ui-menu-item">
+                                        <a href="#" role="menuitem" class="ui-menu-item-wrapper">Watches</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!-- Training -->
+                            <li class="level0 nav-5 category-item level-top parent ui-menu-item">
+                                <a href="#" class="level-top ui-menu-item-wrapper" aria-haspopup="true" role="menuitem">
+                                    <span class="ui-menu-icon ui-icon ui-icon-caret-1-e"></span>
+                                    <span>Training</span>
+                                </a>
+                                <ul class="level0 submenu ui-menu ui-widget ui-widget-content ui-front" role="menu" aria-hidden="true" aria-expanded="false">
+                                    <li class="ui-menu-item all-category">
+                                        <a href="#">All Training</a>
+                                    </li>
+                                    <li class="level1 nav-5-1 category-item first last ui-menu-item">
+                                        <a href="#" role="menuitem" class="ui-menu-item-wrapper">Video Download</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!-- Sale -->
+                            <li class="level0 nav-6 category-item last level-top ui-menu-item">
+                                <a href="#" class="level-top ui-menu-item-wrapper" role="menuitem">
+                                    <span>Sale</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- CONTENT 2: Account -->
+                <div class="section-item-content nav-sections-item-content" 
+                     id="store.links" 
+                     data-role="content" 
+                     role="tabpanel" 
+                     aria-hidden="true" 
+                     style="display: none;">
+                    <div style="padding: 60px 20px; text-align: center;">
+                        <div style="font-size: 80px; margin-bottom: 20px;">👤</div>
+                        <h3 style="color: #64748B; font-size: 20px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;">Account</h3>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sectionTitles = document.querySelectorAll('.section-item-title.nav-sections-item-title');
+            const sectionContents = document.querySelectorAll('.section-item-content.nav-sections-item-content');
+            
+            sectionTitles.forEach(title => {
+                title.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('aria-controls');
+                    const isActive = this.classList.contains('active');
+                    
+                    if (isActive) return;
+                    
+                    sectionTitles.forEach(t => {
+                        t.classList.remove('active');
+                        t.setAttribute('aria-selected', 'false');
+                        t.setAttribute('aria-expanded', 'false');
+                    });
+                    
+                    sectionContents.forEach(content => {
+                        content.setAttribute('aria-hidden', 'true');
+                        content.style.display = 'none';
+                    });
+                    
+                    this.classList.add('active');
+                    this.setAttribute('aria-selected', 'true');
+                    this.setAttribute('aria-expanded', 'true');
+                    
+                    const targetContent = document.getElementById(targetId);
+                    if (targetContent) {
+                        targetContent.setAttribute('aria-hidden', 'false');
+                        targetContent.style.display = 'block';
+                    }
+                });
+            });
+
+            const parentItems = document.querySelectorAll('.parent > .ui-menu-item-wrapper');
+            
+            parentItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const parentLi = this.parentElement;
+                    const submenu = parentLi.querySelector('.submenu');
+                    
+                    if (submenu) {
+                        const isHidden = submenu.getAttribute('aria-hidden') === 'true';
+                        
+                        const siblings = parentLi.parentElement.querySelectorAll(':scope > .category-item > .submenu');
+                        siblings.forEach(sib => {
+                            sib.setAttribute('aria-hidden', 'true');
+                            sib.style.display = 'none';
+                        });
+                        
+                        if (isHidden) {
+                            submenu.setAttribute('aria-hidden', 'false');
+                            submenu.style.display = 'block';
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

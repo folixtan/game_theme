@@ -41,6 +41,7 @@
         <!-- 注意：不要移除 header.links，它在移动端会显示在 Account 标签页中 -->
         <referenceBlock name="skip_to_content" remove="true" />
         <referenceBlock name="catalog.compare.link" remove="true" />
+        <referenceBlock name="top.search"  remove="true" />   
         
         <!-- 移动语言切换到右侧容器 -->
         <move element="store_language" destination="folix.top.right" />
@@ -49,26 +50,32 @@
         <referenceContainer name="folix.top.left">
             <block class="Magento\Framework\View\Element\Template" name="folix.top.links" template="Magento_Theme::html/header/links-top-left.phtml" before="-" />
         </referenceContainer>
-        <!-- Navigation Container -->
-        <referenceContainer name="header-wrapper">
-            <block class="Magento\Framework\View\Element\Template"
-                   name="folix.header.nav"
-                   template="Magento_Theme::html/nav-container.phtml"
-                   before="-">
-                <!-- 将元素移动到这里 -->
-                <container name="folix.nav.elements" />
+     
+       <referenceContainer name="header-wrapper">
+             <container name="folix.header.nav"  htmlTag="div" htmlClass="folix-nav-container" />
+         </referenceContainer>
+         <referenceBlock  name="store.settings" remove="true" />
+
+         <referenceBlock name="navigation.sections" >
+            
+                <block class="Magento\Framework\View\Element\Template" name="folix.top.search" as="topSearch"  template="Magento_Search::form.mini.phtml">
+                <arguments>
+                    <argument name="configProvider" xsi:type="object">Magento\Search\ViewModel\ConfigProvider</argument>
+                    <argument name="additionalSearchFormData" xsi:type="object">Magento\Search\ViewModel\AdditionalSearchFormData</argument>
+                </arguments>
             </block>
-        </referenceContainer>
 
-        <!-- 移除 store.settings -->
-        <referenceBlock name="store.settings" remove="true" />
-
-        <!-- 移动元素到 folix.header.nav -->
-        <move element="navigation.sections" destination="folix.header.nav" after="logo" />
+         </referenceBlock>
+         
+ 
+        <move element="navigation.sections" destination="folix.header.nav" />
+           
+        
         <move element="logo" destination="folix.header.nav" before="-" />
-        <move element="top.search" destination="folix.header.nav" after="navigation.sections" />
-
-        <!-- Body Class -->
+        <move element="header.links" destination="folix.top.right" after="-" />        <!-- Body Class -->
+        <move element="minicart"  destination="folix.header.nav" after="-" />
+        
+          <!-- Body Class -->
         <attribute name="body" value="folix-theme" />
         
     </body>

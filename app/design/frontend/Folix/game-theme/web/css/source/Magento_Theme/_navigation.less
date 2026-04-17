@@ -1,467 +1,95 @@
-// /**
-//  * Folix Game Theme - Navigation Styles
-//  *
-//  * 模块：Magento_Theme
-//  * 位置：Magento_Theme/web/css/source/Magento_Theme/_navigation.less
-//  *
-//  * HTML 结构：
-//  * - .nav-toggle: 汉堡菜单按钮
-//  * - .nav-overlay: 遮罩层
-//  * - .mobile-sidebar: 移动端侧边栏
-//  * - .desktop-nav-wrapper: PC 端导航栏
-//  * - .navigation: 导航菜单（原生）
-//  */
+& when (@media-common = true) {  
 
-//
-//  Common (All devices)
-//  _____________________________________________
 
-& when (@media-common = true) {
-
-    // ============================================
-    //  Nav Toggle - 汉堡菜单按钮
-    //  ============================================
-
-    .nav-toggle {
-        .lib-icon-font(
-            @icon-menu,
-            @_icon-font-size: 28px,
-            @_icon-font-color: @folix-text-primary,
-            @_icon-font-color-hover: @folix-secondary
-        );
-        .lib-icon-text-hide();
-        cursor: pointer;
-        display: none;  // 默认隐藏，移动端显示
-        font-size: 0;
-        position: absolute;
-        top: 15px;
-        left: 15px;
-        z-index: 1001;
-        background: transparent;
-        border: none;
-        padding: 8px;
-    }
-
-    // ============================================
-    //  Nav Overlay - 遮罩层
-    //  ============================================
-
-    .nav-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        z-index: 999;
-        display: none;
-        opacity: 0;
-        cursor: pointer;
-        transition: opacity 0.3s ease;
-        -webkit-backdrop-filter: blur(4px);
-        backdrop-filter: blur(4px);
-
-        &.active {
-            display: block;
-            opacity: 1;
-        }
-    }
-
-    // ============================================
-    //  Navigation - 通用导航样式
-    //  ============================================
-
-    .navigation {
-        ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-
-            li {
-                margin: 0;
-                padding: 0;
-
-                a {
-                    text-decoration: none;
-                    display: block;
-
-                    &:hover {
-                        text-decoration: none;
-                    }
-                }
-            }
-        }
-
-        // 子菜单
-        .submenu {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-    }
-
-    // ============================================
-    //  Breadcrumbs - 面包屑
-    //  ============================================
-
-    .breadcrumbs {
-        a {
-            &:hover {
-                color: @folix-secondary;
-            }
-        }
-
-        strong {
-            color: @folix-text-primary;
-        }
-    }
-}
-
-//
-//  Desktop (≥ 768px) - PC 端水平导航
-//  _____________________________________________
-
-.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-
-    // 显示汉堡菜单按钮（可选，用于某些特殊需求）
-    // .nav-toggle {
-    //     display: none;
-    // }
-
-    // 隐藏移动端侧边栏
-    .mobile-sidebar {
-        display: none;
-    }
-
-    // 隐藏遮罩层
-    .nav-overlay {
-        display: none;
-    }
-
-    // ============================================
-    //  PC 端导航栏
-    //  ============================================
-
-    .desktop-nav-wrapper {
-        display: block;
-        background: @folix-bg-dark-alt;
-        border-bottom: 1px solid @folix-nav-bottom-border;
-
-        .navigation {
-            ul {
-                display: flex;
-                gap: 8px;
-
-                > li {
-                    position: relative;
-
-                    > a {
-                        padding: 14px 16px;
-                        color: @folix-text-primary;
-                        font-weight: @font-weight__semibold;
-                        border-radius: @folix-radius-sm;
-                        transition: all 0.3s ease;
-
-                        span {
-                            color: @folix-text-primary;
-                        }
-
-                        &:hover {
-                            color: @folix-secondary;
-                            background: @folix-bg-selected;
-
-                            span {
-                                color: @folix-secondary;
-                            }
-                        }
-                    }
-
-                    &.active > a {
-                        color: @folix-secondary;
-                        background: @folix-bg-selected;
-
-                        span {
-                            color: @folix-secondary;
-                        }
-                    }
-
-                    // 下拉子菜单
-                    .submenu {
-                        position: absolute;
-                        top: 100%;
-                        left: 0;
-                        background: @folix-bg-panel;
-                        border: 1px solid @folix-border;
-                        min-width: 220px;
-                        border-radius: @folix-radius-md;
-                        box-shadow: @folix-shadow-lg;
-                        opacity: 0;
-                        visibility: hidden;
-                        z-index: 100;
-
-                        li {
-                            border-bottom: 1px solid @folix-border-light;
-
-                            &:last-child {
-                                border-bottom: none;
-                            }
-
-                            a {
-                                padding: 12px 16px;
-                                color: @folix-text-primary;
-                                font-size: 14px;
-                                transition: all 0.3s ease;
-
-                                &:hover {
-                                    color: @folix-secondary;
-                                    background: @folix-bg-hover;
-                                }
-                            }
-
-                            // 三级子菜单
-                            .submenu {
-                                position: absolute;
-                                top: 0;
-                                left: 100%;
-                                opacity: 0;
-                                visibility: hidden;
-
-                                li {
-                                    a {
-                                        &:hover {
-                                            color: @folix-secondary;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    &:hover > .submenu {
-                        opacity: 1;
-                        visibility: visible;
-                    }
-
-                    &:hover > .submenu .submenu {
-                        display: none;
-                    }
-
-                    // 三级子菜单悬停显示
-                    li:hover > .submenu {
-                        display: block;
-                        opacity: 1;
-                        visibility: visible;
-                    }
-                }
-            }
-        }
-    }
-}
-
-//
-//  Mobile (< 768px) - 移动端侧边栏导航
-//  _____________________________________________
-
-.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-
-    // 显示汉堡菜单按钮
-    .nav-toggle {
-        display: block;
-    }
-
-    // 隐藏 PC 端导航栏
-    .desktop-nav-wrapper {
-        display: none;
-    }
-
-    // ============================================
-    //  移动端侧边栏
-    //  ============================================
-
-    .mobile-sidebar {
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: @folix-bg-dark;
-        z-index: 1000;
-        overflow-y: auto;
-        overflow-x: hidden;
-        transition: left 0.3s ease;
-        -webkit-overflow-scrolling: touch;
-
-        &.active {
-            left: 0;
-        }
-
-        // 侧边栏头部
-        .mobile-sidebar-header {
+    .folix-nav-container {
+           .sections.nav-sections {
             display: flex;
-            justify-content: space-between;
+            justify-content: start;
             align-items: center;
-            padding: 15px 20px;
-            background: @folix-bg-dark-alt;
-            border-bottom: 1px solid @folix-border;
+        }
+    }
 
-            .logo {
-                font-size: 20px;
-                font-weight: @font-weight__bold;
-                color: @folix-text-primary;
-                text-decoration: none;
-                display: flex;
-                align-items: center;
+    .sections.nav-sections {
+         background: transparent;
+         margin: 0;
+    }
 
-                img {
-                    max-height: 32px;
-                    width: auto;
-                }
+
+
+}
+
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m)  {
+
+    .folix-top-search {
+         
+   
+         // 优化搜索框整体容器
+            .form.minisearch {
+              display: flex;
+              align-items: stretch;
+              
+              
+             
             }
-
-            .close-sidebar {
-                background: transparent;
-                border: none;
-                font-size: 32px;
-                color: @folix-text-primary;
-                cursor: pointer;
-                padding: 0;
-                line-height: 1;
-                width: 40px;
-                height: 40px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+    }
+   
+     .navigation li.level0 {
+        
+            .level-top {
+               
+                padding: 8px 16px;            
+                border-radius: 8px;
+                border-style: none;
                 border-radius: @folix-radius-md;
-                transition: all 0.3s ease;
 
-                &:hover {
-                    color: @folix-secondary;
-                    background: @folix-bg-hover;
-                }
+            }
+    
+        
+             &.active .level-top,&.has-active > .level-top {
+                   background: @folix-purple;
+                  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+                  border: 0;
+            }
+   
+         
+        &:hover:not(.active) {
+           .level-top {
+                background: @folix-accent;
+           }
+        }
+          
+     }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m)  { 
+           // ==============================================
+        
+        .folix-nav-container {
+            .sections.nav-sections {
+                flex-direction: column;
             }
         }
-
-        // 侧边栏内容
-        .mobile-sidebar-content {
-            padding: 0;
-
-            .navigation {
-                ul {
-                    > li {
-                        border-bottom: 1px solid @folix-border-light;
-
-                        > a {
-                            padding: 14px 20px;
-                            color: @folix-text-primary;
-                            font-size: 15px;
-                            font-weight: 500;
-                            display: flex;
-                            align-items: center;
-                            justify-content: space-between;
-                            transition: all 0.3s ease;
-                            position: relative;
-
-                            span {
-                                color: @folix-text-primary;
-                            }
-
-                            &.has-submenu::after {
-                                content: '▼';
-                                font-size: 10px;
-                                color: @folix-text-tertiary;
-                                transition: transform 0.3s ease;
-                            }
-                        }
-
-                        &.parent > a {
-                            padding-right: 40px;
-                        }
-
-                        &.active > a {
-                            color: @folix-secondary;
-                            background: @folix-bg-page;
-                            border-left: 3px solid @folix-secondary;
-                            padding-left: 17px;
-
-                            span {
-                                color: @folix-secondary;
-                            }
-                        }
-
-                        &.open > a::after {
-                            transform: rotate(180deg);
-                            color: @folix-secondary;
-                        }
-
-                        // 子菜单（手风琴）
-                        .submenu {
-                            display: none;
-                            background: @folix-bg-page;
-                            max-height: 0;
-                            overflow: hidden;
-                            transition: max-height 0.3s ease;
-
-                            li {
-                                border-bottom: none;
-
-                                a {
-                                    padding: 12px 20px 12px 40px;
-                                    font-size: 14px;
-                                    color: @folix-text-secondary;
-
-                                    span {
-                                        color: @folix-text-secondary;
-                                    }
-
-                                    &:hover {
-                                        color: @folix-secondary;
-                                        background: @folix-bg-selected;
-                                    }
-                                }
-
-                                // 三级子菜单
-                                .submenu {
-                                    li {
-                                        a {
-                                            padding-left: 60px;
-                                        }
-                                    }
-                                }
-
-                                &.parent > a {
-                                    padding-right: 40px;
-                                    position: relative;
-
-                                    &::after {
-                                        content: '▼';
-                                        position: absolute;
-                                        right: 15px;
-                                        top: 50%;
-                                        transform: translateY(-50%);
-                                        font-size: 10px;
-                                        color: @folix-text-tertiary;
-                                    }
-                                }
-
-                                &.open > a::after {
-                                    transform: translateY(-50%) rotate(180deg);
-                                    color: @folix-secondary;
-                                }
-                            }
-                        }
-
-                        &.open > .submenu {
-                            display: block;
-                            max-height: 1000px;
-                        }
-                    }
-                }
+       .folix-top-search{
+          flex: 1;
+          /* .block-search {
+            .field.search {
+              > label {
+                 padding: 10px 15px;
+                 text-align: right;
+                
+                 &::before {
+                    background: @folix-gradient-top-search-background;
+                    color: #16213e;
+                    border: 0;
+                    border-radius: @folix-radius-md;
+                    cursor: pointer;
+                    transition: @folix-transition;
+                 }
+              }
             }
-        }
-    }
-
-    // 遮罩层激活状态
-    .nav-overlay.active {
-        display: block;
-    }
+             */
+            
+          
+       }
 }
