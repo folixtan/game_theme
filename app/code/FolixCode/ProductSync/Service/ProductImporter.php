@@ -187,8 +187,16 @@ class ProductImporter
                     if (is_numeric($category)) {
                         $categoryIds[] = (int)$category;
                     } elseif (is_string($category)) {
-                        // 字符串可能是分类名称，获取或创建分类ID
-                        $categoryId = $this->categoryService->getOrCreateCategoryId($category);
+                        // 字符串可能是分类名称或路径
+                        // 如果包含 "/"，视为路径；否则视为单层分类名
+                        if (strpos($category, '/') !== false) {
+                            // 多级路径，如 "Games/Coins/Premium"
+                            $categoryId = $this->categoryService->upsertCategoryByPath($category);
+                        } else {
+                            // 单层分类名，如 "Games"
+                            $categoryId = $this->categoryService->upsertCategoryByPath($category);
+                        }
+                        
                         if ($categoryId) {
                             $categoryIds[] = $categoryId;
                         }
@@ -199,22 +207,9 @@ class ProductImporter
 
             // 如果是分类路径字符串（如 "Games/Coins/Premium"）
             if (is_string($categories) && !empty($categories)) {
-                // 解析路径，逐级获取或创建分类
-                $pathParts = explode('/', trim($categories, '/'));
-                $parentId = null;
-
-                foreach ($pathParts as $part) {
-                    $part = trim($part);
-                    if (empty($part)) {
-                        continue;
-                    }
-
-                    $categoryId = $this->categoryService->getOrCreateCategoryId($part, $parentId);
-                    $parentId = $categoryId; // 下一级以当前分类为父级
-                }
-
-                if ($parentId) {
-                    $categoryIds[] = $parentId;
+                $categoryId = $this->categoryService->upsertCategoryByPath($categories);
+                if ($categoryId) {
+                    $categoryIds[] = $categoryId;
                 }
             }
 

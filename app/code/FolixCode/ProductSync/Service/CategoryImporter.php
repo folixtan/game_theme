@@ -26,7 +26,7 @@ class CategoryImporter
     /**
      * 导入分类
      *
-     * @param array $categoryData 分类数据（数组参数，可扩展）
+     * @param array $categoryData 分类数据
      * @return void
      * @throws LocalizedException
      */
@@ -38,22 +38,36 @@ class CategoryImporter
             }
 
             $categoryId = $categoryData['id'];
+            $categoryName = $categoryData['name'] ?? 'Unknown Category';
             $startTime = microtime(true);
 
             $this->logger->info('Starting category import', [
                 'category_id' => $categoryId,
-                'name' => $categoryData['name'] ?? 'Unknown'
+                'name' => $categoryName
             ]);
 
-            // 使用 CategoryService 创建或更新分类
-            $category = $this->categoryService->createOrUpdateCategory($categoryData);
+            // 构建分类路径
+            // 优先使用 parent_path（如 "Games/Coins"），否则使用 name
+            $categoryPath = $this->buildCategoryPath($categoryData);
+
+            // 使用 CategoryService 创建或更新分类（基于路径）
+            $newCategoryId = $this->categoryService->upsertCategoryByPath($categoryPath);
+
+            // 获取分类对象并更新其他属性
+            $category = $this->categoryService->getCategoryById($newCategoryId);
+            
+            if ($category) {
+                // 更新额外属性（description, is_active, position 等）
+                $this->updateCategoryAttributes($category, $categoryData);
+            }
 
             $duration = round((microtime(true) - $startTime) * 1000, 2);
 
             $this->logger->info('Category imported successfully', [
-                'category_id' => $category->getId(),
+                'category_id' => $newCategoryId,
                 'external_id' => $categoryId,
-                'name' => $category->getName(),
+                'name' => $categoryName,
+                'path' => $categoryPath,
                 'duration_ms' => $duration
             ]);
 
@@ -64,6 +78,81 @@ class CategoryImporter
                 'trace' => $e->getTraceAsString()
             ]);
             throw $e;
+        }
+    }
+
+    /**
+     * 构建分类路径
+     *
+     * @param array $categoryData
+     * @return string
+     */
+    private function buildCategoryPath(array $categoryData): string
+    {
+        // 如果有 parent_path，使用它 + 当前分类名
+        if (!empty($categoryData['parent_path'])) {
+            $parentPath = rtrim($categoryData['parent_path'], '/');
+            $categoryName = $categoryData['name'] ?? 'Unknown';
+            return $parentPath . '/' . $categoryName;
+        }
+
+        // 否则直接使用分类名作为单层路径
+        return $categoryData['name'] ?? 'Unknown';
+    }
+
+    /**
+     * 更新分类的额外属性
+     *
+     * @param \Magento\Catalog\Model\Category $category
+     * @param array $categoryData
+     * @return void
+     */
+    private function updateCategoryAttributes(\Magento\Catalog\Model\Category $category, array $categoryData): void
+    {
+        $needsUpdate = false;
+
+        // 更新描述
+        if (isset($categoryData['description']) && $categoryData['description'] !== $category->getDescription()) {
+            $category->setDescription($categoryData['description']);
+            $needsUpdate = true;
+        }
+
+        // 更新激活状态
+        if (isset($categoryData['is_active'])) {
+            $isActive = (int)$categoryData['is_active'];
+            if ($isActive !== (int)$category->getIsActive()) {
+                $category->setIsActive($isActive);
+                $needsUpdate = true;
+            }
+        }
+
+        // 更新菜单位置
+        if (isset($categoryData['include_in_menu'])) {
+            $includeInMenu = (int)$categoryData['include_in_menu'];
+            if ($includeInMenu !== (int)$category->getIncludeInMenu()) {
+                $category->setIncludeInMenu($includeInMenu);
+                $needsUpdate = true;
+            }
+        }
+
+        // 更新排序位置
+        if (isset($categoryData['position'])) {
+            $position = (int)$categoryData['position'];
+            if ($position !== (int)$category->getPosition()) {
+                $category->setPosition($position);
+                $needsUpdate = true;
+            }
+        }
+
+        // 更新 URL Key
+        if (isset($categoryData['url_key'])) {
+            $category->setUrlKey($categoryData['url_key']);
+            $needsUpdate = true;
+        }
+
+        // 如果有需要更新的属性，保存分类
+        if ($needsUpdate) {
+            $category->save();
         }
     }
 
