@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace FolixCode\ProductSync\Model\MessageQueue;
 
 use FolixCode\ProductSync\Api\Message\PublisherInterface;
+use Magento\AsynchronousOperations\Api\Data\OperationInterfaceFactory;
 use Magento\Framework\MessageQueue\PublisherInterface as MqPublisher;
+use Magento\Framework\Serialize\SerializerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -13,6 +15,8 @@ use Psr\Log\LoggerInterface;
 class Publisher implements PublisherInterface
 {
     private MqPublisher $mqPublisher;
+    private OperationInterfaceFactory $operationFactory;
+    private SerializerInterface $serializer;
     private LoggerInterface $logger;
     private LoggerInterface $publisherLogger;
 
@@ -23,10 +27,14 @@ class Publisher implements PublisherInterface
 
     public function __construct(
         MqPublisher $mqPublisher,
+        OperationInterfaceFactory $operationFactory,
+        SerializerInterface $serializer,
         LoggerInterface $logger,
         LoggerInterface $publisherLogger
     ) {
         $this->mqPublisher = $mqPublisher;
+        $this->operationFactory = $operationFactory;
+        $this->serializer = $serializer;
         $this->logger = $logger;
         $this->publisherLogger = $publisherLogger;
     }
@@ -37,8 +45,17 @@ class Publisher implements PublisherInterface
     public function publishProductImport(array $productData): void
     {
         try {
-            // 直接发布数组，Magento 框架会自动序列化
-            $this->mqPublisher->publish(self::TOPIC_PRODUCT_IMPORT, $productData);
+            // ✅ 只设置 topic_name 和 serialized_data，让 Magento 自动管理 bulk_uuid 和 status
+            $operation = $this->operationFactory->create([
+                'data' => [
+                    'topic_name' => self::TOPIC_PRODUCT_IMPORT,
+                    'serialized_data' => $this->serializer->serialize($productData),
+                ]
+            ]);
+            
+            // 发布 Operation
+            $this->mqPublisher->publish(self::TOPIC_PRODUCT_IMPORT, $operation);
+            
             $this->publisherLogger->info('Product import message published', ['product_id' => $productData['id'] ?? 'unknown']);
             $this->logger->debug('Product import message published', ['product_id' => $productData['id'] ?? 'unknown']);
         } catch (\Exception $e) {
@@ -60,8 +77,17 @@ class Publisher implements PublisherInterface
     public function publishCategoryImport(array $categoryData): void
     {
         try {
-            // 直接发布数组，Magento 框架会自动序列化
-            $this->mqPublisher->publish(self::TOPIC_CATEGORY_IMPORT, $categoryData);
+            // ✅ 只设置 topic_name 和 serialized_data，让 Magento 自动管理 bulk_uuid 和 status
+            $operation = $this->operationFactory->create([
+                'data' => [
+                    'topic_name' => self::TOPIC_CATEGORY_IMPORT,
+                    'serialized_data' => $this->serializer->serialize($categoryData),
+                ]
+            ]);
+            
+            // 发布 Operation
+            $this->mqPublisher->publish(self::TOPIC_CATEGORY_IMPORT, $operation);
+            
             $this->publisherLogger->info('Category import message published', ['category_id' => $categoryData['id'] ?? 'unknown']);
             $this->logger->debug('Category import message published', ['category_id' => $categoryData['id'] ?? 'unknown']);
         } catch (\Exception $e) {
@@ -83,8 +109,17 @@ class Publisher implements PublisherInterface
     public function publishProductDetail(string $productId): void
     {
         try {
-            // 直接发布数组，Magento 框架会自动序列化
-            $this->mqPublisher->publish(self::TOPIC_PRODUCT_DETAIL, ['product_id' => $productId]);
+            // ✅ 只设置 topic_name 和 serialized_data，让 Magento 自动管理 bulk_uuid 和 status
+            $operation = $this->operationFactory->create([
+                'data' => [
+                    'topic_name' => self::TOPIC_PRODUCT_DETAIL,
+                    'serialized_data' => $this->serializer->serialize(['product_id' => $productId]),
+                ]
+            ]);
+            
+            // 发布 Operation
+            $this->mqPublisher->publish(self::TOPIC_PRODUCT_DETAIL, $operation);
+            
             $this->publisherLogger->info('Product detail message published', ['product_id' => $productId]);
             $this->logger->debug('Product detail message published', ['product_id' => $productId]);
         } catch (\Exception $e) {

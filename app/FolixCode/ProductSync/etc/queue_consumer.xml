@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
+    <!-- 产品导入消费者 -->
+    <consumer name="folixcode.product.import.consumer" queue="folixcode.product.import.queue" handler="FolixCode\ProductSync\Model\MessageQueue\Consumer\ProductImportConsumer::process" />
+
+    <!-- 分类导入消费者 -->
+    <consumer name="folixcode.category.import.consumer" queue="folixcode.category.import.queue" handler="FolixCode\ProductSync\Model\MessageQueue\Consumer\CategoryImportConsumer::process" />
+
+    <!-- 产品详情导入消费者 -->
+    <consumer name="folixcode.product.detail.consumer" queue="folixcode.product.detail.queue" handler="FolixCode\ProductSync\Model\MessageQueue\Consumer\ProductDetailConsumer::process" />
+</config>

@@ -48,6 +48,11 @@ class CategoryImportConsumerIntegrationTest extends TestCase
     private $categoryRepository;
 
     /**
+     * @var \FolixCode\ProductSync\Service\CategoryService
+     */
+    private $categoryService;
+
+    /**
      * 存储创建的分类 ID，用于清理
      */
     private $createdCategoryIds = [];
@@ -61,6 +66,7 @@ class CategoryImportConsumerIntegrationTest extends TestCase
         $this->serializer = $objectManager->create(Json::class);
         $this->operationFactory = $objectManager->create(OperationInterfaceFactory::class);
         $this->categoryRepository = $objectManager->get(CategoryRepositoryInterface::class);
+        $this->categoryService = $objectManager->create(\FolixCode\ProductSync\Service\CategoryService::class);
         
         $this->createdCategoryIds = [];
     }
@@ -395,6 +401,88 @@ class CategoryImportConsumerIntegrationTest extends TestCase
         echo "   Category ID: {$updatedCategory->getId()} (unchanged)\n";
         echo "   Description: {$updatedCategory->getDescription()}\n";
         echo "   Position: {$updatedCategory->getPosition()}\n";
+    }
+
+    /**
+     * 测试 8：验证 CategoryService 正确初始化（回归测试）
+     * 
+     * ✅ 验证点：
+     * 1. CategoryService 可以正常实例化
+     * 2. initCategories() 不会因为 logger 未初始化而报错
+     * 3. upsertCategoryByPath() 可以正常工作
+     * 
+     * 这是针对 "Typed property must not be accessed before initialization" 错误的回归测试
+     */
+    public function testCategoryServiceInitialization(): void
+    {
+        $objectManager = Bootstrap::getObjectManager();
+        
+        // 获取 CategoryService 实例
+        $categoryService = $objectManager->create(\FolixCode\ProductSync\Service\CategoryService::class);
+        
+        $this->assertNotNull($categoryService, 'CategoryService should be instantiated');
+        
+        // 测试 upsertCategoryByPath 不会抛出 "must not be accessed before initialization" 错误
+        try {
+            $categoryId = $categoryService->upsertCategoryByPath('Test/Initialization');
+            
+            // 如果成功，记录分类 ID 用于清理
+            if ($categoryId) {
+                $this->createdCategoryIds[] = $categoryId;
+            }
+            
+            echo "\n✅ Test 8 Passed: CategoryService initialized correctly\n";
+            echo "   Category ID: {$categoryId}\n";
+            
+        } catch (\Error $e) {
+            // 捕获 Typed property 访问错误
+            if (strpos($e->getMessage(), 'must not be accessed before initialization') !== false) {
+                $this->fail("CategoryService has initialization error: " . $e->getMessage());
+            }
+            // 其他错误可能是业务逻辑问题，重新抛出
+            throw $e;
+        }
+    }
+
+    /**
+     * 测试 9：批量导入分类时 CategoryService 正常工作
+     * 
+     * ✅ 验证点：
+     * 1. 批量操作不会触发 logger 初始化错误
+     * 2. 多个分类可以连续创建
+     */
+    public function testBatchCategoryImportWithService(): void
+    {
+        $objectManager = Bootstrap::getObjectManager();
+        $categoryService = $objectManager->create(\FolixCode\ProductSync\Service\CategoryService::class);
+        
+        $paths = [
+            'Test/Batch/Category1',
+            'Test/Batch/Category2',
+            'Test/Batch/Category3'
+        ];
+        
+        try {
+            $categoryIds = $categoryService->upsertCategoriesBatch($paths);
+            
+            // 清理创建的分类
+            foreach ($categoryIds as $id) {
+                if ($id) {
+                    $this->createdCategoryIds[] = $id;
+                }
+            }
+            
+            $this->assertNotEmpty($categoryIds, 'Should create at least some categories');
+            
+            echo "\n✅ Test 9 Passed: Batch category import works correctly\n";
+            echo "   Created " . count($categoryIds) . " categories\n";
+            
+        } catch (\Error $e) {
+            if (strpos($e->getMessage(), 'must not be accessed before initialization') !== false) {
+                $this->fail("CategoryService batch operation has initialization error: " . $e->getMessage());
+            }
+            throw $e;
+        }
     }
 
     /**

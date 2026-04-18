@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <folixcode_basesyncservice>
+            <settings>
+                <!-- 基础配置 - 仅包含通用设置 -->
+                <is_enabled>1</is_enabled>
+                <api_base_url>https://playsentral.qr67.com</api_base_url>
+                <secret_id></secret_id>
+                <secret_key></secret_key>
+            </settings>
+        </folixcode_basesyncservice>
+    </default>
+</config>

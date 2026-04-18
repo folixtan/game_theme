@@ -11,6 +11,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 /**
  * 同步命令 - 用于手动触发产品同步
@@ -27,7 +28,8 @@ class SyncCommand extends Command
     public function __construct(
         VirtualGoodsApiService $apiService,
         PublisherInterface $publisher,
-        BaseHelper $baseHelper
+        BaseHelper $baseHelper,
+        private  TimezoneInterface $timezone
     ) {
         $this->apiService = $apiService;
         $this->publisher = $publisher;
@@ -79,6 +81,7 @@ class SyncCommand extends Command
         $limit = (int)$input->getOption('limit');
         $page = (int)$input->getOption('page');
         $timestamp = (int)$input->getOption('timestamp');
+        $timestamp = $timestamp > 0 ?: $this->timezone->date()->getTimestamp();
 
         $output->writeln('<info>========================================</info>');
         $output->writeln('<info>FolixCode Product Sync (MQ Publisher)</info>');

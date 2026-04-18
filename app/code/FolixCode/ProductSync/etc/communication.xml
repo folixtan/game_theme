@@ -10,6 +10,7 @@
     
     <!-- 分类导入 Topic -->
     <topic name="folixcode.category.import" 
+           is_synchronous="false" 
            request="Magento\AsynchronousOperations\Api\Data\OperationInterface">
         <handler name="folixcode.category.import.handler" 
                  type="FolixCode\ProductSync\Model\MessageQueue\Consumer\CategoryImportConsumer" 
@@ -18,6 +19,7 @@
     
     <!-- 产品导入 Topic -->
     <topic name="folixcode.product.import" 
+           is_synchronous="false" 
            request="Magento\AsynchronousOperations\Api\Data\OperationInterface">
         <handler name="folixcode.product.import.handler" 
                  type="FolixCode\ProductSync\Model\MessageQueue\Consumer\ProductImportConsumer" 
@@ -26,6 +28,7 @@
     
     <!-- 产品详情导入 Topic -->
     <topic name="folixcode.product.detail" 
+           is_synchronous="false" 
            request="Magento\AsynchronousOperations\Api\Data\OperationInterface">
         <handler name="folixcode.product.detail.handler" 
                  type="FolixCode\ProductSync\Model\MessageQueue\Consumer\ProductDetailConsumer" 

@@ -4,22 +4,23 @@ declare(strict_types=1);
 namespace FolixCode\ProductSync\Service;
 
 use Magento\Framework\Exception\LocalizedException;
+use FolixCode\ProductSync\Service\CategoryProcessor;
 use Psr\Log\LoggerInterface;
 
 /**
  * 分类导入服务
- * 使用 CategoryService 处理分类业务逻辑
+ * 使用 CategoryProcessor 处理分类业务逻辑
  */
 class CategoryImporter
 {
-    private CategoryService $categoryService;
+    private CategoryProcessor $categoryProcessor;
     private LoggerInterface $logger;
 
     public function __construct(
-        CategoryService $categoryService,
+        CategoryProcessor $categoryProcessor,
         LoggerInterface $logger
     ) {
-        $this->categoryService = $categoryService;
+        $this->categoryProcessor = $categoryProcessor;
         $this->logger = $logger;
     }
 
@@ -51,25 +52,20 @@ class CategoryImporter
                 'name' => $categoryName
             ]);
 
-            // 生成 URL Key（如果不存在）
-            if (empty($categoryData['url_key'])) {
-                $categoryData['url_key'] = $this->generateUrlKey($categoryName);
-            }
 
-            // 构建分类路径
-            // 优先使用 parent_path（如 "Games/Coins"），否则使用 name
-            $categoryPath = $this->buildCategoryPath($categoryData);
+            // 使用 CategoryProcessor 创建或更新分类（基于路径）
 
-            // 使用 CategoryService 创建或更新分类（基于路径）
-            $newCategoryId = $this->categoryService->upsertCategoryByPath($categoryPath);
+            $paths = $this->categoryProcessor->buildCategoryPath($categoryData);
 
-            // 获取分类对象并更新其他属性
-            $category = $this->categoryService->getCategoryById($newCategoryId);
-            
-            if ($category) {
-                // 更新额外属性（description, is_active, position, url_key 等）
-                $this->updateCategoryAttributes($category, $categoryData);
-            }
+            /**
+             * 额外属性
+             */
+            $attributes =  [];
+            $attributes['name'] =  $categoryData;
+
+            $newCategoryId = $this->categoryProcessor->upsertCategory($paths,$attributes);
+             
+            $this->categoryProcessor->cleanCache();
 
             $duration = round((microtime(true) - $startTime) * 1000, 2);
 
@@ -77,8 +73,6 @@ class CategoryImporter
                 'category_id' => $newCategoryId,
                 'external_id' => $categoryId,
                 'name' => $categoryName,
-                'path' => $categoryPath,
-                'url_key' => $categoryData['url_key'],
                 'duration_ms' => $duration
             ]);
 
@@ -92,132 +86,4 @@ class CategoryImporter
         }
     }
 
-    /**
-     * 构建分类路径
-     *
-     * @param array $categoryData
-     * @return string
-     */
-    private function buildCategoryPath(array $categoryData): string
-    {
-        // 如果有 parent_path，使用它 + 当前分类名
-        if (!empty($categoryData['parent_path'])) {
-            $parentPath = rtrim($categoryData['parent_path'], '/');
-            $categoryName = $categoryData['name'] ?? 'Unknown';
-            return $parentPath . '/' . $categoryName;
-        }
-
-        // 否则直接使用分类名作为单层路径
-        return $categoryData['name'] ?? 'Unknown';
-    }
-
-    /**
-     * 生成 URL Key
-     * 
-     * 如果 url_key 不存在，使用 name + 随机字符串生成
-     * 随机字符串长度 3-5 位，降低重复概率
-     *
-     * @param string $name 分类名称
-     * @return string
-     */
-    private function generateUrlKey(string $name): string
-    {
-        // 将名称转换为 URL 友好格式（小写、替换空格和特殊字符）
-        $urlKey = strtolower(trim($name));
-        $urlKey = preg_replace('/[^a-z0-9]+/', '-', $urlKey);
-        $urlKey = trim($urlKey, '-');
-        
-        // 生成 3-5 位随机字符串
-        $randomLength = random_int(3, 5);
-        $randomString = substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, $randomLength);
-        
-        // 组合：name-random
-        return $urlKey . '-' . $randomString;
-    }
-
-    /**
-     * 更新分类的额外属性
-     *
-     * @param \Magento\Catalog\Model\Category $category
-     * @param array $categoryData
-     * @return void
-     */
-    private function updateCategoryAttributes(\Magento\Catalog\Model\Category $category, array $categoryData): void
-    {
-        $needsUpdate = false;
-
-        // 更新描述
-        if (isset($categoryData['description']) && $categoryData['description'] !== $category->getDescription()) {
-            $category->setDescription($categoryData['description']);
-            $needsUpdate = true;
-        }
-
-        // 更新激活状态
-        if (isset($categoryData['is_active'])) {
-            $isActive = (int)$categoryData['is_active'];
-            if ($isActive !== (int)$category->getIsActive()) {
-                $category->setIsActive($isActive);
-                $needsUpdate = true;
-            }
-        }
-
-        // 更新菜单位置
-        if (isset($categoryData['include_in_menu'])) {
-            $includeInMenu = (int)$categoryData['include_in_menu'];
-            if ($includeInMenu !== (int)$category->getIncludeInMenu()) {
-                $category->setIncludeInMenu($includeInMenu);
-                $needsUpdate = true;
-            }
-        }
-
-        // 更新排序位置
-        if (isset($categoryData['position'])) {
-            $position = (int)$categoryData['position'];
-            if ($position !== (int)$category->getPosition()) {
-                $category->setPosition($position);
-                $needsUpdate = true;
-            }
-        }
-
-        // 更新 URL Key
-        if (isset($categoryData['url_key'])) {
-            $category->setUrlKey($categoryData['url_key']);
-            $needsUpdate = true;
-        }
-
-        // 如果有需要更新的属性，保存分类
-        if ($needsUpdate) {
-            $category->save();
-        }
-    }
-
-    /**
-     * 批量导入分类
-     *
-     * @param array $categoriesData
-     * @return array
-     */
-    public function importBatch(array $categoriesData): array
-    {
-        $results = [
-            'success' => 0,
-            'failed' => 0,
-            'errors' => []
-        ];
-
-        foreach ($categoriesData as $categoryData) {
-            try {
-                $this->import($categoryData);
-                $results['success']++;
-            } catch (\Exception $e) {
-                $results['failed']++;
-                $results['errors'][] = [
-                    'category_id' => $categoryData['id'] ?? 'unknown',
-                    'error' => $e->getMessage()
-                ];
-            }
-        }
-
-        return $results;
-    }
 }

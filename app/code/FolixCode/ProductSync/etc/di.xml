@@ -3,9 +3,6 @@
     <!-- API服务首选项 -->
     <preference for="FolixCode\ProductSync\Api\VirtualGoodsApiInterface" type="FolixCode\ProductSync\Service\VirtualGoodsApiService"/>
     <preference for="FolixCode\ProductSync\Api\Message\PublisherInterface" type="FolixCode\ProductSync\Model\MessageQueue\Publisher"/>
-    <preference for="FolixCode\ProductSync\Api\Message\ProductImportMessageInterface" type="FolixCode\ProductSync\Model\Message\ProductImportMessage"/>
-    <preference for="FolixCode\ProductSync\Api\Message\CategoryImportMessageInterface" type="FolixCode\ProductSync\Model\Message\CategoryImportMessage"/>
-    <preference for="FolixCode\ProductSync\Api\Message\ProductDetailMessageInterface" type="FolixCode\ProductSync\Model\Message\ProductDetailMessage"/>
 
     <!-- 命令行 -->
     <type name="Magento\Framework\Console\CommandList">
@@ -71,9 +68,10 @@
         </arguments>
     </type>
 
-    <!-- CategoryService 配置 -->
+    <!-- CategoryService 配置 - 必须提供所有必需参数 -->
     <type name="FolixCode\ProductSync\Service\CategoryService">
         <arguments>
+            <argument name="categoryColFactory" xsi:type="object">Magento\Catalog\Model\ResourceModel\Category\CollectionFactory</argument>
             <argument name="categoryFactory" xsi:type="object">Magento\Catalog\Model\CategoryFactory</argument>
         </arguments>
     </type>

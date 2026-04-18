@@ -4,11 +4,12 @@ declare(strict_types=1);
 namespace FolixCode\ProductSync\Service;
 
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Catalog\Api\Data\ProductInterfaceFactory;
+use Magento\Catalog\Model\ProductFactory;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Framework\Exception\LocalizedException;
 use Psr\Log\LoggerInterface;
 use FolixCode\ProductSync\Setup\Patch\Data\AddProductAttributes;
+use Magento\Catalog\Api\Data\ProductExtensionFactory;
 
 /**
  * 产品导入服务 - 游戏充值项目
@@ -17,20 +18,23 @@ use FolixCode\ProductSync\Setup\Patch\Data\AddProductAttributes;
 class ProductImporter
 {
     private ProductRepositoryInterface $productRepository;
-    private ProductInterfaceFactory $productFactory;
-    private CategoryService $categoryService;
+    private ProductFactory $productFactory;
+    private CategoryProcessor $categoryProcessor;
     private LoggerInterface $logger;
+    private ProductExtensionFactory $extensionFactory;
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        ProductInterfaceFactory $productFactory,
-        CategoryService $categoryService,
-        LoggerInterface $logger
+        ProductFactory $productFactory,
+        CategoryProcessor $categoryProcessor,
+        LoggerInterface $logger,
+        ProductExtensionFactory $extensionFactory
     ) {
         $this->productRepository = $productRepository;
         $this->productFactory = $productFactory;
-        $this->categoryService = $categoryService;
+        $this->categoryProcessor = $categoryProcessor;
         $this->logger = $logger;
+        $this->extensionFactory = $extensionFactory;
     }
 
     /**
@@ -92,18 +96,15 @@ class ProductImporter
             // 设置可见性
             $product->setVisibility(\Magento\Catalog\Model\Product\Visibility::VISIBILITY_BOTH);
 
-            // 使用 CategoryProcessor 处理分类（复用 Magento 逻辑）
-            if (!empty($productData['categories'])) {
-                $categoryIds = $this->processCategories($productData['categories']);
-                if (!empty($categoryIds)) {
-                    $product->setCategoryIds($categoryIds);
-                }
-            } elseif (!empty($productData['category_ids'])) {
-                // 兼容直接提供 category_ids 的情况
-                $product->setCategoryIds($productData['category_ids']);
+            // 通过扩展属性设置分类（参考 ProductRepository 第 548-553 行逻辑）
+            if (!empty($productData['category_ids'])) {
+                $extensionAttributes = $product->getExtensionAttributes() 
+                    ?: $this->extensionFactory->create();
+                $extensionAttributes->setCategoryIds($productData['category_ids']);
+                $product->setExtensionAttributes($extensionAttributes);
             }
 
-            // 保存产品
+            // 保存产品（ProductRepository 会自动处理分类分配）
             $this->productRepository->save($product);
 
             $this->logger->info('Product imported successfully', [
@@ -168,60 +169,6 @@ class ProductImporter
             'is_in_stock' => 1,
             'qty' => 0
         ];
-    }
-
-    /**
-     * 处理分类数据（使用 CategoryService - 共用服务）
-     *
-     * @param string|array $categories 分类路径、名称或ID数组
-     * @return array 分类ID数组
-     */
-    private function processCategories($categories): array
-    {
-        try {
-            $categoryIds = [];
-
-            // 如果已经是ID数组，直接返回
-            if (is_array($categories)) {
-                foreach ($categories as $category) {
-                    if (is_numeric($category)) {
-                        $categoryIds[] = (int)$category;
-                    } elseif (is_string($category)) {
-                        // 字符串可能是分类名称或路径
-                        // 如果包含 "/"，视为路径；否则视为单层分类名
-                        if (strpos($category, '/') !== false) {
-                            // 多级路径，如 "Games/Coins/Premium"
-                            $categoryId = $this->categoryService->upsertCategoryByPath($category);
-                        } else {
-                            // 单层分类名，如 "Games"
-                            $categoryId = $this->categoryService->upsertCategoryByPath($category);
-                        }
-                        
-                        if ($categoryId) {
-                            $categoryIds[] = $categoryId;
-                        }
-                    }
-                }
-                return $categoryIds;
-            }
-
-            // 如果是分类路径字符串（如 "Games/Coins/Premium"）
-            if (is_string($categories) && !empty($categories)) {
-                $categoryId = $this->categoryService->upsertCategoryByPath($categories);
-                if ($categoryId) {
-                    $categoryIds[] = $categoryId;
-                }
-            }
-
-            return $categoryIds;
-
-        } catch (\Exception $e) {
-            $this->logger->warning('Failed to process categories', [
-                'categories' => $categories,
-                'error' => $e->getMessage()
-            ]);
-            return [];
-        }
     }
 
     /**
