@@ -202,10 +202,10 @@
         .action.primary.checkout {
             width: 100%;
             padding: @indent__m @indent__l;
-            background: @folix-gradient-secondary;
-            color: #FFFFFF;
+            background: @folix-gradient-gold;
+            color: @folix-btn-primary-text;
             border: none;
-            border-radius: @folix-radius-md;
+            border-radius: @folix-radius-full;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -214,15 +214,17 @@
             align-items: center;
             justify-content: center;
             gap: @indent__s;
-            
+            box-shadow: @folix-btn-primary-shadow;
+
             &::before {
                 content: '🔥';
                 font-size: 18px;
             }
-            
+
             &:hover {
+                background: linear-gradient(135deg, @folix-secondary-light 0%, @folix-secondary 100%);
                 transform: translateY(-2px);
-                box-shadow: @folix-shadow-secondary;
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
             }
         }
     }
@@ -449,14 +451,14 @@
             &.update {
                 padding: @indent__m @indent__l;
                 background: @folix-primary;
-                color: #FFFFFF;
+                color: @folix-text-on-dark;
                 border: none;
                 border-radius: @folix-radius-md;
                 font-size: 14px;
                 font-weight: 500;
                 cursor: pointer;
                 transition: all 0.2s ease;
-                
+
                 &:hover {
                     background: @folix-primary-dark;
                     transform: translateY(-1px);
@@ -524,13 +526,13 @@
                 .actions-toolbar .action {
                     padding: 17px @indent__l;
                     background: @folix-primary;
-                    color: #FFFFFF;
+                    color: @folix-text-on-dark;
                     border: none;
                     border-radius: 0  @folix-radius-md @folix-radius-md 0 ;
                     font-size: 14px;
                     font-weight: 500;
                     cursor: pointer;
-                    
+
                     &:hover {
                         background: @folix-primary-dark;
                     }
@@ -560,12 +562,12 @@
             align-items: center;
             padding: @indent__m @indent__xl;
             background: @folix-primary;
-            color: #FFFFFF;
+            color: @folix-text-on-dark;
             border-radius: @folix-radius-md;
             font-size: 14px;
             font-weight: 500;
             text-decoration: none;
-            
+
             &:hover {
                 background: @folix-primary-dark;
             }

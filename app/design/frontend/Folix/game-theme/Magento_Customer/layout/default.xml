@@ -3,14 +3,27 @@
 /**
  * Folix Game Theme - Customer Module Layout
  *
- * 处理 authorization-link：
- * - 移动到 header-wrapper
- * - 覆盖模板（在 templates 目录）
+ * 电竞风定制 - Customer 模块布局
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <!-- 移动 authorization-link 到 header-wrapper -->
-        <move element="authorization-link" destination="header-wrapper" after="minicart" />
+        <!-- 更新 Authorization Link 模板 -->
+        <referenceBlock name="authorization-link" template="Magento_Customer::account/link/authorization.phtml"/>
+
+        <!-- 更新 Customer Block 模板 -->
+        <referenceBlock name="customer" template="Magento_Customer::account/customer.phtml"/>
+
+        <!-- 更新 Authentication Popup 模板 -->
+        <referenceBlock name="authentication-popup" template="Magento_Customer::account/authentication-popup.phtml"/>
+
+        <!-- 更新 Account Navigation 模板 -->
+        <referenceBlock name="customer_account_navigation" template="Magento_Customer::account/navigation.phtml"/>
+        <referenceBlock  name="register-link">
+                <arguments>
+                    <argument name="label" xsi:type="string" translate="true">Create an Account</argument>
+                    <argument name="class" xsi:type="string" translate="true">create-account-top-header</argument>
+                </arguments>
+        </referenceBlock>
     </body>
 </page>

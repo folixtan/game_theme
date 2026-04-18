@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace FolixCode\ProductSync\Model\MessageQueue\Consumer;
 
-use FolixCode\ProductSync\Api\Message\ProductImportMessageInterface;
 use FolixCode\ProductSync\Service\ProductImporter;
+use Magento\AsynchronousOperations\Api\Data\OperationInterface;
+use Magento\Framework\Serialize\SerializerInterface;
 use Psr\Log\LoggerInterface;
-use Magento\Framework\Serialize\Serializer\Json;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 
 /**
  * 产品导入消费者
@@ -16,83 +14,75 @@ use Monolog\Logger;
 class ProductImportConsumer
 {
     private ProductImporter $productImporter;
+    private SerializerInterface $serializer;
     private LoggerInterface $logger;
-    private LoggerInterface $consumerLogger;
-    private Json $json;
-    private int $maxRetries = 3;
-    private int $retryDelay = 60;
 
     public function __construct(
         ProductImporter $productImporter,
-        LoggerInterface $logger,
-        Json $json
+        SerializerInterface $serializer,
+        LoggerInterface $logger
     ) {
         $this->productImporter = $productImporter;
+        $this->serializer = $serializer;
         $this->logger = $logger;
-        $this->json = $json;
-
-        // 创建独立的产品导入消费者日志记录器
-        $this->consumerLogger = new Logger('product_import_consumer');
-        $logPath = BP . '/var/log/product_import_consumer.log';
-        $this->consumerLogger->pushHandler(new StreamHandler($logPath, Logger::DEBUG));
     }
 
     /**
      * 处理产品导入消息
      *
-     * @param ProductImportMessageInterface $message
+     * @param OperationInterface $operation
      * @return void
-     * @throws \Exception
+     * @throws \Exception 如果处理失败，抛出异常让 Magento 框架处理重试
      */
-    public function process(ProductImportMessageInterface $message): void
+    public function process(OperationInterface $operation): void
     {
-        $productData = $message->getData();
-
-        if (empty($productData['id'])) {
-            $this->consumerLogger->warning('Invalid product data received', [
-                'message' => json_encode($productData)
-            ]);
-            $this->logger->warning('Invalid product data received', [
-                'message' => json_encode($productData)
-            ]);
-            throw new \InvalidArgumentException('Product ID is required');
-        }
-
-        $productId = $productData['id'] ?? 'unknown';
         $startTime = microtime(true);
-
-        $this->consumerLogger->info('Processing product import', [
-            'product_id' => $productId
-        ]);
-        $this->logger->info('Processing product import', [
-            'product_id' => $productId
-        ]);
-
+        $productData = [];
+        
         try {
+            // 从 Operation 中获取序列化的数据并反序列化
+            $serializedData = $operation->getSerializedData();
+            $productData = $this->serializer->unserialize($serializedData);
+
+            // 验证必填字段：id
+            if (empty($productData['id'])) {
+                throw new \InvalidArgumentException('Product ID is required');
+            }
+
+            $productId = $productData['id'];
+
+            $this->logger->info('Processing product import', [
+                'product_id' => $productId
+            ]);
+
+            // 执行导入
             $this->productImporter->import($productData);
 
             $duration = round((microtime(true) - $startTime) * 1000, 2);
-            $this->consumerLogger->info('Product import completed', [
-                'product_id' => $productId,
-                'duration_ms' => $duration
-            ]);
-            $this->logger->info('Product import completed', [
+            $this->logger->info('Product import completed successfully', [
                 'product_id' => $productId,
                 'duration_ms' => $duration
             ]);
 
-        } catch (\Exception $e) {
+        } catch (\Magento\Framework\Exception\AlreadyExistsException $e) {
+            // ✅ 产品已存在，视为成功（不抛出异常）
             $duration = round((microtime(true) - $startTime) * 1000, 2);
-            $this->consumerLogger->error('Failed to process product import', [
-                'product_id' => $productId,
-                'error' => $e->getMessage(),
+            $this->logger->info('Product already exists, skipped', [
+                'product_id' => $productData['id'] ?? 'unknown',
                 'duration_ms' => $duration
             ]);
-            $this->logger->error('Failed to process product import', [
-                'product_id' => $productId,
+            
+        } catch (\Exception $e) {
+            // ❌ 其他所有错误：记录日志并抛出异常
+            $duration = round((microtime(true) - $startTime) * 1000, 2);
+            $this->logger->critical('Failed to process product import', [
+                'product_id' => $productData['id'] ?? 'unknown',
                 'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
                 'duration_ms' => $duration
             ]);
+            
+            // 抛出异常，让 Magento 框架自动处理重试逻辑
             throw $e;
         }
     }

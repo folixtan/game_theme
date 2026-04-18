@@ -8,8 +8,6 @@ use FolixCode\ProductSync\Api\Message\PublisherInterface;
 use FolixCode\BaseSyncService\Helper\Data as BaseHelper;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 
 /**
  * 产品同步管理器 - 业务层核心
@@ -21,7 +19,6 @@ class SyncManager
     private PublisherInterface $messagePublisher;
     private BaseHelper $baseHelper;
     private LoggerInterface $logger;
-    private LoggerInterface $syncLogger;
     private TimezoneInterface $timezone;
 
     // 同步类型常量
@@ -41,11 +38,6 @@ class SyncManager
         $this->baseHelper = $baseHelper;
         $this->logger = $logger;
         $this->timezone = $timezone;
-
-        // 创建独立的同步日志记录器
-        $this->syncLogger = new Logger('sync_manager');
-        $logPath = BP . '/var/log/product_sync.log';
-        $this->syncLogger->pushHandler(new StreamHandler($logPath, Logger::DEBUG));
     }
 
     /**
@@ -63,7 +55,6 @@ class SyncManager
             'total' => 0
         ];
 
-        $this->syncLogger->info('Starting sync', ['type' => $type]);
         $this->logger->info('ProductSync Manager: Starting sync', ['type' => $type]);
 
         try {
@@ -81,16 +72,12 @@ class SyncManager
                 $results['total'] += $categoryCount;
             }
 
-            $this->syncLogger->info('Sync completed', ['results' => $results]);
             $this->logger->info('ProductSync Manager: Sync completed', [
                 'results' => $results
             ]);
 
         } catch (\Exception $e) {
             $results['failed'][$type] = $e->getMessage();
-            $this->syncLogger->error('Sync failed', [
-                'error' => $e->getMessage()
-            ]);
             $this->logger->error('ProductSync Manager: Sync failed', [
                 'error' => $e->getMessage()
             ]);
@@ -103,38 +90,31 @@ class SyncManager
     /**
      * 同步商品列表
      *
-     * @param array $params
+     * @param array $params 同步参数（数组方式，可扩展）
      * @return int
      */
-    private function syncProducts(array $params): int
+    private function syncProducts(array $params = []): int
     {
-        $limit = $params['limit'] ?? 100;
-        $page = $params['page'] ?? 1;
-        $timestamp = $params['timestamp'] ?: $this->timezone->scopeTimeStamp();
+        // 默认参数
+        $defaultParams = [
+            'limit' => 100,
+            'page' => 1,
+            'timestamp' => 0
+        ];
 
-        $this->syncLogger->info('Syncing products', [
-            'limit' => $limit,
-            'page' => $page,
-            'timestamp' => $timestamp ,
-        ]);
-        $this->logger->info('Syncing products', [
-            'limit' => $limit,
-            'page' => $page,
-            'timestamp' => $timestamp ,
-        ]);
+        // 合并参数
+        $apiParams = array_merge($defaultParams, $params);
 
-        // 获取商品列表
-        $products = $this->apiService->getProductList($limit, $page, $timestamp);
+        $this->logger->info('Syncing products', $apiParams);
 
-        // 发布到消息队列或直接处理
+        // 获取商品列表（传入数组参数）
+        $products = $this->apiService->getProductList($apiParams);
+
+        // 发布到消息队列
         foreach ($products as $product) {
             try {
                 $this->messagePublisher->publishProductImport($product);
             } catch (\Exception $e) {
-                $this->syncLogger->error('Failed to publish product', [
-                    'product_id' => $product['id'] ?? 'unknown',
-                    'error' => $e->getMessage()
-                ]);
                 $this->logger->error('Failed to publish product', [
                     'product_id' => $product['id'] ?? 'unknown',
                     'error' => $e->getMessage()
@@ -142,7 +122,6 @@ class SyncManager
             }
         }
 
-        $this->syncLogger->info('Products sync completed', ['count' => count($products)]);
         $this->logger->info('Products sync completed', ['count' => count($products)]);
 
         return count($products);
@@ -151,32 +130,29 @@ class SyncManager
     /**
      * 同步分类列表
      *
-     * @param array $params
+     * @param array $params 同步参数（数组方式，可扩展）
      * @return int
      */
-    private function syncCategories(array $params): int
+    private function syncCategories(array $params = []): int
     {
-        $timestamp = $params['timestamp'] ?? 0;
+        // 默认参数
+        $defaultParams = [
+            'timestamp' => 0
+        ];
 
-        $this->syncLogger->info('Syncing categories', [
-            'timestamp' => $timestamp ?: $this->timezone->scopeTimeStamp()
-        ]);
-        $this->logger->info('Syncing categories', [
-            'timestamp' => $timestamp ?: $this->timezone->scopeTimeStamp()
-        ]);
+        // 合并参数
+        $apiParams = array_merge($defaultParams, $params);
 
-        // 获取分类列表
-        $categories = $this->apiService->getCategoryList($timestamp);
+        $this->logger->info('Syncing categories', $apiParams);
 
-        // 发布到消息队列或直接处理
+        // 获取分类列表（传入数组参数）
+        $categories = $this->apiService->getCategoryList($apiParams);
+
+        // 发布到消息队列
         foreach ($categories as $category) {
             try {
                 $this->messagePublisher->publishCategoryImport($category);
             } catch (\Exception $e) {
-                $this->syncLogger->error('Failed to publish category', [
-                    'category_id' => $category['id'] ?? 'unknown',
-                    'error' => $e->getMessage()
-                ]);
                 $this->logger->error('Failed to publish category', [
                     'category_id' => $category['id'] ?? 'unknown',
                     'error' => $e->getMessage()
@@ -184,7 +160,6 @@ class SyncManager
             }
         }
 
-        $this->syncLogger->info('Categories sync completed', ['count' => count($categories)]);
         $this->logger->info('Categories sync completed', ['count' => count($categories)]);
 
         return count($categories);
@@ -198,18 +173,12 @@ class SyncManager
      */
     public function syncProductDetail(string $productId): void
     {
-        $this->syncLogger->info('Syncing product detail', ['product_id' => $productId]);
         $this->logger->info('Syncing product detail', ['product_id' => $productId]);
 
         try {
             $this->messagePublisher->publishProductDetail($productId);
-            $this->syncLogger->info('Product detail sync initiated', ['product_id' => $productId]);
             $this->logger->info('Product detail sync initiated', ['product_id' => $productId]);
         } catch (\Exception $e) {
-            $this->syncLogger->error('Failed to sync product detail', [
-                'product_id' => $productId,
-                'error' => $e->getMessage()
-            ]);
             $this->logger->error('Failed to sync product detail', [
                 'product_id' => $productId,
                 'error' => $e->getMessage()

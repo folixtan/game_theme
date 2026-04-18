@@ -1,0 +1,609 @@
+// /**
+//  * Folix Game Theme - Navigation Styles
+//  * 方案B：电竞风（深蓝 + 金色 + 电竞红）
+//  */
+
+//
+//  Common (All devices)
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    //
+    //  Main Navigation - 主导航
+    //  _____________________________________________
+
+    .navigation {
+        background: transparent;
+        border: none;
+
+        ul {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .level0 {
+            position: relative;
+            margin: 0;
+            padding: 0;
+
+            > .level-top {
+                padding: 10px 18px;
+                border-radius: @folix-radius-md;
+                color: @folix-text-primary;
+                text-decoration: none;
+                font-weight: @font-weight__semibold;
+                font-size: @font-size__base;
+                transition: all @folix-transition-fast;
+                position: relative;
+                border: none;
+                background: transparent;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    width: 0;
+                    height: 2px;
+                    background: @folix-secondary;
+                    transition: all @folix-transition;
+                    transform: translateX(-50%);
+                }
+
+                &.has-active,
+                &.active {
+                    color: @folix-secondary;
+                    background: @folix-bg-selected;
+
+                    &::before {
+                        width: 80%;
+                    }
+                }
+
+                &:hover {
+                    color: @folix-secondary;
+                    background: @folix-bg-selected;
+
+                    &::before {
+                        width: 80%;
+                    }
+                }
+
+                > span:not(.ui-menu-icon) {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                }
+
+                .ui-menu-icon {
+                    color: @folix-secondary;
+                    margin-left: 4px;
+                    transition: transform @folix-transition;
+                    font-size: 12px;
+                }
+            }
+
+            //  Dropdown Menu - 一级下拉
+            .submenu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background: @folix-bg-panel;
+                border: 1px solid @folix-border;
+                border-radius: @folix-radius-lg;
+                box-shadow: @folix-shadow-xl;
+                padding: 8px 0;
+                min-width: 220px;
+                z-index: 1000;
+                display: none;
+                margin-top: 8px;
+
+                &:before,
+                &:after {
+                    display: none;
+                }
+
+                li {
+                    position: relative;
+                    margin: 0;
+
+                    > a {
+                        padding: 12px 16px;
+                        color: @folix-text-primary;
+                        text-decoration: none;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        transition: all @folix-transition-fast;
+                        border-radius: @folix-radius-sm;
+                        font-size: @font-size__s;
+                        width: 100%;
+
+                        &:hover {
+                            background: @folix-bg-hover;
+                            color: @folix-secondary;
+                            padding-left: 20px;
+                        }
+
+                        &.has-active,
+                        &.active {
+                            color: @folix-secondary;
+                            background: @folix-bg-hover;
+                            border-left: 3px solid @folix-secondary;
+                        }
+
+                        > span:not(.ui-menu-icon) {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                        }
+
+                        .ui-menu-icon {
+                            color: @folix-text-secondary;
+                            font-size: 12px;
+                        }
+                    }
+
+                    //  Nested Submenu - 二级下拉
+                    .submenu {
+                        position: absolute;
+                        left: 100%;
+                        top: 0;
+                        box-shadow: @folix-shadow-xl;
+                        border: 1px solid @folix-border;
+                        background: @folix-bg-panel;
+                        margin-top: 0;
+                        margin-left: 8px;
+                        padding: 8px 0;
+                        min-width: 200px;
+
+                        li {
+                            margin: 0;
+
+                            a {
+                                padding: 10px 16px;
+                                font-size: @font-size__s;
+                                color: @folix-text-primary;
+
+                                &:hover {
+                                    background: @folix-bg-hover;
+                                    color: @folix-secondary;
+                                }
+                            }
+                        }
+                    }
+
+                    &:hover > .submenu {
+                        display: block;
+                        opacity: 1;
+                        visibility: visible;
+                    }
+                }
+            }
+
+            //  Hover Effect for Dropdown
+            &:hover > .submenu {
+                display: block;
+                opacity: 1;
+                visibility: visible;
+
+                > .level-top .ui-menu-icon {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    }
+
+    //
+    //  Mobile Navigation - 移动端导航
+    //  _____________________________________________
+
+    .nav-toggle {
+        display: none;
+        background: @folix-bg-hover;
+        border: 1px solid @folix-border;
+        border-radius: @folix-radius-full;
+        color: @folix-text-primary;
+        padding: 8px;
+        cursor: pointer;
+        transition: all @folix-transition-fast;
+
+        &:hover {
+            background: @folix-btn-ghost-hover-bg;
+            color: @folix-secondary;
+            border-color: @folix-secondary;
+        }
+
+        &:before {
+            font-size: 20px;
+        }
+    }
+
+    .nav-open .nav-sections-item-title {
+        display: block;
+    }
+
+    .nav-sections {
+        .lib-css(background, @folix-bg-panel);
+        transition: left @folix-transition-smooth;
+    }
+
+    .nav-sections-item-switch,
+    .nav-sections-item-switch:hover {
+        background: @folix-bg-panel;
+        color: @folix-text-primary;
+        padding: 16px 20px;
+        font-weight: @font-weight__semibold;
+        border-bottom: 1px solid @folix-border;
+    }
+
+    .nav-sections-item-content {
+        padding: 0;
+
+        .navigation {
+            background: transparent;
+            padding: 8px 0;
+
+            ul {
+                display: block;
+                gap: 0;
+            }
+        }
+
+        .level0 {
+            display: block;
+
+            > .level-top {
+                padding: 14px 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-size: @font-size__base;
+                border-left: 3px solid transparent;
+
+                &.has-active,
+                &.active {
+                    color: @folix-secondary;
+                    background: @folix-bg-hover;
+                    border-left-color: @folix-secondary;
+                }
+
+                &:hover {
+                    color: @folix-secondary;
+                    background: @folix-bg-hover;
+                    border-left-color: @folix-secondary;
+                }
+            }
+
+            .submenu {
+                position: static;
+                box-shadow: none;
+                border: none;
+                background: @folix-bg-hover;
+                padding: 4px;
+                margin-top: 0;
+
+                > li {
+                    > a {
+                        padding: 10px 16px 10px 32px;
+                        font-size: @font-size__s;
+                    }
+                }
+            }
+
+            //  All submenu open on mobile
+            .submenu {
+                display: block !important;
+            }
+        }
+    }
+
+    //
+    //  Breadcrumb - 面包屑导航
+    //  _____________________________________________
+
+    .breadcrumbs {
+        padding: 20px 0;
+        border-bottom: 1px solid @folix-border;
+
+        .items {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: @font-size__s;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: @folix-text-secondary;
+
+            &:not(:last-child) {
+                &::after {
+                    content: '›';
+                    font-size: @font-size__s;
+                }
+            }
+
+            a {
+                color: @folix-text-secondary;
+                text-decoration: none;
+                transition: color @folix-transition-fast;
+
+                &:hover {
+                    color: @folix-secondary;
+                }
+            }
+
+            strong {
+                color: @folix-text-primary;
+                font-weight: @font-weight__medium;
+            }
+        }
+    }
+
+    //
+    //  Pagination - 分页
+    //  _____________________________________________
+
+    .pages {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 24px 0;
+
+        .pages-items {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            height: 40px;
+            border-radius: @folix-radius-md;
+            border: 1px solid @folix-border;
+            background: @folix-bg-panel;
+            color: @folix-text-primary;
+            font-size: @font-size__s;
+            font-weight: @font-weight__medium;
+            transition: all @folix-transition-fast;
+            cursor: pointer;
+            text-decoration: none;
+
+            &:hover:not(.current):not(.action) {
+                background: @folix-bg-hover;
+                color: @folix-secondary;
+                border-color: @folix-secondary;
+            }
+
+            &.current {
+                background: @folix-btn-primary-bg;
+                border-color: transparent;
+                color: @folix-btn-primary-text;
+                font-weight: @font-weight__semibold;
+                box-shadow: @folix-btn-primary-shadow;
+            }
+
+            &.action {
+                background: @folix-bg-hover;
+                border-color: @folix-border;
+            }
+        }
+
+        .label {
+            display: none;
+        }
+    }
+
+    //
+    //  Toolbar - 工具栏（产品列表）
+    //  _____________________________________________
+
+    .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 0;
+        border-bottom: 1px solid @folix-border;
+
+        .toolbar-amount {
+            color: @folix-text-secondary;
+            font-size: @font-size__s;
+        }
+
+        .modes {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .modes-mode {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                border-radius: @folix-radius-md;
+                border: 1px solid @folix-border;
+                background: @folix-bg-panel;
+                color: @folix-text-primary;
+                transition: all @folix-transition-fast;
+
+                &:hover {
+                    background: @folix-bg-hover;
+                    color: @folix-secondary;
+                    border-color: @folix-secondary;
+                }
+
+                &.active {
+                    background: @folix-btn-primary-bg;
+                    border-color: transparent;
+                    color: @folix-btn-primary-text;
+                }
+            }
+        }
+
+        .sorter {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            .sorter-label {
+                color: @folix-text-secondary;
+                font-size: @font-size__s;
+            }
+
+            .sorter-options {
+                background: @folix-input-bg;
+                border: 1px solid @folix-input-border;
+                border-radius: @folix-radius-md;
+                padding: 8px 12px;
+                color: @folix-input-text;
+                font-size: @font-size__s;
+                cursor: pointer;
+                transition: all @folix-transition-fast;
+
+                &:hover {
+                    border-color: @folix-input-focus-border;
+                }
+
+                &:focus {
+                    outline: none;
+                    border-color: @folix-input-focus-border;
+                    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+                }
+            }
+        }
+    }
+
+    //
+    //  Tabs - 标签页
+    //  _____________________________________________
+
+    .product.data.items {
+        border-bottom: 1px solid @folix-border;
+        margin-bottom: 24px;
+
+        > .item.title {
+            border: none;
+            border-bottom: 3px solid transparent;
+            margin-right: 32px;
+            margin-bottom: -3px;
+
+            > .switch {
+                padding: 16px 0;
+                background: transparent;
+                color: @folix-text-secondary;
+                font-weight: @font-weight__medium;
+                font-size: @font-size__base;
+                transition: all @folix-transition-fast;
+
+                &:hover {
+                    color: @folix-secondary;
+                }
+            }
+
+            &.active {
+                border-bottom-color: @folix-secondary;
+
+                > .switch {
+                    color: @folix-text-primary;
+                    font-weight: @font-weight__semibold;
+                }
+            }
+        }
+
+        > .item.content {
+            padding: 24px 0;
+            background: transparent;
+            border: none;
+            color: @folix-text-primary;
+        }
+    }
+
+    //
+    //  Footer Links - 底部链接
+    //  _____________________________________________
+
+    .footer.links {
+        .item {
+            margin-bottom: 12px;
+
+            a {
+                color: @folix-footer-link;
+                text-decoration: none;
+                font-size: @font-size__s;
+                transition: color @folix-transition-fast;
+
+                &:hover {
+                    color: @folix-footer-link-hover;
+                }
+            }
+        }
+    }
+}
+
+//
+//  Mobile (≤ 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .nav-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .navigation {
+        display: none;
+    }
+
+    .pages {
+        .item {
+            min-width: 36px;
+            height: 36px;
+            font-size: @font-size__xs;
+        }
+    }
+
+    .toolbar {
+        flex-direction: column;
+        gap: 12px;
+
+        .sorter {
+            width: 100%;
+
+            .sorter-options {
+                flex: 1;
+            }
+        }
+    }
+}
+
+//
+//  Desktop (≥ 769px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .navigation {
+        display: block;
+    }
+
+    .nav-toggle {
+        display: none;
+    }
+}

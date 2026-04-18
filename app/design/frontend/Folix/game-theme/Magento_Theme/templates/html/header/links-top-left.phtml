@@ -1,29 +1,5 @@
-<?php
-/**
- * Folix Game Theme - Top Left Links
- * 
- * 按照原型设计：Folix 新闻 | STAR 奖励 | 支持
- * 
- * @var $block \Magento\Framework\View\Element\Template
- */
-?>
-<ul class="header-links-top">
-    <li>
-        <a href="<?php echo $block->getUrl('news') ?>" title="Folix 新闻">
-            <span class="link-icon">📰</span>
-            <span>Folix 新闻</span>
-        </a>
-    </li>
-    <li>
-        <a href="<?php echo $block->getUrl('rewards') ?>" title="STAR 奖励">
-            <span class="link-icon">⭐</span>
-            <span>STAR 奖励</span>
-        </a>
-    </li>
-    <li>
-        <a href="<?php echo $block->getUrl('support') ?>" title="支持">
-            <span class="link-icon">💬</span>
-            <span>支持</span>
-        </a>
-    </li>
-</ul>
+<div class="header-links-top">
+    <a href="#"><?= __('News') ?></a>
+    <a href="#"><?= __('Rewards') ?></a>
+    <a href="#"><?= __('Support') ?></a>
+</div>

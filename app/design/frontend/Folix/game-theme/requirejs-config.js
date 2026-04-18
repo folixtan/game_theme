@@ -34,13 +34,11 @@ var config = {
 
     map: {
         '*': {
-            // 可以在这里覆盖原生组件
-            // 'menu': 'Magento_Theme/js/custom-menu'
+            // 自定义组件别名，不与原生冲突
+            'folixMenu': 'Magento_Theme/js/custom-menu',
+            'navigationInit': 'Magento_Theme/js/navigation-init'
         }
     },
 
-    // 页面加载时自动执行的模块
-    deps: [
-        'Magento_Theme/js/mobile-header'
-    ]
+    
 };

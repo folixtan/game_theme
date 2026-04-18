@@ -91,37 +91,37 @@
                 }
                 
                 &.slick-active button {
-                    background: #FFFFFF;
+                    background: @folix-text-primary;
                     width: 32px;
                     border-radius: 6px;
                 }
             }
         }
-        
+
         // Slick Prev - 导航箭头
         .slick-prev {
             left: 20px;
-            
+
             &:before {
                 content: "‹";
                 font-size: 32px;
                 font-weight: 300;
-                color: #FFFFFF;
+                color: @folix-text-primary;
             }
         }
-        
+
         // Slick Next - 导航箭头
         .slick-next {
             right: 20px;
-            
+
             &:before {
                 content: "›";
                 font-size: 32px;
                 font-weight: 300;
-                color: #FFFFFF;
+                color: @folix-text-primary;
             }
         }
-        
+
         // Slick Prev & Next - 公共样式
         .slick-prev,
         .slick-next {
@@ -131,27 +131,27 @@
             width: 50px;
             height: 50px;
             z-index: 10;
-            
+
             &:hover,
             &:focus {
                 background: rgba(255, 255, 255, 0.35);
-                
+
                 &:before {
-                    color: #FFFFFF;
+                    color: @folix-text-primary;
                 }
             }
-            
+
             &.slick-disabled {
                 opacity: 0.3;
                 cursor: not-allowed;
             }
         }
     }
-    
+
     //
     //  Slide Wrapper - 幻灯片包装器
     //  _____________________________________________
-    
+
     .pagebuilder-slide-wrapper {
         min-height: 400px;
         display: flex;
@@ -161,80 +161,81 @@
         background-position: center;
         background-repeat: no-repeat;
     }
-    
+
     //
     //  Slide Overlay - 遮罩层
     //  _____________________________________________
-    
+
     .pagebuilder-overlay {
         // 渐变遮罩 - 游戏风格
         &.pagebuilder-poster-overlay {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.65) 100%);
         }
     }
-    
+
     //
     //  Slide Content - 幻灯片内容
     //  _____________________________________________
-    
+
     .pagebuilder-poster-content {
         position: relative;
         z-index: 1;
         text-align: center;
-        color: #FFFFFF;
+        color: @folix-text-primary;
         max-width: 700px;
         padding: 40px;
-        
+
         [data-element="content"] {
             h1, h2, h3 {
-                color: #FFFFFF;
+                color: @folix-text-primary;
                 margin-bottom: 16px;
                 text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             }
-            
+
             h2 {
                 font-size: 42px;
                 font-weight: 800;
                 line-height: 1.2;
             }
-            
+
             h3 {
                 font-size: 28px;
                 font-weight: 700;
             }
-            
+
             p {
                 font-size: 16px;
                 line-height: 1.6;
                 color: rgba(255, 255, 255, 0.9);
                 margin-bottom: 20px;
             }
-            
+
             .pagebuilder-button-primary {
                 display: inline-block;
                 padding: 14px 36px;
-                background: linear-gradient(135deg, @folix-primary, #6C5CE7);
-                color: #FFFFFF;
+                background: @folix-gradient-gold;
+                color: @folix-btn-primary-text;
                 font-size: 16px;
                 font-weight: 600;
-                border-radius: @folix-radius;
+                border-radius: @folix-radius-full;
                 border: none;
                 cursor: pointer;
-                box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+                box-shadow: @folix-btn-primary-shadow;
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                
+
                 &:hover {
                     transform: translateY(-3px);
-                    box-shadow: 0 10px 30px rgba(74, 144, 226, 0.5);
+                    background: linear-gradient(135deg, @folix-secondary-light 0%, @folix-secondary 100%);
+                    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
                     text-decoration: none;
                 }
             }
-            
+
             .pagebuilder-button-secondary {
                 display: inline-block;
                 padding: 14px 36px;
                 background: transparent;
-                color: #FFFFFF;
+                color: @folix-text-primary;
                 font-size: 16px;
                 font-weight: 600;
                 border-radius: @folix-radius;
@@ -244,7 +245,7 @@
                 
                 &:hover {
                     background: rgba(255, 255, 255, 0.15);
-                    border-color: #FFFFFF;
+                    border-color: rgba(255, 255, 255, 1);
                 }
             }
         }

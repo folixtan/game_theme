@@ -3,43 +3,47 @@ declare(strict_types=1);
 
 namespace FolixCode\ProductSync\Cron;
 
-use FolixCode\ProductSync\Service\SyncManager;
+use FolixCode\ProductSync\Service\VirtualGoodsApiService;
+use FolixCode\ProductSync\Api\Message\PublisherInterface;
+use FolixCode\ProductSync\Helper\Data as ProductSyncHelper;
 use FolixCode\BaseSyncService\Helper\Data as BaseHelper;
 use Psr\Log\LoggerInterface;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 
 /**
- * Cron任务 - 定时同步虚拟商品数据
- * 业务层Cron任务
+ * Cron任务 - 定时同步产品数据（独立任务）
+ * 
+ * 职责：从 API 获取数据并发布到消息队列
+ * 注意：实际的导入工作由 Consumer 异步完成
  */
 class SyncProducts
 {
-    private SyncManager $syncManager;
+    private VirtualGoodsApiService $apiService;
+    private PublisherInterface $publisher;
+    private ProductSyncHelper $productSyncHelper;
     private BaseHelper $baseHelper;
     private LoggerInterface $logger;
-    private LoggerInterface $cronLogger;
-    private int $syncInterval;
 
     public function __construct(
-        SyncManager $syncManager,
+        VirtualGoodsApiService $apiService,
+        PublisherInterface $publisher,
+        ProductSyncHelper $productSyncHelper,
         BaseHelper $baseHelper,
-        LoggerInterface $logger,
-        int $syncInterval = 60
+        LoggerInterface $logger
     ) {
-        $this->syncManager = $syncManager;
+        $this->apiService = $apiService;
+        $this->publisher = $publisher;
+        $this->productSyncHelper = $productSyncHelper;
         $this->baseHelper = $baseHelper;
         $this->logger = $logger;
-        $this->syncInterval = $syncInterval;
-
-        // 创建独立的Cron日志记录器
-        $this->cronLogger = new Logger('sync_cron');
-        $logPath = BP . '/var/log/sync_cron.log';
-        $this->cronLogger->pushHandler(new StreamHandler($logPath, Logger::DEBUG));
     }
 
     /**
-     * 执行定时同步任务
+     * 执行产品同步任务
+     * 
+     * 流程：
+     * 1. 从外部 API 获取产品列表
+     * 2. 将每个产品发布到消息队列
+     * 3. Consumer 会异步处理导入
      *
      * @return void
      */
@@ -48,54 +52,55 @@ class SyncProducts
         try {
             // 检查是否启用
             if (!$this->baseHelper->isEnabled()) {
-                $this->cronLogger->info('Synchronization is disabled, skipping.');
-                $this->logger->info('ProductSync Cron: Synchronization is disabled, skipping.');
+                $this->logger->info('ProductSync Products Cron: Synchronization is disabled, skipping.');
                 return;
             }
 
-            // 检查同步间隔
-            $configuredInterval = $this->baseHelper->getSyncInterval();
-            if ($configuredInterval > 0) {
-                $this->syncInterval = $configuredInterval;
-            }
+            $this->logger->info('ProductSync Products Cron: Starting product synchronization...');
 
-            $this->cronLogger->info('Starting scheduled synchronization...');
-            $this->logger->info('ProductSync Cron: Starting scheduled synchronization...');
+            // 获取最后一次同步时间戳（增量同步）- 使用业务 Helper
+            $lastSyncTimestamp = $this->productSyncHelper->getLastSyncTimestamp();
 
-            // 获取最后一次同步时间戳（增量同步）
-            $lastSyncTimestamp = $this->baseHelper->getLastSyncTimestamp();
-            $currentTimestamp = time();
+            // 1. 从 API 获取产品列表
+            $productsData = $this->apiService->getProductList([
+                'timestamp' => $lastSyncTimestamp,
+                'limit' => 100
+            ]);
 
-            // 如果距离上次同步时间小于间隔，则跳过
-            if ($lastSyncTimestamp > 0 && ($currentTimestamp - $lastSyncTimestamp) < ($this->syncInterval * 60)) {
-                $this->cronLogger->info(sprintf(
-                    'Skipping sync, last sync was %d minutes ago (interval: %d minutes)',
-                    round(($currentTimestamp - $lastSyncTimestamp) / 60),
-                    $this->syncInterval
-                ));
-                $this->logger->info(sprintf(
-                    'ProductSync Cron: Skipping sync, last sync was %d minutes ago (interval: %d minutes)',
-                    round(($currentTimestamp - $lastSyncTimestamp) / 60),
-                    $this->syncInterval
-                ));
+            if (empty($productsData)) {
+                $this->logger->info('ProductSync Products Cron: No products to sync.');
                 return;
             }
 
-            // 调用同步管理器执行同步
-            $results = $this->syncManager->sync(
-                'all',
-                ['timestamp' => $lastSyncTimestamp, 'limit' => 100]
-            );
+            $this->logger->info('ProductSync Products Cron: Fetched products from API', [
+                'count' => count($productsData)
+            ]);
 
-            $this->cronLogger->info('Synchronization completed.', ['results' => $results]);
-            $this->logger->info('ProductSync Cron: Synchronization completed.', [
-                'results' => $results
+            // 2. 将每个产品发布到消息队列（异步导入）
+            $publishedCount = 0;
+            foreach ($productsData as $productData) {
+                try {
+                    $this->publisher->publishProductImport($productData);
+                    $publishedCount++;
+                } catch (\Exception $e) {
+                    $this->logger->error('ProductSync Products Cron: Failed to publish product to MQ', [
+                        'product_id' => $productData['id'] ?? 'unknown',
+                        'error' => $e->getMessage()
+                    ]);
+                }
+            }
+
+            $this->logger->info('ProductSync Products Cron: Products published to message queue', [
+                'total_fetched' => count($productsData),
+                'published_to_mq' => $publishedCount,
+                'note' => 'Actual import will be handled by Consumer asynchronously'
             ]);
 
         } catch (\Exception $e) {
-            $this->cronLogger->error('Synchronization failed', ['error' => $e->getMessage()]);
-            $this->logger->error('ProductSync Cron: Synchronization failed - ' . $e->getMessage());
-            // 这里可以添加错误通知逻辑
+            $this->logger->error('ProductSync Products Cron: Product synchronization failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
         }
     }
 }

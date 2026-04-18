@@ -1,0 +1,243 @@
+// /**
+//  * Folix Game Theme - Esports Custom Variables
+//  *
+//  * 方案B：电竞风（王者荣耀/腾讯游戏风格）
+//  * - 深蓝背景 + 金色主色 + 电竞红强调
+//  * - 适合游戏充值电商平台
+//  * - 包含渐变效果
+//  */
+
+// ============================================================================
+//  BRAND COLORS - 品牌色（电竞风）
+// ============================================================================
+
+//  Primary - 深蓝系（背景、基础）
+@folix-primary: #0A1628;
+@folix-primary-dark: #0F172A;
+@folix-primary-light: #1E3A8A;
+
+//  Secondary - 金色系（货币、奖励、主按钮）
+@folix-secondary: #FFD700;
+@folix-secondary-dark: #FFA500;
+@folix-secondary-light: #FFED4A;
+
+//  Accent - 电竞红系（热销、促销、警告）
+@folix-accent: #FF3B30;
+@folix-accent-dark: #DC2626;
+@folix-accent-light: #FF6B6B;
+
+//  Special Colors - 电竞紫系（装饰）
+@folix-purple: #8B5CF6;
+@folix-purple-dark: #7C3AED;
+@folix-purple-light: #A78BFA;
+
+// ============================================================================
+//  TEXT COLORS - 文字色（深色背景）
+// ============================================================================
+
+@folix-text-primary: #FFFFFF;
+@folix-text-secondary: #94A3B8;
+@folix-text-tertiary: #64748B;
+@folix-text-muted: #475569;
+@folix-text-light: #CBD5E1;
+@folix-text-lighter: #E2E8F0;
+
+@folix-text-on-dark: #F8FAFC;
+@folix-text-on-dark-muted: #94A3B8;
+@folix-text-on-gold: #1E293B;
+@folix-text-on-red: #FFFFFF;
+
+// ============================================================================
+//  BACKGROUND COLORS - 背景色（电竞风深色）
+// ============================================================================
+
+@folix-bg-page: #0A1628;
+@folix-bg-page-base: #0A1628;  // 用于 @page__background-color (不能是渐变，因父主题有 darken() 调用)
+@folix-bg-panel: #1E293B;
+@folix-bg-card: #1E293B;
+@folix-bg-hover: #334155;
+@folix-bg-light: #334155;
+@folix-bg-selected: rgba(255, 215, 0, 0.1);
+
+//  Dark Backgrounds
+@folix-bg-dark: #0F172A;
+@folix-bg-dark-alt: #0A1628;
+@folix-bg-dark-card: #1E293B;
+
+//  Gradients（渐变效果）
+@folix-gradient-bg: linear-gradient(135deg, #0A1628 0%, #1E3A8A 50%, #0F172A 100%);
+@folix-gradient-header: linear-gradient(180deg, #1E3A8A 0%, #0A1628 100%);
+@folix-gradient-footer: linear-gradient(180deg, #0F172A 0%, #0A1628 100%);
+@folix-gradient-purple: linear-gradient(135deg, #7C3AED 0%, #0F172A 100%);
+@folix-gradient-gold: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+@folix-gradient-red: linear-gradient(135deg, #FF6B6B 0%, #FF3B30 100%);
+@folix-gradient-header-page: linear-gradient(180deg, rgba(30, 58, 138, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
+@folix-gradient-top-search-background: linear-gradient(135deg, #ffd700 0%, #ff6b35 100%);
+
+//  Primary Button Gradient（主按钮 - 蓝紫系）
+@folix-gradient-primary: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+@folix-gradient-primary-hover: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+
+//  Secondary Gradient（紫色系）
+@folix-gradient-secondary: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
+
+// ============================================================================
+//  BORDER COLORS - 边框色（电竞风透明）
+// ============================================================================
+
+@folix-border: rgba(255, 255, 255, 0.1);
+@folix-border-light: rgba(255, 255, 255, 0.05);
+@folix-border-dark: rgba(255, 255, 255, 0.2);
+@folix-border-gold: rgba(255, 215, 0, 0.3);
+@folix-border-red: rgba(255, 59, 48, 0.3);
+@folix-border-hover: rgba(255, 215, 0, 0.5);
+
+// ============================================================================
+//  BUTTON COLORS - 按钮色（电竞风渐变）
+// ============================================================================
+
+//  Primary Button（金色 - 充值、购买）
+@folix-btn-primary-bg: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+@folix-btn-primary-hover-bg: linear-gradient(135deg, #FFED4A 0%, #FFD700 100%);
+@folix-btn-primary-text: #1E293B;
+@folix-btn-primary-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+
+//  Secondary Button（电竞红 - 热销、促销）
+@folix-btn-secondary-bg: linear-gradient(135deg, #FF3B30 0%, #DC2626 100%);
+@folix-btn-secondary-hover-bg: linear-gradient(135deg, #FF6B6B 0%, #FF3B30 100%);
+@folix-btn-secondary-text: #FFFFFF;
+@folix-btn-secondary-shadow: 0 0 20px rgba(255, 59, 48, 0.3);
+
+//  Ghost Button（透明按钮）
+@folix-btn-ghost-bg: transparent;
+@folix-btn-ghost-hover-bg: rgba(255, 215, 0, 0.1);
+@folix-btn-ghost-text: #FFD700;
+@folix-btn-ghost-border: rgba(255, 215, 0, 0.3);
+
+// ============================================================================
+//  FORM COLORS - 表单色（电竞风）
+// ============================================================================
+
+@folix-input-bg: #0F172A;
+@folix-input-border: rgba(255, 255, 255, 0.15);
+@folix-input-focus-border: #FFD700;
+@folix-input-placeholder: rgba(255, 255, 255, 0.3);
+
+// ============================================================================
+//  NAVIGATION COLORS - 导航色（电竞风）
+// ============================================================================
+
+@folix-nav-mobile-bg: @folix-bg-dark;
+@folix-nav-desktop-bg: transparent;
+
+// ============================================================================
+//  HEADER COLORS - 头部色（电竞风）
+// ============================================================================
+
+@folix-header-top-bg: @folix-gradient-header;  // 顶部栏深蓝渐变
+@folix-header-top-text: @folix-text-secondary;
+@folix-nav-bottom-border: @folix-border-gold;  // 导航栏底部金色线条
+
+// ============================================================================
+//  FOOTER COLORS - 底部色（电竞风）
+// ============================================================================
+
+@folix-footer-bg: @folix-gradient-footer;
+@folix-footer-link: @folix-text-secondary;
+@folix-footer-link-hover: @folix-secondary;
+@folix-footer-border: @folix-border;
+
+// ============================================================================
+//  POPUP COLORS - 弹窗色（电竞风）
+// ============================================================================
+
+@folix-popup-bg: #1E293B;
+@folix-popup-border: rgba(255, 255, 255, 0.15);
+@folix-popup-overlay: rgba(0, 0, 0, 0.8);
+
+// ============================================================================
+//  UTILITY COLORS - 工具色（电竞风）
+// ============================================================================
+
+@folix-error: #FF3B30;
+@folix-error-bg: rgba(255, 59, 48, 0.1);
+@folix-error-border: rgba(255, 59, 48, 0.3);
+@folix-success: #059669;
+@folix-success-bg: rgba(5, 150, 105, 0.1);
+@folix-success-border: rgba(5, 150, 105, 0.3);
+@folix-warning: #F59E0B;
+@folix-info: #3B82F6;
+@folix-info-bg: rgba(59, 130, 246, 0.1);
+@folix-info-border: rgba(59, 130, 246, 0.3);
+
+// ============================================================================
+//  LAYOUT & SPACING - 布局与间距
+// ============================================================================
+
+@folix-radius: 6px;  // 默认圆角
+@folix-radius-sm: 4px;
+@folix-radius-md: 8px;
+@folix-radius-lg: 12px;
+@flix-radius-xl: 16px;
+@folix-radius-full: 9999px;
+
+
+// ============================================================================
+//  SHADOWS - 阴影（电竞风）
+// ============================================================================
+
+@folix-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);  // 默认阴影
+@folix-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+@folix-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.2);
+@folix-shadow-lg: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+@folix-shadow-xl: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+@folix-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 12px 24px -8px rgba(0, 0, 0, 0.5);
+@folix-shadow-gold: 0 4px 12px rgba(255, 215, 0, 0.3);
+@folix-shadow-red: 0 4px 12px rgba(255, 59, 48, 0.3);
+@folix-shadow-secondary: 0 8px 16px -4px rgba(139, 92, 246, 0.4), 0 4px 8px -2px rgba(139, 92, 246, 0.3);
+
+// ============================================================================
+//  TRANSITIONS - 过渡动画
+// ============================================================================
+
+@folix-transition: 0.3s ease;
+@folix-transition-fast: 0.2s ease;
+@folix-transition-slow: 0.5s ease;
+@folix-transition-smooth: 0.4s ease;
+
+// ============================================================================
+//  Z-INDEX - 层级
+// ============================================================================
+
+@folix-z-sticky: 100;
+@folix-z-dropdown: 200;
+@folix-z-modal: 1000;
+@folix-z-modal-backdrop: 999;
+
+// ============================================================================
+//  BREAKPOINTS - 断点
+// ============================================================================
+
+@folix-breakpoint-sm: 640px;
+@folix-breakpoint-md: 768px;
+@folix-breakpoint-lg: 1024px;
+@folix-breakpoint-xl: 1280px;
+
+// ============================================================================
+//  NAVIGATION TEXT COLORS - 导航文字色
+// ============================================================================
+
+@folix-nav-text: @folix-text-primary;
+@folix-nav-hover-text: @folix-secondary;
+@folix-nav-active-text: @folix-secondary;
+@folix-nav-active-bg: @folix-bg-selected;
+@folix-nav-active-border: @folix-secondary;
+@folix-nav-mobile-text: @folix-text-primary;
+
+// ============================================================================
+//  HEADER COLORS - 头部扩展色
+// ============================================================================
+
+@folix-header-bg: transparent;
+@folix-header-border: @folix-border;
+@folix-input-text: @folix-text-primary;

@@ -1,26 +1,24 @@
 <?php
 /**
- * Folix Game Theme - Authorization Link
- *
- * 自定义登录/注册链接模板
- * 输出: <a> 链接（不带 <li>）
- *
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+
+/**
  * @var \Magento\Customer\Block\Account\AuthorizationLink $block
  * @var \Magento\Framework\Escaper $escaper
  */
-?>
-<?php
 $dataPostParam = '';
 if ($block->isLoggedIn()) {
     $dataPostParam = sprintf(" data-post='%s'", $block->getPostParams());
 }
 ?>
-<a class="authorization-link" <?= /* @noEscape */ $block->getLinkAttributes() ?> <?= /* @noEscape */ $dataPostParam ?>>
-    <span class="login-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
+<li class="link authorization-link folix-auth-link" data-label="<?= $escaper->escapeHtml(__('or')) ?>">
+    <a <?= /* @noEscape */ $block->getLinkAttributes() ?>
+       <?= /* @noEscape */ $dataPostParam ?>>
+        <svg class="folix-user-icon" width="18" height="18" viewBox="0 0 18 18">
+            <path d="M9 9C11.21 9 13 7.21 13 5C13 2.79 11.21 1 9 1C6.79 1 5 2.79 5 5C5 7.21 6.79 9 9 9ZM9 11C6.33 11 1 12.34 1 15V17H17V15C17 12.34 11.67 11 9 11Z" fill="currentColor"/>
         </svg>
-    </span>
-    <span class="login-text"><?= $escaper->escapeHtml($block->getLabel()) ?></span>
-</a>
+        <span><?= $escaper->escapeHtml($block->getLabel()) ?></span>
+    </a>
+</li>

@@ -3,154 +3,87 @@ declare(strict_types=1);
 
 namespace FolixCode\ProductSync\Service;
 
-use Magento\Catalog\Api\CategoryRepositoryInterface;
-use Magento\Catalog\Api\Data\CategoryInterfaceFactory;
 use Magento\Framework\Exception\LocalizedException;
+use FolixCode\ProductSync\Service\CategoryProcessor;
 use Psr\Log\LoggerInterface;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 
 /**
  * 分类导入服务
+ * 使用 CategoryProcessor 处理分类业务逻辑
  */
 class CategoryImporter
 {
-    private CategoryRepositoryInterface $categoryRepository;
-    private CategoryInterfaceFactory $categoryFactory;
+    private CategoryProcessor $categoryProcessor;
     private LoggerInterface $logger;
-    private LoggerInterface $categoryLogger;
 
     public function __construct(
-        CategoryRepositoryInterface $categoryRepository,
-        CategoryInterfaceFactory $categoryFactory,
+        CategoryProcessor $categoryProcessor,
         LoggerInterface $logger
     ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->categoryFactory = $categoryFactory;
+        $this->categoryProcessor = $categoryProcessor;
         $this->logger = $logger;
-
-        // 创建独立的分类导入日志记录器
-        $this->categoryLogger = new Logger('category_importer');
-        $logPath = BP . '/var/log/category_importer.log';
-        $this->categoryLogger->pushHandler(new StreamHandler($logPath, Logger::DEBUG));
     }
 
     /**
      * 导入分类
      *
-     * @param array $categoryData
+     * @param array $categoryData 分类数据
      * @return void
      * @throws LocalizedException
      */
     public function import(array $categoryData): void
     {
         try {
-            $externalCategoryId = $categoryData['id'] ?? '';
-
-            if (empty($externalCategoryId)) {
+            // 验证必填字段
+            if (empty($categoryData['id'])) {
                 throw new \InvalidArgumentException('Category ID is required');
             }
 
-            // 检查分类是否已存在
-            $categoryName = $categoryData['name'] ?? 'Unnamed Category';
-
-            try {
-                // 尝试通过名称查找分类
-                $category = $this->findCategoryByName($categoryName);
-
-                if ($category) {
-                    $this->categoryLogger->info('Updating existing category', ['name' => $categoryName]);
-                    $this->logger->info('Updating existing category', ['name' => $categoryName]);
-                } else {
-                    // 分类不存在，创建新分类
-                    $category = $this->categoryFactory->create();
-                    $category->setParentId(2); // 默认父分类ID (根分类)
-                    $category->setPath('1/2'); // 默认路径
-                    $category->setIsActive(1);
-                    $category->setIncludeInMenu(1);
-                    $this->categoryLogger->info('Creating new category', ['name' => $categoryName]);
-                    $this->logger->info('Creating new category', ['name' => $categoryName]);
-                }
-            } catch (\Exception $e) {
-                // 分类不存在，创建新分类
-                $category = $this->categoryFactory->create();
-                $category->setParentId(2);
-                $category->setPath('1/2');
-                $category->setIsActive(1);
-                $category->setIncludeInMenu(1);
-                $this->categoryLogger->info('Creating new category', ['name' => $categoryName]);
-                $this->logger->info('Creating new category', ['name' => $categoryName]);
+            if (empty($categoryData['name'])) {
+                throw new \InvalidArgumentException('Category name is required');
             }
 
-            // 设置分类数据
-            $category->setName($categoryName);
-            $category->setDescription($categoryData['description'] ?? '');
-            $category->setUrlKey($this->generateUrlKey($categoryName));
+            $categoryId = $categoryData['id'];
+            $categoryName = $categoryData['name'];
+            $startTime = microtime(true);
 
-            // 保存分类
-            $this->categoryRepository->save($category);
-
-            $this->categoryLogger->info('Category imported successfully', [
-                'name' => $categoryName,
-                'id' => $category->getId()
+            $this->logger->info('Starting category import', [
+                'category_id' => $categoryId,
+                'name' => $categoryName
             ]);
+
+
+            // 使用 CategoryProcessor 创建或更新分类（基于路径）
+
+            $paths = $this->categoryProcessor->buildCategoryPath($categoryData);
+
+            /**
+             * 额外属性
+             */
+            $attributes =  [];
+            $attributes[$categoryData['name']] =  $categoryData;
+
+            $newCategoryId = $this->categoryProcessor->upsertCategory($paths,$attributes);
+             
+            $this->categoryProcessor->cleanCache();
+
+            $duration = round((microtime(true) - $startTime) * 1000, 2);
+
             $this->logger->info('Category imported successfully', [
+                'category_id' => $newCategoryId,
+                'external_id' => $categoryId,
                 'name' => $categoryName,
-                'id' => $category->getId()
+                'duration_ms' => $duration
             ]);
 
         } catch (\Exception $e) {
-            $this->categoryLogger->error('Failed to import category', [
-                'category_data' => $categoryData,
-                'error' => $e->getMessage()
-            ]);
             $this->logger->error('Failed to import category', [
                 'category_data' => $categoryData,
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ]);
             throw $e;
         }
     }
 
-    /**
-     * 通过名称查找分类
-     *
-     * @param string $name
-     * @return \Magento\Catalog\Api\Data\CategoryInterface|null
-     */
-    private function findCategoryByName(string $name): ?\Magento\Catalog\Api\Data\CategoryInterface
-    {
-        try {
-            $categories = $this->categoryRepository->getList(
-                $this->categoryFactory->create()->getSearchCriteriaBuilder()
-                    ->addFilter('name', $name)
-                    ->create()
-            );
-
-            $items = $categories->getItems();
-            return $items ? array_shift($items) : null;
-
-        } catch (\Exception $e) {
-            $this->categoryLogger->error('Failed to find category by name', [
-                'name' => $name,
-                'error' => $e->getMessage()
-            ]);
-            $this->logger->error('Failed to find category by name', [
-                'name' => $name,
-                'error' => $e->getMessage()
-            ]);
-            return null;
-        }
-    }
-
-    /**
-     * 生成URL Key
-     *
-     * @param string $name
-     * @return string
-     */
-    private function generateUrlKey(string $name): string
-    {
-        return strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name), '-'));
-    }
 }

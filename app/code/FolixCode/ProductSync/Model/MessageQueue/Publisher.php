@@ -4,23 +4,20 @@ declare(strict_types=1);
 namespace FolixCode\ProductSync\Model\MessageQueue;
 
 use FolixCode\ProductSync\Api\Message\PublisherInterface;
-use FolixCode\ProductSync\Api\Message\ProductImportMessageInterface;
-use FolixCode\ProductSync\Api\Message\CategoryImportMessageInterface;
-use FolixCode\ProductSync\Api\Message\ProductDetailMessageInterface;
+use Magento\AsynchronousOperations\Api\Data\OperationInterfaceFactory;
 use Magento\Framework\MessageQueue\PublisherInterface as MqPublisher;
+use Magento\Framework\Serialize\SerializerInterface;
 use Psr\Log\LoggerInterface;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
+use Magento\Framework\Bulk\OperationInterface;
 
 /**
- * 消息队列发布者实现
+ * 消息队列发布者实现 - 使用 OperationInterface 标准方式
  */
 class Publisher implements PublisherInterface
 {
     private MqPublisher $mqPublisher;
-    private ProductImportMessageInterface $productMessageFactory;
-    private CategoryImportMessageInterface $categoryMessageFactory;
-    private ProductDetailMessageInterface $productDetailMessageFactory;
+    private OperationInterfaceFactory $operationFactory;
+    private SerializerInterface $serializer;
     private LoggerInterface $logger;
     private LoggerInterface $publisherLogger;
 
@@ -31,21 +28,16 @@ class Publisher implements PublisherInterface
 
     public function __construct(
         MqPublisher $mqPublisher,
-        ProductImportMessageInterface $productMessageFactory,
-        CategoryImportMessageInterface $categoryMessageFactory,
-        ProductDetailMessageInterface $productDetailMessageFactory,
-        LoggerInterface $logger
+        OperationInterfaceFactory $operationFactory,
+        SerializerInterface $serializer,
+        LoggerInterface $logger,
+        LoggerInterface $publisherLogger
     ) {
         $this->mqPublisher = $mqPublisher;
-        $this->productMessageFactory = $productMessageFactory;
-        $this->categoryMessageFactory = $categoryMessageFactory;
-        $this->productDetailMessageFactory = $productDetailMessageFactory;
+        $this->operationFactory = $operationFactory;
+        $this->serializer = $serializer;
         $this->logger = $logger;
-
-        // 创建独立的消息发布日志记录器
-        $this->publisherLogger = new Logger('mq_publisher');
-        $logPath = BP . '/var/log/mq_publisher.log';
-        $this->publisherLogger->pushHandler(new StreamHandler($logPath, Logger::DEBUG));
+        $this->publisherLogger = $publisherLogger;
     }
 
     /**
@@ -54,8 +46,18 @@ class Publisher implements PublisherInterface
     public function publishProductImport(array $productData): void
     {
         try {
-            $message = $this->productMessageFactory->create($productData);
-            $this->mqPublisher->publish(self::TOPIC_PRODUCT_IMPORT, $message);
+            // 创建 Operation 对象（符合 Magento 官方标准）
+            $operation = $this->operationFactory->create([
+                'data' => [
+                    'topic_name' => self::TOPIC_PRODUCT_IMPORT,
+                    'serialized_data' => $this->serializer->serialize($productData),
+                    'status' => OperationInterface::STATUS_TYPE_OPEN
+                ]
+            ]);
+            
+            // 发布 Operation
+            $this->mqPublisher->publish(self::TOPIC_PRODUCT_IMPORT, $operation);
+            
             $this->publisherLogger->info('Product import message published', ['product_id' => $productData['id'] ?? 'unknown']);
             $this->logger->debug('Product import message published', ['product_id' => $productData['id'] ?? 'unknown']);
         } catch (\Exception $e) {
@@ -77,8 +79,18 @@ class Publisher implements PublisherInterface
     public function publishCategoryImport(array $categoryData): void
     {
         try {
-            $message = $this->categoryMessageFactory->create($categoryData);
-            $this->mqPublisher->publish(self::TOPIC_CATEGORY_IMPORT, $message);
+            // 创建 Operation 对象（符合 Magento 官方标准）
+            $operation = $this->operationFactory->create([
+                'data' => [
+                    'topic_name' => self::TOPIC_CATEGORY_IMPORT,
+                    'serialized_data' => $this->serializer->serialize($categoryData),
+                    'status' => OperationInterface::STATUS_TYPE_OPEN,
+                ]
+            ]);
+            
+            // 发布 Operation
+            $this->mqPublisher->publish(self::TOPIC_CATEGORY_IMPORT, $operation);
+            
             $this->publisherLogger->info('Category import message published', ['category_id' => $categoryData['id'] ?? 'unknown']);
             $this->logger->debug('Category import message published', ['category_id' => $categoryData['id'] ?? 'unknown']);
         } catch (\Exception $e) {
@@ -100,8 +112,18 @@ class Publisher implements PublisherInterface
     public function publishProductDetail(string $productId): void
     {
         try {
-            $message = $this->productDetailMessageFactory->create(['product_id' => $productId]);
-            $this->mqPublisher->publish(self::TOPIC_PRODUCT_DETAIL, $message);
+            // 创建 Operation 对象（符合 Magento 官方标准）
+            $operation = $this->operationFactory->create([
+                'data' => [
+                    'topic_name' => self::TOPIC_PRODUCT_DETAIL,
+                    'status'  => OperationInterface::STATUS_TYPE_OPEN,
+                    'serialized_data' => $this->serializer->serialize(['product_id' => $productId]),
+                ]
+            ]);
+            
+            // 发布 Operation
+            $this->mqPublisher->publish(self::TOPIC_PRODUCT_DETAIL, $operation);
+            
             $this->publisherLogger->info('Product detail message published', ['product_id' => $productId]);
             $this->logger->debug('Product detail message published', ['product_id' => $productId]);
         } catch (\Exception $e) {

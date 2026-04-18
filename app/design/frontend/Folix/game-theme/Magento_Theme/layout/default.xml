@@ -41,7 +41,7 @@
         <!-- 注意：不要移除 header.links，它在移动端会显示在 Account 标签页中 -->
         <referenceBlock name="skip_to_content" remove="true" />
         <referenceBlock name="catalog.compare.link" remove="true" />
-        <referenceBlock name="currency" remove="true" />
+        <referenceBlock name="top.search"  remove="true" />   
         
         <!-- 移动语言切换到右侧容器 -->
         <move element="store_language" destination="folix.top.right" />
@@ -50,58 +50,32 @@
         <referenceContainer name="folix.top.left">
             <block class="Magento\Framework\View\Element\Template" name="folix.top.links" template="Magento_Theme::html/header/links-top-left.phtml" before="-" />
         </referenceContainer>
-        
-        <!-- 右侧APP链接 -->
-        <referenceContainer name="folix.top.right">
-            <block class="Magento\Framework\View\Element\Template" name="folix.app.link" template="Magento_Theme::html/header/app-link.phtml" before="store_language" />
-        </referenceContainer>
-        
-        <!-- =================================================================
-             MAIN BAR - 主导航栏
-             白色背景，底部橙色边框3px
-             Logo | 导航 | 搜索 | 登录按钮
-             
-             移动端重构：
-             1. 删除navigation.sections（标签页导航）
-             2. PC端菜单和移动端菜单分离
-             ================================================================= -->
-        
-        <!-- 删除原生标签页导航 -->
-        <referenceBlock name="navigation.sections" remove="true" />
-        
-        <!-- 移动搜索框到正确位置 -->
-        <move element="top.search" destination="header-wrapper" before="minicart" />
-        
-        <!-- PC端导航菜单 -->
-        <referenceContainer name="header-wrapper">
-            <container name="folix.nav.container" htmlTag="div" htmlClass="folix-nav-wrapper" before="top.search">
-                <block class="Magento\Theme\Block\Html\Topmenu" name="folix.topmenu" template="Magento_Theme::html/topmenu.phtml">
-                    <arguments>
-                        <argument name="css_class" xsi:type="string">desktop-nav</argument>
-                    </arguments>
-                </block>
-            </container>
-        </referenceContainer>
+     
+       <referenceContainer name="header-wrapper">
+             <container name="folix.header.nav"  htmlTag="div" htmlClass="folix-nav-container" />
+         </referenceContainer>
+         <referenceBlock  name="store.settings" remove="true" />
 
-        <!-- 移动端导航菜单（独立容器） -->
-        <referenceContainer name="page.top">
-            <container name="mobile.nav.container" label="Mobile Navigation Container" htmlTag="div" htmlClass="mobile-nav-container" after="header.container">
-                <!-- Logo 和关闭按钮 -->
-                <block class="Magento\Framework\View\Element\Template" name="mobile.nav.header" template="Magento_Theme::html/header/mobile-nav-header.phtml" before="-" />
+         <referenceBlock name="navigation.sections" >
+            
+                <block class="Magento\Framework\View\Element\Template" name="folix.top.search" as="topSearch"  template="Magento_Search::form.mini.phtml">
+                <arguments>
+                    <argument name="configProvider" xsi:type="object">Magento\Search\ViewModel\ConfigProvider</argument>
+                    <argument name="additionalSearchFormData" xsi:type="object">Magento\Search\ViewModel\AdditionalSearchFormData</argument>
+                </arguments>
+            </block>
 
-                <!-- 主菜单 - 使用原生模板，不启用 menu widget -->
-                <block class="Magento\Theme\Block\Html\Topmenu" name="mobile.catalog.topnav" template="Magento_Theme::html/topmenu.phtml" after="mobile.nav.header">
-                    <arguments>
-                        <argument name="css_class" xsi:type="string">mobile-nav</argument>
-                    </arguments>
-                </block>
-            </container>
-        </referenceContainer>
-
+         </referenceBlock>
+         
+ 
+        <move element="navigation.sections" destination="folix.header.nav" />
+           
         
-
-   
-        <!-- Body Class -->
+        <move element="logo" destination="folix.header.nav" before="-" />
+        <move element="header.links" destination="folix.top.right" after="-" />        <!-- Body Class -->
+        <move element="minicart"  destination="folix.header.nav" after="-" />
+        
+          <!-- Body Class -->
         <attribute name="body" value="folix-theme" />
         
     </body>
