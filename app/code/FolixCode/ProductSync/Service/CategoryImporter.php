@@ -61,7 +61,7 @@ class CategoryImporter
              * 额外属性
              */
             $attributes =  [];
-            $attributes['name'] =  $categoryData;
+            $attributes[$categoryData['name']] =  $categoryData;
 
             $newCategoryId = $this->categoryProcessor->upsertCategory($paths,$attributes);
              

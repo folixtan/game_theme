@@ -5,7 +5,8 @@ namespace FolixCode\ProductSync\Service;
 use Magento\Catalog\Model\CategoryRepository;
 
 use Magento\Store\Model\Store;
-
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\App\ResourceConnection;
 /**
  * @api
  * @since 100.0.2
@@ -54,9 +55,11 @@ class CategoryProcessor
     /** @var \Magento\Catalog\Model\CategoryRepository   */
     protected $categoryRepository;
 
-    private bool $isInitialized = false;
+    private $storeManager;
 
     const ROOT_PATH ='Default Category';
+
+    private $resourceConnection;
 
     /**
      * @param \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryColFactory
@@ -65,12 +68,16 @@ class CategoryProcessor
     public function __construct(
         \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryColFactory,
         \Magento\Catalog\Model\CategoryFactory $categoryFactory,
+        StoreManagerInterface $storeManager,
+        ResourceConnection $resourceConnection,
         CategoryRepository $categoryRepository
     ) {
         $this->categoryColFactory = $categoryColFactory;
         $this->categoryFactory = $categoryFactory;
         $this->categoryRepository = $categoryRepository;
-       // $this->initCategories();
+        $this->storeManager = $storeManager;
+        $this->resourceConnection = $resourceConnection;
+        $this->initCategories();
     }
 
     /**
@@ -118,11 +125,13 @@ class CategoryProcessor
      */
     protected function createCategory($name, $parentId,array $attributes = [])
     {
+        $this->storeManager->setCurrentStore(0);
         /** @var \Magento\Catalog\Model\Category $category */
         $category = $this->categoryFactory->create();
         if (!($parentCategory = $this->getCategoryById($parentId))) {
             $parentCategory = $this->categoryFactory->create()->load($parentId);
         }
+       // var_dump($parentCategory->getPath(),$parentCategory->getId());exit;
         $category->setPath($parentCategory->getPath());
         $category->setParentId($parentId);
         $category->setName($this->unquoteDelimiter($name));
@@ -133,7 +142,7 @@ class CategoryProcessor
         }
 
         if(isset($attributes['id']) && is_numeric($attributes['id'])) {
-             $category->setId($attributes['id']);
+           //  $category->setId($attributes['id']);
         }
 
         if(count($attributes)) {
@@ -142,10 +151,19 @@ class CategoryProcessor
               }
         }
 
+       // var_dump($category->getDefaultAttributeSetId());exit;
+
         $category->setIncludeInMenu(true);
         $category->setAttributeSetId($category->getDefaultAttributeSetId());
         $category->setStoreId(Store::DEFAULT_STORE_ID);
         $category = $this->categoryRepository->save($category);
+        //更改path
+    //   var_dump($category->getPath());exit;
+        $this->resourceConnection->getConnection()->update(
+            $this->resourceConnection->getTableName('catalog_category_entity'),
+            ['path' => $category->getPath().self::DELIMITER_CATEGORY.$category->getId()],
+            ['entity_id = ?' => $category->getId()]
+        );;
         $this->categoriesCache[$category->getId()] = $category;
         return $category->getId();
     }
@@ -184,17 +202,21 @@ class CategoryProcessor
      */
     public function upsertCategory($categoryPath,array $attributes = [])
     {
+        //$this->initCategories();
+
         /** @var string $index */
         $index = $categoryPath !== null ? $this->standardizeString($categoryPath) : '';
 
         if (!isset($this->categories[$index])) {
             $pathParts = preg_split('~(?<!\\\)' . preg_quote(self::DELIMITER_CATEGORY, '~') . '~', $categoryPath);
-            $parentId = \Magento\Catalog\Model\Category::TREE_ROOT_ID;
+            // $parentId = \Magento\Catalog\Model\Category::TREE_ROOT_ID;
+              $parentId = 2;
             $path = '';
 
             foreach ($pathParts as $pathPart) {
                 $path .= $this->standardizeString($pathPart);
                 if (!isset($this->categories[$path])) {
+                 
                     $this->categories[$path] = $this->createCategory($pathPart, $parentId,$attributes[$pathPart]);
                 }
                 $parentId = $this->categories[$path];
@@ -333,7 +355,7 @@ class CategoryProcessor
         }
 
         // 否则直接使用分类名作为单层路径
-        return static::ROOT_PATH.'/'.$categoryData['name'] ?? 'Unknown';
+        return $categoryData['name'] ?? 'Unknown';
     }
 
     

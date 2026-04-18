@@ -8,6 +8,7 @@ use Magento\AsynchronousOperations\Api\Data\OperationInterfaceFactory;
 use Magento\Framework\MessageQueue\PublisherInterface as MqPublisher;
 use Magento\Framework\Serialize\SerializerInterface;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\Bulk\OperationInterface;
 
 /**
  * 消息队列发布者实现 - 使用 OperationInterface 标准方式
@@ -50,6 +51,7 @@ class Publisher implements PublisherInterface
                 'data' => [
                     'topic_name' => self::TOPIC_PRODUCT_IMPORT,
                     'serialized_data' => $this->serializer->serialize($productData),
+                    'status' => OperationInterface::STATUS_TYPE_OPEN
                 ]
             ]);
             
@@ -82,6 +84,7 @@ class Publisher implements PublisherInterface
                 'data' => [
                     'topic_name' => self::TOPIC_CATEGORY_IMPORT,
                     'serialized_data' => $this->serializer->serialize($categoryData),
+                    'status' => OperationInterface::STATUS_TYPE_OPEN,
                 ]
             ]);
             
@@ -113,6 +116,7 @@ class Publisher implements PublisherInterface
             $operation = $this->operationFactory->create([
                 'data' => [
                     'topic_name' => self::TOPIC_PRODUCT_DETAIL,
+                    'status'  => OperationInterface::STATUS_TYPE_OPEN,
                     'serialized_data' => $this->serializer->serialize(['product_id' => $productId]),
                 ]
             ]);
