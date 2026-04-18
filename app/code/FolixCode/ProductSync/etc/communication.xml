@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © FolixCode. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
+    
+    <!-- 分类导入 Topic -->
+    <topic name="folixcode.category.import" 
+           request="Magento\AsynchronousOperations\Api\Data\OperationInterface">
+        <handler name="folixcode.category.import.handler" 
+                 type="FolixCode\ProductSync\Model\MessageQueue\Consumer\CategoryImportConsumer" 
+                 method="process" />
+    </topic>
+    
+    <!-- 产品导入 Topic -->
+    <topic name="folixcode.product.import" 
+           request="Magento\AsynchronousOperations\Api\Data\OperationInterface">
+        <handler name="folixcode.product.import.handler" 
+                 type="FolixCode\ProductSync\Model\MessageQueue\Consumer\ProductImportConsumer" 
+                 method="process" />
+    </topic>
+    
+    <!-- 产品详情导入 Topic -->
+    <topic name="folixcode.product.detail" 
+           request="Magento\AsynchronousOperations\Api\Data\OperationInterface">
+        <handler name="folixcode.product.detail.handler" 
+                 type="FolixCode\ProductSync\Model\MessageQueue\Consumer\ProductDetailConsumer" 
+                 method="process" />
+    </topic>
+</config>

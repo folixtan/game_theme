@@ -33,18 +33,28 @@ class CategoryImporter
     public function import(array $categoryData): void
     {
         try {
+            // 验证必填字段
             if (empty($categoryData['id'])) {
                 throw new \InvalidArgumentException('Category ID is required');
             }
 
+            if (empty($categoryData['name'])) {
+                throw new \InvalidArgumentException('Category name is required');
+            }
+
             $categoryId = $categoryData['id'];
-            $categoryName = $categoryData['name'] ?? 'Unknown Category';
+            $categoryName = $categoryData['name'];
             $startTime = microtime(true);
 
             $this->logger->info('Starting category import', [
                 'category_id' => $categoryId,
                 'name' => $categoryName
             ]);
+
+            // 生成 URL Key（如果不存在）
+            if (empty($categoryData['url_key'])) {
+                $categoryData['url_key'] = $this->generateUrlKey($categoryName);
+            }
 
             // 构建分类路径
             // 优先使用 parent_path（如 "Games/Coins"），否则使用 name
@@ -57,7 +67,7 @@ class CategoryImporter
             $category = $this->categoryService->getCategoryById($newCategoryId);
             
             if ($category) {
-                // 更新额外属性（description, is_active, position 等）
+                // 更新额外属性（description, is_active, position, url_key 等）
                 $this->updateCategoryAttributes($category, $categoryData);
             }
 
@@ -68,6 +78,7 @@ class CategoryImporter
                 'external_id' => $categoryId,
                 'name' => $categoryName,
                 'path' => $categoryPath,
+                'url_key' => $categoryData['url_key'],
                 'duration_ms' => $duration
             ]);
 
@@ -98,6 +109,30 @@ class CategoryImporter
 
         // 否则直接使用分类名作为单层路径
         return $categoryData['name'] ?? 'Unknown';
+    }
+
+    /**
+     * 生成 URL Key
+     * 
+     * 如果 url_key 不存在，使用 name + 随机字符串生成
+     * 随机字符串长度 3-5 位，降低重复概率
+     *
+     * @param string $name 分类名称
+     * @return string
+     */
+    private function generateUrlKey(string $name): string
+    {
+        // 将名称转换为 URL 友好格式（小写、替换空格和特殊字符）
+        $urlKey = strtolower(trim($name));
+        $urlKey = preg_replace('/[^a-z0-9]+/', '-', $urlKey);
+        $urlKey = trim($urlKey, '-');
+        
+        // 生成 3-5 位随机字符串
+        $randomLength = random_int(3, 5);
+        $randomString = substr(str_shuffle('abcdefghijklmnopqrstuvwxyz0123456789'), 0, $randomLength);
+        
+        // 组合：name-random
+        return $urlKey . '-' . $randomString;
     }
 
     /**
