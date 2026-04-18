@@ -77,9 +77,12 @@ class SyncCategories
 
             // 2. 将每个分类发布到消息队列（异步导入）
             $publishedCount = 0;
-            foreach ($categoriesData as $categoryData) {
+            foreach ($categoriesData as $id => $name) {
                 try {
-                    $this->publisher->publishCategoryImport($categoryData);
+                    $this->publisher->publishCategoryImport([
+                          'id' => $id,
+                          'name' => $name
+                    ]);
                     $publishedCount++;
                 } catch (\Exception $e) {
                     $this->logger->error('ProductSync Categories Cron: Failed to publish category to MQ', [

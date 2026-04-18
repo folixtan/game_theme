@@ -10,7 +10,7 @@ use Magento\Framework\Serialize\SerializerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * 消息队列发布者实现
+ * 消息队列发布者实现 - 使用 OperationInterface 标准方式
  */
 class Publisher implements PublisherInterface
 {
@@ -45,7 +45,7 @@ class Publisher implements PublisherInterface
     public function publishProductImport(array $productData): void
     {
         try {
-            // ✅ 只设置 topic_name 和 serialized_data，让 Magento 自动管理 bulk_uuid 和 status
+            // 创建 Operation 对象（符合 Magento 官方标准）
             $operation = $this->operationFactory->create([
                 'data' => [
                     'topic_name' => self::TOPIC_PRODUCT_IMPORT,
@@ -77,7 +77,7 @@ class Publisher implements PublisherInterface
     public function publishCategoryImport(array $categoryData): void
     {
         try {
-            // ✅ 只设置 topic_name 和 serialized_data，让 Magento 自动管理 bulk_uuid 和 status
+            // 创建 Operation 对象（符合 Magento 官方标准）
             $operation = $this->operationFactory->create([
                 'data' => [
                     'topic_name' => self::TOPIC_CATEGORY_IMPORT,
@@ -109,7 +109,7 @@ class Publisher implements PublisherInterface
     public function publishProductDetail(string $productId): void
     {
         try {
-            // ✅ 只设置 topic_name 和 serialized_data，让 Magento 自动管理 bulk_uuid 和 status
+            // 创建 Operation 对象（符合 Magento 官方标准）
             $operation = $this->operationFactory->create([
                 'data' => [
                     'topic_name' => self::TOPIC_PRODUCT_DETAIL,

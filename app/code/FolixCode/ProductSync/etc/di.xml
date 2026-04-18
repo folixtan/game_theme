@@ -54,6 +54,7 @@
         </arguments>
     </virtualType>
 
+    <!-- Publisher 配置 - OperationInterfaceFactory 和 SerializerInterface 由 Magento DI 自动注入 -->
     <type name="FolixCode\ProductSync\Model\MessageQueue\Publisher">
         <arguments>
             <argument name="logger" xsi:type="object">FolixCodeProductSyncGeneralLogger</argument>

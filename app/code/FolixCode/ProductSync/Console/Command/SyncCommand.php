@@ -138,8 +138,11 @@ class SyncCommand extends Command
                 $output->writeln(sprintf('<comment>Found %d categories, publishing to MQ...</comment>', count($categoriesData)));
                 
                 // 2. 发布到消息队列
-                foreach ($categoriesData as $categoryData) {
-                    $this->publisher->publishCategoryImport($categoryData);
+                foreach ($categoriesData as $id => $name) {
+                    $this->publisher->publishCategoryImport([
+                         'id' => $id,
+                         'name' => $name
+                    ]);
                     $publishedCount++;
                 }
                 
