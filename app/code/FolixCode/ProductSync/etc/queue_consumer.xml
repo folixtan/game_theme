@@ -9,7 +9,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
     
     <!-- 产品导入消费者 -->
-    <consumer name="folixcode.product.import.consumer" 
+    <consumer name="folixcode.product.import" 
               queue="folixcode.product.import.queue"
               handler="FolixCode\ProductSync\Model\MessageQueue\Consumer\ProductImportConsumer::process"
               maxMessages="100"
@@ -17,7 +17,7 @@
               sleep="1" />
 
     <!-- 分类导入消费者 -->
-    <consumer name="folixcode.category.import.consumer" 
+    <consumer name="folixcode.category.import" 
               queue="folixcode.category.import.queue"
               handler="FolixCode\ProductSync\Model\MessageQueue\Consumer\CategoryImportConsumer::process"
               maxMessages="100"
