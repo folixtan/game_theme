@@ -58,8 +58,8 @@ class Publisher implements PublisherInterface
             // 发布 Operation
             $this->mqPublisher->publish(self::TOPIC_PRODUCT_IMPORT, $operation);
             
-            $this->publisherLogger->info('Product import message published', ['product_id' => $productData['id'] ?? 'unknown']);
-            $this->logger->debug('Product import message published', ['product_id' => $productData['id'] ?? 'unknown']);
+            $this->publisherLogger->info('Product import message published', $productData);
+           // $this->logger->debug('Product import message published', ['product_id' => $productData['id'] ?? 'unknown']);
         } catch (\Exception $e) {
             $this->publisherLogger->error('Failed to publish product import message', [
                 'error' => $e->getMessage(),
