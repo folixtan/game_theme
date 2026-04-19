@@ -12,7 +12,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
-
 /**
  * 同步命令 - 用于手动触发产品同步
  * 业务层Console命令
@@ -69,6 +68,12 @@ class SyncCommand extends Command
                     InputOption::VALUE_OPTIONAL,
                     'Timestamp for incremental sync (default: 0 for full sync)',
                     0
+                ),
+                new InputOption(
+                    'product_id',
+                    'pid',
+                    InputOption::VALUE_OPTIONAL,
+                    'Product ID for detail sync (default: null for list sync)'
                 )
             ]);
 
@@ -80,6 +85,7 @@ class SyncCommand extends Command
         $type = $input->getOption('type');
         $limit = (int)$input->getOption('limit');
         $page = (int)$input->getOption('page');
+        $productId = $input->getOption('product_id');
         $timestamp = (int)$input->getOption('timestamp');
         $timestamp = $timestamp > 0 ?: $this->timezone->date()->getTimestamp();
 
@@ -101,26 +107,39 @@ class SyncCommand extends Command
         $startTime = microtime(true);
 
         try {
-            $publishedCount = 0;
 
+        if( $type === 'detail') {
+            $output->writeln('<comment>Fetching product detail from API...</comment>');
+            
+            if( empty($productId) ) new \Exception('Product ID is required');
+            // 1. 从 API 获取产品列表
+            $details = $this->apiService->getProductDetail([
+                'product_id' => $productId,
+                'timestamp'  => $timestamp
+            ]);
+            var_dump($details);exit;
+            $output->writeln(sprintf('<comment>Found %d products, publishing to MQ...</comment>', count($productData)));
+            
+            // 2. 发布到消息队列
+          //   $this->publisher->publishProductDetail($details);
+        }
+    
             // 根据类型调用对应的 API 并发布到 MQ
             if ($type === 'products' || $type === 'all') {
                 $output->writeln('<comment>Fetching products from API...</comment>');
                 
                 // 1. 从 API 获取产品列表
                 $productsData = $this->apiService->getProductList([
-                    'limit' => $limit,
-                    'page' => $page,
+                    'per_page' => $limit,
+                    'page'    => $page,
                     'timestamp' => $timestamp
                 ]);
                 
                 $output->writeln(sprintf('<comment>Found %d products, publishing to MQ...</comment>', count($productsData)));
                 
                 // 2. 发布到消息队列
-                foreach ($productsData as $productData) {
-                    $this->publisher->publishProductImport($productData);
-                    $publishedCount++;
-                }
+                 $this->publisher->publishProductImport($productsData);
+              
                 
                 $output->writeln(sprintf('<info>✓ Published %d products to MQ</info>', count($productsData)));
             }
@@ -130,8 +149,8 @@ class SyncCommand extends Command
                 
                 // 1. 从 API 获取分类列表
                 $categoriesData = $this->apiService->getCategoryList([
-                    'limit' => $limit,
-                    'page' => $page,
+                 //   'per_page' => $limit,
+               //     'page' => $page,
                     'timestamp' => $timestamp
                 ]);
                 

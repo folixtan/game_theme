@@ -50,18 +50,19 @@ class VirtualGoodsApiService implements VirtualGoodsApiInterface
             $this->logger->info('Fetching product list', ['url' => $url, 'params' => $params]);
 
             $response = $this->apiClient->post($url, $params);
-            var_dump($response);exit;
-
-            $this->logger->info('Product list response received', ['response_count' => count($response)]);
-
-            // 验证响应格式
-            if (!isset($response['items']) && !isset($response['data'])) {
+           
+                 // 验证响应格式
+            if ( !isset($response['data'])) {
                 $errorMsg = 'Invalid product list response format';
                 $this->logger->error($errorMsg, ['response' => $response]);
                 throw new \RuntimeException('Invalid API response format for product list');
             }
 
-            $items = $response['items'] ?? $response['data'] ?? [];
+            $this->logger->info('Product list response received', ['response_count' => count($response['data'])]);
+
+       
+
+            $items = $response['data'] ? $response['data'] : [];
 
             $this->logger->info('Successfully fetched products from external API', ['count' => count($items)]);
 
@@ -117,22 +118,19 @@ class VirtualGoodsApiService implements VirtualGoodsApiInterface
     /**
      * @inheritdoc
      */
-    public function getProductDetail(string $productId, array $params = []): array
+    public function getProductDetail(array $params = []): array
     {
         try {
-            if (empty($productId)) {
-                throw new \InvalidArgumentException('Product ID is required');
+            if (empty($params)) {
+                throw new \InvalidArgumentException('params is required');
             }
 
-            $url = $this->apiClient->getApiBaseUrl() . self::PRODUCT_DETAIL_ENDPOINT . '/' . $productId;
+            $url = $this->apiClient->getApiBaseUrl() . self::PRODUCT_DETAIL_ENDPOINT ;
 
-            $this->logger->info('Fetching product detail', ['url' => $url, 'product_id' => $productId, 'params' => $params]);
+            $this->logger->info('Fetching product detail', ['url' => $url, 'params' => $params]);
 
             // 如果有额外参数，添加到请求中
-            $requestData = !empty($params) ? $params : [];
-            $response = !empty($requestData) 
-                ? $this->apiClient->post($url, $requestData)
-                : $this->apiClient->get($url);
+            $response =  $this->apiClient->post($url, $params);
 
             $this->logger->info('Product detail response received', ['response' => $response]);
 
@@ -143,13 +141,12 @@ class VirtualGoodsApiService implements VirtualGoodsApiInterface
                 throw new \RuntimeException('Invalid API response format for product detail');
             }
 
-            $this->logger->info('Successfully fetched product detail', ['product_id' => $productId]);
+            $this->logger->info('Successfully fetched product detail', ['params' => $params, 'detail' => $response]);
 
             return $response;
 
         } catch (\Exception $e) {
             $this->logger->error('Failed to fetch product detail', [
-                'product_id' => $productId,
                 'error' => $e->getMessage(),
                 'params' => $params
             ]);

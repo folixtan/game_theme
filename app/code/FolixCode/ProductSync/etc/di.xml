@@ -17,6 +17,7 @@
     <type name="FolixCode\ProductSync\Service\VirtualGoodsApiService">
         <arguments>
             <argument name="apiClient" xsi:type="object">FolixCode\BaseSyncService\Api\ExternalApiClientInterface</argument>
+              <argument name="logger" xsi:type="object">FolixCodeProductSyncGeneralLogger</argument>
         </arguments>
     </type>
 

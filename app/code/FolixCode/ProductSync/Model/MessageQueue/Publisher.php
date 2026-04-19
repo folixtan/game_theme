@@ -106,36 +106,4 @@ class Publisher implements PublisherInterface
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function publishProductDetail(string $productId): void
-    {
-        try {
-            // 创建 Operation 对象（符合 Magento 官方标准）
-            $operation = $this->operationFactory->create([
-                'data' => [
-                    'topic_name' => self::TOPIC_PRODUCT_DETAIL,
-                    'status'  => OperationInterface::STATUS_TYPE_OPEN,
-                    'serialized_data' => $this->serializer->serialize(['product_id' => $productId]),
-                ]
-            ]);
-            
-            // 发布 Operation
-            $this->mqPublisher->publish(self::TOPIC_PRODUCT_DETAIL, $operation);
-            
-            $this->publisherLogger->info('Product detail message published', ['product_id' => $productId]);
-            $this->logger->debug('Product detail message published', ['product_id' => $productId]);
-        } catch (\Exception $e) {
-            $this->publisherLogger->error('Failed to publish product detail message', [
-                'error' => $e->getMessage(),
-                'product_id' => $productId
-            ]);
-            $this->logger->error('Failed to publish product detail message', [
-                'error' => $e->getMessage(),
-                'product_id' => $productId
-            ]);
-            throw $e;
-        }
-    }
 }

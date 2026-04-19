@@ -24,8 +24,8 @@ class AddProductAttributes implements DataPatchInterface, PatchRevertableInterfa
     /**
      * 充值类型选项值
      */
-    public const CHARGE_TYPE_DIRECT = 'direct'; // 直充
-    public const CHARGE_TYPE_CARD = 'card';     // 卡密
+    public const CHARGE_TYPE_DIRECT = 4; // 直充
+    public const CHARGE_TYPE_CARD = 3;     // 卡密
 
     /**
      * 产品类型属性代码
@@ -89,6 +89,7 @@ class AddProductAttributes implements DataPatchInterface, PatchRevertableInterfa
                 'note' => '选择充值类型：直充或卡密'
             ]
         );
+ 
     }
 
     /**
@@ -113,6 +114,7 @@ class AddProductAttributes implements DataPatchInterface, PatchRevertableInterfa
 
         // 删除充值类型属性
         $eavSetup->removeAttribute(Product::ENTITY, self::ATTRIBUTE_CODE_CHARGE_TYPE);
+        $eavSetup->removeAttribute(Product::ENTITY, 'face_value');
     }
 
     /**

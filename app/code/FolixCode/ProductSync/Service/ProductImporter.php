@@ -14,6 +14,9 @@ use Magento\Catalog\Model\Product\Attribute\Repository as AttributeRepository;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Catalog\Model\Product\Attribute\Management as AttributeManagement;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use FolixCode\ProductSync\Service\VirtualGoodsApiService;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * 产品导入服务 - 游戏充值项目
@@ -42,21 +45,37 @@ class ProductImporter
                 'sort_order' => 10,
            //     'apply_to' => 'simple,virtual,downloadable',
                 'note' => '商品实际面值'
+         ],
+         'charge_template' => [
+            'label' => 'Charge Template',
+            'frontend_label' => 'Charge Templates',
+            'fontend_input' => 'texteditor',
+            'required' => false,
+            'user_defined' => true,
+            'default' => '',
+            'is_searchable' => false,
+            'is_filterable' => false,
+            'is_filterable_in_search' => false,
+            'is_visible_on_front' => true,
          ]
     ];
+
+     const SKU_PREFIX = 'vg_';
 
      /**
       * 构造函数
       */
     public function __construct(
-   private     ProductRepositoryInterface $productRepository,
-  private      ProductFactory $productFactory,
-   private     CategoryProcessor $categoryProcessor,
-  private      ResourceConnection $resourceConnection,
-   private     AttributeRepository $attributeRepository,
-  private      AttributeManagement $attributeManagement,
-   private     LoggerInterface $logger,
-  private      ProductExtensionFactory $extensionFactory
+            private     ProductRepositoryInterface $productRepository,
+            private      ProductFactory $productFactory,
+            private     CategoryProcessor $categoryProcessor,
+            private      ResourceConnection $resourceConnection,
+            private     AttributeRepository $attributeRepository,
+            private      AttributeManagement $attributeManagement,
+            private     LoggerInterface $logger,
+            private      ProductExtensionFactory $extensionFactory,
+            private     TimezoneInterface $timezone,
+            private     VirtualGoodsApiService $apiService
     ) {
         $this->productRepository = $productRepository;
         $this->productFactory = $productFactory;
@@ -98,7 +117,7 @@ class ProductImporter
             }
 
             // 生成 SKU
-            $sku = 'vg_' . $externalProductId;
+            $sku = self::SKU_PREFIX . $externalProductId;
 
            // var_dump($sku,$productData);exit;
             // 检查产品是否已存在
@@ -166,6 +185,9 @@ class ProductImporter
                 'charge_type' => $chargeType,
                 'is_new' => $isNewProduct
             ]);
+            //create Detail
+            if($isNewProduct && (int)$chargeType === AddProductAttributes::CHARGE_TYPE_DIRECT)  $this->createDetail($product);
+
            return (int)$product->getId();
         } catch (\Exception $e) {
             $this->logger->error('Failed to import product', [
@@ -267,6 +289,44 @@ class ProductImporter
         
         return $results;
     }
+
+   /*
+     * 创建产品详情
+     */
+    private function createDetail( \Magento\Catalog\Model\Product $product):void {
+        $api_productId = str_replace(self::SKU_PREFIX,'',$product->getSku());
+         $params = [
+             'product_id' => $api_productId,
+             'timestamp'  => $this->timezone->date()->getTimestamp()
+         ];
+         $detail = $this->apiService->getProductDetail($params);
+         if(empty($detail['charge_template'])) return;
+
+         $product->setData('charge_template',$detail['charge_template']);
+
+         $this->productRepository->save($product);
+         
+    }
+
+    /** 创建产品详情 */
+   public function importDetail(string $sku )
+   { 
+
+    try { 
+          $product = $this->productRepository->get($sku);
+     
+         $this->createDetail($product);
+    } catch (NoSuchEntityException $e) {
+        $this->logger->error('Failed to import product detail', [
+            'product_sku' => $sku,
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+        throw $e;
+    }
+     
+
+   }
 
     /**
      * 准备库存数据

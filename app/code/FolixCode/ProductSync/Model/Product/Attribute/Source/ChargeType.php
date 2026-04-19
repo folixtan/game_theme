@@ -13,8 +13,8 @@ class ChargeType extends AbstractSource
     /**
      * 充值类型选项
      */
-    public const DIRECT = 'direct';
-    public const CARD = 'card';
+    public const DIRECT = 4;
+    public const CARD = 3;
 
     /**
      * 获取所有选项

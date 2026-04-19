@@ -24,11 +24,4 @@ interface PublisherInterface
      */
     public function publishCategoryImport(array $categoryData): void;
 
-    /**
-     * 发布产品详情导入消息
-     *
-     * @param string $productId
-     * @return void
-     */
-    public function publishProductDetail(string $productId): void;
 }
