@@ -66,7 +66,7 @@ class VirtualGoodsApiService implements VirtualGoodsApiInterface
 
             $this->logger->info('Successfully fetched products from external API', ['count' => count($items)]);
 
-            return $items;
+            return $response;
 
         } catch (\Exception $e) {
             $this->logger->error('Failed to fetch product list', ['error' => $e->getMessage(), 'params' => $params]);
