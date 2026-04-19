@@ -19,7 +19,7 @@ class VirtualGoodsApiService implements VirtualGoodsApiInterface
     // API端点配置
     private const PRODUCT_LIST_ENDPOINT = '/api/user-goods/list';
     private const CATEGORY_LIST_ENDPOINT = '/api/user-goods/category';
-    private const PRODUCT_DETAIL_ENDPOINT = '/api/user-goods/detail';
+    private const PRODUCT_DETAIL_ENDPOINT = '/api/user-goods/details';
 
     public function __construct(
         ExternalApiClientInterface $apiClient,
