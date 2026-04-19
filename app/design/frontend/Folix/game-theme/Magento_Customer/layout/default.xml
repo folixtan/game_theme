@@ -18,12 +18,12 @@
         <referenceBlock name="authentication-popup" template="Magento_Customer::account/authentication-popup.phtml"/>
 
         <!-- 更新 Account Navigation 模板 -->
-        <referenceBlock name="customer_account_navigation" template="Magento_Customer::account/navigation.phtml"/>
+      <!--   <referenceBlock name="customer_account_navigation" template="Magento_Customer::account/navigation.phtml"/>
         <referenceBlock  name="register-link">
                 <arguments>
                     <argument name="label" xsi:type="string" translate="true">Create an Account</argument>
                     <argument name="class" xsi:type="string" translate="true">create-account-top-header</argument>
                 </arguments>
-        </referenceBlock>
+        </referenceBlock> -->
     </body>
 </page>

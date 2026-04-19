@@ -9,10 +9,16 @@
  * @var \Magento\Framework\Escaper $escaper
  */
 $dataPostParam = '';
-if ($block->isLoggedIn()) {
-    $dataPostParam = sprintf(" data-post='%s'", $block->getPostParams());
-}
+$isLogin = $block->isLoggedIn();
 ?>
+
+<?php if ($isLogin) : ?>
+    <?php
+    $dataPostParam = 'data-post=\'' . json_encode($block->getPostData()) . '\'';
+    ?>
+<?php endif; ?>
+
+<?php if(!$isLogin):?>
 <li class="link authorization-link folix-auth-link" data-label="<?= $escaper->escapeHtml(__('or')) ?>">
     <a <?= /* @noEscape */ $block->getLinkAttributes() ?>
        <?= /* @noEscape */ $dataPostParam ?>>
@@ -22,3 +28,4 @@ if ($block->isLoggedIn()) {
         <span><?= $escaper->escapeHtml($block->getLabel()) ?></span>
     </a>
 </li>
+<?php endif;?>
