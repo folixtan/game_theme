@@ -26,12 +26,4 @@
                  method="process" />
     </topic>
     
-    <!-- 产品详情导入 Topic -->
-    <topic name="folixcode.product.detail" 
-           is_synchronous="false" 
-           request="Magento\AsynchronousOperations\Api\Data\OperationInterface">
-        <handler name="folixcode.product.detail.handler" 
-                 type="FolixCode\ProductSync\Model\MessageQueue\Consumer\ProductDetailConsumer" 
-                 method="process" />
-    </topic>
 </config>

@@ -2,5 +2,4 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/publisher.xsd">
     <publisher topic="folixcode.product.import" queue="folixcode.product.import.queue"/>
     <publisher topic="folixcode.category.import" queue="folixcode.category.import.queue"/>
-    <publisher topic="folixcode.product.detail" queue="folixcode.product.detail.queue"/>
 </config>

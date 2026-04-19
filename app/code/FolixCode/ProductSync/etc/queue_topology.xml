@@ -10,6 +10,5 @@
     <exchange name="magento">
         <binding id="folix.category.sync" topic="folixcode.category.import" destination="folixcode.category.import.queue"/>
         <binding id="folix.product.sync" topic="folixcode.product.import" destination="folixcode.product.import.queue"/>
-        <binding id="folix.productditail.sync" topic="folixcode.product.detail" destination="folixcode.product.detail.queue"/>
     </exchange>
 </config>

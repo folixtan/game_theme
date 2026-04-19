@@ -11,9 +11,5 @@
             <schedule>0 * * * *</schedule>
         </job> -->
 
-        <!-- 产品详情同步任务 - 每天凌晨2点执行一次 -->
-      <!--   <job name="folixcode_productsync_details" instance="FolixCode\ProductSync\Cron\SyncProductDetails" method="execute">
-            <schedule>0 2 * * *</schedule>
-        </job> -->
     </group>
 </config>
