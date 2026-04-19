@@ -37,15 +37,15 @@ class ProductImportConsumer
     public function process(OperationInterface $operation): void
     {
         $startTime = microtime(true);
-        $productData = [];
+        
         
         try {
             // 从 Operation 中获取序列化的数据并反序列化
             $serializedData = $operation->getSerializedData();
             $productsData = $this->serializer->unserialize($serializedData);
-
-            // 验证必填字段：id
-            if (empty($productData)) {
+             
+            // 验证必填字段：id 
+            if (empty($productsData)) {
                 return;
             }
 
@@ -54,7 +54,7 @@ class ProductImportConsumer
             $this->logger->info('Processing product import', $productsData);
 
             // 执行导入
-           $productIds =   $this->productImporter->importBatch($productData);
+           $productIds =   $this->productImporter->importBatch($productsData);
               $duration = round((microtime(true) - $startTime) * 1000, 2);
             $this->logger->info('Product import completed successfully', $productIds);
          
