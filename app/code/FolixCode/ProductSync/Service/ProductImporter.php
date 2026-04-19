@@ -17,6 +17,7 @@ use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use FolixCode\ProductSync\Service\VirtualGoodsApiService;
 use Magento\Framework\Exception\NoSuchEntityException;
+use FolixCode\ProductSync\Exception\ApiSyncException;
 
 /**
  * 产品导入服务 - 游戏充值项目
@@ -155,6 +156,7 @@ class ProductImporter
 
             }
 
+          
             // 设置基本产品数据
             $product->setName($productData['name'] ?? 'Unnamed Product');
             $product->setPrice(($productData['sales_price'] ?? 0.00));
@@ -201,7 +203,10 @@ class ProductImporter
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
-            throw $e;
+           throw  new  ApiSyncException(__(
+                'Failed to import product: %1',
+                $e->getMessage()
+             ));
         }
 
         return null;
@@ -290,13 +295,17 @@ class ProductImporter
                $id = $this->import($productData);
                $results['ids'][$id] = $id;
                 $results['success']++;
-            } catch (\Exception $e) {
+            } catch (ApiSyncException $e) {
                 $results['failed']++;
                 $results['errors'][] = [
                     'sku' => $productData['product_id'] ?? 'unknown',
                     'error' => $e->getMessage()
                 ];
             }
+        }
+
+        if($results['failed'] > 0){
+             $this->logger->error('Failed to import products', $results['errors']);
         }
         
         return $results;
@@ -334,7 +343,7 @@ class ProductImporter
             'error' => $e->getMessage(),
             'trace' => $e->getTraceAsString()
         ]);
-        throw $e;
+          
     }
      
 
@@ -401,7 +410,7 @@ class ProductImporter
     private function getCateGoryId(int $vendor_id):? int
     {
 
-       if(isset($this->categories[$vendor_id])) return $this->categories[$vendor_id];
+       if(isset($this->categories[$vendor_id])) return (int)$this->categories[$vendor_id];
 
         $select =  $this->resourceConnection->getConnection()->select()
             ->from(
