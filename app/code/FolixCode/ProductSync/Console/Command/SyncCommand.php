@@ -20,19 +20,15 @@ class SyncCommand extends Command
 {
     public const COMMAND_NAME = 'folixcode:sync:products';
 
-    private VirtualGoodsApiService $apiService;
-    private PublisherInterface $publisher;
-    private BaseHelper $baseHelper;
-
+ 
     public function __construct(
-        VirtualGoodsApiService $apiService,
-        PublisherInterface $publisher,
-        BaseHelper $baseHelper,
-        private  TimezoneInterface $timezone
+     private   VirtualGoodsApiService $apiService,
+     private   PublisherInterface $publisher,
+    private    BaseHelper $baseHelper,
+        private  TimezoneInterface $timezone,
+         private \Magento\Framework\App\State $appState,
     ) {
-        $this->apiService = $apiService;
-        $this->publisher = $publisher;
-        $this->baseHelper = $baseHelper;
+        
         parent::__construct();
     }
 
@@ -82,6 +78,8 @@ class SyncCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+          $output->setDecorated(true);
+        $this->appState->setAreaCode(\Magento\Framework\App\Area::AREA_GLOBAL);
         $type = $input->getOption('type');
         $limit = (int)$input->getOption('limit');
         $page = (int)$input->getOption('page');
@@ -123,7 +121,8 @@ class SyncCommand extends Command
             // 2. 发布到消息队列
           //   $this->publisher->publishProductDetail($details);
         }
-    
+
+   
             // 根据类型调用对应的 API 并发布到 MQ
             if ($type === 'products' || $type === 'all') {
                 $output->writeln('<comment>Fetching products from API...</comment>');
@@ -162,7 +161,7 @@ class SyncCommand extends Command
                          'id' => $id,
                          'name' => $name
                     ]);
-                    $publishedCount++;
+                
                 }
                 
                 $output->writeln(sprintf('<info>✓ Published %d categories to MQ</info>', count($categoriesData)));

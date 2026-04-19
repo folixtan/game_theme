@@ -144,14 +144,10 @@ class CategoryProcessor
        }
 
         if(isset($attributes['id']) && is_numeric($attributes['id'])) {
-           //  $category->setId($attributes['id']);
+             $category->setData('vendor_id',$attributes['id']);
         }
 
-        if(count($attributes)) {
-              foreach ($attributes as $key => $value) {
-                  $category->setData($key, $value);
-              }
-        }
+       
 
        // var_dump($category->getDefaultAttributeSetId());exit;
 
@@ -357,7 +353,7 @@ class CategoryProcessor
         }
 
         // 否则直接使用分类名作为单层路径
-        return $categoryData['name'] ?? 'Unknown';
+        return self::ROOT_PATH.'/'.$categoryData['name'] ?? 'Unknown';
     }
 
     

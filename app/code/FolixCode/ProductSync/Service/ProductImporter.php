@@ -55,10 +55,13 @@ class ProductImporter
             'default' => '',
             'is_searchable' => false,
             'is_filterable' => false,
+             'scope' => ScopedAttributeInterface::SCOPE_GLOBAL,
             'is_filterable_in_search' => false,
             'is_visible_on_front' => true,
          ]
     ];
+
+    private $categories = [];
 
      const SKU_PREFIX = 'vg_';
 
@@ -75,13 +78,10 @@ class ProductImporter
             private     LoggerInterface $logger,
             private      ProductExtensionFactory $extensionFactory,
             private     TimezoneInterface $timezone,
-            private     VirtualGoodsApiService $apiService
+            private     VirtualGoodsApiService $apiService,
+         
     ) {
-        $this->productRepository = $productRepository;
-        $this->productFactory = $productFactory;
-        $this->categoryProcessor = $categoryProcessor;
-        $this->logger = $logger;
-        $this->extensionFactory = $extensionFactory;
+      
     }
 
     /**
@@ -138,6 +138,21 @@ class ProductImporter
                 $this->logger->info('Creating new product', ['sku' => $sku]);
               
                 $this->createAttributes($attributeSetId);
+                //get category id
+                    
+                // 通过扩展属性设置分类（参考 ProductRepository 第 548-553 行逻辑）
+                if (!empty($productData['goods_category_id'])) {
+                    $categoryId = $this->getCategoryId((int)$productData['goods_category_id']);
+                    
+                    $extensionAttributes = $product->getExtensionAttributes() 
+                        ?: $this->extensionFactory->create();
+                    $extensionAttributes->setWebsiteIds([1]);
+                //  $extensionAttributes->setCategoryIds($productData['category_ids']);
+                    $product->setExtensionAttributes($extensionAttributes);
+                    $product->setCategoryIds([$categoryId ?? 2]);
+                }
+                
+
             }
 
             // 设置基本产品数据
@@ -166,15 +181,6 @@ class ProductImporter
             // 设置可见性
             $product->setVisibility(\Magento\Catalog\Model\Product\Visibility::VISIBILITY_BOTH);
 
-            // 通过扩展属性设置分类（参考 ProductRepository 第 548-553 行逻辑）
-            if (!empty($productData['goods_category_id'])) {
-                $extensionAttributes = $product->getExtensionAttributes() 
-                    ?: $this->extensionFactory->create();
-                $extensionAttributes->setWebsiteIds([1]);
-              //  $extensionAttributes->setCategoryIds($productData['category_ids']);
-                $product->setExtensionAttributes($extensionAttributes);
-                $product->setCategoryIds([$productData['goods_category_id']]);
-            }
 
             // 保存产品（ProductRepository 会自动处理分类分配）
            $product =  $this->productRepository->save($product);
@@ -207,6 +213,10 @@ class ProductImporter
     private function createAttributes($attributeSetId = 4):void {
  
     
+
+    /**
+     * 获取属性组ID
+     */
        $select = $this->resourceConnection->getConnection()->
             select()->from(
                 $this->resourceConnection->getTableName('eav_attribute_group'),
@@ -215,6 +225,7 @@ class ProductImporter
                 ->where('attribute_set_id = ?',$attributeSetId)
                 ->where('attribute_group_name= ?','Game Settings');
 
+            
         $groupId = $this->resourceConnection->getConnection()->fetchOne($select);
         
       
@@ -223,14 +234,15 @@ class ProductImporter
             select()->from(
                 $this->resourceConnection->getTableName('eav_attribute'),
                 ['attribute_code']
-                )->where('attribute_code in (?)',['face_value']);
+                )->where('attribute_code in (?)',array_keys(self::CUSTOM_ATTR));
            
                 $result = $this->resourceConnection->getConnection()->fetchCol($select);
 
                 $originAttributes = array_keys(self::CUSTOM_ATTR);
                 $needCreateAttributes = array_diff($originAttributes,$result);
-              
-                if(empty($needCreateAttributes)) return;
+              //var_dump($needCreateAttributes);exit;
+                
+              if(empty($needCreateAttributes)) return;
 
                 foreach($needCreateAttributes as $code) {
                   $attribute = self::CUSTOM_ATTR[$code];
@@ -246,7 +258,7 @@ class ProductImporter
               
                 $attributeObj->setIsVisibleOnFront(true);
                 $attributeObj->setFontendLabel($attribute['frontend_label']);
-                $attributeObj->setScope($attribute['scope']);
+                $attributeObj->setScope($attribute['scope'] ??   ScopedAttributeInterface::SCOPE_GLOBAL);
                $resultAttribute=  $this->attributeRepository->save($attributeObj);
 
                if($resultAttribute) {
@@ -377,5 +389,53 @@ class ProductImporter
         }
 
         return (int)$attributeSetId;
+    }
+
+
+    /**
+     * 获取分类ID
+     *
+     * @param int $vendor_id
+     * @return int|null
+     */
+    private function getCateGoryId(int $vendor_id):? int
+    {
+
+       if(isset($this->categories[$vendor_id])) return $this->categories[$vendor_id];
+
+        $select =  $this->resourceConnection->getConnection()->select()
+            ->from(
+               [
+                   'ev' => $this->resourceConnection->getTableName('eav_attribute')
+               ],
+               
+                  [
+
+                   'ev.attribute_code'
+                  
+                  ]
+               
+               
+            )
+            ->join(
+                [
+                    'cat' => $this->resourceConnection->getTableName('catalog_category_entity_int')
+                ],
+                'ev.attribute_id = cat.attribute_id',
+                [
+                   'cat.entity_id'
+                ]
+            )
+            ->where('ev.attribute_code = "vendor_id"')
+            ->where('cat.value = ?', $vendor_id);
+
+           $category= $this->resourceConnection->getConnection()->fetchRow($select);
+          
+           if(isset($category['entity_id'])) {
+               $this->categories[$vendor_id] = $category['entity_id'];
+               return (int)$category['entity_id'];
+           }
+        
+         return null;
     }
 }
