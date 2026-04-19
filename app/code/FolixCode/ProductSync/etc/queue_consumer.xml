@@ -24,11 +24,4 @@
               maxIdleTime="60"
               sleep="1" />
 
-    <!-- 产品详情导入消费者 -->
-    <consumer name="folixcode.product.detail.consumer" 
-              queue="folixcode.product.detail.queue"
-              handler="FolixCode\ProductSync\Model\MessageQueue\Consumer\ProductDetailConsumer::process"
-              maxMessages="100"
-              maxIdleTime="60"
-              sleep="1" />
 </config>
