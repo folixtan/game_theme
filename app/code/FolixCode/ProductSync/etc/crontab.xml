@@ -3,17 +3,17 @@
     <group id="default">
         <!-- 产品同步任务 - 每30分钟执行一次 -->
         <job name="folixcode_productsync_products" instance="FolixCode\ProductSync\Cron\SyncProducts" method="execute">
-            <schedule>*/30 * * * *</schedule>
+            <schedule>*/60 * * * *</schedule>
         </job>
 
         <!-- 分类同步任务 - 每小时执行一次 -->
-        <job name="folixcode_productsync_categories" instance="FolixCode\ProductSync\Cron\SyncCategories" method="execute">
+       <!--  <job name="folixcode_productsync_categories" instance="FolixCode\ProductSync\Cron\SyncCategories" method="execute">
             <schedule>0 * * * *</schedule>
-        </job>
+        </job> -->
 
         <!-- 产品详情同步任务 - 每天凌晨2点执行一次 -->
-        <job name="folixcode_productsync_details" instance="FolixCode\ProductSync\Cron\SyncProductDetails" method="execute">
+      <!--   <job name="folixcode_productsync_details" instance="FolixCode\ProductSync\Cron\SyncProductDetails" method="execute">
             <schedule>0 2 * * *</schedule>
-        </job>
+        </job> -->
     </group>
 </config>

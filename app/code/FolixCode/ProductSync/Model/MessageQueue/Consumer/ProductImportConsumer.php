@@ -42,48 +42,34 @@ class ProductImportConsumer
         try {
             // 从 Operation 中获取序列化的数据并反序列化
             $serializedData = $operation->getSerializedData();
-            $productData = $this->serializer->unserialize($serializedData);
+            $productsData = $this->serializer->unserialize($serializedData);
 
             // 验证必填字段：id
-            if (empty($productData['id'])) {
-                throw new \InvalidArgumentException('Product ID is required');
+            if (empty($productData)) {
+                return;
             }
 
-            $productId = $productData['id'];
+           
 
-            $this->logger->info('Processing product import', [
-                'product_id' => $productId
-            ]);
+            $this->logger->info('Processing product import', $productsData);
 
             // 执行导入
-            $this->productImporter->import($productData);
+           $productIds =   $this->productImporter->importBatch($productData);
+              $duration = round((microtime(true) - $startTime) * 1000, 2);
+            $this->logger->info('Product import completed successfully', $productIds);
+         
 
-            $duration = round((microtime(true) - $startTime) * 1000, 2);
-            $this->logger->info('Product import completed successfully', [
-                'product_id' => $productId,
-                'duration_ms' => $duration
-            ]);
-
-        } catch (\Magento\Framework\Exception\AlreadyExistsException $e) {
-            // ✅ 产品已存在，视为成功（不抛出异常）
-            $duration = round((microtime(true) - $startTime) * 1000, 2);
-            $this->logger->info('Product already exists, skipped', [
-                'product_id' => $productData['id'] ?? 'unknown',
-                'duration_ms' => $duration
-            ]);
-            
-        } catch (\Exception $e) {
+        }  catch (\Exception $e) {
             // ❌ 其他所有错误：记录日志并抛出异常
             $duration = round((microtime(true) - $startTime) * 1000, 2);
             $this->logger->critical('Failed to process product import', [
-                'product_id' => $productData['id'] ?? 'unknown',
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
                 'duration_ms' => $duration
             ]);
             
             // 抛出异常，让 Magento 框架自动处理重试逻辑
-            throw $e;
+           throw $e;
         }
     }
 }

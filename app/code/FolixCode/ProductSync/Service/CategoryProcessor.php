@@ -136,7 +136,7 @@ class CategoryProcessor
         $category->setParentId($parentId);
         $category->setName($this->unquoteDelimiter($name));
         $category->setIsActive(true);
-        $url_key = $attributes['url_key'] ?: $this->generateUrlKey($name);
+        $url_key = isset($attributes['url_key']) ?: $this->generateUrlKey($name);
         $category->setUrlKey($url_key);
         if(isset($attributes['url_key'])) {
          

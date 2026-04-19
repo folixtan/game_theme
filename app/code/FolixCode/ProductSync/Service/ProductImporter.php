@@ -10,6 +10,10 @@ use Magento\Framework\Exception\LocalizedException;
 use Psr\Log\LoggerInterface;
 use FolixCode\ProductSync\Setup\Patch\Data\AddProductAttributes;
 use Magento\Catalog\Api\Data\ProductExtensionFactory;
+use Magento\Catalog\Model\Product\Attribute\Repository as AttributeRepository;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
+use Magento\Catalog\Model\Product\Attribute\Management as AttributeManagement;
+use Magento\Framework\App\ResourceConnection;
 
 /**
  * 产品导入服务 - 游戏充值项目
@@ -17,18 +21,42 @@ use Magento\Catalog\Api\Data\ProductExtensionFactory;
  */
 class ProductImporter
 {
-    private ProductRepositoryInterface $productRepository;
-    private ProductFactory $productFactory;
-    private CategoryProcessor $categoryProcessor;
-    private LoggerInterface $logger;
-    private ProductExtensionFactory $extensionFactory;
 
+
+    const CUSTOM_ATTR = [
+         'face_value' => [
+          
+                'label' => 'Face Value',
+                'frontend_label' => 'Face Value',
+                'fontend_input' => 'text',
+                'required' => false,
+                'user_defined' => true,
+                'default' => 0,
+                'is_searchable' => false,
+                'is_filterable' => false,
+                'is_filterable_in_search' => false,
+                'is_visible_on_front' => true,
+          
+                'scope' => ScopedAttributeInterface::SCOPE_GLOBAL,
+                'group' => 'Game Settings',
+                'sort_order' => 10,
+           //     'apply_to' => 'simple,virtual,downloadable',
+                'note' => '商品实际面值'
+         ]
+    ];
+
+     /**
+      * 构造函数
+      */
     public function __construct(
-        ProductRepositoryInterface $productRepository,
-        ProductFactory $productFactory,
-        CategoryProcessor $categoryProcessor,
-        LoggerInterface $logger,
-        ProductExtensionFactory $extensionFactory
+   private     ProductRepositoryInterface $productRepository,
+  private      ProductFactory $productFactory,
+   private     CategoryProcessor $categoryProcessor,
+  private      ResourceConnection $resourceConnection,
+   private     AttributeRepository $attributeRepository,
+  private      AttributeManagement $attributeManagement,
+   private     LoggerInterface $logger,
+  private      ProductExtensionFactory $extensionFactory
     ) {
         $this->productRepository = $productRepository;
         $this->productFactory = $productFactory;
@@ -39,15 +67,31 @@ class ProductImporter
 
     /**
      * 导入产品
-     *
+     *     array(7) {
+      ["name"]=>
+      string(18) "Sandbox card 1 USD"
+      ["face_value"]=>
+      int(1)
+      ["product_id"]=>
+      string(8) "78979978"
+      ["product_type"]=>
+      int(3)
+      ["sales_price"]=>
+      string(6) "0.9450"
+      ["sales_currency"]=>
+      string(3) "USD"
+      ["goods_category_id"]=>
+      int(50)
+    }
+
      * @param array $productData API返回的产品数据
-     * @return void
+     * @return ?int
      * @throws LocalizedException
      */
-    public function import(array $productData): void
+    public function import(array $productData): ?int
     {
         try {
-            $externalProductId = $productData['id'] ?? '';
+            $externalProductId = $productData['product_id'] ?? '';
 
             if (empty($externalProductId)) {
                 throw new \InvalidArgumentException('Product ID is required');
@@ -56,34 +100,41 @@ class ProductImporter
             // 生成 SKU
             $sku = 'vg_' . $externalProductId;
 
+           // var_dump($sku,$productData);exit;
             // 检查产品是否已存在
             $isNewProduct = false;
             try {
                 $product = $this->productRepository->get($sku);
+               
                 $this->logger->info('Updating existing product', ['sku' => $sku]);
+                return $product->getId();
             } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
                 // 产品不存在，创建新产品
                 $product = $this->productFactory->create();
                 $product->setSku($sku);
-                $product->setAttributeSetId($this->getDefaultAttributeSetId());
+                $attributeSetId = $this->getDefaultAttributeSetId();
+                $product->setAttributeSetId($attributeSetId);
                 $product->setTypeId('virtual');
                 $isNewProduct = true;
                 $this->logger->info('Creating new product', ['sku' => $sku]);
+              
+                $this->createAttributes($attributeSetId);
             }
 
             // 设置基本产品数据
             $product->setName($productData['name'] ?? 'Unnamed Product');
-            $product->setPrice((float)($productData['price'] ?? 0));
+            $product->setPrice(($productData['sales_price'] ?? 0.00));
             $product->setStatus($productData['status'] ?? Status::STATUS_ENABLED);
-            $product->setDescription($productData['description'] ?? '');
-            $product->setShortDescription($productData['short_description'] ?? '');
+            $product->setDescription($productData['name'] ?? '');
+            $product->setShortDescription($productData['name'] ?? '');
+            $product->setData('face_value', $productData['face_value'] ?? 0);
 
             // 设置为虚拟产品
             $product->setIsVirtual(true);
             $product->setWeight(0);
 
             // 设置自定义属性：充值类型
-            $chargeType = $productData['charge_type'] ?? AddProductAttributes::CHARGE_TYPE_DIRECT;
+            $chargeType = $productData['product_type'] ?? AddProductAttributes::CHARGE_TYPE_DIRECT;
             $product->setData(AddProductAttributes::ATTRIBUTE_CODE_CHARGE_TYPE, $chargeType);
 
             // 使用 StockProcessor 处理库存数据（复用 Magento 逻辑）
@@ -97,15 +148,17 @@ class ProductImporter
             $product->setVisibility(\Magento\Catalog\Model\Product\Visibility::VISIBILITY_BOTH);
 
             // 通过扩展属性设置分类（参考 ProductRepository 第 548-553 行逻辑）
-            if (!empty($productData['category_ids'])) {
+            if (!empty($productData['goods_category_id'])) {
                 $extensionAttributes = $product->getExtensionAttributes() 
                     ?: $this->extensionFactory->create();
-                $extensionAttributes->setCategoryIds($productData['category_ids']);
+                $extensionAttributes->setWebsiteIds([1]);
+              //  $extensionAttributes->setCategoryIds($productData['category_ids']);
                 $product->setExtensionAttributes($extensionAttributes);
+                $product->setCategoryIds([$productData['goods_category_id']]);
             }
 
             // 保存产品（ProductRepository 会自动处理分类分配）
-            $this->productRepository->save($product);
+           $product =  $this->productRepository->save($product);
 
             $this->logger->info('Product imported successfully', [
                 'sku' => $sku,
@@ -113,7 +166,7 @@ class ProductImporter
                 'charge_type' => $chargeType,
                 'is_new' => $isNewProduct
             ]);
-
+           return (int)$product->getId();
         } catch (\Exception $e) {
             $this->logger->error('Failed to import product', [
                 'product_data' => $productData,
@@ -122,6 +175,65 @@ class ProductImporter
             ]);
             throw $e;
         }
+
+        return null;
+    }
+
+    /** 
+     * 创建自定义属性
+     */
+    private function createAttributes($attributeSetId = 4):void {
+ 
+    
+       $select = $this->resourceConnection->getConnection()->
+            select()->from(
+                $this->resourceConnection->getTableName('eav_attribute_group'),
+                ['attribute_group_id']
+                )
+                ->where('attribute_set_id = ?',$attributeSetId)
+                ->where('attribute_group_name= ?','Game Settings');
+
+        $groupId = $this->resourceConnection->getConnection()->fetchOne($select);
+        
+      
+         $factory = \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Catalog\Api\Data\ProductAttributeInterfaceFactory::class);
+          $select =  $this->resourceConnection->getConnection()->
+            select()->from(
+                $this->resourceConnection->getTableName('eav_attribute'),
+                ['attribute_code']
+                )->where('attribute_code in (?)',['face_value']);
+           
+                $result = $this->resourceConnection->getConnection()->fetchCol($select);
+
+                $originAttributes = array_keys(self::CUSTOM_ATTR);
+                $needCreateAttributes = array_diff($originAttributes,$result);
+              
+                if(empty($needCreateAttributes)) return;
+
+                foreach($needCreateAttributes as $code) {
+                  $attribute = self::CUSTOM_ATTR[$code];
+                 $attributeObj = $factory->create();
+    
+                $attributeObj->setAttributeSetId($attributeSetId);;
+                $attributeObj->setAttributeCode($code);
+                $attributeObj->setDefaultFrontendLabel($attribute['frontend_label']);
+               // var_dump($attribute);exit;
+                $attributeObj->setFrontendInput($attribute['fontend_input']);
+                $attributeObj->setIsUserDefined(true);
+                $attributeObj->setIsVisible(true);
+              
+                $attributeObj->setIsVisibleOnFront(true);
+                $attributeObj->setFontendLabel($attribute['frontend_label']);
+                $attributeObj->setScope($attribute['scope']);
+               $resultAttribute=  $this->attributeRepository->save($attributeObj);
+
+               if($resultAttribute) {
+                   $this->logger->info('Created custom attribute', ['attribute_code' => $code]);
+                   $this->attributeManagement->assign($attributeSetId,$groupId,'face_value',$attribute['sort_order'] ?? 10);
+               }
+            }
+        
+        
     }
 
     /**
@@ -135,22 +247,24 @@ class ProductImporter
         $results = [
             'success' => 0,
             'failed' => 0,
+            'ids' => [],
             'errors' => []
         ];
 
         foreach ($productsData as $productData) {
             try {
-                $this->import($productData);
+               $id = $this->import($productData);
+               $results['ids'][$id] = $id;
                 $results['success']++;
             } catch (\Exception $e) {
                 $results['failed']++;
                 $results['errors'][] = [
-                    'sku' => $productData['id'] ?? 'unknown',
+                    'sku' => $productData['product_id'] ?? 'unknown',
                     'error' => $e->getMessage()
                 ];
             }
         }
-
+        
         return $results;
     }
 
@@ -167,7 +281,7 @@ class ProductImporter
             'use_config_manage_stock' => 0,
             'manage_stock' => 0,
             'is_in_stock' => 1,
-            'qty' => 0
+            'qty' => 10000
         ];
     }
 

@@ -8,6 +8,7 @@ use FolixCode\ProductSync\Api\Message\PublisherInterface;
 use FolixCode\ProductSync\Helper\Data as ProductSyncHelper;
 use FolixCode\BaseSyncService\Helper\Data as BaseHelper;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 /**
  * Cron任务 - 定时同步产品数据（独立任务）
@@ -22,18 +23,21 @@ class SyncProducts
     private ProductSyncHelper $productSyncHelper;
     private BaseHelper $baseHelper;
     private LoggerInterface $logger;
+    private TimezoneInterface $timezone;
 
     public function __construct(
         VirtualGoodsApiService $apiService,
         PublisherInterface $publisher,
         ProductSyncHelper $productSyncHelper,
         BaseHelper $baseHelper,
+        TimezoneInterface $timezone,
         LoggerInterface $logger
     ) {
         $this->apiService = $apiService;
         $this->publisher = $publisher;
         $this->productSyncHelper = $productSyncHelper;
         $this->baseHelper = $baseHelper;
+        $this->timezone = $timezone;
         $this->logger = $logger;
     }
 
@@ -58,44 +62,55 @@ class SyncProducts
 
             $this->logger->info('ProductSync Products Cron: Starting product synchronization...');
 
-            // 获取最后一次同步时间戳（增量同步）- 使用业务 Helper
-            $lastSyncTimestamp = $this->productSyncHelper->getLastSyncTimestamp();
+            $last_page = 0;
+            $per_page = 10;
+            $page = 1;
 
-            // 1. 从 API 获取产品列表
-            $productsData = $this->apiService->getProductList([
-                'timestamp' => $lastSyncTimestamp,
-                'limit' => 100
-            ]);
+            while(true) {
+                   // 获取最后一次同步时间戳（增量同步）- 使用业务 Helper
+                $lastSyncTimestamp = $this->timezone->date()->getTimestamp();
+                //结束页码
+                 if($page > $last_page) break;
+                // 1. 从 API 获取产品列表
+                $productsData = $this->apiService->getProductList([
+                    'timestamp' => $lastSyncTimestamp,
+                    'page' => $page,
+                    'per_page' => $per_page
+                ]);
 
-            if (empty($productsData)) {
+                if($last_page === 0) $last_page = $productsData['last_page'];
+
+            }
+          
+            if (empty($productsData['data'])) {
                 $this->logger->info('ProductSync Products Cron: No products to sync.');
                 return;
             }
 
             $this->logger->info('ProductSync Products Cron: Fetched products from API', [
-                'count' => count($productsData)
+                'count' => count($productsData['data'])
             ]);
 
             // 2. 将每个产品发布到消息队列（异步导入）
             $publishedCount = 0;
-            foreach ($productsData as $productData) {
-                try {
-                    $this->publisher->publishProductImport($productData);
-                    $publishedCount++;
-                } catch (\Exception $e) {
-                    $this->logger->error('ProductSync Products Cron: Failed to publish product to MQ', [
-                        'product_id' => $productData['id'] ?? 'unknown',
-                        'error' => $e->getMessage()
-                    ]);
-                }
+     
+            try {
+                $this->publisher->publishProductImport($productsData['data']);
+                $publishedCount++;
+            } catch (\Exception $e) {
+                $this->logger->error('ProductSync Products Cron: Failed to publish product to MQ', [
+                    'product_id' => $productData['id'] ?? 'unknown',
+                    'error' => $e->getMessage()
+                ]);
             }
+        
 
             $this->logger->info('ProductSync Products Cron: Products published to message queue', [
                 'total_fetched' => count($productsData),
                 'published_to_mq' => $publishedCount,
                 'note' => 'Actual import will be handled by Consumer asynchronously'
             ]);
-
+          $page++;
         } catch (\Exception $e) {
             $this->logger->error('ProductSync Products Cron: Product synchronization failed', [
                 'error' => $e->getMessage(),

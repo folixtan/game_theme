@@ -144,7 +144,7 @@ class Data extends AbstractHelper
             $key = $this->getSecretKey();
             if (empty($key)) {
                 $this->_logger->warning('Secret Key is not configured, returning unencrypted data');
-                return base64_encode($jsonData);
+                return throw new \RuntimeException('Secret Key is not configured');
             }
 
 

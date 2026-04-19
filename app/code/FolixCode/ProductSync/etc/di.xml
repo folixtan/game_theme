@@ -77,10 +77,10 @@
         </arguments>
     </type>
 
-    <!-- ProductImporter 配置 - 使用 CategoryService -->
+    <!-- ProductImporter 配置 - 使用 logger -->
     <type name="FolixCode\ProductSync\Service\ProductImporter">
         <arguments>
-            <argument name="categoryService" xsi:type="object">FolixCode\ProductSync\Service\CategoryService</argument>
+            <argument name="logger" xsi:type="object">FolixCodeProductSyncGeneralLogger</argument>
         </arguments>
     </type>
 </config>
