@@ -62,15 +62,17 @@ class SyncProducts
 
             $this->logger->info('ProductSync Products Cron: Starting product synchronization...');
 
-            $last_page = 0;
+            $last_page = 2;
             $per_page = 10;
             $page = 1;
+            $num = 0;
 
-            while(true) {
+            while($page < $last_page) {
                    // 获取最后一次同步时间戳（增量同步）- 使用业务 Helper
                 $lastSyncTimestamp = $this->timezone->date()->getTimestamp();
+                $num++;
                 //结束页码
-                 if($page > $last_page) break;
+                 if($num > $last_page) break;
                 // 1. 从 API 获取产品列表
                 $productsData = $this->apiService->getProductList([
                     'timestamp' => $lastSyncTimestamp,
