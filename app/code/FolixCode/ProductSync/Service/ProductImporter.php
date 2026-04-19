@@ -105,10 +105,10 @@ class ProductImporter
     }
 
      * @param array $productData API返回的产品数据
-     * @return ?int
+     * @return int|string|null
      * @throws LocalizedException
      */
-    public function import(array $productData): ?int
+    public function import(array $productData): int|string|null
     {
         try {
             $externalProductId = $productData['product_id'] ?? '';
