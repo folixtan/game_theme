@@ -1,0 +1,54 @@
+<?php
+/**
+ * Folix Game Theme - Account Dashboard Info
+ *
+ * 账户信息卡片模板（基于v3.html设计，保持与原生兼容）
+ */
+
+/** @var \Folix\Customer\Block\Account\Dashboard\Info $block */
+$contactInfo = $block->getContactInfo();
+$customer = $block->getCustomer();
+?>
+<?php if ($customer): ?>
+<div class="card card-account-info">
+    <div class="card-header">
+        <h2 class="card-title">
+            <span class="card-title-icon">👤</span>
+            <?= $block->escapeHtml(__('Account Information')) ?>
+        </h2>
+        <a href="<?= $block->escapeUrl($block->getUrl('customer/account/edit')) ?>" class="card-action"><?= $block->escapeHtml(__('Edit →')) ?></a>
+    </div>
+    <div class="card-content">
+        <div class="contact-info">
+            <h3 class="section-title"><?= $block->escapeHtml(__('Contact Information')) ?></h3>
+            <div class="info-row">
+                <span class="info-label"><?= $block->escapeHtml(__('Name')) ?></span>
+                <span class="info-value"><?= $block->escapeHtml($contactInfo['name'] ?? '') ?></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label"><?= $block->escapeHtml(__('Email')) ?></span>
+                <span class="info-value"><?= $block->escapeHtml($contactInfo['email'] ?? '') ?></span>
+            </div>
+            <?php if (!empty($contactInfo['phone'])): ?>
+            <div class="info-row">
+                <span class="info-label"><?= $block->escapeHtml(__('Phone')) ?></span>
+                <span class="info-value"><?= $block->escapeHtml($contactInfo['phone']) ?></span>
+            </div>
+            <?php endif; ?>
+        </div>
+        
+        <div class="security-settings">
+            <h3 class="section-title"><?= $block->escapeHtml(__('Security Settings')) ?></h3>
+            <div class="action-links">
+                <a href="<?= $block->escapeUrl($block->getChangePasswordUrl()) ?>" class="action-link">
+                    <?= $block->escapeHtml(__('Change Password')) ?>
+                </a>
+            </div>
+        </div>
+        
+        <!-- 保留原生的预留接口 -->
+        <?= $block->getChildHtml('customer.account.dashboard.info.extra'); ?>
+        <?= $block->getChildHtml('additional_blocks'); ?>
+    </div>
+</div>
+<?php endif; ?>

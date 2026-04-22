@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Folix Customer Module - Events Configuration
+ *
+ * 事件监听配置
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- 监听订单保存事件 -->
+    <event name="sales_order_save_after">
+        <observer name="folix_customer_update_stats" instance="Folix\Customer\Observer\UpdateCustomerStats"/>
+    </event>
+</config>

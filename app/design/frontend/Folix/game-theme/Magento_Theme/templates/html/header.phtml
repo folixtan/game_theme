@@ -13,10 +13,12 @@ $welcomeMessage = $block->getWelcome();
 <?php if ($block->getShowPart() == 'welcome'): ?>
     <li class="greet welcome" data-bind="scope: 'customer'">
         <!-- ko if: customer().fullname  -->
-        <span class="logged-in"
-              data-bind="text: new String('<?= $escaper->escapeHtml(__('Welcome, %1!', '%1')) ?>').
-              replace('%1', customer().fullname)">
-        </span>
+        <a href="<?= $block->escapeUrl($block->getUrl('customer/account')) ?>" class="folix-header-user-avatar" aria-label="<?= $block->escapeHtml(__('My Account')) ?>">
+            <svg class="folix-header-user-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="12" cy="8" r="4" fill="currentColor"/>
+                <path d="M12 14C8.5 14 5 15.5 5 18V19C5 19.6 5.4 20 6 20H18C18.6 20 19 19.6 19 19V18C19 15.5 15.5 14 12 14Z" fill="currentColor"/>
+            </svg>
+        </a>
         <!-- /ko -->
         <!-- ko ifnot: customer().fullname  -->
         <span class="not-logged-in"

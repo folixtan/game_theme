@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Folix Customer Module - Declarative Schema
+ *
+ * 用户统计表定义
+ */
+-->
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="folix_customer_stats" resource="default" engine="innodb" comment="Folix Customer Statistics">
+        <column xsi:type="int" name="customer_id" unsigned="true" nullable="false" identity="false" comment="Customer ID"/>
+        <column xsi:type="int" name="total_orders" unsigned="true" nullable="false" identity="false" default="0" comment="Total Orders Count"/>
+        <column xsi:type="decimal" name="total_spent" scale="4" precision="12" unsigned="false" nullable="false" default="0.0000" comment="Total Spent Amount"/>
+        <column xsi:type="int" name="active_keys" unsigned="true" nullable="false" identity="false" default="0" comment="Active Game Keys Count"/>
+        <column xsi:type="timestamp" name="last_order_at" on_update="false" nullable="true" default="NULL" comment="Last Order Created At"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="customer_id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="FOLIX_CUSTOMER_STATS_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID" table="folix_customer_stats" column="customer_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="FOLIX_CUSTOMER_STATS_UPDATED_AT" indexType="btree">
+            <column name="updated_at"/>
+        </index>
+    </table>
+</schema>

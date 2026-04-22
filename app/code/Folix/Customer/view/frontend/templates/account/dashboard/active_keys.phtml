@@ -1,0 +1,34 @@
+<?php
+/**
+ * Folix Game Theme - Account Dashboard Active Keys
+ *
+ * 活跃卡密模板
+ */
+
+/** @var \Folix\Customer\Block\Account\Dashboard\ActiveKeys $block */
+$keys = $block->getActiveKeys();
+?>
+<?php if (!empty($keys)): ?>
+<div class="card card-active-keys">
+    <div class="card-header">
+        <h2 class="card-title">
+            <span class="card-title-icon">🔑</span>
+            <?= $block->escapeHtml(__('Active Game Keys')) ?>
+        </h2>
+        <a href="#" class="card-action"><?= $block->escapeHtml(__('View All →')) ?></a>
+    </div>
+    <div class="card-content">
+        <div class="keys-preview">
+            <?php foreach ($keys as $key): ?>
+            <div class="key-item">
+                <div class="key-code"><?= $block->escapeHtml($key['key_code']) ?></div>
+                <div class="key-product"><?= $block->escapeHtml($key['product_name']) ?></div>
+                <div class="key-status <?= $block->escapeHtml($block->getKeyStatusClass($key)) ?>">
+                    ✓ <?= $block->escapeHtml($block->getKeyStatusLabel($key)) ?> - Expires <?= $block->escapeHtml($key['expires_at']) ?>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

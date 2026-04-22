@@ -1,0 +1,17 @@
+{
+    "folix_customer_stats": {
+        "column": {
+            "customer_id": true,
+            "total_orders": true,
+            "total_spent": true,
+            "active_keys": true,
+            "last_order_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FOLIX_CUSTOMER_STATS_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID": true,
+            "FOLIX_CUSTOMER_STATS_UPDATED_AT": true
+        }
+    }
+}

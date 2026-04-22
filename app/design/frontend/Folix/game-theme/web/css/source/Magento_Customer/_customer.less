@@ -1,22 +1,30 @@
 // /**
-//  * Folix Game Theme - Magento_Customer Module Styles
+//  * Folix Game Theme - Magento_Customer Account Module Styles
 //  * 
-//  * 模块：Magento_Customer
+//  * 模块：Magento_Customer - Account Dashboard
 //  * 位置：Magento_Customer/web/css/source/_extend.less
 //  * 
 //  * 说明：
-//  * - 此文件只在 Customer 模块相关页面加载
-//  * - 只做入口，import 其他文件
-//  * - 目前暂无 Customer 模块特定样式（个人中心页面待开发）
+//  * - 此文件只在 Customer Account 相关页面加载
+//  * - 基于原生Magento HTML结构，仅通过CSS实现游戏化卡片布局
+//  * - 严格使用 _custom-variables-esports.less 中定义的变量
+//  * 
+//  * 设计方向：
+//  * - 卡片式布局：大圆角容器 + 独立卡片区块
+//  * - 左右反差背景：左侧深色导航 + 右侧浅色内容区
+//  * - 游戏充值特色：仪表盘、卡密管理、订单统计
 //  * 
 //  * 注意：
-//  * - _variables.less 由 Magento 自动加载，无需手动引入
-//  * - 此文件中可直接使用全局变量
+//  * - 不修改任何 PHTML 模板文件
+//  * - 保持 Magento 原生的类名和 DOM 结构
+//  * - 仅通过 CSS 覆盖实现视觉定制
 //  */
 
 //
-//  模块样式
+//  导入账户页面样式模块
 //  _____________________________________________
 
-// 个人中心页面样式（待开发）
-// @import 'extend/_dashboard.less';
+@import '_account-common.less';       // 基础通用样式（所有设备共享）
+@import '_dashboard-custom.less';     // Dashboard自定义样式（2026-04-22新增，独立维护）
+@import '_account-desktop.less';      // 桌面端样式（≥768px）
+@import '_account-mobile.less';       // 移动端样式（<768px）

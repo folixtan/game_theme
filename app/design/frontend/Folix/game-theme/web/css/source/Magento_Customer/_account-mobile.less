@@ -1,0 +1,289 @@
+// /**
+//  * Folix Game Theme - Account Dashboard Mobile Styles
+//  * 
+//  * 移动端样式（<768px）
+//  * 
+//  * 设计原则：
+//  * - 单列堆叠布局
+//  * - 左侧导航下拉式
+//  * - 保持颜色和基本样式
+//  */
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m - 1) {
+
+    //
+    //  1. 移动端整体容器
+    //  _____________________________________________
+
+    .account .columns {
+        border-radius: 12px;
+        margin-bottom: 20px;
+    }
+
+    // 主内容区
+    .account .column.main {
+        padding: 20px;
+    }
+
+    // 页面标题
+    .account .page-title-wrapper {
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+
+        .page-title .base {
+            font-size: 24px;
+        }
+    }
+
+    //
+    //  2. 左侧导航 - 下拉式（原生机制）
+    //  _____________________________________________
+
+    .account .sidebar.sidebar-main {
+        padding: 16px;
+        border-right: none;
+        border-bottom: 1px solid @folix-border;
+
+        .block-collapsible-nav {
+            .title {
+                font-size: 16px;
+                margin-bottom: 12px;
+                padding-bottom: 8px;
+            }
+
+            .nav.items {
+                .nav.item {
+                    margin-bottom: 4px;
+
+                    a {
+                        padding: 10px 12px;
+                        font-size: 14px;
+
+                        &:hover {
+                            padding-left: 16px;
+                        }
+                    }
+
+                    &.current {
+                        border-left-width: 2px;
+                    }
+                }
+            }
+        }
+    }
+
+    //
+    //  3. Block卡片样式调整
+    //  _____________________________________________
+
+    .account .column.main .block {
+        padding: 16px;
+        margin-bottom: 16px;
+        border-radius: 10px;
+
+        .block-title {
+            font-size: 18px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+        }
+    }
+
+    // Box子区块
+    .account .column.main .block .block-content .box {
+        padding: 16px;
+        margin-bottom: 12px;
+
+        .box-title {
+            font-size: 14px;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+        }
+
+        .box-actions {
+            flex-direction: column;
+            gap: 8px;
+
+            a {
+                display: block;
+                text-align: center;
+                padding: 8px 12px;
+            }
+        }
+    }
+
+    //
+    //  4. 欢迎横幅
+    //  _____________________________________________
+
+    .account .welcome-banner {
+        padding: 16px;
+        margin-bottom: 16px;
+        border-radius: 10px;
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        p {
+            font-size: 13px;
+        }
+    }
+
+    //
+    //  5. 购买统计卡片
+    //  _____________________________________________
+
+    .account .purchase-stats {
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 16px;
+
+        .stat-card {
+            padding: 16px;
+            border-radius: 10px;
+
+            .stat-label {
+                font-size: 11px;
+            }
+
+            .stat-number {
+                font-size: 28px;
+            }
+        }
+    }
+
+    //
+    //  6. Dashboard网格
+    //  _____________________________________________
+
+    .account .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+
+    //
+    //  7. 订单卡片
+    //  _____________________________________________
+
+    .account .order-item {
+        padding: 12px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+
+        .order-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+
+            .order-number {
+                font-size: 13px;
+            }
+
+            .order-date {
+                font-size: 11px;
+            }
+        }
+
+        .order-items {
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .order-total {
+            font-size: 13px;
+        }
+    }
+
+    //
+    //  8. Wish List卡片
+    //  _____________________________________________
+
+    .account .wishlist-items {
+        grid-template-columns: 1fr;
+        gap: 12px;
+
+        .wishlist-item {
+            flex-direction: column;
+            padding: 12px;
+            border-radius: 8px;
+
+            .wishlist-item-image {
+                width: 100%;
+                height: 120px;
+                font-size: 48px;
+            }
+
+            .wishlist-item-info {
+                .wishlist-item-name {
+                    font-size: 13px;
+                }
+
+                .wishlist-item-price {
+                    font-size: 14px;
+                    margin-bottom: 6px;
+                }
+
+                .wishlist-item-actions {
+                    flex-direction: column;
+                    gap: 6px;
+
+                    .btn {
+                        width: 100%;
+                justify-content: center;
+                        padding: 8px 12px;
+                    }
+                }
+            }
+        }
+    }
+
+    //
+    //  9. 卡密预览卡片
+    //  _____________________________________________
+
+    .account .keys-preview {
+        grid-template-columns: 1fr;
+        gap: 8px;
+
+        .key-item {
+            padding: 12px;
+            border-radius: 8px;
+
+            .key-code {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+
+            .key-product {
+                font-size: 12px;
+            }
+
+            .key-status {
+                font-size: 11px;
+            }
+        }
+    }
+
+    //
+    //  10. 信息列表
+    //  _____________________________________________
+
+    .account .info-list {
+        .info-item {
+            flex-direction: column;
+            gap: 4px;
+            padding: 10px 0;
+
+            .info-label {
+                font-size: 12px;
+            }
+
+            .info-value {
+                font-size: 13px;
+            }
+        }
+    }
+}

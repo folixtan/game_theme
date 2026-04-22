@@ -205,8 +205,160 @@
                         }
                     }
 
-                    .greet.welcome {
-                        display: none;
+                    .greet.welcome {                       
+                         display: none; // 显示图标
+                        margin: 0 8px;
+                        vertical-align: middle;
+
+                        .folix-header-user-avatar {
+                            display: inline-block;
+                            width: 36px;
+                            height: 36px;
+                            min-width: 36px; // 防止被压缩
+                            min-height: 36px;
+                            border-radius: 50%;
+                            background: linear-gradient(135deg, @folix-secondary 0%, @folix-secondary-dark 100%);
+                            color: black;
+                            text-align: center;
+                            line-height: 36px;
+                            transition: all @folix-transition;
+                            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+
+                            &:hover {
+                                transform: scale(1.05);
+                                box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
+                            }
+
+                            .folix-header-user-icon {
+                                width: 22px;
+                                height: 22px;
+                                vertical-align: middle;
+                            }
+                        }
+
+                        .logged-in {
+                            display: none; // 隐藏文本
+                        }
+
+                        .not-logged-in {
+                            display: inline; // 未登录时显示Welcome文本
+                            color: @folix-text-secondary;
+                            font-size: 13px;
+                            line-height: 36px;
+                        }
+                    }
+
+                    // 用户菜单按钮样式
+                    .customer-welcome.folix-customer-welcome {
+                        display: inline-block;
+                        margin-left: 4px;
+                        vertical-align: middle;
+
+                        .folix-avar {
+                            display: inline-block;
+                            width: 40px;
+                            height: 40px;
+                            min-width: 40px;
+                            min-height: 40px;
+                            border-radius: 50%;
+                            background: linear-gradient(135deg, @folix-secondary 0%, @folix-secondary-dark 100%);
+                            color: @folix-primary-dark;
+                            text-align: center;
+                            line-height: 40px;
+                            transition: all @folix-transition;
+                            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+                            cursor: pointer;
+
+                            &:hover {
+                                transform: scale(1.05);
+                                box-shadow: 0 4px 12px rgba(255, 215, 0, 0.5);
+                            }
+
+                            .folix-header-user-icon {
+                                width: 24px;
+                                height: 24px;
+                                vertical-align: middle;
+                            }
+                        }
+
+                        .customer-name {
+                            display: inline-block;
+                        }
+
+                        // 下拉菜单样式
+                        .customer-menu.folix-user-dropdown {
+                            position: absolute;
+                            top: 100%;
+                            right: 0;
+                            min-width: 200px;
+                            background: @folix-primary-dark;
+                            border: 1px solid @folix-border-gold;
+                            border-radius: @folix-radius-lg;
+                            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+                            margin-top: 8px;
+                            z-index: 999;
+
+                            .user-dropdown-trigger {
+                                display: flex;
+                                align-items: center;
+                                gap: 10px;
+                                padding: 16px;
+                                border-bottom: 1px solid @folix-border;
+
+                                .avatar {
+                                    width: 40px;
+                                    height: 40px;
+                                    border-radius: 50%;
+                                    background: linear-gradient(135deg, @folix-secondary 0%, @folix-secondary-dark 100%);
+                                    color: @folix-primary;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-size: 16px;
+                                    font-weight: 700;
+                                }
+
+                                .username {
+                                    flex: 1;
+                                    color: @folix-text-primary;
+                                    font-weight: 600;
+                                }
+
+                                .arrow {
+                                    display: none; // 隐藏箭头
+                                }
+                            }
+
+                            .user-dropdown-menu {
+                                padding: 8px 0;
+
+                                a {
+                                    display: block;
+                                    padding: 10px 16px;
+                                    color: @folix-text-secondary;
+                                    transition: all @folix-transition;
+
+                                    &:hover {
+                                        background: @folix-bg-light;
+                                        color: @folix-secondary;
+                                    }
+
+                                    &.logout {
+                                        color: @folix-accent;
+
+                                        &:hover {
+                                            background: rgba(255, 59, 48, 0.1);
+                                        }
+                                    }
+                                }
+
+                                .divider {
+                                    height: 1px;
+                                    background: @folix-border;
+                                    margin: 8px 0;
+                                }
+                            }
+                        }
                     }
                 }
             }

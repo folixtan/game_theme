@@ -8,6 +8,7 @@
 ?>
 <?php if ($block->customerLoggedIn()) : ?>
     <li class="customer-welcome folix-customer-welcome">
+         
         <span class="customer-name"
               role="link"
               tabindex="0"
@@ -15,14 +16,18 @@
               data-toggle="dropdown"
               data-trigger-keypress-button="true"
               data-bind="scope: 'customer'">
-            <button type="button"
+               <span class="folix-avar">
+                     <svg class="folix-header-user-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <circle cx="12" cy="8" r="4" fill="#7C3AED"/>
+                          <path d="M12 14C8.5 14 5 15.5 5 18V19C5 19.6 5.4 20 6 20H18C18.6 20 19 19.6 19 19V18C19 15.5 15.5 14 12 14Z" fill="#7C3AED"/>
+                    </svg>
+           </span>
+            <button  style="display: none;" type="button"
                     class="action switch folix-customer-btn"
                     tabindex="-1"
                     data-action="customer-menu-toggle">
                 <span><?= $block->escapeHtml(__('Change')) ?></span>
-                <svg class="folix-dropdown-icon" width="12" height="12" viewBox="0 0 12 12">
-                    <path d="M6 8L1 3h10L6 8z" fill="currentColor"/>
-                </svg>
+               
             </button>
         </span>
         <!-- 用户下拉菜单 - 使用原生 dropdown -->

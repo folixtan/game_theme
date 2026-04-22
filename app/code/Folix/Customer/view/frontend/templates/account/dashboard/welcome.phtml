@@ -1,0 +1,20 @@
+<?php
+/**
+ * Copyright © Folix Game Theme. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+
+/** @var \Magento\Framework\View\Element\Template $block */
+/** @var \Folix\Customer\Block\Dashboard $parentBlock */
+?>
+<?php 
+// 通过getParentBlock()获取父Block（Dashboard）的客户信息
+$parentBlock = $block->getParentBlock();
+$customerName = $parentBlock->getName();
+?>
+
+<!-- Welcome Banner -->
+<div class="welcome-banner">
+    <div class="welcome-title"><?= $block->escapeHtml(__('Hello, %1!', $customerName)) ?></div>
+    <div class="welcome-text"><?= $block->escapeHtml(__('Welcome back to your account dashboard. Manage your orders, wishlist, and game keys.')) ?></div>
+</div>

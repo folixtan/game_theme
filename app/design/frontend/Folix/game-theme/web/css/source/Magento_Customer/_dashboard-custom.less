@@ -1,0 +1,121 @@
+// /**
+//  * Folix Game Theme - Account Dashboard Custom Styles
+//  * 
+//  * 日期: 2026-04-22
+//  * 说明: Dashboard自定义区块样式（Welcome Banner, Stats, Grid等）
+//  * 影响范围: 仅影响 customer/account/index 页面的自定义部分
+//  * 
+//  * 设计原则：
+//  * - 基于原生Magento HTML结构
+//  * - 使用现有变量（_custom-variables-esports.less）
+//  * - 与原生的 _account-common.less 分离，便于独立维护
+//  */
+
+& when (@media-common = true) {
+
+    //
+    //  1. Welcome Banner（欢迎横幅）
+    //  _____________________________________________
+
+    .welcome-banner {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(0, 0, 0, 0.2) 100%);
+        border: 1px solid @folix-border;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        
+        .welcome-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: @folix-text-primary;
+            margin-bottom: 8px;
+        }
+        
+        .welcome-text {
+            color: @folix-text-secondary;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    }
+
+    //
+    //  2. Purchase Stats（购买统计卡片）
+    //  _____________________________________________
+
+    .purchase-stats {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        
+        .stat-item {
+            flex: 1;
+            min-width: 120px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid @folix-border;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            
+            &:hover {
+                border-color: @folix-border-hover;
+                transform: translateY(-2px);
+            }
+            
+            .stat-number {
+                font-size: 28px;
+                font-weight: 700;
+                color: @folix-secondary;
+                margin-bottom: 4px;
+            }
+            
+            .stat-label {
+                font-size: 12px;
+                color: @folix-text-secondary;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+        }
+    }
+
+    //
+    //  3. Dashboard Grid（卡片网格容器）
+    //  _____________________________________________
+
+    .dashboard-grid {
+        display: block; // 使用原生块级布局
+        margin-bottom: 24px;
+        
+        // 每个子Block作为独立卡片
+        > .block {
+            margin-bottom: 24px;
+            
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    //
+    //  4. 隐藏原生Block标题
+    //  _____________________________________________
+
+    .account .column.main .block.block-dashboard-info .block-title {
+        display: none;
+    }
+
+    //
+    //  5. 通栏显示的Box（如Contact Information）
+    //  _____________________________________________
+
+    .account .column.main .block .block-content .box.box-full-width {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid @folix-border;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+}

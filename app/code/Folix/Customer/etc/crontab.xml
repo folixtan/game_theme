@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Folix Customer Module - Cron Configuration
+ *
+ * Cron定时任务配置
+ * 每天凌晨2点执行，校准用户统计数据
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="folix_customer_recalculate_stats" instance="Folix\Customer\Cron\RecalculateCustomerStats" method="execute">
+            <schedule>0 2 * * *</schedule>
+        </job>
+    </group>
+</config>

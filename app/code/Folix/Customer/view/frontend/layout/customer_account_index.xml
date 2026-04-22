@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Folix Game Theme. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+      <referenceBlock name="page.main.title" remove="true"/>
+      
+        <referenceContainer name="content">
+            <!-- 覆盖原生的customer_account_dashboard_info -->
+            <referenceBlock name="customer_account_dashboard_info" 
+                            class="Folix\Customer\Block\Dashboard"  
+                            template="Folix_Customer::account/dashboard.phtml">
+                
+                <!-- 自定义子Block：Welcome Banner -->
+                <block class="Magento\Framework\View\Element\Template" 
+                       name="folix.customer.welcome" 
+                       as="welcome" 
+                       template="Folix_Customer::account/dashboard/welcome.phtml"/>
+                
+                <!-- 自定义子Block：Purchase Stats -->
+                <block class="Folix\Customer\Block\Account\Dashboard\Stats" 
+                       name="folix.customer.stats" 
+                       as="stats" 
+                       template="Folix_Customer::account/dashboard/stats.phtml"/>
+                
+                <!-- 自定义子Block：Recent Orders -->
+                <block class="Folix\Customer\Block\Account\Dashboard\RecentOrders" 
+                       name="folix.customer.orders" 
+                       as="orders" 
+                       template="Folix_Customer::account/dashboard/recent_orders.phtml"/>
+                
+                <!-- 自定义子Block：Wishlist -->
+                <block class="Folix\Customer\Block\Account\Dashboard\Wishlist" 
+                       name="folix.customer.wishlist" 
+                       as="wishlist" 
+                       template="Folix_Customer::account/dashboard/wishlist.phtml"/>
+                
+                <!-- 自定义子Block：Active Keys -->
+                <block class="Folix\Customer\Block\Account\Dashboard\ActiveKeys" 
+                       name="folix.customer.keys" 
+                       as="keys" 
+                       template="Folix_Customer::account/dashboard/active_keys.phtml"/>
+                
+                <!-- 保留原生的预留接口 -->
+                <container name="customer.account.dashboard.info.blocks" as="additional_blocks"/>
+            </referenceBlock>
+            
+            <!-- 移除原生的Address Book（不需要） -->
+            <referenceBlock name="customer_account_dashboard_address" remove="true"/>
+        </referenceContainer>
+    </body>
+</page>

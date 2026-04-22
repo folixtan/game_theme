@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Folix Customer Module - Dependency Injection Configuration
+ *
+ * DI配置
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Customer Stats Repository -->
+    <preference for="Folix\Customer\Api\CustomerStatsRepositoryInterface" type="Folix\Customer\Model\CustomerStatsRepository"/>
+    
+    <!-- 前端DI配置 -->
+    <type name="Folix\Customer\Block\Account\Dashboard\Stats">
+        <arguments>
+            <argument name="customerStatsRepository" xsi:type="object">Folix\Customer\Api\CustomerStatsRepositoryInterface</argument>
+        </arguments>
+    </type>
+</config>

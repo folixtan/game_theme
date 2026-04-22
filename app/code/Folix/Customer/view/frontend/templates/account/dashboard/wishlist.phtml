@@ -1,0 +1,67 @@
+<?php
+/**
+ * Copyright © Folix Game Theme. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+
+/** @var \Folix\Customer\Block\Account\Dashboard\Wishlist $block */
+$items = $block->getWishlistItems();
+?>
+<?php if (!empty($items) && count($items)): ?>
+<div class="block block-dashboard-info">
+    <div class="block-title">
+        <strong><?= $block->escapeHtml(__('My Wish List')) ?></strong>
+        <a href="<?= $block->escapeUrl($block->getWishlistUrl()) ?>" class="action view-all">
+            <?= $block->escapeHtml(__('View All →')) ?>
+        </a>
+    </div>
+    <div class="block-content">
+        <div class="wishlist-items">
+            <?php foreach ($items as $item): ?>
+                <?php $product = $item->getProduct(); ?>
+                <div class="wishlist-item">
+                    <div class="wishlist-item-image">
+                        <a href="">
+                            <img src="<?= $block->escapeUrl($block->getImageUrl($item)) ?>" 
+                                 alt="<?= $block->escapeHtmlAttr($product->getName()) ?>" />
+                        </a>
+                    </div>
+                    <div class="wishlist-item-info">
+                        <div class="wishlist-item-name">
+                            <a href="">
+                                <?= $block->escapeHtml($product->getName()) ?>
+                            </a>
+                        </div>
+                        <div class="wishlist-item-price">
+                            <?= /* @noEscape */ $block->formatPrice($item) ?>
+                        </div>
+                        <div class="wishlist-item-actions">
+                            <?php if ($product->isSaleable()): ?>
+                                <button type="button" 
+                                        data-post='<?= /* @noEscape */ $block->getItemAddToCartParams($item) ?>' 
+                                        title="<?= $block->escapeHtmlAttr(__('Add to Cart')) ?>" 
+                                        class="btn btn-primary">
+                                    <?= $block->escapeHtml(__('Add to Cart')) ?>
+                                </button>
+                            <?php else: ?>
+                                <button type="button" 
+                                        disabled="disabled" 
+                                        class="btn btn-primary">
+                                    <?= $block->escapeHtml(__('Out of Stock')) ?>
+                                </button>
+                            <?php endif; ?>
+                            
+                            <a href="#" 
+                               data-post='<?= /* @noEscape */ $block->getItemRemoveParams($item) ?>' 
+                               title="<?= $block->escapeHtmlAttr(__('Remove Item')) ?>" 
+                               class="btn btn-secondary">
+                                <?= $block->escapeHtml(__('Remove')) ?>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

@@ -1,0 +1,348 @@
+// /**
+//  * Folix Game Theme - Account Dashboard Desktop Styles
+//  * 
+//  * 桌面端样式（≥768px）
+//  * 
+//  * 设计原则：
+//  * - 两列卡片布局
+//  * - Dashboard网格展示
+//  * - 游戏充值特色功能
+//  */
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+    //
+    //  1. 欢迎横幅
+    //  _____________________________________________
+
+    .account .welcome-banner {
+        background: linear-gradient(135deg, @folix-primary-light 0%, @folix-bg-dark 100%);
+        border: 1px solid @folix-border-gold;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: @folix-text-primary;
+            margin: 0 0 8px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        p {
+            font-size: 14px;
+            color: @folix-text-secondary;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+    }
+
+    //
+    //  2. 购买统计卡片
+    //  _____________________________________________
+
+    .account .purchase-stats {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+
+        .stat-card {
+            flex: 1;
+            min-width: 150px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid @folix-border;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+
+            &:hover {
+                border-color: @folix-border-gold;
+                transform: translateY(-4px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            }
+
+            .stat-label {
+                font-size: 12px;
+                color: @folix-text-secondary;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 8px;
+            }
+
+            .stat-number {
+                font-size: 32px;
+                font-weight: 700;
+                color: @folix-secondary;
+                margin: 0;
+            }
+        }
+    }
+
+    //
+    //  3. Dashboard网格布局
+    //  _____________________________________________
+
+    .account .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        margin-bottom: 24px;
+    }
+
+    //
+    //  4. 订单卡片
+    //  _____________________________________________
+
+    .account .order-item {
+        padding: 16px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        margin-bottom: 12px;
+        border: 1px solid @folix-border-light;
+        transition: all 0.3s ease;
+
+        &:hover {
+            border-color: @folix-border-gold;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+
+            .order-number {
+                font-size: 14px;
+                font-weight: 600;
+                color: @folix-text-primary;
+            }
+
+            .order-date {
+                font-size: 12px;
+                color: @folix-text-tertiary;
+            }
+
+            .order-status {
+                display: inline-block;
+                padding: 4px 12px;
+                border-radius: 9999px;
+                font-size: 12px;
+                font-weight: 600;
+
+                &.status-completed {
+                    background: rgba(5, 150, 105, 0.2);
+                    color: #10b981;
+                    border: 1px solid rgba(16, 185, 129, 0.3);
+                }
+
+                &.status-processing {
+                    background: rgba(255, 215, 0, 0.2);
+                    color: @folix-secondary;
+                    border: 1px solid rgba(255, 215, 0, 0.3);
+                }
+            }
+        }
+
+        .order-items {
+            font-size: 13px;
+            color: @folix-text-secondary;
+            margin-bottom: 8px;
+        }
+
+        .order-total {
+            font-size: 14px;
+            font-weight: 600;
+            color: @folix-text-primary;
+        }
+    }
+
+    //
+    //  5. Wish List卡片
+    //  _____________________________________________
+
+    .account .wishlist-items {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+
+        .wishlist-item {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid @folix-border-light;
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            gap: 16px;
+            transition: all 0.3s ease;
+
+            &:hover {
+                border-color: @folix-border-gold;
+            }
+
+            .wishlist-item-image {
+                width: 80px;
+                height: 80px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 6px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 32px;
+                flex-shrink: 0;
+            }
+
+            .wishlist-item-info {
+                flex: 1;
+
+                .wishlist-item-name {
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: @folix-text-primary;
+                    margin-bottom: 4px;
+                }
+
+                .wishlist-item-price {
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: @folix-secondary;
+                    margin-bottom: 8px;
+                }
+
+                .wishlist-item-actions {
+                    display: flex;
+                    gap: 8px;
+
+                    .btn {
+                        padding: 6px 12px;
+                        border: none;
+                        border-radius: 6px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        text-decoration: none;
+                        display: inline-flex;
+                        align-items: center;
+
+                        &.btn-primary {
+                            background: linear-gradient(135deg, @folix-secondary 0%, @folix-secondary-dark 100%);
+                            color: @folix-bg-dark;
+
+                            &:hover {
+                                transform: translateY(-2px);
+                                box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+                            }
+                        }
+
+                        &.btn-secondary {
+                            background: transparent;
+                            border: 1px solid @folix-border;
+                            color: @folix-text-primary;
+
+                            &:hover {
+                                background: @folix-bg-hover;
+                                border-color: @folix-secondary;
+                                color: @folix-secondary;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //
+    //  6. 卡密预览卡片
+    //  _____________________________________________
+
+    .account .keys-preview {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+
+        .key-item {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid @folix-border-light;
+            border-radius: 8px;
+            padding: 16px;
+            transition: all 0.3s ease;
+
+            &:hover {
+                border-color: @folix-border-gold;
+            }
+
+            .key-code {
+                font-family: 'Courier New', monospace;
+                background: rgba(0, 0, 0, 0.4);
+                padding: 8px 12px;
+                border-radius: 4px;
+                color: @folix-secondary;
+                font-size: 13px;
+                margin-bottom: 8px;
+                letter-spacing: 0.5px;
+            }
+
+            .key-product {
+                font-size: 13px;
+                color: @folix-text-secondary;
+                margin-bottom: 4px;
+            }
+
+            .key-status {
+                font-size: 12px;
+                color: #10b981;
+            }
+        }
+    }
+
+    //
+    //  7. 信息列表
+    //  _____________________________________________
+
+    .account .info-list {
+        list-style: none;
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid @folix-border-light;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            .info-label {
+                color: @folix-text-tertiary;
+                font-size: 13px;
+            }
+
+            .info-value {
+                color: @folix-text-primary;
+                font-size: 14px;
+                font-weight: 500;
+            }
+        }
+    }
+}

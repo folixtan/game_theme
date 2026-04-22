@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Folix Game Theme - Customer Account Layout
+ *
+ * 通用账户页面布局
+ * 参考: vendor/magento/module-customer/view/frontend/layout/customer_account.xml
+ * 
+ * 功能：
+ * 1. 移除主导航菜单（顶部）
+ * 2. 移除搜索框
+ * 3. 保留左侧账户导航栏
+ * 4. 移除右侧附加侧边栏
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- ========================================== -->
+        <!-- 移除顶部主导航菜单 -->
+        <!-- ========================================== -->
+        <referenceBlock name="navigation.sections" remove="true"/>
+        
+        <!-- ========================================== -->
+        <!-- 移除顶部搜索框 -->
+        <!-- ========================================== -->
+        <referenceBlock name="top.search" remove="true"/>
+        
+        <!-- ========================================== -->
+        <!-- 移除右侧附加侧边栏 -->
+        <!-- ========================================== -->
+        <referenceContainer name="sidebar.additional" remove="true"/>
+    </body>
+</page>

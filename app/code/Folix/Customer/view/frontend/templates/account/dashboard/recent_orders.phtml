@@ -1,0 +1,58 @@
+<?php
+/**
+ * Copyright © Folix Game Theme. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+
+/** @var \Folix\Customer\Block\Account\Dashboard\RecentOrders $block */
+$orders = $block->getOrders();
+?>
+<?php if ($orders && $orders->getSize() > 0): ?>
+<div class="block block-dashboard-info">
+    <div class="block-title">
+        <strong><?= $block->escapeHtml(__('Recent Orders')) ?></strong>
+        <a href="<?= $block->escapeUrl($block->getAllOrdersUrl()) ?>" class="action view-all">
+            <?= $block->escapeHtml(__('View All →')) ?>
+        </a>
+    </div>
+    <div class="block-content">
+        <div class="dashboard-grid">
+            <?php foreach ($orders as $order): ?>
+                <div class="order-card box">
+                    <div class="order-card-header">
+                        <div class="order-number">
+                            <span class="label"><?= $block->escapeHtml(__('Order #')) ?></span>
+                            <span class="value"><?= $block->escapeHtml($order->getRealOrderId()) ?></span>
+                        </div>
+                        <div class="order-date">
+                            <?= /* @noEscape */ $block->formatOrderDate($order->getCreatedAt()) ?>
+                        </div>
+                    </div>
+                    <div class="order-card-body">
+                        <div class="order-status status-<?= $block->escapeHtmlAttr($order->getStatus()) ?>">
+                            <?= $block->escapeHtml($order->getStatusLabel()) ?>
+                        </div>
+                        <div class="order-total">
+                            <span class="label"><?= $block->escapeHtml(__('Total:')) ?></span>
+                            <span class="value"><?= /* @noEscape */ $block->formatPrice($order) ?></span>
+                        </div>
+                    </div>
+                    <div class="order-card-footer">
+                        <a href="<?= $block->escapeUrl($block->getViewUrl($order)) ?>" class="btn btn-secondary">
+                            <?= $block->escapeHtml(__('View Order')) ?>
+                        </a>
+                        <?php if ($block->canReorder($order)): ?>
+                            <a href="#" 
+                               data-post='<?= /* @noEscape */ $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)
+                                   ->getPostData($block->getReorderUrl($order)) ?>' 
+                               class="btn btn-primary">
+                                <?= $block->escapeHtml(__('Reorder')) ?>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+<?php endif; ?>

@@ -1,0 +1,596 @@
+// /**
+//  * Folix Game Theme - Customer Account Module Styles
+//  *
+//  * 基于 account-dashboard-v3.html 的顶级样式定义
+//  * 完整覆盖原生Magento账户页面样式
+//  */
+
+// ============================================================================
+// Variables (基于_custom-variables-esports.less)
+// ============================================================================
+
+@folix-primary: #0A1628;
+@folix-primary-dark: #0F172A;
+@folix-primary-light: #1E3A8A;
+
+@folix-secondary: #FFD700;
+@folix-secondary-dark: #FFA500;
+@folix-secondary-light: #FFED4A;
+
+@folix-accent: #FF3B30;
+@folix-purple: #8B5CF6;
+
+@folix-text-primary: #FFFFFF;
+@folix-text-secondary: #94A3B8;
+@folix-text-tertiary: #64748B;
+@folix-text-muted: #475569;
+
+@folix-bg-page: #0A1628;
+@folix-bg-panel: #1E293B;
+@folix-bg-card: #1E293B;
+@folix-bg-hover: #334155;
+@folix-bg-selected: rgba(255, 215, 0, 0.1);
+@folix-bg-dark: #0F172A;
+
+@folix-border: rgba(255, 255, 255, 0.1);
+@folix-border-light: rgba(255, 255, 255, 0.05);
+@folix-border-gold: rgba(255, 215, 0, 0.3);
+
+@folix-gradient-gold: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+@folix-gradient-bg: linear-gradient(135deg, #0A1628 0%, #1E3A8A 50%, #0F172A 100%);
+
+@folix-radius-sm: 4px;
+@folix-radius: 6px;
+@folix-radius-md: 8px;
+@folix-radius-lg: 12px;
+@folix-radius-xl: 16px;
+
+@folix-transition: 0.3s ease;
+
+// ============================================================================
+// Page Layout (基于Magento原生2columns-left布局)
+// ============================================================================
+
+& when (@media-common = true) {
+    .account {
+        // Two Column Layout
+        .columns {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 0;
+            align-items: start;
+            background: @folix-bg-dark;
+            border-radius: @folix-radius-xl;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        // Left Sidebar
+        .sidebar-main {
+            background: @folix-bg-dark;
+            border-right: 1px solid @folix-border;
+            padding: 0;
+
+            .block-collapsible-nav {
+                padding: 0;
+
+                .title {
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: @folix-text-secondary;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    padding: 20px 24px;
+                    border-bottom: 1px solid @folix-border;
+                    background: rgba(0, 0, 0, 0.2);
+
+                    strong {
+                        color: @folix-text-secondary;
+                    }
+                }
+
+                .content {
+                    padding: 12px 0;
+
+                    ul.nav.items {
+                        list-style: none;
+                        margin: 0;
+                        padding: 0;
+
+                        li.nav.item {
+                            margin: 0;
+                            padding: 0;
+
+                            a {
+                                display: block;
+                                padding: 14px 24px;
+                                color: @folix-text-secondary;
+                                font-size: 14px;
+                                text-decoration: none;
+                                transition: @folix-transition;
+                                position: relative;
+
+                                &::before {
+                                    content: '';
+                                    position: absolute;
+                                    left: 0;
+                                    top: 0;
+                                    bottom: 0;
+                                    width: 0;
+                                    background: @folix-secondary;
+                                    transition: width @folix-transition;
+                                }
+
+                                &:hover {
+                                    color: @folix-text-primary;
+                                    background: rgba(255, 255, 255, 0.05);
+
+                                    &::before {
+                                        width: 3px;
+                                    }
+                                }
+                            }
+
+                            &.current {
+                                background: rgba(255, 215, 0, 0.08);
+
+                                a {
+                                    color: @folix-secondary;
+                                    font-weight: 600;
+                                    border-left: 3px solid @folix-secondary;
+
+                                    strong {
+                                        color: @folix-secondary;
+                                        font-weight: 600;
+                                    }
+                                }
+                            }
+
+                            span.delimiter {
+                                display: block;
+                                height: 1px;
+                                background: @folix-border;
+                                margin: 12px 24px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Right Main Content
+        .column.main {
+            background: @folix-bg-panel;
+            padding: 32px;
+
+            // Page Title
+            .page-title-wrapper {
+                margin-bottom: 30px;
+
+                .page-title {
+                    font-size: 28px;
+                    font-weight: 600;
+                    color: @folix-text-primary;
+                    position: relative;
+                    display: inline-block;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        bottom: -8px;
+                        left: 0;
+                        width: 60px;
+                        height: 3px;
+                        background: @folix-gradient-gold;
+                        border-radius: 2px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ============================================================================
+// Dashboard Cards
+// ============================================================================
+
+& when (@media-common = true) {
+    // Welcome Banner
+    .welcome-banner {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 165, 0, 0.1) 100%);
+        border: 1px solid @folix-border-gold;
+        border-radius: @folix-radius-lg;
+        padding: 24px 32px;
+        margin-bottom: 24px;
+
+        .welcome-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: @folix-text-primary;
+            margin-bottom: 8px;
+        }
+
+        .welcome-text {
+            color: @folix-text-secondary;
+            font-size: 14px;
+        }
+    }
+
+    // Stats Row
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: @folix-radius-md;
+            border: 1px solid @folix-border-light;
+            transition: @folix-transition;
+
+            &:hover {
+                border-color: @folix-border-gold;
+                transform: translateY(-2px);
+            }
+
+            .stat-number {
+                font-size: 32px;
+                font-weight: 700;
+                color: @folix-secondary;
+                margin-bottom: 8px;
+            }
+
+            .stat-label {
+                font-size: 12px;
+                color: @folix-text-tertiary;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+        }
+    }
+
+    // Card Base
+    .card {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid @folix-border;
+        border-radius: @folix-radius-lg;
+        padding: 24px;
+        margin-bottom: 24px;
+        transition: @folix-transition;
+
+        &:hover {
+            border-color: @folix-border-gold;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid @folix-border;
+
+            .card-title {
+                font-size: 18px;
+                font-weight: 600;
+                color: @folix-text-primary;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                .card-title-icon {
+                    width: 24px;
+                    height: 24px;
+                    background: @folix-gradient-gold;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 14px;
+                }
+            }
+
+            .card-action {
+                color: @folix-secondary;
+                text-decoration: none;
+                font-size: 13px;
+                font-weight: 500;
+                padding: 6px 12px;
+                border-radius: @folix-radius-sm;
+                transition: @folix-transition;
+
+                &:hover {
+                    background: @folix-bg-selected;
+                    color: @folix-secondary-light;
+                    text-decoration: none;
+                }
+            }
+        }
+
+        .card-content {
+            color: @folix-text-secondary;
+            font-size: 14px;
+            line-height: 1.8;
+
+            p {
+                margin-bottom: 8px;
+            }
+        }
+    }
+
+    // Info List (Account Information)
+    .info-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid @folix-border-light;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            .info-label {
+                color: @folix-text-tertiary;
+                font-size: 13px;
+            }
+
+            .info-value {
+                color: @folix-text-primary;
+                font-size: 14px;
+                font-weight: 500;
+            }
+        }
+    }
+
+    // Order Items
+    .order-item {
+        padding: 16px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: @folix-radius-md;
+        margin-bottom: 12px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+
+            .order-number {
+                font-weight: 600;
+                color: @folix-text-primary;
+                font-size: 14px;
+            }
+
+            .order-date {
+                color: @folix-text-tertiary;
+                font-size: 12px;
+                margin-top: 4px;
+            }
+
+            .order-status {
+                padding: 4px 12px;
+                border-radius: @folix-radius-sm;
+                font-size: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
+
+                &.status-completed {
+                    background: rgba(52, 211, 153, 0.2);
+                    color: #34D399;
+                }
+
+                &.status-pending {
+                    background: rgba(255, 215, 0, 0.2);
+                    color: @folix-secondary;
+                }
+
+                &.status-cancelled {
+                    background: rgba(255, 59, 48, 0.2);
+                    color: @folix-accent;
+                }
+            }
+        }
+
+        .order-items {
+            color: @folix-text-secondary;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .order-total {
+            color: @folix-text-primary;
+            font-weight: 600;
+            font-size: 14px;
+        }
+    }
+
+    // Wishlist Items
+    .wishlist-items {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+
+        .wishlist-item {
+            display: flex;
+            gap: 12px;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: @folix-radius-md;
+
+            .wishlist-item-image {
+                font-size: 32px;
+                width: 60px;
+                height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(255, 255, 255, 0.05);
+                border-radius: @folix-radius;
+            }
+
+            .wishlist-item-info {
+                flex: 1;
+
+                .wishlist-item-name {
+                    color: @folix-text-primary;
+                    font-weight: 600;
+                    font-size: 14px;
+                    margin-bottom: 4px;
+                }
+
+                .wishlist-item-price {
+                    color: @folix-secondary;
+                    font-weight: 600;
+                    font-size: 14px;
+                    margin-bottom: 8px;
+                }
+
+                .wishlist-item-actions {
+                    display: flex;
+                    gap: 8px;
+
+                    .btn {
+                        padding: 6px 12px;
+                        border-radius: @folix-radius-sm;
+                        font-size: 12px;
+                        font-weight: 500;
+                        text-decoration: none;
+                        transition: @folix-transition;
+
+                        &.btn-primary {
+                            background: @folix-secondary;
+                            color: @folix-primary-dark;
+
+                            &:hover {
+                                background: @folix-secondary-dark;
+                            }
+                        }
+
+                        &.btn-secondary {
+                            background: transparent;
+                            color: @folix-text-secondary;
+                            border: 1px solid @folix-border;
+
+                            &:hover {
+                                border-color: @folix-text-secondary;
+                                color: @folix-text-primary;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Active Game Keys
+    .keys-preview {
+        .key-item {
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: @folix-radius-md;
+            margin-bottom: 12px;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            .key-code {
+                font-family: 'Courier New', monospace;
+                font-size: 14px;
+                font-weight: 600;
+                color: @folix-text-primary;
+                background: rgba(0, 0, 0, 0.3);
+                padding: 8px 12px;
+                border-radius: @folix-radius;
+                margin-bottom: 8px;
+                letter-spacing: 1px;
+            }
+
+            .key-product {
+                color: @folix-text-secondary;
+                font-size: 13px;
+                margin-bottom: 8px;
+            }
+
+            .key-status {
+                font-size: 12px;
+                font-weight: 600;
+                text-transform: uppercase;
+
+                &.status-active {
+                    color: #34D399;
+                }
+
+                &.status-used {
+                    color: @folix-text-tertiary;
+                }
+
+                &.status-expired {
+                    color: @folix-accent;
+                }
+            }
+        }
+    }
+}
+
+// ============================================================================
+// Responsive - Mobile (<768px)
+// ============================================================================
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .account {
+        .columns {
+            grid-template-columns: 1fr;
+        }
+
+        .sidebar-main {
+            border-right: none;
+            border-bottom: 1px solid @folix-border;
+        }
+
+        .column.main {
+            padding: 20px;
+        }
+
+        .stats-row {
+            grid-template-columns: 1fr;
+        }
+
+        .wishlist-items {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+// ============================================================================
+// Responsive - Tablet (768px - 992px)
+// ============================================================================
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .account {
+        .columns {
+            grid-template-columns: 260px 1fr;
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__l) {
+    .account {
+        .stats-row {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+}

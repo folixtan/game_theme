@@ -1,0 +1,233 @@
+// /**
+//  * Folix Game Theme - Account Dashboard Common Styles
+//  * 
+//  * 基础通用样式：所有设备共享
+//  * 
+//  * 设计原则：
+//  * - 基于原生Magento HTML结构
+//  * - 使用现有变量（_custom-variables-esports.less）
+//  * - 卡片式布局通过纯CSS实现
+//  */
+
+& when (@media-common = true) {
+
+    //
+    //  1. 整体容器：卡片式大圆角
+    //  _____________________________________________
+
+    .account .columns {
+        background: @folix-bg-dark;
+        border-radius: 16px;
+        overflow: hidden;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    //
+    //  2. 页面标题
+    //  _____________________________________________
+
+    .account .page-title-wrapper {
+        margin-bottom: 32px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid @folix-border;
+
+        .page-title .base {
+            font-size: 32px;
+            font-weight: 700;
+            color: @folix-text-primary;
+            margin: 0;
+        }
+    }
+
+    //
+    //  3. 主内容区：浅色背景
+    //  _____________________________________________
+
+    .account .column.main {
+        background: @folix-bg-panel;
+        padding: 32px;
+        color: @folix-text-primary;
+    }
+
+    //
+    //  4. 左侧导航栏：深色背景
+    //  _____________________________________________
+
+    .account .sidebar.sidebar-main {
+        background: @folix-bg-dark;
+        padding: 24px;
+        border-right: 1px solid @folix-border;
+    }
+
+    // 导航区块
+    .account .block-collapsible-nav {
+        margin-bottom: 0;
+
+        .title {
+            font-size: 18px;
+            font-weight: 600;
+            color: @folix-text-primary;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid @folix-secondary;
+
+            strong {
+                color: @folix-text-primary;
+            }
+        }
+
+        .content {
+            padding: 0;
+        }
+
+        // 导航列表
+        .nav.items {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+
+            .nav.item {
+                margin-bottom: 8px;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+
+                // 导航链接
+                a {
+                    display: block;
+                    padding: 12px 16px;
+                    color: @folix-text-secondary;
+                    text-decoration: none;
+                    font-size: 14px;
+                    font-weight: 500;
+                    border-radius: 8px;
+                    transition: all 0.3s ease;
+                    position: relative;
+
+                    &:hover {
+                        background: @folix-bg-hover;
+                        color: @folix-text-primary;
+                        padding-left: 20px;
+                    }
+                }
+
+                // 当前激活项
+                &.current {
+                    background: rgba(255, 215, 0, 0.1);
+                    border-left: 3px solid @folix-secondary;
+
+                    strong {
+                        color: @folix-secondary;
+                        font-weight: 600;
+                    }
+                }
+
+                // 分隔线
+                .delimiter {
+                    display: block;
+                    height: 1px;
+                    background: @folix-border;
+                    margin: 16px 0;
+                }
+            }
+        }
+    }
+
+    //
+    //  5. Block卡片样式
+    //  _____________________________________________
+
+    .account .column.main .block {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid @folix-border;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        transition: all 0.3s ease;
+
+        &:hover {
+            border-color: @folix-border-hover;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        // 区块标题
+        .block-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: @folix-text-primary;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid @folix-border;
+
+            strong {
+                color: @folix-text-primary;
+            }
+        }
+
+        .block-content {
+            padding: 0;
+        }
+    }
+
+    //
+    //  6. Box子区块
+    //  _____________________________________________
+
+    .account .column.main .block .block-content .box {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid @folix-border-light;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 16px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        .box-title {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: @folix-text-lighter;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid @folix-border-light;
+        }
+
+        .box-content {
+            color: @folix-text-secondary;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .box-actions {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+
+            a {
+                color: @folix-secondary;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                padding: 6px 12px;
+                border-radius: 6px;
+                transition: all 0.3s ease;
+
+                &:hover {
+                    background: rgba(255, 215, 0, 0.1);
+                    color: @folix-secondary-light;
+                }
+
+                &.change-password {
+                    color: @folix-secondary;
+
+                    &:hover {
+                        color: @folix-secondary-light;
+                    }
+                }
+            }
+        }
+    }
+}

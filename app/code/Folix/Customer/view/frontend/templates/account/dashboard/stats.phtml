@@ -1,0 +1,34 @@
+<?php
+/**
+ * Copyright © Folix Game Theme. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+
+/** @var \Folix\Customer\Block\Account\Dashboard\Stats $block */
+?>
+<?php 
+$totalOrders = $block->getTotalOrders();
+$totalSpent = $block->getTotalSpent();
+$activeKeys = $block->getActiveKeys();
+
+// 格式化金额
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$priceHelper = $objectManager->get('Magento\Framework\Pricing\Helper\Data');
+$formattedTotalSpent = $priceHelper->currency($totalSpent, true, false);
+?>
+
+<!-- Purchase Stats -->
+<div class="purchase-stats">
+    <div class="stat-item">
+        <div class="stat-number"><?= (int)$totalOrders ?></div>
+        <div class="stat-label"><?= $block->escapeHtml(__('Total Orders')) ?></div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number"><?= $formattedTotalSpent ?></div>
+        <div class="stat-label"><?= $block->escapeHtml(__('Total Spent')) ?></div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-number"><?= (int)$activeKeys ?></div>
+        <div class="stat-label"><?= $block->escapeHtml(__('Active Keys')) ?></div>
+    </div>
+</div>
