@@ -125,8 +125,7 @@ class SyncCommand extends Command
 
         $startTime = microtime(true);
 
-        $test = ObjectManager::getInstance()->get(\FolixCode\ProductSync\Cron\SyncCategories::class);
-        $test->execute();exit;
+       
         try {
             // 根据类型调用对应的 API 并发布到 MQ
             if ($type === 'detail') {
