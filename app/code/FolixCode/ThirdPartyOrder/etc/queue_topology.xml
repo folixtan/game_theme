@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/topology.xsd">
+    
+    <!-- 订单同步队列拓扑 -->
+    <exchange name="magento" type="topic" connection="amqp">
+        <binding id="folixcodeOrderSync" 
+                 topic="folixcode.order.sync" 
+                 destinationType="queue" 
+                 destination="folixcode.order.sync.queue" />
+    </exchange>
+
+</config>

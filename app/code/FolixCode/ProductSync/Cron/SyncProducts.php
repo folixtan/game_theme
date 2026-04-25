@@ -9,6 +9,8 @@ use FolixCode\ProductSync\Helper\Data as ProductSyncHelper;
 use FolixCode\BaseSyncService\Helper\Data as BaseHelper;
 use Psr\Log\LoggerInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Config\Model\ResourceModel\Config as ConfigResource;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Cron任务 - 定时同步产品数据（独立任务）
@@ -24,6 +26,7 @@ class SyncProducts
     private BaseHelper $baseHelper;
     private LoggerInterface $logger;
     private TimezoneInterface $timezone;
+    private ConfigResource $configResource;
 
     public function __construct(
         VirtualGoodsApiService $apiService,
@@ -31,6 +34,7 @@ class SyncProducts
         ProductSyncHelper $productSyncHelper,
         BaseHelper $baseHelper,
         TimezoneInterface $timezone,
+        ConfigResource $configResource,
         LoggerInterface $logger
     ) {
         $this->apiService = $apiService;
@@ -38,16 +42,46 @@ class SyncProducts
         $this->productSyncHelper = $productSyncHelper;
         $this->baseHelper = $baseHelper;
         $this->timezone = $timezone;
+        $this->configResource = $configResource;
         $this->logger = $logger;
     }
+
+    /**
+     * 保存最后同步页码配置
+     *
+     * @param int $page
+     * @return void
+     */
+    private function saveLastSyncPage(int $page): void
+    {
+        try {
+            $this->configResource->saveConfig(
+                ProductSyncHelper::XML_PATH_LAST_SYNC_PAGE,
+                $page,
+                ScopeInterface::SCOPE_STORE,
+                0
+            );
+            
+            $this->logger->info('ProductSync last sync page updated', [
+                'page' => $page
+            ]);
+        } catch (\Exception $e) {
+            $this->logger->error('Failed to save last sync page', [
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
 
     /**
      * 执行产品同步任务
      * 
      * 流程：
-     * 1. 从外部 API 获取产品列表
-     * 2. 将每个产品发布到消息队列
-     * 3. Consumer 会异步处理导入
+     * 1. 从上次中断的页码继续同步（断点续传）
+     * 2. 从外部 API 获取产品列表
+     * 3. 将每个产品发布到消息队列
+     * 4. Consumer 会异步处理导入
+     * 5. 每页处理完后更新页码配置
      *
      * @return void
      */
@@ -55,64 +89,87 @@ class SyncProducts
     {
         try {
             // 检查是否启用
-            if (!$this->baseHelper->isEnabled()) {
+            if (!$this->productSyncHelper->isEnabled()) {
                 $this->logger->info('ProductSync Products Cron: Synchronization is disabled, skipping.');
                 return;
             }
 
             $this->logger->info('ProductSync Products Cron: Starting product synchronization...');
 
-            $last_page = 2;
-            $per_page = 10;
-            $page = 1;
-            $num = 0;
+            $perPage = $this->productSyncHelper->getBatchSize();
 
-            while($page < $last_page) {
-                   // 获取最后一次同步时间戳（增量同步）- 使用业务 Helper
-                $lastSyncTimestamp = $this->timezone->date()->getTimestamp();
-                $num++;
-                //结束页码
-                 if($num > $last_page) break;
-                // 1. 从 API 获取产品列表
-                $productsData = $this->apiService->getProductList([
-                    'timestamp' => $lastSyncTimestamp,
-                    'page' => $page,
-                    'per_page' => $per_page
-                ]);
+            // ✅ 从配置中读取上次同步的页码（断点续传）
+            $page = $this->productSyncHelper->getLastSyncPage();
+            $lastPage = 1; // 初始值，会在第一次API调用后更新
+            $totalPublished = 0;
+            $pagesProcessed = 0;
 
-                if($last_page === 0) $last_page = $productsData['last_page'];
-
-            }
-          
-            if (empty($productsData['data'])) {
-                $this->logger->info('ProductSync Products Cron: No products to sync.');
-                return;
-            }
-
-            $this->logger->info('ProductSync Products Cron: Fetched products from API', [
-                'count' => count($productsData['data'])
+            $this->logger->info('ProductSync Products Cron: Resuming from page', [
+                'start_page' => $page
             ]);
 
-            // 2. 将每个产品发布到消息队列（异步导入）
-            $publishedCount = 0;
-     
-            try {
-                $this->publisher->publishProductImport($productsData['data']);
-                $publishedCount++;
-            } catch (\Exception $e) {
-                $this->logger->error('ProductSync Products Cron: Failed to publish product to MQ', [
-                    'product_id' => $productData['id'] ?? 'unknown',
-                    'error' => $e->getMessage()
-                ]);
-            }
-        
+            while ($page <= $lastPage) {
+                try {
+                    // 从 API 获取产品列表
+                    $productsData = $this->apiService->getProductList([
+                        'page' => $page,
+                        'per_page' => $perPage,
+                        'timestamp' => $this->timezone->date()->getTimestamp(),
+                    ]);
 
-            $this->logger->info('ProductSync Products Cron: Products published to message queue', [
-                'total_fetched' => count($productsData),
-                'published_to_mq' => $publishedCount,
-                'note' => 'Actual import will be handled by Consumer asynchronously'
+                    if (empty($productsData['data'])) {
+                        $this->logger->info('ProductSync Products Cron: No products on page', ['page' => $page]);
+                        break;
+                    }
+
+                    // 更新总页数（只在第一次获取）
+                    if ($pagesProcessed === 0 && isset($productsData['last_page']) && $productsData['last_page'] > 0) {
+                        $lastPage = (int) $productsData['last_page'];
+                        $this->logger->info('ProductSync Products Cron: Total pages fetched', [
+                            'total_pages' => $lastPage
+                        ]);
+                    }
+
+                    $this->logger->info('ProductSync Products Cron: Fetched products from API', [
+                        'current_page' => $page,
+                        'total_pages' => $lastPage,
+                        'count' => count($productsData['data'])
+                    ]);
+
+                    // 将产品数据发布到消息队列（异步导入）
+                    $this->publisher->publishProductImport($productsData['data']);
+                    $totalPublished += count($productsData['data']);
+                    $pagesProcessed++;
+
+                    // ✅ 每页处理完后，立即更新页码配置（断点续传关键点）
+                    $this->saveLastSyncPage($page + 1);
+
+                    $page++;
+
+                } catch (\Exception $e) {
+                    $this->logger->error('ProductSync Products Cron: Failed to fetch products', [
+                        'page' => $page,
+                        'error' => $e->getMessage()
+                    ]);
+                    // ❌ 失败时不更新页码，下次Cron会从当前页重试
+                    break;
+                }
+            }
+
+            $this->logger->info('ProductSync Products Cron: Synchronization completed', [
+                'total_published' => $totalPublished,
+                'pages_processed' => $pagesProcessed,
+                'next_start_page' => $page
             ]);
-          $page++;
+
+            // ✅ 如果所有页都处理完了，重置页码为1（下一轮从头开始）
+            if ($page > $lastPage && $lastPage > 0) {
+                $this->saveLastSyncPage($lastPage);
+                $this->logger->info('ProductSync Products Cron: All pages processed, resetting to page 1');
+                
+                
+            }
+
         } catch (\Exception $e) {
             $this->logger->error('ProductSync Products Cron: Product synchronization failed', [
                 'error' => $e->getMessage(),

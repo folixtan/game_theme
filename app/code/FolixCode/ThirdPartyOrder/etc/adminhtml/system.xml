@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    
+    <system>
+        <tab id="folixcode" translate="label" sortOrder="100">
+            <label>FolixCode</label>
+        </tab>
+        
+        <section id="folixcode_thirdpartyorder" 
+                 translate="label" 
+                 type="text" 
+                 sortOrder="10" 
+                 showInDefault="1" 
+                 showInWebsite="1" 
+                 showInStore="1">
+            <label>Third Party Order</label>
+            <tab>folixcode</tab>
+            <resource>FolixCode_ThirdPartyOrder::config</resource>
+            
+            <group id="general" 
+                   translate="label" 
+                   type="text" 
+                   sortOrder="10" 
+                   showInDefault="1" 
+                   showInWebsite="1" 
+                   showInStore="1">
+                <label>General Settings</label>
+                
+                <field id="enabled" 
+                       translate="label" 
+                       type="select" 
+                       sortOrder="10" 
+                       showInDefault="1" 
+                       showInWebsite="1" 
+                       showInStore="0">
+                    <label>Enable Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable third party order synchronization</comment>
+                </field>
+                
+                <field id="api_base_url" 
+                       translate="label comment" 
+                       type="text" 
+                       sortOrder="20" 
+                       showInDefault="1" 
+                       showInWebsite="0" 
+                       showInStore="0">
+                    <label>API Base URL</label>
+                    <comment>Base URL for third party API (e.g., https://playsentral.qr67.com)</comment>
+                    <validate>required-entry validate-url</validate>
+                </field>
+                
+                <field id="notify_url" 
+                       translate="label comment" 
+                       type="text" 
+                       sortOrder="30" 
+                       showInDefault="1" 
+                       showInWebsite="0" 
+                       showInStore="0">
+                    <label>Notify URL</label>
+                    <comment>Your callback URL to provide to third party (auto-generated if empty)</comment>
+                    <comment model="FolixCode\ThirdPartyOrder\Model\Config\Source\NotifyUrlComment"/>
+                </field>
+                
+                <field id="app_key" 
+                       translate="label" 
+                       type="obscure" 
+                       sortOrder="40" 
+                       showInDefault="1" 
+                       showInWebsite="0" 
+                       showInStore="0">
+                    <label>App Key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <comment>Application key for API authentication</comment>
+                </field>
+                
+                <field id="secret_key" 
+                       translate="label" 
+                       type="obscure" 
+                       sortOrder="50" 
+                       showInDefault="1" 
+                       showInWebsite="0" 
+                       showInStore="0">
+                    <label>Secret Key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <comment>Secret key for data encryption/decryption</comment>
+                </field>
+            </group>
+            
+            <group id="sync" 
+                   translate="label" 
+                   type="text" 
+                   sortOrder="20" 
+                   showInDefault="1" 
+                   showInWebsite="0" 
+                   showInStore="0">
+                <label>Synchronization Settings</label>
+                
+                <field id="retry_times" 
+                       translate="label comment" 
+                       type="text" 
+                       sortOrder="10" 
+                       showInDefault="1" 
+                       showInWebsite="0" 
+                       showInStore="0">
+                    <label>Retry Times</label>
+                    <comment>Number of retries when sync fails (default: 3)</comment>
+                    <validate>validate-digits validate-greater-than-zero</validate>
+                </field>
+                
+                <field id="retry_interval" 
+                       translate="label comment" 
+                       type="text" 
+                       sortOrder="20" 
+                       showInDefault="1" 
+                       showInWebsite="0" 
+                       showInStore="0">
+                    <label>Retry Interval (seconds)</label>
+                    <comment>Interval between retries (default: 60 seconds)</comment>
+                    <validate>validate-digits validate-greater-than-zero</validate>
+                </field>
+                
+                <field id="max_query_age_hours" 
+                       translate="label comment" 
+                       type="text" 
+                       sortOrder="30" 
+                       showInDefault="1" 
+                       showInWebsite="0" 
+                       showInStore="0">
+                    <label>Max Query Age (hours)</label>
+                    <comment>Only query orders within this time range (default: 24 hours)</comment>
+                    <validate>validate-digits validate-greater-than-zero</validate>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

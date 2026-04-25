@@ -8,24 +8,16 @@
 
             <group id="settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Synchronization Settings</label>
-
-                <field id="sync_interval" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Sync Interval (minutes)</label>
-                    <comment>How often to sync data via cron (default: 60 minutes)</comment>
-                    <validate>validate-number</validate>
+                 <field id="is_enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-
-                <field id="batch_size" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Batch Size</label>
-                    <comment>Number of products to process in one batch (default: 100)</comment>
-                    <validate>validate-number validate-digits validate-greater-than-zero</validate>
+                <field id="batch_size" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Batch Siz</label>
+                  
                 </field>
-
-                <field id="last_sync_timestamp" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Last Sync Timestamp</label>
-                    <comment>Internal use only - tracks the last successful synchronization time</comment>
-                    <frontend_model>Magento\Config\Block\System\Config\Form\Field\Disabled</frontend_model>
-                </field>
+               
+ 
             </group>
         </section>
     </system>

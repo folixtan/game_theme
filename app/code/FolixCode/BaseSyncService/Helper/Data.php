@@ -6,11 +6,15 @@ namespace FolixCode\BaseSyncService\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Encryption\EncryptorInterface;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Store\Model\ScopeInterface;
 
 /**
- * BaseSyncService Helper - 处理加密解密、配置等通用功能
+ * BaseSyncService Helper - 处理供应商配置管理
+ * 
+ * 职责：
+ * - 读取供应商配置（API URL, Secret ID/Key等）
+ * - 提供加密密钥的安全访问（自动解密）
+ * - 不包含任何业务逻辑（如同步间隔、时间戳管理等）
  */
 class Data extends AbstractHelper
 {
@@ -20,28 +24,20 @@ class Data extends AbstractHelper
     public const XML_PATH_API_BASE_URL = 'folixcode_basesyncservice/settings/api_base_url';
     public const XML_PATH_SECRET_ID = 'folixcode_basesyncservice/settings/secret_id';
     public const XML_PATH_SECRET_KEY = 'folixcode_basesyncservice/settings/secret_key';
-    public const XML_PATH_API_KEY = 'folixcode_basesyncservice/settings/api_key';
     public const XML_PATH_IS_ENABLED = 'folixcode_basesyncservice/settings/is_enabled';
-    public const XML_PATH_SYNC_INTERVAL = 'folixcode_basesyncservice/settings/sync_interval';
 
-    public const SECRET_ID = '81097469c53704b748e';
-
-    public const SECRET_KEY = 'eO6OSXX1kfVcoQhYacc4u9t6FJnulT5f';
-
-    public const ENCRYPT_METHOD = 'AES-256-CBC';
-
+    // 默认测试配置（仅用于开发环境）
+    public const DEFAULT_SECRET_ID = '81097469c53704b748e';
+    public const DEFAULT_SECRET_KEY = 'eO6OSXX1kfVcoQhYacc4u9t6FJnulT5f';
 
     private EncryptorInterface $encryptor;
-    private Json $json;
 
     public function __construct(
         Context $context,
-        EncryptorInterface $encryptor,
-        Json $json
+        EncryptorInterface $encryptor
     ) {
         parent::__construct($context);
         $this->encryptor = $encryptor;
-        $this->json = $json;
     }
 
     /**
@@ -69,11 +65,11 @@ class Data extends AbstractHelper
         return $this->scopeConfig->getValue(
             self::XML_PATH_SECRET_ID,
             ScopeInterface::SCOPE_STORE
-        ) ?: self::SECRET_ID;
+        ) ?: self::DEFAULT_SECRET_ID;
     }
 
     /**
-     * 获取Secret Key
+     * 获取Secret Key（自动解密）
      *
      * @return string
      */
@@ -88,7 +84,7 @@ class Data extends AbstractHelper
             return $this->encryptor->decrypt($encryptedKey);
         }
 
-        return self::SECRET_KEY;//test KEY
+        return self::DEFAULT_SECRET_KEY;
     }
 
     /**
@@ -105,229 +101,63 @@ class Data extends AbstractHelper
     }
 
     /**
-     * 获取同步间隔（分钟）
+     * 解密第三方响应数据
+     * 
+     * 使用AES-256-CBC算法解密第三方API返回的加密数据
      *
-     * @return int
-     * @deprecated 此方法已移至 ProductSync 模块的业务 Helper
+     * @param string $encryptedData Base64编码的加密数据
+     * @return array|null 解密后的数组数据，失败返回null
      */
-    public function getSyncInterval(): int
+    public function decryptResponseData(string $encryptedData): ?array
     {
-        // 为了向后兼容，暂时保留但返回默认值
-        // 建议调用方迁移到 FolixCode\ProductSync\Helper\Data
-        return 60;
-    }
-
-    /**
-     * 加密请求数据（按照API文档的规范）
-     *
-     * 加密步骤：
-     * 1. 随机生成长16字节的初始向量iv
-     * 2. 使用AES-256-CBC和PKCS#7填充进行加密
-     * 3. 将iv和加密后的字符串分别base64编码
-     * 4. 拼装成JSON: {"iv":"base64编码后的iv","value":"base64后的encryptedString"}
-     * 5. 将此JSON再进行base64编码，得到最终的data密文
-     *
-     * @param array $data 请求数据
-     * @return string 加密后的字符串
-     */
-    public function encryptRequestData(array $data): string
-    {
-        if (empty($data)) {
-            return '';
-        }
-
         try {
-            // 将数据转换为JSON
-            $jsonData = $this->json->serialize($data);
-
-            // 使用Secret Key进行AES加密
-            $key = $this->getSecretKey();
-            if (empty($key)) {
-                $this->_logger->warning('Secret Key is not configured, returning unencrypted data');
-                return throw new \RuntimeException('Secret Key is not configured');
+            // Base64解码
+            $binaryData = base64_decode($encryptedData, true);
+            if ($binaryData === false) {
+                $this->_logger->error('Failed to base64 decode encrypted data');
+                return null;
             }
 
-
-            // 随机生成长16字节的初始向量iv（每次加密都不同）
-            $ivLength = openssl_cipher_iv_length(static::ENCRYPT_METHOD);
-             $iv = openssl_random_pseudo_bytes($ivLength);
-
-            // 使用AES-256-CBC加密，OPENSSL_RAW_DATA表示不自动base64编码
-          //  var_dump(static::ENCRYPT_METHOD, $normalizedKey, $iv);exit;
-            $encrypted = openssl_encrypt(
-                $jsonData,
-                static::ENCRYPT_METHOD,
-                $key,
-                OPENSSL_RAW_DATA,
-                $iv
-            );
-
-            // 检查加密是否成功
-            if ($encrypted === false) {
-                throw new \RuntimeException('AES-256-CBC encryption failed: ' . openssl_error_string());
+            // 获取密钥
+            $secretKey = $this->getSecretKey();
+            
+            // AES-256-CBC解密（假设IV在前16字节）
+            $ivLength = openssl_cipher_iv_length('aes-256-cbc');
+            if ($ivLength === false || strlen($binaryData) < $ivLength) {
+                $this->_logger->error('Invalid encrypted data length');
+                return null;
             }
 
-            // 将iv和encrypted分别base64编码
-            $ivBase64 = base64_encode($iv);
-            $encryptedBase64 = base64_encode($encrypted);
+            $iv = substr($binaryData, 0, $ivLength);
+            $ciphertext = substr($binaryData, $ivLength);
 
-            // 拼装成JSON
-            $jsonPayload = $this->json->serialize([
-                'iv' => $ivBase64,
-                'value' => $encryptedBase64
-            ]);
-
-            // 将JSON再进行base64编码，得到最终的data密文
-            $result = base64_encode($jsonPayload);
-
-            $this->_logger->info('Request data encrypted successfully', [
-                'data_length' => strlen($jsonData),
-                'encrypted_length' => strlen($result),
-                'method' => static::ENCRYPT_METHOD
-            ]);
-
-            return $result;
-
-        } catch (\Exception $e) {
-            $this->_logger->error('Failed to encrypt request data: ' . $e->getMessage());
-            throw $e;
-        }
-    }
-
-
-    /**
-     * 解密响应数据（按照API文档的规范）
-     *
-     * 解密步骤：
-     * 1. 将data密文进行base64解码，得到JSON
-     * 2. 将JSON中的iv进行base64解码，得到初始向量iv
-     * 3. 将JSON中的value进行base64解码，得到密文encryptedString
-     * 4. 使用key和iv，对encryptedString进行AES-256-CBC解密
-     *
-     * @param string $encryptedData 加密的数据
-     * @return array 解密后的数组
-     */
-    public function decryptResponseData(string $encryptedData): array
-    {
-        if (empty($encryptedData)) {
-            return [];
-        }
-
-        try {
-            $key = $this->getSecretKey();
-            if (empty($key)) {
-                $this->_logger->warning('Secret Key is not configured, attempting base64 decode');
-                return $this->json->unserialize(base64_decode($encryptedData));
-            }
-
-
-            // 第一步：将data密文进行base64解码，得到JSON
-            $jsonPayload = base64_decode($encryptedData);
-
-            if ($jsonPayload === false) {
-                throw new \RuntimeException('Failed to base64 decode encrypted data');
-            }
-
-            // 第二步：解析JSON，获取iv和value
-            $payloadData = $this->json->unserialize($jsonPayload);
-
-            if (!isset($payloadData['iv']) || !isset($payloadData['value'])) {
-                throw new \RuntimeException('Invalid encrypted data format: missing iv or value');
-            }
-
-            // 第三步：将iv进行base64解码，得到初始向量iv
-            $iv = base64_decode($payloadData['iv']);
-            if ($iv === false || strlen($iv) !== 16) {
-                throw new \RuntimeException('Invalid IV: must be 16 bytes after base64 decode');
-            }
-
-            // 第四步：将value进行base64解码，得到密文encryptedString
-            $encryptedString = base64_decode($payloadData['value']);
-            if ($encryptedString === false) {
-                throw new \RuntimeException('Failed to base64 decode encrypted value');
-            }
-
-            // 第五步：使用key和iv，对encryptedString进行AES-256-CBC解密
             $decrypted = openssl_decrypt(
-                $encryptedString,
-                'AES-256-CBC',
-                $key,
+                $ciphertext,
+                'aes-256-cbc',
+                $secretKey,
                 OPENSSL_RAW_DATA,
                 $iv
             );
 
             if ($decrypted === false) {
-                throw new \RuntimeException('Failed to decrypt response data: ' . openssl_error_string());
+                $this->_logger->error('Failed to decrypt data');
+                return null;
             }
 
-            $data = $this->json->unserialize($decrypted);
+            // JSON解码
+            $data = json_decode($decrypted, true);
+            if (!is_array($data)) {
+                $this->_logger->error('Decrypted data is not valid JSON array');
+                return null;
+            }
 
-            $this->_logger->info('Response data decrypted successfully', ['method' => 'AES-256-CBC']);
-
-            return is_array($data) ? $data : [];
+            return $data;
 
         } catch (\Exception $e) {
-            $this->_logger->error('Failed to decrypt response data: ' . $e->getMessage());
-            throw $e;
+            $this->_logger->error('Exception during decryption', [
+                'error' => $e->getMessage()
+            ]);
+            return null;
         }
-    }
-
-    /**
-     * 生成签名（按照语雀文档的签名认证方式）
-     *
-     * @param array $data 请求数据
-     * @param string $timestamp 时间戳
-     * @return string 签名
-     */
-    public function generateSignature(array $data, string $timestamp): string
-    {
-        $secretKey = $this->getSecretKey();
-
-        // 按文档的签名算法生成
-        $params = array_merge($data, ['timestamp' => $timestamp]);
-        ksort($params);
-
-        $stringToSign = http_build_query($params);
-        $stringToSign .= '&key=' . $secretKey;
-
-        return md5($stringToSign);
-    }
-
-    /**
-     * 获取最后一次同步时间戳
-     *
-     * @return int
-     * @deprecated 此方法已移至 ProductSync 模块的业务 Helper
-     */
-    public function getLastSyncTimestamp(): int
-    {
-        // 为了向后兼容，暂时保留但返回默认值
-        // 建议调用方迁移到 FolixCode\ProductSync\Helper\Data
-        return 0;
-    }
-
-    /**
-     * 设置最后一次同步时间戳
-     *
-     * @param int $timestamp
-     * @return void
-     * @deprecated 此方法已移至 ProductSync 模块的业务 Helper
-     */
-    public function setLastSyncTimestamp(int $timestamp): void
-    {
-        // TODO: 实现配置保存逻辑
-        // 需要通过 Magento 的配置资源模型来持久化配置
-        // 示例实现（需要注入 ConfigResource）：
-        // $this->configResource->saveConfig(
-        //     'folixcode_basesyncservice/settings/last_sync_timestamp',
-        //     $timestamp,
-        //     ScopeInterface::SCOPE_STORE,
-        //     0
-        // );
-        
-        $this->_logger->info('Last sync timestamp updated (not persisted)', [
-            'timestamp' => $timestamp,
-            'note' => 'Configuration persistence not implemented yet. Migrate to ProductSync module.'
-        ]);
     }
 }

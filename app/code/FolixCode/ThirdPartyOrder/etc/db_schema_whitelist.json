@@ -1,0 +1,60 @@
+{
+    "folix_third_party_orders": {
+        "column": {
+            "entity_id": true,
+            "magento_order_id": true,
+            "magento_order_increment_id": true,
+            "customer_id": true,
+            "third_party_order_id": true,
+            "user_order_id": true,
+            "order_type": true,
+            "product_id": true,
+            "product_name": true,
+            "third_party_status": true,
+            "status_code": true,
+            "description": true,
+            "is_part_succ": true,
+            "split_orders": true,
+            "cards_data": true,
+            "account_info": true,
+            "raw_response": true,
+            "sync_status": true,
+            "retry_count": true,
+            "last_error": true,
+            "last_query_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "FOLIX_THIRD_PARTY_ORDERS_MAGENTO_ORDER_ID": true,
+            "FOLIX_THIRD_PARTY_ORDERS_THIRD_PARTY_ORDER_ID": true,
+            "FOLIX_THIRD_PARTY_ORDERS_SYNC_STATUS": true,
+            "FOLIX_THIRD_PARTY_ORDERS_STATUS_CODE": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FOLIX_THIRD_PARTY_ORDERS_SALES_ORDER_ENTITY_ID": true
+        }
+    },
+    "folix_card_keys": {
+        "column": {
+            "entity_id": true,
+            "order_id": true,
+            "third_party_order_id": true,
+            "card_no": true,
+            "card_pwd": true,
+            "card_deadline": true,
+            "status": true,
+            "used_at": true,
+            "created_at": true
+        },
+        "index": {
+            "FOLIX_CARD_KEYS_ORDER_ID": true,
+            "FOLIX_CARD_KEYS_STATUS": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FOLIX_CARD_KEYS_SALES_ORDER_ENTITY_ID": true
+        }
+    }
+}

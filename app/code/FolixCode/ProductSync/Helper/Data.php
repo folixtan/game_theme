@@ -16,9 +16,10 @@ class Data extends AbstractHelper
     /**
      * 配置路径常量
      */
-    public const XML_PATH_SYNC_INTERVAL = 'folixcode_productsync/settings/sync_interval';
+    public const XML_PATH_IS_ENABLED = 'folixcode_productsync/settings/is_enabled';
     public const XML_PATH_LAST_SYNC_TIMESTAMP = 'folixcode_productsync/settings/last_sync_timestamp';
     public const XML_PATH_BATCH_SIZE = 'folixcode_productsync/settings/batch_size';
+    public const XML_PATH_LAST_SYNC_PAGE = 'folixcode_productsync/settings/last_sync_page';
 
     private LoggerInterface $logger;
 
@@ -30,17 +31,14 @@ class Data extends AbstractHelper
         $this->logger = $logger;
     }
 
+    
     /**
-     * 获取同步间隔（分钟）
+     * Undocumented function
      *
-     * @return int
+     * @return boolean
      */
-    public function getSyncInterval(): int
-    {
-        return (int)$this->scopeConfig->getValue(
-            self::XML_PATH_SYNC_INTERVAL,
-            ScopeInterface::SCOPE_STORE
-        ) ?: 60; // 默认 60 分钟
+    public function isEnabled():bool {
+        return (bool)$this->scopeConfig->getValue(self::XML_PATH_IS_ENABLED,ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -57,30 +55,6 @@ class Data extends AbstractHelper
     }
 
     /**
-     * 设置最后一次同步时间戳
-     *
-     * @param int $timestamp
-     * @return void
-     */
-    public function setLastSyncTimestamp(int $timestamp): void
-    {
-        // TODO: 实现配置保存逻辑
-        // 需要通过 Magento 的配置资源模型来持久化配置
-        // 示例实现（需要注入 ConfigResource）：
-        // $this->configResource->saveConfig(
-        //     self::XML_PATH_LAST_SYNC_TIMESTAMP,
-        //     $timestamp,
-        //     ScopeInterface::SCOPE_STORE,
-        //     0
-        // );
-        
-        $this->logger->info('ProductSync last sync timestamp updated (not persisted)', [
-            'timestamp' => $timestamp,
-            'note' => 'Configuration persistence not implemented yet'
-        ]);
-    }
-
-    /**
      * 获取批量处理大小
      *
      * @return int
@@ -91,5 +65,18 @@ class Data extends AbstractHelper
             self::XML_PATH_BATCH_SIZE,
             ScopeInterface::SCOPE_STORE
         ) ?: 100; // 默认 100
+    }
+
+    /**
+     * 获取最后一次同步的页码（用于断点续传）
+     *
+     * @return int
+     */
+    public function getLastSyncPage(): int
+    {
+        return (int)$this->scopeConfig->getValue(
+            self::XML_PATH_LAST_SYNC_PAGE,
+            ScopeInterface::SCOPE_STORE
+        ) ?: 1; // 默认从第1页开始
     }
 }

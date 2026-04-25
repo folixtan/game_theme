@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © FolixCode. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Communication/etc/communication.xsd">
+    
+    <!-- 订单同步 Topic -->
+    <topic name="folixcode.order.sync" 
+           is_synchronous="false" 
+           request="Magento\AsynchronousOperations\Api\Data\OperationInterface">
+        <handler name="folixcode.order.sync.handler" 
+                 type="FolixCode\ThirdPartyOrder\Model\MessageQueue\Consumer\OrderSyncConsumer" 
+                 method="process" />
+    </topic>
+    
+</config>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:framework-message-queue:etc/consumer.xsd">
+    
+    <!-- 订单同步消费者 -->
+    <consumer name="folixcode.order.sync" 
+              queue="folixcode.order.sync.queue"
+              handler="FolixCode\ThirdPartyOrder\Model\MessageQueue\Consumer\OrderSyncConsumer::process"
+              maxMessages="100"
+              maxIdleTime="60"
+              sleep="1" />
+
+</config>

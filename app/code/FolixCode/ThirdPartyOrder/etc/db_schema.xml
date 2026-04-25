@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    
+    <!-- 第三方订单关联表 (轻量级补充表) -->
+    <table name="folix_third_party_orders" resource="default" engine="innodb" comment="Folix Third Party Orders Mapping Table">
+        <column xsi:type="int" name="entity_id" padding="10" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        
+        <!-- 关联Magento订单 -->
+        <column xsi:type="int" name="magento_order_id" padding="10" unsigned="true" nullable="false" comment="Magento Order ID"/>
+        <column xsi:type="int" name="customer_id" padding="10" unsigned="true" nullable="true" comment="Customer ID (用于统计)"/>
+        
+        <!-- 第三方订单信息 -->
+        <column xsi:type="varchar" name="third_party_order_id" nullable="true" length="100" comment="Third Party Order ID"/>
+        <column xsi:type="varchar" name="order_type" nullable="true" length="20" comment="Order Type: direct/card"/>
+        
+        <!-- 核心状态 -->
+        <column xsi:type="smallint" name="status_code" padding="10" nullable="true" default="0" comment="Status: 0=Processing, 2=Success, 3=Failed"/>
+        
+        <!-- 直充: 充值账号信息 (用户需要查看) -->
+        <column xsi:type="varchar" name="charge_account" nullable="true" length="255" comment="Charge Account (直充账号)"/>
+        <column xsi:type="varchar" name="charge_region" nullable="true" length="255" comment="Charge Region (区服)"/>
+        
+        <!-- 卡密: 卡密信息 (用户需要复制/发送) -->
+        <column xsi:type="text" name="card_keys" nullable="true" comment="Card Keys JSON: [{card_no, card_pwd, card_deadline}]"/>
+        <column xsi:type="smallint" name="cards_count" padding="10" nullable="true" default="0" comment="Cards Count (用于统计active_keys)"/>
+        
+        <!-- 同步状态 -->
+        <column xsi:type="varchar" name="sync_status" nullable="false" length="20" default="pending" comment="Sync Status: pending/synced/failed"/>
+        <column xsi:type="timestamp" name="synced_at" nullable="true" comment="Synced At"/>
+        
+        <!-- 时间戳 -->
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" nullable="false" default="CURRENT_TIMESTAMP" on_update="true" comment="Updated At"/>
+        
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="entity_id"/>
+        </constraint>
+        
+        <constraint xsi:type="foreign" referenceId="FOLIX_TPO_SALES_ORDER_ENTITY_ID"
+                    table="folix_third_party_orders" column="magento_order_id"
+                    referenceTable="sales_order" referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+        
+        <index referenceId="FOLIX_TPO_MAGENTO_ORDER_ID" indexType="btree">
+            <column name="magento_order_id"/>
+        </index>
+        
+        <index referenceId="FOLIX_TPO_THIRD_PARTY_ORDER_ID" indexType="btree">
+            <column name="third_party_order_id"/>
+        </index>
+        
+        <index referenceId="FOLIX_TPO_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        
+        <index referenceId="FOLIX_TPO_STATUS_CODE" indexType="btree">
+            <column name="status_code"/>
+        </index>
+    </table>
+    
+</schema>

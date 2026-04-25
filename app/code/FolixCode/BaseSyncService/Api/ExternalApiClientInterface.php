@@ -47,4 +47,11 @@ interface ExternalApiClientInterface
      * @return array
      */
     public function delete(string $url, array $headers = []): array;
+
+    /**
+     * 获取API基础URL
+     *
+     * @return string
+     */
+    public function getApiBaseUrl(): string;
 }

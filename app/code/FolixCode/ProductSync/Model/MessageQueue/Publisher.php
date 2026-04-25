@@ -24,7 +24,6 @@ class Publisher implements PublisherInterface
     // Topic名称
     private const TOPIC_PRODUCT_IMPORT = 'folixcode.product.import';
     private const TOPIC_CATEGORY_IMPORT = 'folixcode.category.import';
-    private const TOPIC_PRODUCT_DETAIL = 'folixcode.product.detail';
 
     public function __construct(
         MqPublisher $mqPublisher,

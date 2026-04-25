@@ -43,9 +43,9 @@ class ChargeType extends AbstractSource
     {
         switch ($value) {
             case self::DIRECT:
-                return __('直充');
+                return '直充';
             case self::CARD:
-                return __('卡密');
+                return '卡密';
             default:
                 return null;
         }

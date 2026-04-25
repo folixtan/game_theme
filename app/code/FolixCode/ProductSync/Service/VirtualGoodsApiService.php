@@ -37,7 +37,7 @@ class VirtualGoodsApiService implements VirtualGoodsApiInterface
         try {
             // 默认参数
             $defaultParams = [
-                'limit' => 100,
+                'per_page' => 15,
                 'page' => 1,
                 'timestamp' => 0
             ];
@@ -45,7 +45,7 @@ class VirtualGoodsApiService implements VirtualGoodsApiInterface
             // 合并参数（外部参数优先）
             $params = array_merge($defaultParams, $params);
 
-            $url = $this->apiClient->getApiBaseUrl() . self::PRODUCT_LIST_ENDPOINT;
+            $url = self::PRODUCT_LIST_ENDPOINT;
 
             $this->logger->info('Fetching product list', ['url' => $url, 'params' => $params]);
 
@@ -88,7 +88,7 @@ class VirtualGoodsApiService implements VirtualGoodsApiInterface
             // 合并参数
             $params = array_merge($defaultParams, $params);
 
-            $url = $this->apiClient->getApiBaseUrl() . self::CATEGORY_LIST_ENDPOINT;
+            $url =  self::CATEGORY_LIST_ENDPOINT;
 
             $this->logger->info('Fetching category list', ['url' => $url, 'params' => $params]);
 
@@ -125,7 +125,7 @@ class VirtualGoodsApiService implements VirtualGoodsApiInterface
                 throw new \InvalidArgumentException('params is required');
             }
 
-            $url = $this->apiClient->getApiBaseUrl() . self::PRODUCT_DETAIL_ENDPOINT ;
+            $url = self::PRODUCT_DETAIL_ENDPOINT ;
 
             $this->logger->info('Fetching product detail', ['url' => $url, 'params' => $params]);
 

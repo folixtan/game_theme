@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © FolixCode. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- API客户端首选项 -->
+    <preference for="FolixCode\BaseSyncService\Api\ExternalApiClientInterface" 
+                type="FolixCode\BaseSyncService\Model\ApiClient"/>
+
+    <!-- 加密策略接口首选项 -->
+    <preference for="FolixCode\BaseSyncService\Api\EncryptionStrategyInterface" 
+                type="FolixCode\BaseSyncService\Model\Encryption\Aes256CbcStrategy"/>
+
+    <!-- ThirdPartyOrder专用的ApiClient实例 -->
+    <virtualType name="ThirdPartyOrderApiClient" type="FolixCode\BaseSyncService\Model\ApiClient">
+        <arguments>
+            <argument name="vendorConfig" xsi:type="object">FolixCode\BaseSyncService\Model\DefaultVendorConfig</argument>
+            <argument name="encryptionStrategy" xsi:type="object">FolixCode\BaseSyncService\Api\EncryptionStrategyInterface</argument>
+            <argument name="logger" xsi:type="object">FolixCodeThirdPartyOrderLogger</argument>
+        </arguments>
+    </virtualType>
+
+    <!-- OrderSyncService配置 -->
+    <type name="FolixCode\ThirdPartyOrder\Model\OrderSyncService">
+        <arguments>
+            <argument name="apiClient" xsi:type="object">ThirdPartyOrderApiClient</argument>
+        </arguments>
+    </type>
+
+    <!-- Logger -->
+    <virtualType name="FolixCodeThirdPartyOrderLogger" type="Magento\Framework\Logger\Monolog">
+        <arguments>
+            <argument name="name" xsi:type="string">thirdpartyorder</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="system" xsi:type="object">FolixCodeThirdPartyOrderLogHandler</item>
+            </argument>
+        </arguments>
+    </virtualType>
+    
+    <virtualType name="FolixCodeThirdPartyOrderLogHandler" type="Magento\Framework\Logger\Handler\Base">
+        <arguments>
+            <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+            <argument name="fileName" xsi:type="string">/var/log/thirdpartyorder.log</argument>
+        </arguments>
+    </virtualType>
+
+</config>

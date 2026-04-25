@@ -4,6 +4,22 @@
     <preference for="FolixCode\ProductSync\Api\VirtualGoodsApiInterface" type="FolixCode\ProductSync\Service\VirtualGoodsApiService"/>
     <preference for="FolixCode\ProductSync\Api\Message\PublisherInterface" type="FolixCode\ProductSync\Model\MessageQueue\Publisher"/>
 
+    <!-- ProductSync专用的ApiClient实例 -->
+    <virtualType name="ProductSyncVendorApiClient" type="FolixCode\BaseSyncService\Model\ApiClient">
+        <arguments>
+            <argument name="vendorConfig" xsi:type="object">FolixCode\ProductSync\Service\ApiConfig</argument>
+            <argument name="encryptionStrategy" xsi:type="object">encryptionApi</argument>
+            <argument name="logger" xsi:type="object">FolixCodeProductSyncGeneralLogger</argument>
+        </arguments>
+    </virtualType>
+
+   <virtualType name="encryptionApi" type="FolixCode\BaseSyncService\Model\Encryption\Aes256CbcStrategy">
+       <arguments>
+          <argument name="config" xsi:type="object">FolixCode\ProductSync\Service\ApiConfig</argument>
+       </arguments> 
+
+   </virtualType>
+
     <!-- 命令行 -->
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
@@ -13,11 +29,11 @@
         </arguments>
     </type>
 
-    <!-- VirtualGoodsApiService 配置 - 使用统一的 ApiClient -->
+    <!-- VirtualGoodsApiService 配置 - 使用 ProductSync 专用的 ApiClient -->
     <type name="FolixCode\ProductSync\Service\VirtualGoodsApiService">
         <arguments>
-            <argument name="apiClient" xsi:type="object">FolixCode\BaseSyncService\Api\ExternalApiClientInterface</argument>
-              <argument name="logger" xsi:type="object">FolixCodeProductSyncGeneralLogger</argument>
+            <argument name="apiClient" xsi:type="object">ProductSyncVendorApiClient</argument>
+            <argument name="logger" xsi:type="object">FolixCodeProductSyncGeneralLogger</argument>
         </arguments>
     </type>
 

@@ -12,6 +12,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Framework\App\ObjectManager;
+
+use function Ramsey\Uuid\v1;
+
 /**
  * 同步命令 - 用于手动触发产品同步
  * 业务层Console命令
@@ -20,14 +24,24 @@ class SyncCommand extends Command
 {
     public const COMMAND_NAME = 'folixcode:sync:products';
 
+    private VirtualGoodsApiService $apiService;
+    private PublisherInterface $publisher;
+    private BaseHelper $baseHelper;
+    private TimezoneInterface $timezone;
+    private \Magento\Framework\App\State $appState;
  
     public function __construct(
-     private   VirtualGoodsApiService $apiService,
-     private   PublisherInterface $publisher,
-    private    BaseHelper $baseHelper,
-        private  TimezoneInterface $timezone,
-         private \Magento\Framework\App\State $appState,
+        VirtualGoodsApiService $apiService,
+        PublisherInterface $publisher,
+        BaseHelper $baseHelper,
+        TimezoneInterface $timezone,
+        \Magento\Framework\App\State $appState
     ) {
+        $this->apiService = $apiService;
+        $this->publisher = $publisher;
+        $this->baseHelper = $baseHelper;
+        $this->timezone = $timezone;
+        $this->appState = $appState;
         
         parent::__construct();
     }
@@ -70,6 +84,12 @@ class SyncCommand extends Command
                     'pid',
                     InputOption::VALUE_OPTIONAL,
                     'Product ID for detail sync (default: null for list sync)'
+                ),
+                new InputOption(
+                    'sku',
+                    null,
+                    InputOption::VALUE_OPTIONAL,
+                    'Product ID for detail sync (default: null for list sync)'
                 )
             ]);
 
@@ -84,6 +104,7 @@ class SyncCommand extends Command
         $limit = (int)$input->getOption('limit');
         $page = (int)$input->getOption('page');
         $productId = $input->getOption('product_id');
+        $sku       = $input->getOption('sku');
         $timestamp = (int)$input->getOption('timestamp');
         $timestamp = $timestamp > 0 ?: $this->timezone->date()->getTimestamp();
 
@@ -104,30 +125,26 @@ class SyncCommand extends Command
 
         $startTime = microtime(true);
 
+        $test = ObjectManager::getInstance()->get(\FolixCode\ProductSync\Cron\SyncCategories::class);
+        $test->execute();exit;
         try {
-
-        if( $type === 'detail') {
-            $output->writeln('<comment>Fetching product detail from API...</comment>');
-            
-            if( empty($productId) ) new \Exception('Product ID is required');
-            // 1. 从 API 获取产品列表
-            $details = $this->apiService->getProductDetail([
-                'product_id' => $productId,
-                'timestamp'  => $timestamp
-            ]);
-            var_dump($details);exit;
-            $output->writeln(sprintf('<comment>Found %d products, publishing to MQ...</comment>', count($productData)));
-            
-            // 2. 发布到消息队列
-          //   $this->publisher->publishProductDetail($details);
-        }
-
-   
             // 根据类型调用对应的 API 并发布到 MQ
+            if ($type === 'detail') {
+                $output->writeln('<comment>Fetching product detail from API...</comment>');
+          
+                
+                  
+                $importDatail = ObjectManager::getInstance()->get(\FolixCode\ProductSync\Service\ProductImporter::class);
+
+                $importDatail->importDetail($sku);
+                $output->writeln('<info>Product detail published to MQ.</info>');
+                return Command::SUCCESS;
+            }
+
             if ($type === 'products' || $type === 'all') {
                 $output->writeln('<comment>Fetching products from API...</comment>');
                 
-                // 1. 从 API 获取产品列表
+                // 从 API 获取产品列表
                 $productsData = $this->apiService->getProductList([
                     'per_page' => $limit,
                     'page'    => $page,
@@ -136,9 +153,8 @@ class SyncCommand extends Command
                 
                 $output->writeln(sprintf('<comment>Found %d products, publishing to MQ...</comment>', count($productsData)));
                 
-                // 2. 发布到消息队列
-                 $this->publisher->publishProductImport($productsData);
-              
+                // 发布到消息队列
+                $this->publisher->publishProductImport($productsData);
                 
                 $output->writeln(sprintf('<info>✓ Published %d products to MQ</info>', count($productsData)));
             }
@@ -146,22 +162,19 @@ class SyncCommand extends Command
             if ($type === 'categories' || $type === 'all') {
                 $output->writeln('<comment>Fetching categories from API...</comment>');
                 
-                // 1. 从 API 获取分类列表
+                // 从 API 获取分类列表
                 $categoriesData = $this->apiService->getCategoryList([
-                 //   'per_page' => $limit,
-               //     'page' => $page,
                     'timestamp' => $timestamp
                 ]);
                 
                 $output->writeln(sprintf('<comment>Found %d categories, publishing to MQ...</comment>', count($categoriesData)));
                 
-                // 2. 发布到消息队列
+                // 发布到消息队列
                 foreach ($categoriesData as $id => $name) {
                     $this->publisher->publishCategoryImport([
-                         'id' => $id,
-                         'name' => $name
+                        'id' => $id,
+                        'name' => $name
                     ]);
-                
                 }
                 
                 $output->writeln(sprintf('<info>✓ Published %d categories to MQ</info>', count($categoriesData)));
@@ -171,7 +184,7 @@ class SyncCommand extends Command
             $totalTime = round($endTime - $startTime, 2);
 
             $output->writeln('<info>========================================</info>');
-            $output->writeln(sprintf('<info>Total Published to MQ:</info> %d items | <info>Time:</info> %.2f seconds', $publishedCount, $totalTime));
+            $output->writeln(sprintf('<info>Sync completed in:</info> %.2f seconds', $totalTime));
             $output->writeln('<comment>Consumer will process messages asynchronously</comment>');
             $output->writeln('<info>========================================</info>');
 

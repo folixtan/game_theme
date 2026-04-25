@@ -18,6 +18,8 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use FolixCode\ProductSync\Service\VirtualGoodsApiService;
 use Magento\Framework\Exception\NoSuchEntityException;
 use FolixCode\ProductSync\Exception\ApiSyncException;
+use Magento\Eav\Model\ResourceModel\Entity\Attribute\Set\CollectionFactory as AttributeSetCollectionFactory;
+use Magento\Catalog\Api\Data\ProductAttributeInterfaceFactory;
 
 /**
  * 产品导入服务 - 游戏充值项目
@@ -50,7 +52,7 @@ class ProductImporter
          'charge_template' => [
             'label' => 'Charge Template',
             'frontend_label' => 'Charge Templates',
-            'fontend_input' => 'texteditor',
+            'fontend_input' => 'textarea',
             'required' => false,
             'user_defined' => true,
             'default' => '',
@@ -64,23 +66,24 @@ class ProductImporter
 
     private $categories = [];
 
-     const SKU_PREFIX = 'vg_';
+    const SKU_PREFIX = 'vg_';
 
-     /**
-      * 构造函数
-      */
+    /**
+     * 构造函数
+     */
     public function __construct(
-            private     ProductRepositoryInterface $productRepository,
-            private      ProductFactory $productFactory,
-            private     CategoryProcessor $categoryProcessor,
-            private      ResourceConnection $resourceConnection,
-            private     AttributeRepository $attributeRepository,
-            private      AttributeManagement $attributeManagement,
-            private     LoggerInterface $logger,
-            private      ProductExtensionFactory $extensionFactory,
-            private     TimezoneInterface $timezone,
-            private     VirtualGoodsApiService $apiService,
-         
+        private ProductRepositoryInterface $productRepository,
+        private ProductFactory $productFactory,
+        private CategoryProcessor $categoryProcessor,
+        private ResourceConnection $resourceConnection,
+        private AttributeRepository $attributeRepository,
+        private AttributeManagement $attributeManagement,
+        private LoggerInterface $logger,
+        private ProductExtensionFactory $extensionFactory,
+        private TimezoneInterface $timezone,
+        private VirtualGoodsApiService $apiService,
+        private AttributeSetCollectionFactory $attributeSetCollectionFactory,
+        private ProductAttributeInterfaceFactory $productAttributeFactory
     ) {
       
     }
@@ -215,64 +218,61 @@ class ProductImporter
     /** 
      * 创建自定义属性
      */
-    private function createAttributes($attributeSetId = 4):void {
- 
-    
-
-    /**
-     * 获取属性组ID
-     */
-       $select = $this->resourceConnection->getConnection()->
+    private function createAttributes($attributeSetId = 4): void {
+        /**
+         * 获取属性组ID
+         */
+        $select = $this->resourceConnection->getConnection()->
             select()->from(
                 $this->resourceConnection->getTableName('eav_attribute_group'),
                 ['attribute_group_id']
-                )
-                ->where('attribute_set_id = ?',$attributeSetId)
-                ->where('attribute_group_name= ?','Game Settings');
+            )
+            ->where('attribute_set_id = ?', $attributeSetId)
+            ->where('attribute_group_name = ?', 'Game Settings');
 
-            
         $groupId = $this->resourceConnection->getConnection()->fetchOne($select);
-        
-      
-         $factory = \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Catalog\Api\Data\ProductAttributeInterfaceFactory::class);
-          $select =  $this->resourceConnection->getConnection()->
+
+        $select = $this->resourceConnection->getConnection()->
             select()->from(
                 $this->resourceConnection->getTableName('eav_attribute'),
                 ['attribute_code']
-                )->where('attribute_code in (?)',array_keys(self::CUSTOM_ATTR));
-           
-                $result = $this->resourceConnection->getConnection()->fetchCol($select);
+            )->where('attribute_code in (?)', array_keys(self::CUSTOM_ATTR));
 
-                $originAttributes = array_keys(self::CUSTOM_ATTR);
-                $needCreateAttributes = array_diff($originAttributes,$result);
-              //var_dump($needCreateAttributes);exit;
-                
-              if(empty($needCreateAttributes)) return;
+        $result = $this->resourceConnection->getConnection()->fetchCol($select);
 
-                foreach($needCreateAttributes as $code) {
-                  $attribute = self::CUSTOM_ATTR[$code];
-                 $attributeObj = $factory->create();
-    
-                $attributeObj->setAttributeSetId($attributeSetId);;
-                $attributeObj->setAttributeCode($code);
-                $attributeObj->setDefaultFrontendLabel($attribute['frontend_label']);
-               // var_dump($attribute);exit;
-                $attributeObj->setFrontendInput($attribute['fontend_input']);
-                $attributeObj->setIsUserDefined(true);
-                $attributeObj->setIsVisible(true);
-              
-                $attributeObj->setIsVisibleOnFront(true);
-                $attributeObj->setFontendLabel($attribute['frontend_label']);
-                $attributeObj->setScope($attribute['scope'] ??   ScopedAttributeInterface::SCOPE_GLOBAL);
-               $resultAttribute=  $this->attributeRepository->save($attributeObj);
+        $originAttributes = array_keys(self::CUSTOM_ATTR);
+        $needCreateAttributes = array_diff($originAttributes, $result);
 
-               if($resultAttribute) {
-                   $this->logger->info('Created custom attribute', ['attribute_code' => $code]);
-                   $this->attributeManagement->assign($attributeSetId,$groupId,'face_value',$attribute['sort_order'] ?? 10);
-               }
+        if (empty($needCreateAttributes)) {
+            return;
+        }
+
+        foreach ($needCreateAttributes as $code) {
+            $attribute = self::CUSTOM_ATTR[$code];
+            $attributeObj = $this->productAttributeFactory->create();
+
+            $attributeObj->setAttributeCode($code);
+            $attributeObj->setDefaultFrontendLabel($attribute['frontend_label']);
+            $attributeObj->setFrontendInput($attribute['fontend_input']);
+            $attributeObj->setIsUserDefined(true);
+            $attributeObj->setIsVisible(true);
+            $attributeObj->setIsVisibleOnFront(true);
+            $attributeObj->setFrontendLabel($attribute['frontend_label']);
+            $attributeObj->setScope($attribute['scope'] ?? \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL);
+
+            $resultAttribute = $this->attributeRepository->save($attributeObj);
+
+            if ($resultAttribute && $groupId) {
+                $this->logger->info('Created custom attribute', ['attribute_code' => $code]);
+                // ✅ 修复：使用$code而不是硬编码的'face_value'
+                $this->attributeManagement->assign(
+                    $attributeSetId,
+                    $groupId,
+                    $code,
+                    $attribute['sort_order'] ?? 10
+                );
             }
-        
-        
+        }
     }
 
     /**
@@ -378,8 +378,7 @@ class ProductImporter
         
         if ($attributeSetId === null) {
             try {
-                $attributeSetCollection = \Magento\Framework\App\ObjectManager::getInstance()
-                    ->get(\Magento\Eav\Model\ResourceModel\Entity\Attribute\Set\Collection::class);
+                $attributeSetCollection = $this->attributeSetCollectionFactory->create();
                 
                 $attributeSetCollection->setEntityTypeFilter(
                     \Magento\Catalog\Model\Product::ENTITY
@@ -407,7 +406,7 @@ class ProductImporter
      * @param int $vendor_id
      * @return int|null
      */
-    private function getCateGoryId(int $vendor_id):? int
+    private function getCategoryId(int $vendor_id): ?int
     {
 
        if(isset($this->categories[$vendor_id])) return (int)$this->categories[$vendor_id];

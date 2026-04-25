@@ -4,9 +4,8 @@
         <folixcode_productsync>
             <settings>
                 <!-- 业务配置 -->
-                <sync_interval>60</sync_interval>
-                <last_sync_timestamp>0</last_sync_timestamp>
-                <batch_size>100</batch_size>
+                <is_enabled>0</is_enabled>
+                <batch_size>15</batch_size>
             </settings>
         </folixcode_productsync>
     </default>

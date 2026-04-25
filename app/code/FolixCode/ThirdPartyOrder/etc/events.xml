@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    
+    <!-- 监听订单支付成功事件 -->
+    <event name="sales_order_payment_place_end">
+        <observer name="folixcode_thirdpartyorder_order_payment_success" 
+                  instance="FolixCode\ThirdPartyOrder\Observer\OrderPaymentSuccess" />
+    </event>
+
+</config>

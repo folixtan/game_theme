@@ -74,7 +74,7 @@ class CategoryImportConsumer
             // ✅ 分类已存在，视为成功（不抛出异常）
             $duration = round((microtime(true) - $startTime) * 1000, 2);
             $this->logger->info('Category already exists, skipped', [
-                'category_id' => $categoryData['id'] ?? 'unknown',
+                'category_id' => $categoryId,
                 'duration_ms' => $duration
             ]);
             
@@ -82,7 +82,7 @@ class CategoryImportConsumer
             // ❌ 其他所有错误：记录日志并抛出异常
             $duration = round((microtime(true) - $startTime) * 1000, 2);
             $this->logger->critical('Failed to process category import', [
-                'category_id' => $categoryData['id'] ?? 'unknown',
+                'category_id' => $categoryId,
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString(),
                 'duration_ms' => $duration

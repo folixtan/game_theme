@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    
+    <!-- 
+        接收第三方异步通知
+        POST /rest/V1/thirdpartyorders/notification
+        第三方调用此接口推送订单状态更新
+    -->
+    <route url="/V1/thirdpartyorders/notification" method="POST">
+        <service class="FolixCode\ThirdPartyOrder\Api\ThirdPartyOrderManagementInterface" 
+                 method="handleNotification"/>
+        <resources>
+            <!-- 匿名访问,因为第三方无法提供OAuth token -->
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+    
+    <!-- 
+        根据Magento订单ID查询第三方订单信息
+        GET /rest/V1/thirdpartyorders/:magentoOrderId
+    -->
+    <route url="/V1/thirdpartyorders/:magentoOrderId" method="GET">
+        <service class="FolixCode\ThirdPartyOrder\Api\ThirdPartyOrderManagementInterface" 
+                 method="getByMagentoOrderId"/>
+        <resources>
+            <!-- 需要登录认证 -->
+            <resource ref="self"/>
+        </resources>
+    </route>
+    
+    <!-- 
+        根据第三方订单ID查询订单信息
+        GET /rest/V1/thirdpartyorders/third-party/:thirdPartyOrderId
+    -->
+    <route url="/V1/thirdpartyorders/third-party/:thirdPartyOrderId" method="GET">
+        <service class="FolixCode\ThirdPartyOrder\Api\ThirdPartyOrderManagementInterface" 
+                 method="getByThirdPartyOrderId"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
+    
+</routes>
