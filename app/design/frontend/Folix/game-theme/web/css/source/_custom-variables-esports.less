@@ -241,3 +241,87 @@
 @folix-header-bg: transparent;
 @folix-header-border: @folix-border;
 @folix-input-text: @folix-text-primary;
+
+// ============================================================================
+//  MISSING VARIABLES FROM OneStepCheckout - 从OneStepCheckout补充的变量
+// ============================================================================
+
+// Special Colors
+@folix-gold: #FFD700;                       // 金色 - 价格高亮
+@folix-copyright-blue: #2563EB;             // Copyright蓝色起点
+
+// Button Secondary Border
+@folix-btn-secondary-border: #CDCDCD;       // 次要按钮边框
+
+// Card Colors
+@folix-card-bg: #FFFFFF;                    // 卡片背景
+@folix-card-border: @folix-border;          // 卡片边框
+@folix-card-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);  // 卡片阴影
+@folix-card-hover-shadow: 0 12px 32px rgba(74, 144, 226, 0.15);  // 卡片悬停阴影
+@folix-card-hover-border: @folix-primary;   // 卡片悬停边框
+
+// Input Status Borders
+@folix-input-error-border: @folix-error;    // 输入框错误边框
+@folix-input-success-border: @folix-success; // 输入框成功边框
+
+// Navigation Background
+@folix-nav-bg: #FFFFFF;                     // 导航背景
+
+// Popup Shadow
+@folix-popup-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+// Product Prices
+@folix-price: @folix-secondary;             // 价格颜色
+@folix-price-old: @folix-text-muted;        // 原价颜色
+@folix-price-special: @folix-secondary;     // 特价颜色
+
+// Badges
+@folix-badge-hot-bg: linear-gradient(135deg, @folix-secondary 0%, @folix-secondary-dark 100%);
+@folix-badge-new-bg: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+@folix-badge-sale-bg: linear-gradient(135deg, @folix-success 0%, #059669 100%);
+
+// Table Colors
+@folix-table-header-bg: @folix-bg-panel;    // 表格头部背景
+@folix-table-row-bg: #FFFFFF;               // 表格行背景
+@folix-table-row-alt-bg: @folix-bg-page;    // 表格交替行背景
+@folix-table-row-hover-bg: @folix-bg-hover; // 表格行悬停背景
+@folix-table-border: @folix-border;         // 表格边框
+
+// Gradients
+@folix-gradient-dark: linear-gradient(180deg, @folix-bg-dark 0%, @folix-bg-dark-alt 100%);
+@folix-gradient-hero: linear-gradient(135deg, @folix-primary 0%, @folix-accent 50%, @folix-secondary 100%);
+
+// Header Accent Border
+@folix-header-accent-border: @folix-secondary;
+
+// Footer Text
+@folix-footer-text: @folix-text-on-dark-muted;
+
+// Success Dark
+@folix-success-dark: #059669;               // 成功绿深色
+
+// Warning Background & Border
+@folix-warning-bg: rgba(245, 158, 11, 0.1); // 警告背景
+@folix-warning-border: rgba(245, 158, 11, 0.3); // 警告边框
+
+// Radius XL
+@folix-radius-xl: 16px;                     // 超大圆角
+
+// Shadow Primary
+@folix-shadow-primary: 0 4px 14px rgba(74, 144, 226, 0.25); // 主色阴影
+
+// Z-Index Extended
+@folix-z-fixed: 300;                        // 固定定位层级
+@folix-z-popover: 600;                      // 弹出层层级
+@folix-z-tooltip: 700;                      // 提示层级
+
+// ============================================================================
+//  FONT WEIGHTS - 字体权重（补充Magento原生未定义的变量）
+// ============================================================================
+
+@font-weight__light: 300;                   // 细体
+@font-weight__normal: 400;                  // 常规
+@font-weight__regular: 400;                 // 常规（别名）
+@font-weight__medium: 500;                  // 中等
+@font-weight__semibold: 600;                // 半粗
+@font-weight__bold: 700;                    // 粗体

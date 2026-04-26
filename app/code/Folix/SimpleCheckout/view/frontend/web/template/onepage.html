@@ -1,0 +1,34 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+
+<div class="opc-wrapper">
+    
+    <div class="login-wrapper">
+   
+    <!-- ko foreach: getRegion('authentication') -->
+      <!-- ko template: getTemplate() --><!-- /ko -->
+    <!--/ko-->
+
+    </div>
+    
+   <div class="steps-container">
+       <ol class="opc" id="checkoutSteps">
+    <!-- ko foreach: getRegion('steps') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+    <!--/ko-->
+    </ol>
+   </div>
+   
+</div>
+
+ <div class="sidebar-folix-content"> 
+    
+<!-- ko foreach: getRegion('sidebar') -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+<!--/ko-->
+</div>
+

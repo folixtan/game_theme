@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Folix One Step Checkout
+ * 
+ * 核心思路：
+ * 1. 禁用 progressBar, estimation, shipping-step（一步结账无需配送地址）
+ * 2. Sidebar 改为可折叠面板（移动端固定在底部）
+ * 3. 在 sidebar.children 中添加 place-order 组件（放在摘要底部）
+ * 4. 通过 CSS 隐藏每个支付方式内的 Place Order 按钮
+ * 5. 集成Mageplaza社交登录和登录提示组件
+ * 6. 移动端使用内嵌登录表单,PC端使用Mageplaza弹窗
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="checkout.root">
+            <arguments>
+                <argument name="jsLayout" xsi:type="array">
+                    <item name="components" xsi:type="array">
+                        <item name="checkout" xsi:type="array">
+                             <item name="config" xsi:type="array">
+                                    <item name="template" xsi:type="string">Folix_SimpleCheckout/onepage</item>
+                            </item>
+                            <item name="children" xsi:type="array">
+                                <!-- 禁用 progressBar -->
+                                <item name="progressBar" xsi:type="array">
+                                    <item name="config" xsi:type="array">
+                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                    </item>
+                                </item>
+                                <!-- 禁用 estimation（sidebar 已改为可折叠面板，无需触发按钮） -->
+                                <item name="estimation" xsi:type="array">
+                                    <item name="config" xsi:type="array">
+                                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                                    </item>
+                                </item>
+                             <item name="customer-email" xsi:type="array">
+                                <item name="component" xsi:type="string">Magento_Checkout/js/view/form/element/email</item>
+                                <item name="displayArea" xsi:type="string">customer-email</item>
+                                <item name="tooltip" xsi:type="array">
+                                    <item name="description" xsi:type="string" translate="true">We'll send your order confirmation here.</item>
+                                </item>
+                                <item name="children" xsi:type="array">
+                                    <item name="before-login-form" xsi:type="array">
+                                        <item name="component" xsi:type="string">uiComponent</item>
+                                        <item name="displayArea" xsi:type="string">before-login-form</item>
+                                        <item name="children" xsi:type="array">
+                                            <!-- before login form fields -->
+                                        </item>
+                                    </item>
+                                    <item name="additional-login-form-fields" xsi:type="array">
+                                        <item name="component" xsi:type="string">uiComponent</item>
+                                        <item name="displayArea" xsi:type="string">additional-login-form-fields</item>
+                                        <item name="children" xsi:type="array">
+                                            <!-- Login Notice组件 - 移到Email输入框下方 -->
+                                            <item name="authentication" xsi:type="array">
+                                                <item name="component" xsi:type="string">Folix_SimpleCheckout/js/view/authentication</item>
+                                                <item name="displayArea" xsi:type="string">additional-login-form-fields</item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                            <item name="authentication" xsi:type="array">
+                                        <item name="component" xsi:type="string">Folix_SimpleCheckout/js/view/authentication</item>
+                                </item>
+                                <!-- 禁用 shipping-step -->
+                                <item name="steps" xsi:type="array">
+                                    <item name="children" xsi:type="array">
+                                        <item name="shipping-step" xsi:type="array">
+                                            <item name="config" xsi:type="array">
+                                                <item name="componentDisabled" xsi:type="boolean">true</item>
+                                            </item>
+                                        </item>
+                                        <item name="billing-step" xsi:type="array">                                    
+                                        <item name="children" xsi:type="array">
+                                            <item name="payment" xsi:type="array">
+                                                <item name="config" xsi:type="array">
+                                                            <item name="template" xsi:type="string">Folix_SimpleCheckout/payment</item>
+                                                 </item>
+                                                <item name="children" xsi:type="array">
+                                                 
+                                                    <item name="beforeMethods" xsi:type="array">
+                                                        <item name="children" xsi:type="array">
+                                                            <!-- merge additional data before payment methods here -->
+                                                                    <item name="cart_items" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">Magento_Checkout/js/view/summary/cart-items</item>
+                                                                    <item name="children" xsi:type="array">
+                                                                        <item name="details" xsi:type="array">
+                                                                            <item name="component" xsi:type="string">Magento_Checkout/js/view/summary/item/details</item>
+                                                                            <item name="children" xsi:type="array">
+                                                                                <item name="thumbnail" xsi:type="array">
+                                                                                    <item name="component" xsi:type="string">Magento_Checkout/js/view/summary/item/details/thumbnail</item>
+                                                                                    <item name="displayArea" xsi:type="string">before_details</item>
+                                                                                </item>
+                                                                                <item name="subtotal" xsi:type="array">
+                                                                                    <item name="component" xsi:type="string">Magento_Checkout/js/view/summary/item/details/subtotal</item>
+                                                                                    <item name="displayArea" xsi:type="string">after_details</item>
+                                                                                </item>
+                                                                                <item name="message" xsi:type="array">
+                                                                                    <item name="component" xsi:type="string">Magento_Checkout/js/view/summary/item/details/message</item>
+                                                                                    <item name="displayArea" xsi:type="string">item_message</item>
+                                                                                </item>
+                                                                            </item>
+                                                                        </item>
+                                                                    </item>
+                                                                   </item>
+                                                        </item>
+                                                               
+                                                      </item>
+                                                    <!-- Payment Methods List -->
+                                                    <item name="payments-list" xsi:type="array">
+                                                        <item name="config" xsi:type="array">
+                                                            <item name="template" xsi:type="string">Folix_SimpleCheckout/payment/payment-methods-list</item>
+                                                        </item>
+                                                    </item>
+                                                
+                                                </item>
+                                            </item>
+                                        </item>
+                                 </item>
+                                    </item>
+                                </item>
+                                  
+                                <!-- sidebar 是 checkout.children 的直接子组件 -->
+                                <item name="sidebar" xsi:type="array">
+            
+                                    <item name="children" xsi:type="array">
+                                        <item name="summary" xsi:type="array">
+                                                <item name="children" xsi:type="array">
+                                                    <item name="cart_items" xsi:type="array"> 
+                                                       <item name="config" xsi:type="array">
+                                                            <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                       </item>
+                                                    </item>
+                                                    <item name="totals" xsi:type="array">
+                                                        <item name="children" xsi:type="array">
+                                                            <item name="shipping" xsi:type="array">
+                                                                <item name="config" xsi:type="array">
+                                                                    <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                                </item>
+                                                            </item>
+                                                        </item>
+                                                    </item>
+                                                    <item name="itemsAfter" xsi:type="array">
+                                                        <item name="children" xsi:type="array">
+                                                             <item name="place-order-captcha" xsi:type="array">
+                                                                <item name="component" xsi:type="string">Magento_Checkout/js/view/checkout/placeOrderCaptcha</item>
+                                                                <item name="displayArea" xsi:type="string">place-order-captcha</item>
+                                                                <item name="formId" xsi:type="string">payment_processing_request</item>
+                                                                <item name="configSource" xsi:type="string">checkoutConfig</item>
+                                                            </item>
+                                                            <item name="place_order" xsi:type="array">
+                                                                <item name="component" xsi:type="string">Folix_SimpleCheckout/js/view/place-order-button</item>
+                                                            
+                                                                <item name="sortOrder" xsi:type="string">100</item>
+                                                                
+                                                            </item>
+                                                        </item>    
+                                                    </item>
+                                               
+                                        </item>
+                                        </item>
+                                          <!-- Remove shipping information display -->
+                                        <item name="shipping-information" xsi:type="array">
+                                            <item name="config" xsi:type="array">
+                                                <item name="componentDisabled" xsi:type="boolean">true</item>
+                                            </item>
+                                        </item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </item>
+                </argument>
+            </arguments>
+        </referenceBlock>
+    </body>
+</page>

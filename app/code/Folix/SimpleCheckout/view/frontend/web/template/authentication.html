@@ -1,0 +1,28 @@
+<!--
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<div class="authentication-wrapper" data-block="authentication" data-bind="visible: isActive()">
+     <div class="folix-login-notice desktop-only">
+    <div class="login-notice-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+    </div>
+    <div class="login-notice-content">
+        <div class="login-notice-title" data-bind="i18n: 'Already have an account?'">已有账号?</div>
+        <div class="login-notice-desc" data-bind="i18n: 'Sign in to enjoy faster checkout and exclusive offers'">登录后可以享受更快的结账体验和专属优惠</div>
+        <button class="action-login-trigge login-trigger-btn" data-bind="i18n: 'Sign In Now'">立即登录</button>
+    </div>
+</div>
+
+<!-- 移动端: 简洁的登录链接 -->
+<div class="mobile-login-link mobile-only">
+    <span data-bind="i18n: 'Already have an account?'">已有账号?</span>
+    <button class="action-login-trigger" data-bind=" i18n: 'Sign In'">立即登录</button>
+</div>
+
+     
+</div>

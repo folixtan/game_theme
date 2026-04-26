@@ -1,0 +1,943 @@
+
+// ============================================================================
+// 公共样式 - Common Styles
+// 适用于所有屏幕尺寸的通用样式
+// 使用 & when (@media-common = true) 确保只输出一次
+// ============================================================================
+
+
+& when (@media-common = true) {
+
+    
+    // ---------------------------------------------
+    // OPC Wrapper - 主内容区域
+    // ---------------------------------------------
+    .opc-wrapper {
+        position: relative;
+        width: 100%;
+        flex: 1;
+        min-width: 0;
+        background: transparent;
+    }
+
+    // ---------------------------------------------
+    // Login Wrapper - 登录区域
+    // ---------------------------------------------
+    .login-wrapper {
+        margin-bottom: @indent__l;
+    }
+
+    .form-login {
+        background: @folix-bg-card;
+        border-radius: @button__border-radius;
+        padding: @indent__l;
+        box-shadow: @folix-card-shadow;
+        border: 1px solid @folix-input-border;
+
+        .fieldset {
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .field.required {
+            margin-bottom: @indent__base;
+        }
+
+        .label {
+            display: block;
+            font-size: 14px;
+            font-weight: @font-weight__semibold;
+            color: @folix-input-text;
+            margin-bottom: @indent__xs;
+        }
+
+        .control {
+            position: relative;
+        }
+
+        .input-text {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid @folix-input-border;
+            border-radius: @button__border-radius;
+            font-size: 15px;
+            color: @folix-input-text;
+            background: @folix-input-bg;
+            transition: @folix-transition-fast;
+
+            &:focus {
+                border-color: @folix-input-focus-border;
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+            }
+
+            &.mage-error {
+                border-color: @folix-error;
+            }
+        }
+    }
+
+    // Tooltip提示
+    .field-tooltip.toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .field-tooltip-action {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394A3B8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'/%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+
+    .note {
+        display: block;
+        margin-top: @indent__xs;
+        font-size: 13px;
+        color: @folix-text-light;
+    }
+
+    // ---------------------------------------------
+    // Authentication Wrapper - 登录提示
+    // ---------------------------------------------
+    .authentication-wrapper {
+        margin-top: @indent__base;
+    }
+
+    .folix-login-notice.desktop-only {
+        display: flex;
+        align-items: center;
+        gap: @indent__base;
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.08) 0%, rgba(255, 215, 0, 0.04) 100%);
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        border-radius: @button__border-radius;
+        padding: @indent__base;
+        transition: @folix-transition-fast;
+
+        &:hover {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.12) 0%, rgba(255, 215, 0, 0.06) 100%);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+    }
+
+    .login-notice-icon {
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        background: @folix-btn-primary-bg;
+        border-radius: @folix-radius-full;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        svg {
+            width: 20px;
+            height: 20px;
+            color: @folix-btn-primary-text;
+        }
+    }
+
+    .login-notice-content {
+        flex: 1;
+    }
+
+    .login-notice-title {
+        font-size: 15px;
+        font-weight: @font-weight__semibold;
+        color: @folix-input-text;
+        margin-bottom: 4px;
+    }
+
+    .login-notice-desc {
+        font-size: 13px;
+        color: @folix-text-secondary;
+        margin-bottom: @indent__s;
+    }
+
+    .action-auth-toggle.social-login-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: @indent__xs;
+        padding: @indent__s @indent__base;
+        background: @folix-btn-primary-bg;
+        border: none;
+        border-radius: @button__border-radius;
+        color: @folix-btn-primary-text;
+        font-size: 14px;
+        font-weight: @font-weight__semibold;
+        text-decoration: none;
+        transition: @folix-transition-fast;
+        cursor: pointer;
+
+        &:hover {
+            background: @folix-btn-primary-hover-bg;
+            transform: translateY(-2px);
+            box-shadow: @folix-shadow-gold;
+            text-decoration: none;
+            color: @folix-btn-primary-text;
+        }
+    }
+
+    // ---------------------------------------------
+    // Steps Container - 步骤容器
+    // ---------------------------------------------
+    .steps-container {
+        margin-top: @indent__l;
+    }
+
+    #payment .step-content {
+        padding: 0;
+    }
+
+    .form.payments .fieldset {
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    legend.legend {
+        display: none;
+    }
+
+    // ---------------------------------------------
+    // Cart Items Summary - 购物车商品摘要
+    // ---------------------------------------------
+    .block.items-in-cart {
+        background: @folix-bg-card;
+        border-radius: @button__border-radius;
+        margin-bottom: @indent__l;
+        box-shadow: @folix-card-shadow;
+        border: 1px solid @folix-input-border;
+        overflow: hidden;
+
+        .title {
+            padding: @indent__base;
+            background: @folix-bg-panel;
+            border-bottom: 1px solid @folix-border;
+            cursor: pointer;
+
+            strong {
+                font-size: 16px;
+                font-weight: @font-weight__semibold;
+                color: @folix-input-text;
+            }
+        }
+    }
+
+    .content.minicart-items {
+        padding: @indent__base;
+    }
+
+    .minicart-items-wrapper .minicart-items {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .product-item {
+        display: flex;
+        gap: @indent__base;
+        padding: @indent__base 0;
+        border-bottom: 1px solid @folix-border;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    .product {
+        display: flex;
+        gap: @indent__base;
+        width: 100%;
+    }
+
+    .product-image-container {
+        flex-shrink: 0;
+    }
+
+    .product-image-wrapper img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: @button__border-radius;
+        border: 1px solid @folix-input-border;
+        background: @folix-bg-panel;
+    }
+
+    .product-item-details {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .product-item-name-block {
+        margin-bottom: @indent__s;
+    }
+
+    .product-item-name {
+        display: block;
+        font-size: 15px;
+        font-weight: @font-weight__semibold;
+        color: @folix-input-text;
+        line-height: 1.4;
+        margin-bottom: @indent__xs;
+    }
+
+    .details-qty {
+        display: flex;
+        align-items: center;
+        gap: @indent__xs;
+        font-size: 14px;
+        color: @folix-text-secondary;
+
+        .value {
+            font-weight: @font-weight__semibold;
+            color: @folix-input-text;
+        }
+    }
+
+    .subtotal {
+        display: block;
+        font-size: 16px;
+        font-weight: @font-weight__semibold;
+        color: @folix-secondary;
+    }
+
+    // ---------------------------------------------
+    // Payment Methods List - 支付方式列表
+    // ---------------------------------------------
+    .opc-payment {
+        margin-top: @indent__l;
+    }
+
+    .items.payment-methods .payment-group {
+        margin-bottom: @indent__l;
+    }
+
+    .payment-group-title-wrap {
+        font-size: 18px;
+        font-weight: @font-weight__semibold;
+        color: @folix-input-text;
+        margin-bottom: @indent__base;
+        padding-bottom: @indent__s;
+        border-bottom: 2px solid @folix-secondary;
+    }
+
+    .payment-methods-items {
+        display: flex;
+        flex-direction: column;
+        gap: @indent__base;
+    }
+
+    .payment-method {
+        background: @folix-bg-card;
+        border-radius: @button__border-radius;
+        border: 2px solid @folix-border;
+        transition: @folix-transition-fast;
+
+        &._active {
+            border-color: @folix-input-focus-border;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.15);
+        }
+    }
+
+    .payment-method-title {
+        padding: @indent__base;
+        cursor: pointer;
+        border-bottom: 1px solid transparent;
+
+        &.field.choice {
+            display: flex;
+            align-items: center;
+            gap: @indent__base;
+            margin: 0;
+        }
+
+        input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            margin: 0;
+            cursor: pointer;
+            accent-color: @folix-secondary;
+        }
+
+        label.label {
+            flex: 1;
+            font-size: 15px;
+            font-weight: @font-weight__semibold;
+            color: @folix-input-text;
+            cursor: pointer;
+            margin: 0;
+        }
+    }
+
+    .payment-method-content {
+        display: none;
+        padding: @indent__l;
+        border-top: 1px solid @folix-border;
+
+        .payment-method._active & {
+            display: block;
+        }
+    }
+
+    // Billing Address Form
+    .checkout-billing-address {
+        margin-bottom: @indent__l;
+    }
+
+    .billing-address-same-as-shipping-block {
+        margin-bottom: @indent__base;
+
+        input[type="checkbox"] {
+            margin-right: @indent__xs;
+            accent-color: @folix-secondary;
+        }
+
+        label {
+            font-size: 14px;
+            color: @folix-text-secondary;
+        }
+    }
+
+    .fieldset {
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .field {
+        margin-bottom: @indent__base;
+
+        &._required .label:after {
+            content: ' *';
+            color: @folix-error;
+        }
+
+        .label {
+            display: block;
+            font-size: 14px;
+            font-weight: @font-weight__semibold;
+            color: @folix-input-text;
+            margin-bottom: @indent__xs;
+        }
+
+        .control {
+            .input-text,
+            select.select {
+                width: 100%;
+                padding: 12px 16px;
+                border: 1px solid @folix-input-border;
+                border-radius: @button__border-radius;
+                font-size: 15px;
+                color: @folix-input-text;
+                background: @folix-input-bg;
+                transition: @folix-transition-fast;
+
+                &:focus {
+                    border-color: @folix-input-focus-border;
+                    outline: none;
+                    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+                }
+            }
+
+            select.select {
+                appearance: none;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394A3B8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 12px center;
+                background-size: 16px;
+                padding-right: 40px;
+            }
+        }
+    }
+
+    // Actions Toolbar
+    .actions-toolbar {
+        margin-top: @indent__l;
+        display: flex;
+        gap: @indent__base;
+
+        .primary {
+            display: flex;
+            gap: @indent__base;
+        }
+    }
+
+    .action-update,
+    .action-cancel {
+        padding: 12px 24px;
+        border-radius: @button__border-radius;
+        font-size: 14px;
+        font-weight: @font-weight__semibold;
+        cursor: pointer;
+        transition: @folix-transition-fast;
+        border: none;
+    }
+
+    .action-update {
+        background: @folix-btn-primary-bg;
+        color: @folix-btn-primary-text;
+
+        &:hover {
+            background: @folix-btn-primary-hover-bg;
+            transform: translateY(-2px);
+            box-shadow: @folix-shadow-gold;
+        }
+    }
+
+    .action-cancel {
+        background: @folix-bg-panel;
+        color: @folix-text-secondary;
+        border: 1px solid @folix-input-border;
+
+        &:hover {
+            background: @folix-bg-hover;
+        }
+    }
+
+    // ---------------------------------------------
+    // Airwallex Card Form
+    // ---------------------------------------------
+    .awx-split-card-container {
+        max-width: 320px;
+        margin: @indent__l auto;
+    }
+
+    .awx-card-number,
+    .awx-card-expiry-cvc {
+        margin-bottom: @indent__base;
+    }
+
+    .awx-txt {
+        font-size: 13px;
+        font-weight: @font-weight__semibold;
+        color: @folix-text-secondary;
+        margin-bottom: @indent__xs;
+    }
+
+    .airwallex-card {
+        min-height: 45px;
+        border: 1px solid @folix-input-border;
+        border-radius: @button__border-radius;
+        overflow: hidden;
+        background: @folix-input-bg;
+
+        &.error {
+            border-color: @folix-error;
+        }
+
+        iframe {
+            width: 100%;
+            height: 45px;
+            border: none;
+        }
+    }
+
+    .awx-card-expiry-cvc > div {
+        display: flex;
+        justify-content: center;
+    }
+
+    .awx-card-expiry-cvc .awx-card-expiry,
+    .awx-card-expiry-cvc .awx-card-cvc {
+        flex: 1;
+        max-width: 140px;
+    }
+
+    .awx-card-expiry-cvc > div[style*="width: 30px"] {
+        width: 30px;
+    }
+
+    .airwallex-error {
+        color: @folix-error;
+        font-size: 14px;
+        margin-top: @indent__s;
+        text-align: center;
+    }
+
+    // Place Order Button
+    .awx-card-actions-toolbar {
+        margin-top: @indent__l;
+    }
+
+    .action.primary.checkout {
+        width: 100%;
+        padding: 16px;
+        background: @folix-btn-secondary-bg;
+        border: none;
+        border-radius: @button__border-radius;
+        color: @folix-btn-primary-text;
+        font-size: 16px;
+        font-weight: @font-weight__semibold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: @folix-transition-fast;
+
+        &:hover:not(:disabled) {
+            background: @folix-btn-secondary-hover-bg;
+            transform: translateY(-2px);
+            box-shadow: @folix-shadow-red;
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: @color-gray-middle1;
+        }
+    }
+
+    // ---------------------------------------------
+    // Discount Code Section
+    // ---------------------------------------------
+    .payment-option._collapsible {
+        background: @folix-bg-card;
+        border-radius: @button__border-radius;
+        margin-top: @indent__l;
+        box-shadow: @folix-card-shadow;
+        border: 1px solid @folix-input-border;
+        overflow: hidden;
+    }
+
+    .payment-option-title {
+        padding: @indent__base;
+        cursor: pointer;
+        background: @folix-bg-panel;
+        border-bottom: 1px solid @folix-border;
+
+        .action.action-toggle {
+            font-size: 15px;
+            font-weight: @font-weight__semibold;
+            color: @folix-input-text;
+            display: flex;
+            align-items: center;
+            gap: @indent__s;
+
+            &:before {
+                content: '';
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394A3B8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+                background-size: contain;
+                background-repeat: no-repeat;
+                transition: transform 0.2s ease;
+            }
+        }
+    }
+
+    .payment-option._active .payment-option-title .action.action-toggle:before {
+        transform: rotate(180deg);
+    }
+
+    .payment-option-content {
+        display: none;
+        padding: @indent__l;
+
+        .payment-option._active & {
+            display: block;
+        }
+    }
+
+    // ---------------------------------------------
+    // Sidebar Summary - 订单汇总侧边栏
+    // ---------------------------------------------
+    .sidebar-folix-content .opc-sidebar {
+        background: @folix-bg-card;
+        border-radius: @button__border-radius;
+        box-shadow: @folix-shadow-lg;
+        border: 1px solid @folix-input-border;
+        position: sticky;
+        top: @indent__l;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+    }
+
+    .opc-block-summary {
+        padding: @indent__l;
+
+        > .title {
+            display: block;
+            font-size: 20px;
+            font-weight: @font-weight__semibold;
+            color: @folix-input-text;
+            margin-bottom: @indent__base;
+            padding-bottom: @indent__s;
+            border-bottom: 2px solid @folix-secondary;
+        }
+    }
+
+    // Order Summary Table
+    .table-totals {
+        width: 100%;
+        margin-bottom: @indent__l;
+    }
+
+    .totals.sub th,
+    .totals.sub td {
+        padding: @indent__s 0;
+    }
+
+    .totals.sub th.mark {
+        font-size: 14px;
+        color: @folix-text-secondary;
+        font-weight: normal;
+    }
+
+    .totals.sub td.amount {
+        text-align: right;
+    }
+
+    .totals.sub .price {
+        font-size: 15px;
+        font-weight: @font-weight__semibold;
+        color: @folix-input-text;
+    }
+
+    .totals.grand th,
+    .totals.grand td {
+        padding-top: @indent__base;
+        border-top: 2px solid @folix-border;
+    }
+
+    .totals.grand th.mark {
+        font-size: 16px;
+        color: @folix-input-text;
+        font-weight: @font-weight__semibold;
+    }
+
+    .totals.grand td.amount {
+        text-align: right;
+    }
+
+    .totals.grand strong {
+        font-size: 20px;
+        color: @folix-secondary;
+    }
+
+    .totals.grand .price {
+        font-size: 20px;
+        color: @folix-secondary;
+        font-weight: @font-weight__bold;
+    }
+
+    // Security Notice
+    .security-notice {
+        display: flex;
+        align-items: center;
+        gap: @indent__s;
+        padding: @indent__base;
+        background: linear-gradient(135deg, rgba(5, 150, 105, 0.08) 0%, rgba(5, 150, 105, 0.04) 100%);
+        border: 1px solid rgba(5, 150, 105, 0.2);
+        border-radius: @button__border-radius;
+        margin-bottom: @indent__l;
+
+        svg {
+            width: 20px;
+            height: 20px;
+            color: @folix-success;
+            flex-shrink: 0;
+        }
+
+        span {
+            font-size: 13px;
+            color: @folix-text-secondary;
+            font-weight: @font-weight__normal;
+        }
+    }
+
+    // Place Order Button in Sidebar
+    .folix-place-order {
+        margin-top: @indent__l;
+        padding-top: @indent__base;
+        border-top: 2px solid @folix-border;
+
+        .primary .action.primary.checkout {
+            width: 100%;
+            padding: 16px;
+            background: @folix-btn-secondary-bg;
+            border: none;
+            border-radius: @button__border-radius;
+            color: @folix-btn-primary-text;
+            font-size: 16px;
+            font-weight: @font-weight__semibold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: @folix-transition-fast;
+
+            &:hover:not(:disabled) {
+                background: @folix-btn-secondary-hover-bg;
+                transform: translateY(-2px);
+                box-shadow: @folix-shadow-red;
+            }
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                background: @color-gray-middle1;
+            }
+        }
+    }
+
+} // end & when (@media-common = true)
+
+// ============================================================================
+// Mobile Responsive Styles - 移动端样式
+// 屏幕宽度 <= @screen__m (768px)
+// ============================================================================
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    body {
+        padding: 20px 10px;
+    }
+
+    .checkout-container {
+        padding: @indent__s;
+        flex-direction: column;
+    }
+    
+    .opc-wrapper {
+        width: 100%;
+        padding: 0;
+    }
+    
+    .form-login {
+        padding: @indent__base;
+    }
+    
+    .folix-login-notice.desktop-only {
+        display: none;
+    }
+    
+    .mobile-login-link.mobile-only {
+        display: block;
+        text-align: center;
+        padding: @indent__base;
+        background: @folix-bg-panel;
+        border-radius: @button__border-radius;
+    }
+    
+    .product-image-wrapper img {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .product-item-name {
+        font-size: 14px;
+    }
+    
+    .details-qty {
+        font-size: 13px;
+    }
+    
+    .subtotal {
+        font-size: 15px;
+    }
+    
+    .payment-method-content {
+        padding: @indent__base;
+    }
+    
+    .field .control .input-text,
+    .field .control select.select {
+        font-size: 16px !important; // Prevent iOS zoom on input focus
+        min-height: 44px;
+    }
+    
+    .awx-split-card-container {
+        max-width: 100%;
+    }
+    
+    // Sidebar - Fixed Bottom Panel on Mobile
+    .sidebar-folix-content {
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        max-height: 70vh;
+        border-radius: @button__border-radius @button__border-radius 0 0;
+        transform: translateY(calc(100% - 60px));
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 100;
+        margin: 0;
+
+        &.active {
+            transform: translateY(0);
+        }
+    }
+    
+    .opc-block-summary {
+        padding: @indent__base;
+
+        > .title {
+            display: none;
+        }
+    }
+    
+    .security-notice {
+        padding: @indent__s @indent__base;
+
+        svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        span {
+            font-size: 12px;
+        }
+    }
+    
+    .folix-place-order .primary .action.primary.checkout {
+        padding: 14px;
+        font-size: 15px;
+        min-height: 50px;
+    }
+    
+    .checkout-index-index .page-wrapper {
+        padding-bottom: 120px;
+    }
+}
+
+// ============================================================================
+// Desktop Styles - 桌面端样式
+// 屏幕宽度 >= @screen__m (768px)
+// ============================================================================
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .checkout-container {
+        display: flex;
+        gap: @indent__xl;
+        align-items: flex-start;
+        
+        .opc-wrapper {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .sidebar-folix-content {
+            width: 380px;
+            flex-shrink: 0;
+            position: relative !important; // 桌面端不使用fixed定位
+            transform: none !important; // 重置移动端transform
+            
+            .opc-sidebar {
+                position: sticky !important; // 桌面端使用sticky定位
+                top: 20px;
+                bottom: auto;
+                left: auto;
+                right: auto;
+                max-height: none;
+                border-radius: @button__border-radius;
+                transform: none !important;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            }
+        }
+    }
+}

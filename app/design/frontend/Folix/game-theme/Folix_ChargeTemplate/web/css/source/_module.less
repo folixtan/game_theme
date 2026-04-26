@@ -1,0 +1,260 @@
+// /**
+//  * Folix Charge Template Styles
+//  */
+
+& when (@media-common = true) {
+    
+    //
+    //  Charge Template Container
+    //  _____________________________________________
+
+    .product-charge-template {
+        margin: @indent__l 0;
+        padding: @indent__l;
+        background: @folix-bg-card;
+        border-radius: @folix-radius-lg;
+        border: 1px solid @folix-border;
+        position: relative;
+        
+        // 顶部发光边框
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                @folix-primary 50%, 
+                transparent 100%);
+            border-radius: 2px;
+        }
+    }
+
+    .charge-template-title {
+        margin-bottom: @indent__m;
+        padding-bottom: @indent__s;
+        border-bottom: 1px solid @folix-border;
+        
+        h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: @folix-text-primary;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    }
+
+    .charge-template-fields {
+        display: flex;
+        flex-direction: column;
+        gap: @indent__m;
+    }
+
+    //
+    //  Charge Field
+    //  _____________________________________________
+
+    .charge-field {
+        position: relative;
+        
+        &.field-focused {
+            .charge-field-label {
+                color: @folix-primary;
+            }
+            
+            .charge-field-input {
+                border-color: @folix-primary;
+                box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+            }
+        }
+    }
+
+    .charge-field-label {
+        display: block;
+        margin-bottom: @indent__xs;
+        font-size: 13px;
+        font-weight: 600;
+        color: @folix-text-secondary;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        transition: color 0.3s ease;
+        
+        .required {
+            color: @folix-error;
+            margin-left: 2px;
+        }
+    }
+
+    .charge-field-input {
+        width: 100%;
+        padding: @indent__s @indent__m;
+        background: @folix-bg-page;
+        border: 1px solid @folix-border;
+        border-radius: @folix-radius-md;
+        color: @folix-text-primary;
+        font-size: 14px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        outline: none;
+        
+        &::placeholder {
+            color: @folix-text-muted;
+            font-size: 13px;
+        }
+        
+        &:hover {
+            border-color: @folix-primary;
+        }
+        
+        &:focus {
+            border-color: @folix-primary;
+            background: @folix-bg-card;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+    }
+
+    .charge-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        padding-right: @indent__xl;
+        cursor: pointer;
+    }
+
+    .charge-field-arrow {
+        position: absolute;
+        right: @indent__m;
+        bottom: @indent__m;
+        pointer-events: none;
+        color: @folix-text-secondary;
+        transition: transform 0.3s ease;
+    }
+
+    .charge-select:focus + .charge-field-arrow {
+        transform: rotate(180deg);
+    }
+
+    .charge-textarea {
+        min-height: 80px;
+        resize: vertical;
+        font-family: inherit;
+    }
+
+    //
+    //  Validation Styles
+    //  _____________________________________________
+
+    .charge-field-input.validation-failed {
+        border-color: @folix-error;
+        box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.1);
+    }
+
+    .charge-field-input.validation-passed {
+        border-color: @folix-success;
+    }
+
+    //
+    //  Cart Charge Template Styles
+    //  _____________________________________________
+
+    .charge-template-options {
+        margin-top: @indent__s;
+        padding-top: @indent__s;
+        border-top: 1px solid @folix-border;
+        
+        .charge-template-title {
+            color: @folix-primary;
+            font-weight: 600;
+            margin-bottom: @indent__xs;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        dt {
+            font-weight: 500;
+            color: @folix-text-secondary;
+            font-size: 12px;
+            margin-top: @indent__xs;
+        }
+        
+        dd {
+            color: @folix-text-primary;
+            font-size: 13px;
+            margin-left: 0;
+            margin-bottom: @indent__xs;
+        }
+    }
+
+    //
+    //  Alert Modal Styles - Fix White Text Issue
+    //  _____________________________________________
+
+    .modal-popup {
+        .modal-inner-wrap {
+            background: @folix-bg-card;
+            
+            .modal-header {
+                .modal-title {
+                    color: @folix-text-primary;
+                }
+                
+                .action-close {
+                    color: @folix-text-secondary;
+                    
+                    &:hover {
+                        color: @folix-text-primary;
+                    }
+                }
+            }
+            
+            .modal-content {
+                color: @folix-text-primary;
+                
+                // 内容在 .modal-content 的直接子 div 中
+                > div {
+                    color: @folix-text-primary;
+                }
+            }
+            
+            .modal-footer {
+                .action-primary {
+                    background: @folix-primary;
+                    color: #ffffff;
+                    border: none;
+                    
+                    &:hover {
+                        background: darken(@folix-primary, 10%);
+                    }
+                }
+                
+                .action-secondary {
+                    background: transparent;
+                    color: @folix-text-primary;
+                    border: 1px solid @folix-border;
+                    
+                    &:hover {
+                        background: @folix-border;
+                        color: @folix-text-primary;
+                    }
+                }
+            }
+        }
+    }
+
+    //
+    //  Desktop Styles
+    //  _____________________________________________
+
+    .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+        .product-charge-template {
+            padding: @indent__xl;
+        }
+        
+        .charge-template-title h3 {
+            font-size: 18px;
+        }
+    }
+}

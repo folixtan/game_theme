@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Folix Simple Checkout - Demo</title>
+    <style>
+        /* ========================================================================
+           Folix Game Theme - Color Variables (参考 _custom-variables-esports.less)
+           ======================================================================== */
+        :root {
+            /* Brand Colors */
+            --folix-primary: #4A90E2;
+            --folix-primary-dark: #357ABD;
+            --folix-secondary: #FF6B35;
+            --folix-secondary-dark: #EA580C;
+            --folix-accent: #6C5CE7;
+            
+            /* Text Colors */
+            --folix-text-primary: #1E293B;
+            --folix-text-secondary: #475569;
+            --folix-text-muted: #64748B;
+            
+            /* Background Colors */
+            --folix-bg-page: #F8FAFC;
+            --folix-bg-card: #FFFFFF;
+            --folix-bg-hover: #E2E8F0;
+            
+            /* Border Colors */
+            --folix-border: #E2E8F0;
+            --folix-border-light: #F1F5F9;
+            
+            /* Status Colors */
+            --folix-success: #10B981;
+            --folix-error: #EF4444;
+            
+            /* Shadows */
+            --folix-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --folix-shadow-md: 0 4px 14px rgba(74, 144, 226, 0.12);
+            --folix-shadow-primary: 0 4px 14px rgba(74, 144, 226, 0.25);
+            --folix-shadow-secondary: 0 4px 14px rgba(255, 107, 53, 0.25);
+            
+            /* Gradients */
+            --folix-gradient-primary: linear-gradient(135deg, #4A90E2 0%, #6C5CE7 100%);
+            --folix-gradient-secondary: linear-gradient(135deg, #FF6B35 0%, #EA580C 100%);
+            
+            /* Spacing */
+            --folix-space-2: 8px;
+            --folix-space-3: 12px;
+            --folix-space-4: 16px;
+            --folix-space-6: 24px;
+            
+            /* Radius */
+            --folix-radius-sm: 4px;
+            --folix-radius-md: 8px;
+            --folix-radius-lg: 12px;
+            
+            /* Transitions */
+            --folix-transition-fast: 0.15s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--folix-bg-page);
+            color: var(--folix-text-primary);
+            line-height: 1.6;
+        }
+        
+        .checkout-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .checkout-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .checkout-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            background: var(--folix-gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+        
+        .checkout-header p {
+            color: var(--folix-text-secondary);
+            font-size: 14px;
+        }
+        
+        /* ========================================================================
+           Main Layout - 左右分栏
+           ======================================================================== */
+        .checkout-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: var(--folix-space-6);
+            align-items: start;
+        }
+        
+        /* ========================================================================
+           Left Column - Main Content
+           ======================================================================== */
+        .checkout-main {
+            background: var(--folix-bg-card);
+            border-radius: var(--folix-radius-lg);
+            box-shadow: var(--folix-shadow-md);
+            padding: var(--folix-space-6);
+        }
+        
+        /* Section Title */
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--folix-text-primary);
+            margin-bottom: var(--folix-space-4);
+            padding-bottom: var(--folix-space-3);
+            border-bottom: 2px solid var(--folix-border-light);
+        }
+        
+        /* ========================================================================
+           1. Customer Email Section
+           ======================================================================== */
+        .customer-email-section {
+            margin-bottom: var(--folix-space-6);
+        }
+        
+        .email-input-group {
+            position: relative;
+        }
+        
+        .email-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--folix-border);
+            border-radius: var(--folix-radius-md);
+            font-size: 14px;
+            transition: all var(--folix-transition-fast);
+            background-color: var(--folix-bg-card);
+        }
+        
+        .email-input:focus {
+            outline: none;
+            border-color: var(--folix-primary);
+            box-shadow: var(--folix-shadow-primary);
+        }
+        
+        .email-hint {
+            font-size: 13px;
+            color: var(--folix-text-muted);
+            margin-top: var(--folix-space-2);
+        }
+        
+        /* Login Notice Card */
+        .login-notice {
+            display: flex;
+            align-items: center;
+            gap: var(--folix-space-4);
+            padding: var(--folix-space-4);
+            margin-top: var(--folix-space-4);
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(255, 107, 53, 0.03) 100%);
+            border: 1px solid rgba(255, 107, 53, 0.15);
+            border-radius: var(--folix-radius-md);
+            transition: all var(--folix-transition-fast);
+        }
+        
+        .login-notice:hover {
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .login-notice-icon {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 107, 53, 0.1);
+            border-radius: 50%;
+        }
+        
+        .login-notice-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--folix-secondary);
+        }
+        
+        .login-notice-content {
+            flex: 1;
+        }
+        
+        .login-notice-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--folix-text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .login-notice-desc {
+            font-size: 13px;
+            color: var(--folix-text-secondary);
+            margin-bottom: var(--folix-space-3);
+        }
+        
+        .login-trigger-btn {
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: var(--folix-radius-sm);
+            background: var(--folix-primary);
+            color: #FFFFFF;
+            border: none;
+            cursor: pointer;
+            transition: all var(--folix-transition-fast);
+            box-shadow: var(--folix-shadow-primary);
+        }
+        
+        .login-trigger-btn:hover {
+            background: var(--folix-secondary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(255, 107, 53, 0.2);
+        }
+        
+        /* ========================================================================
+           2. Cart Items Section (with Recharge Info)
+           ======================================================================== */
+        .cart-items-section {
+            margin-bottom: var(--folix-space-6);
+        }
+        
+        .cart-item-list {
+            list-style: none;
+        }
+        
+        .cart-item {
+            display: flex;
+            gap: var(--folix-space-4);
+            padding: var(--folix-space-4);
+            margin-bottom: var(--folix-space-3);
+            background: var(--folix-bg-page);
+            border: 1px solid var(--folix-border);
+            border-radius: var(--folix-radius-md);
+            transition: all var(--folix-transition-fast);
+        }
+        
+        .cart-item:hover {
+            border-color: var(--folix-primary);
+            box-shadow: var(--folix-shadow-md);
+        }
+        
+        .cart-item-image {
+            flex-shrink: 0;
+            width: 80px;
+            height: 80px;
+            background: var(--folix-gradient-primary);
+            border-radius: var(--folix-radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 24px;
+        }
+        
+        .cart-item-details {
+            flex: 1;
+        }
+        
+        .cart-item-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--folix-text-primary);
+            margin-bottom: var(--folix-space-2);
+        }
+        
+        .cart-item-options {
+            font-size: 13px;
+            color: var(--folix-text-secondary);
+            margin-bottom: var(--folix-space-2);
+            padding: var(--folix-space-2) var(--folix-space-3);
+            background: var(--folix-bg-card);
+            border-radius: var(--folix-radius-sm);
+            border-left: 3px solid var(--folix-secondary);
+        }
+        
+        .cart-item-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--folix-secondary);
+        }
+        
+        /* ========================================================================
+           3. Payment Methods Section
+           ======================================================================== */
+        .payment-methods-section {
+            margin-bottom: var(--folix-space-6);
+        }
+        
+        .payment-methods-list {
+            list-style: none;
+        }
+        
+        .payment-method-item {
+            margin-bottom: var(--folix-space-3);
+            border: 2px solid var(--folix-border);
+            border-radius: var(--folix-radius-md);
+            transition: all var(--folix-transition-fast);
+            cursor: pointer;
+        }
+        
+        .payment-method-item:hover {
+            border-color: var(--folix-border);
+        }
+        
+        .payment-method-item.active {
+            border-color: var(--folix-primary);
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.05) 0%, rgba(108, 92, 231, 0.05) 100%);
+        }
+        
+        .payment-method-radio {
+            display: flex;
+            align-items: center;
+            padding: var(--folix-space-4);
+        }
+        
+        .payment-method-radio input[type="radio"] {
+            margin-right: var(--folix-space-3);
+            width: 18px;
+            height: 18px;
+            accent-color: var(--folix-primary);
+        }
+        
+        .payment-method-label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: var(--folix-space-3);
+        }
+        
+        .payment-method-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--folix-bg-page);
+            border-radius: var(--folix-radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .payment-method-info {
+            flex: 1;
+        }
+        
+        .payment-method-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--folix-text-primary);
+            margin-bottom: 2px;
+        }
+        
+        .payment-method-desc {
+            font-size: 12px;
+            color: var(--folix-text-muted);
+        }
+        
+        /* ========================================================================
+           Right Column - Sidebar Summary
+           ======================================================================== */
+        .checkout-sidebar {
+            background: var(--folix-bg-card);
+            border-radius: var(--folix-radius-lg);
+            box-shadow: var(--folix-shadow-md);
+            padding: var(--folix-space-6);
+            position: sticky;
+            top: 20px;
+        }
+        
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--folix-text-primary);
+            margin-bottom: var(--folix-space-4);
+            padding-bottom: var(--folix-space-3);
+            border-bottom: 2px solid var(--folix-border-light);
+        }
+        
+        /* Order Summary */
+        .order-summary {
+            margin-bottom: var(--folix-space-6);
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--folix-space-3) 0;
+        }
+        
+        .summary-label {
+            font-size: 14px;
+            color: var(--folix-text-secondary);
+        }
+        
+        .summary-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--folix-text-primary);
+        }
+        
+        .summary-total {
+            border-top: 2px solid var(--folix-border);
+            padding-top: var(--folix-space-4);
+            margin-top: var(--folix-space-4);
+        }
+        
+        .summary-total .summary-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--folix-text-primary);
+        }
+        
+        .summary-total .summary-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--folix-secondary);
+        }
+        
+        /* Place Order Button */
+        .place-order-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--folix-gradient-secondary);
+            color: #FFFFFF;
+            border: none;
+            border-radius: var(--folix-radius-md);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--folix-transition-fast);
+            box-shadow: var(--folix-shadow-secondary);
+        }
+        
+        .place-order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+        
+        .place-order-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* Security Notice */
+        .security-notice {
+            display: flex;
+            align-items: center;
+            gap: var(--folix-space-2);
+            margin-top: var(--folix-space-4);
+            padding: var(--folix-space-3);
+            background: var(--folix-bg-page);
+            border-radius: var(--folix-radius-sm);
+            font-size: 12px;
+            color: var(--folix-text-muted);
+        }
+        
+        .security-notice svg {
+            width: 16px;
+            height: 16px;
+            color: var(--folix-success);
+        }
+        
+        /* ========================================================================
+           Responsive Design
+           ======================================================================== */
+        @media (max-width: 767px) {
+            .checkout-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkout-sidebar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 100;
+                max-height: 50vh;
+                overflow-y: auto;
+                border-radius: var(--folix-radius-lg) var(--folix-radius-lg) 0 0;
+                box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+                
+                /* 添加顶部渐变阴影,增强层次感 */
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: -10px;
+                    left: 0;
+                    right: 0;
+                    height: 10px;
+                    background: linear-gradient(to top, 
+                        rgba(0, 0, 0, 0.05) 0%, 
+                        transparent 100%
+                    );
+                    pointer-events: none;
+                }
+            }
+            
+            .checkout-main {
+                margin-bottom: 320px; /* 为固定Sidebar留出空间 */
+                
+                /* 最后一个section添加额外间距,防止被遮挡 */
+                .payment-methods-section {
+                    margin-bottom: 36px;
+                }
+            }
+            
+            .cart-item {
+                flex-direction: column;
+            }
+            
+            .cart-item-image {
+                width: 100%;
+                height: 120px;
+            }
+            
+            /* 移动端隐藏PC端登录提示 */
+            .login-notice {
+                display: none !important;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .mobile-only {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <!-- Header -->
+        <div class="checkout-header">
+            <h1>Folix Simple Checkout</h1>
+            <p>安全、快速的游戏充值结账流程</p>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="checkout-content">
+            <!-- Left Column -->
+            <div class="checkout-main">
+                
+                <!-- 1. Customer Email Section -->
+                <div class="customer-email-section">
+                    <h2 class="section-title">联系信息</h2>
+                    
+                    <div class="email-input-group">
+                        <input 
+                            type="email" 
+                            class="email-input" 
+                            placeholder="请输入您的邮箱地址"
+                            value=""
+                        >
+                        <p class="email-hint">我们将发送订单确认信息到此邮箱</p>
+                    </div>
+                    
+                    <!-- Login Notice (PC端显示,移动端隐藏) -->
+                    <div class="login-notice">
+                        <div class="login-notice-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div class="login-notice-content">
+                            <div class="login-notice-title">已有账号?</div>
+                            <div class="login-notice-desc">登录后可以享受更快的结账体验和专属优惠</div>
+                            <button class="login-trigger-btn">立即登录</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2. Cart Items Section (with Recharge Info) -->
+                <div class="cart-items-section">
+                    <h2 class="section-title">订单商品</h2>
+                    
+                    <ul class="cart-item-list">
+                        <!-- Cart Item 1 -->
+                        <li class="cart-item">
+                            <div class="cart-item-image">GAME</div>
+                            <div class="cart-item-details">
+                                <div class="cart-item-name">Premium Game Currency Pack</div>
+                                <div class="cart-item-options">
+                                    UID: 123456789 | Server: Asia Pacific
+                                </div>
+                                <div class="cart-item-price">$49.99</div>
+                            </div>
+                        </li>
+                        
+                        <!-- Cart Item 2 -->
+                        <li class="cart-item">
+                            <div class="cart-item-image">GAME</div>
+                            <div class="cart-item-details">
+                                <div class="cart-item-name">Deluxe Battle Pass Season 5</div>
+                                <div class="cart-item-options">
+                                    Account: player@example.com | Region: North America
+                                </div>
+                                <div class="cart-item-price">$29.99</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 3. Payment Methods Section -->
+                <div class="payment-methods-section">
+                    <h2 class="section-title">选择支付方式</h2>
+                    
+                    <ul class="payment-methods-list">
+                        <!-- Payment Method 1 -->
+                        <li class="payment-method-item active">
+                            <label class="payment-method-radio">
+                                <input type="radio" name="payment_method" value="alipay" checked>
+                                <div class="payment-method-label">
+                                    <div class="payment-method-icon">💳</div>
+                                    <div class="payment-method-info">
+                                        <div class="payment-method-name">支付宝 Alipay</div>
+                                        <div class="payment-method-desc">推荐使用,即时到账</div>
+                                    </div>
+                                </div>
+                            </label>
+                        </li>
+                        
+                        <!-- Payment Method 2 -->
+                        <li class="payment-method-item">
+                            <label class="payment-method-radio">
+                                <input type="radio" name="payment_method" value="wechat">
+                                <div class="payment-method-label">
+                                    <div class="payment-method-icon">💬</div>
+                                    <div class="payment-method-info">
+                                        <div class="payment-method-name">微信支付 WeChat Pay</div>
+                                        <div class="payment-method-desc">扫码支付,安全便捷</div>
+                                    </div>
+                                </div>
+                            </label>
+                        </li>
+                        
+                        <!-- Payment Method 3 -->
+                        <li class="payment-method-item">
+                            <label class="payment-method-radio">
+                                <input type="radio" name="payment_method" value="paypal">
+                                <div class="payment-method-label">
+                                    <div class="payment-method-icon">🅿️</div>
+                                    <div class="payment-method-info">
+                                        <div class="payment-method-name">PayPal</div>
+                                        <div class="payment-method-desc">国际支付方式</div>
+                                    </div>
+                                </div>
+                            </label>
+                        </li>
+                        
+                        <!-- Payment Method 4 -->
+                        <li class="payment-method-item">
+                            <label class="payment-method-radio">
+                                <input type="radio" name="payment_method" value="credit_card">
+                                <div class="payment-method-label">
+                                    <div class="payment-method-icon">💎</div>
+                                    <div class="payment-method-info">
+                                        <div class="payment-method-name">信用卡 Credit Card</div>
+                                        <div class="payment-method-desc">Visa / MasterCard / JCB</div>
+                                    </div>
+                                </div>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                
+            </div>
+            
+            <!-- Right Column - Sidebar -->
+            <div class="checkout-sidebar">
+                <h3 class="sidebar-title">订单摘要</h3>
+                
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <div class="summary-row">
+                        <span class="summary-label">小计 Subtotal</span>
+                        <span class="summary-value">$79.98</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span class="summary-label">运费 Shipping</span>
+                        <span class="summary-value">免费 Free</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span class="summary-label">税费 Tax</span>
+                        <span class="summary-value">$0.00</span>
+                    </div>
+                    
+                    <div class="summary-row summary-total">
+                        <span class="summary-label">订单总计 Total</span>
+                        <span class="summary-value">$79.98</span>
+                    </div>
+                </div>
+                
+                <!-- Place Order Button -->
+                <button class="place-order-btn">
+                    确认下单 Place Order
+                </button>
+                
+                <!-- Security Notice -->
+                <div class="security-notice">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    <span>SSL加密保护,支付安全有保障</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 简单的交互演示
+        document.querySelectorAll('.payment-method-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // 移除所有active类
+                document.querySelectorAll('.payment-method-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                
+                // 添加active类到当前点击的项
+                this.classList.add('active');
+                
+                // 选中radio
+                const radio = this.querySelector('input[type="radio"]');
+                if (radio) {
+                    radio.checked = true;
+                }
+            });
+        });
+        
+        // Place Order按钮点击事件
+        document.querySelector('.place-order-btn').addEventListener('click', function() {
+            const email = document.querySelector('.email-input').value;
+            const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+            
+            if (!email) {
+                alert('请输入邮箱地址');
+                return;
+            }
+            
+            if (!paymentMethod) {
+                alert('请选择支付方式');
+                return;
+            }
+            
+            alert(`订单提交成功!\n邮箱: ${email}\n支付方式: ${paymentMethod.value}`);
+        });
+    </script>
+</body>
+</html>

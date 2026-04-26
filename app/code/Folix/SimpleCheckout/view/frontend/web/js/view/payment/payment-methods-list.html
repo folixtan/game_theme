@@ -1,0 +1,29 @@
+<!--
+/**
+ * Copyright © Folix. All rights reserved.
+ * Payment Methods List - Container separated for styling
+ */
+-->
+<div if="isPaymentMethodsAvailable()"
+     class="items payment-methods">
+    <div repeat="foreach: paymentGroupsList, item: '$group'"
+         class="payment-group">
+        <!-- Payment Group Title Container (separated for styling) -->
+        <div class="payment-group-title-wrap"
+             if="regionHasElements($group().displayArea)"
+             translate="getGroupTitle($group)"
+             class="step-title"
+             data-role="title">
+        </div>
+        
+        <!-- Payment Methods List Container -->
+        <div class="payment-methods-items">
+            <each args="data: getRegion($group().displayArea), as: 'method'" render=""></each>
+        </div>
+    </div>
+</div>
+
+<div ifnot="isPaymentMethodsAvailable()"
+     class="no-payments-block"
+     translate="'No Payment Methods'">
+</div>
