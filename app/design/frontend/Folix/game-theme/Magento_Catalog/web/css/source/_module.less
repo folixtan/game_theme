@@ -47,160 +47,233 @@
     }
 
     //
-    //  Product Media - 图片区域
+    //  Product Media - 图片区域高级感优化
     //  _____________________________________________
 
+    // 产品媒体容器
     .product.media {
         background: @folix-bg-card;
         border-radius: @folix-radius-lg;
-        overflow: hidden;
-        box-shadow: @folix-shadow;
-    }
-
-    // Fotorama 画廊
-    .gallery-placeholder {
+        overflow: visible;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 
+                    0 0 0 1px rgba(255, 255, 255, 0.05);
         position: relative;
-    }
-
-    .fotorama-item {
-        position: relative;
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    }
-
-    .fotorama__wrap {
-        position: relative;
-    }
-
-    .fotorama__stage {
-        position: relative;
-        min-height: 300px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .fotorama__stage__shaft {
-        min-height: 300px;
-    }
-
-    .fotorama__img {
-        max-width: 100%;
-        max-height: 300px;
-        object-fit: contain;
-    }
-
-    // 箭头 - 正确覆盖 Fotorama 箭头样式
-    // Fotorama 原始结构: .fotorama__arr > .fotorama__arr__arr
-    // .fotorama__arr 是容器，.fotorama__arr__arr 是内部图标
-    
-    .fotorama__arr {
-        width: 44px;
         
-        &:hover {
-            .fotorama__arr__arr {
-                transform: scale(1.1);
-            }
+        // 外层发光边框效果
+        &::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(135deg, 
+                rgba(74, 144, 226, 0.3) 0%, 
+                rgba(255, 107, 53, 0.3) 50%, 
+                rgba(74, 144, 226, 0.3) 100%);
+            border-radius: @folix-radius-lg;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        &:hover::before {
+            opacity: 1;
         }
     }
-    
-    // 箭头内部图标 - 自定义样式覆盖 sprite
-    .fotorama__arr__arr {
-        width: 36px;
-        height: 36px;
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 50%;
-        box-shadow: @folix-shadow-md;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    // Fotorama 画廊容器 - 深色游戏风格 + 高级背景设计
+    .gallery-placeholder {
+        position: relative;
+        // 优化背景：让空白区域更美观
+        background: 
+            radial-gradient(ellipse at center, rgba(74, 144, 226, 0.08) 0%, transparent 70%),
+            linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
+        border-radius: @folix-radius-lg;
+        overflow: visible;
         
-        // 使用伪元素绘制箭头
-        background-image: none;
-        
+        // 微妙的网格纹理
         &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(74, 144, 226, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(255, 107, 53, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        // 微妙的光晕效果
+        &::after {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 0;
-            height: 0;
-            border-style: solid;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(40px);
         }
     }
-    
-    // 前一个箭头
-    .fotorama__arr--prev {
-        left: 0;
-        
-        .fotorama__arr__arr {
-            &::before {
-                border-width: 6px 8px 6px 0;
-                border-color: transparent @folix-primary transparent transparent;
-            }
-            
-            &:hover::before {
-                border-right-color: @folix-secondary;
-            }
-        }
+
+    .fotorama-item {
+        position: relative;
+        background: transparent;
     }
-    
-    // 后一个箭头
-    .fotorama__arr--next {
-        right: 0;
-        
-        .fotorama__arr__arr {
-            &::before {
-                border-width: 6px 0 6px 8px;
-                border-color: transparent transparent transparent @folix-primary;
-            }
-            
-            &:hover::before {
-                border-left-color: @folix-secondary;
-            }
-        }
+
+    .fotorama__wrap {
+        position: relative;
+        background: transparent;
+        overflow: visible;
+    }
+
+    // 图片显示优化
+    .fotorama__img {
+        max-width: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        display: block;
+        margin: 0 auto;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3));
+    }
+
+    .fotorama__img:hover {
+        transform: scale(1.02);
+        filter: drop-shadow(0 8px 30px rgba(0, 0, 0, 0.5));
+    }
+
+    .fotorama__img--full-screen {
+        border: none;
     }
 
     // 缩略图导航
     .fotorama__nav-wrap {
-        padding: @indent__m;
-        background: @folix-bg-card;
+        padding: @indent__l;
+        background: linear-gradient(to top, 
+            rgba(15, 23, 42, 0.95) 0%, 
+            rgba(30, 41, 59, 0.95) 100%);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        position: relative;
+        z-index: 2;
+        
+        // 顶部发光线条
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(74, 144, 226, 0.5) 50%, 
+                transparent 100%);
+        }
     }
 
     .fotorama__nav {
         display: flex;
         justify-content: center;
         gap: @indent__s;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: @indent__xs 0;
+        
+        // 自定义滚动条 - 高级感
+        &::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        &::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, @folix-primary, @folix-secondary);
+            border-radius: 2px;
+        }
     }
 
     .fotorama__nav--thumbs {
         align-items: center;
     }
 
+    // 缩略图
     .fotorama__thumb {
         width: 60px;
         height: 60px;
         border-radius: @folix-radius-md;
         overflow: hidden;
-        border: 2px solid transparent;
+        border: 2px solid rgba(255, 255, 255, 0.1);
         cursor: pointer;
-        transition: all 0.2s ease;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        background: rgba(255, 255, 255, 0.05);
+        flex-shrink: 0;
+        position: relative;
         
         &:hover {
             border-color: @folix-primary;
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 24px rgba(74, 144, 226, 0.3),
+                        0 0 0 3px rgba(74, 144, 226, 0.2);
+            
+            img {
+                transform: scale(1.1);
+            }
         }
         
         img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
     }
 
     .fotorama__thumb--active {
         border-color: @folix-secondary;
+        box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.3),
+                    0 8px 24px rgba(255, 107, 53, 0.4);
+        transform: scale(1.08);
+        
+        &::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid @folix-secondary;
+            border-radius: @folix-radius-md;
+            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    }
+
+    @keyframes pulse-ring {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1.3);
+            opacity: 0;
+        }
     }
 
     .fotorama__thumb-border {
-        border-color: @folix-secondary;
+        display: none;
     }
 
     // 隐藏不需要的元素
@@ -982,7 +1055,7 @@
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
     
     //
-    //  60/40 两列布局
+    //  55/45 两列布局 - 图片区域更紧凑
     //  _____________________________________________
     
     .product-detail-wrapper {
@@ -991,13 +1064,13 @@
     }
     
     .product-detail-left {
-        flex: 0 0 60%;
-        width: 60%;
+        flex: 0 0 55%;
+        width: 55%;
     }
     
     .product-detail-right {
-        flex: 0 0 40%;
-        width: 40%;
+        flex: 0 0 45%;
+        width: 45%;
     }
     
     // 右侧 sticky
@@ -1007,19 +1080,21 @@
     }
     
     //
-    //  图片区域
+    //  图片区域 - 450px 匹配实际图片尺寸
     //  _____________________________________________
     
     .fotorama__stage {
-        min-height: 380px;
+        min-height: 450px;
+        max-height: 450px;
     }
     
     .fotorama__stage__shaft {
-        min-height: 380px;
+        min-height: 450px;
     }
     
     .fotorama__img {
-        max-height: 380px;
+        max-height: 450px;
+        max-width: 450px;
     }
     
     //

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
+    
+    <!-- 为 Quote Item 添加充值模板数据 -->
+    <extension_attributes for="Magento\Quote\Api\Data\CartItemInterface">
+        <attribute code="charge_template_data" type="\Folix\ChargeTemplate\Api\Data\ChargeTemplateDataInterface" />
+    </extension_attributes>
+    
+    <!-- 为 Order Item 添加充值模板数据 -->
+    <extension_attributes for="Magento\Sales\Api\Data\OrderItemInterface">
+        <attribute code="charge_template_data" type="\Folix\ChargeTemplate\Api\Data\ChargeTemplateDataInterface" />
+    </extension_attributes>
+    
+    <!-- 定义充值模板数据结构 -->
+    <extension_attributes for="\Folix\ChargeTemplate\Api\Data\ChargeTemplateDataInterface">
+        <attribute code="charge_account" type="string" />
+        <attribute code="charge_password" type="string" />
+        <attribute code="charge_game" type="string" />
+        <attribute code="charge_region" type="string" />
+        <attribute code="charge_server" type="string" />
+        <attribute code="charge_type" type="string" />
+        <attribute code="role_name" type="string" />
+        <attribute code="contact_phone" type="string" />
+        <attribute code="contact_qq" type="string" />
+    </extension_attributes>
+    
+</config>

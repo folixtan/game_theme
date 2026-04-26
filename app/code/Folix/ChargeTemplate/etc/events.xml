@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- 监听添加到购物车事件，收集充值模板数据 -->
+    <event name="checkout_cart_product_add_after">
+        <observer name="folix_chargetemplate_add_to_cart" 
+                  instance="Folix\ChargeTemplate\Observer\AddChargeTemplateToCart"/>
+    </event>
+    
+    <!-- 监听更新购物车事件，保留充值模板数据 -->
+    <event name="checkout_cart_update_items_after">
+        <observer name="folix_chargetemplate_update_cart" 
+                  instance="Folix\ChargeTemplate\Observer\UpdateChargeTemplateInCart"/>
+    </event>
+</config>

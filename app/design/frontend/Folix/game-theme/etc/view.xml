@@ -16,18 +16,93 @@
                 <width>240</width>
                 <height>300</height>
             </image>
-            <!-- Product page images -->
+            <!-- Product page images - 450x450 正方形，匹配实际图片尺寸 -->
             <image id="product_page_image_medium" type="image">
+                <width>450</width>
+                <height>450</height>
+            </image>
+            <image id="product_page_image_large" type="image">
                 <width>700</width>
                 <height>700</height>
             </image>
-            <image id="product_page_image_large" type="image">
-                <width>1200</width>
-                <height>1200</height>
+            <image id="product_page_image_small" type="thumbnail">
+                <width>60</width>
+                <height>60</height>
+            </image>
+            <image id="product_page_main_image" type="image">
+                <width>450</width>
+                <height>450</height>
+            </image>
+            <image id="product_page_main_image_default" type="image">
+                <width>450</width>
+                <height>450</height>
+            </image>
+            <image id="product_page_more_views" type="thumbnail">
+                <width>60</width>
+                <height>60</height>
             </image>
         </images>
     </media>
     <vars module="Magento_Catalog">
+        <!-- Gallery 优化配置 -->
+        <var name="gallery">
+            <var name="nav">thumbs</var>
+            <var name="loop">true</var>
+            <var name="keyboard">true</var>
+            <var name="arrows">true</var>
+            <var name="caption">false</var>
+            <var name="allowfullscreen">false</var>
+            <var name="navdir">horizontal</var>
+            <var name="navarrows">true</var>
+            <var name="navtype">slides</var>
+            <var name="transition">
+                <var name="effect">slide</var>
+                <var name="duration">500</var>
+            </var>
+            <var name="fullscreen">
+                <var name="nav">thumbs</var>
+                <var name="loop">true</var>
+                <var name="arrows">false</var>
+                <var name="caption">false</var>
+                <var name="navdir">horizontal</var>
+                <var name="navtype">slides</var>
+                <var name="transition">
+                    <var name="effect">slide</var>
+                    <var name="duration">500</var>
+                </var>
+            </var>
+        </var>
+
+        <!-- 禁用放大镜 -->
+        <var name="magnifier">
+            <var name="fullscreenzoom">20</var>
+            <var name="top"></var>
+            <var name="left"></var>
+            <var name="width"></var>
+            <var name="height"></var>
+            <var name="eventType">hover</var>
+            <var name="enabled">false</var>
+        </var>
+
+        <!-- 移动端断点配置 -->
+        <var name="breakpoints">
+            <var name="mobile">
+                <var name="conditions">
+                    <var name="max-width">767px</var>
+                </var>
+                <var name="options">
+                    <var name="options">
+                        <var name="nav">dots</var>
+                        <var name="arrows">true</var>
+                    </var>
+                </var>
+            </var>
+        </var>
+
+        <!-- 移除白色边框 -->
+        <var name="product_image_white_borders">0</var>
+        
+        <!-- 画廊切换策略 -->
         <var name="gallery_switch_strategy">replace</var>
     </vars>
 </view>

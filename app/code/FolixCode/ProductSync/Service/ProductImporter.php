@@ -31,7 +31,7 @@ class ProductImporter
 
     const CUSTOM_ATTR = [
          'face_value' => [
-          
+               'type' => 'text',
                 'label' => 'Face Value',
                 'frontend_label' => 'Face Value',
                 'fontend_input' => 'text',
@@ -50,6 +50,7 @@ class ProductImporter
                 'note' => '商品实际面值'
          ],
          'charge_template' => [
+            "type" => 'text',
             'label' => 'Charge Template',
             'frontend_label' => 'Charge Templates',
             'fontend_input' => 'textarea',
@@ -323,7 +324,7 @@ class ProductImporter
          $detail = $this->apiService->getProductDetail($params);
          if(empty($detail['charge_template'])) return;
 
-         $product->setData('charge_template',$detail['charge_template']);
+         $product->setData('charge_template',json_encode( $detail['charge_template']));
 
          $this->productRepository->save($product);
          

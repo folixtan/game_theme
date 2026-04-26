@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    
+    <!-- 配置 ChargeTemplateDataInterface 的实现类 -->
+    <preference for="Folix\ChargeTemplate\Api\Data\ChargeTemplateDataInterface" 
+                type="Folix\ChargeTemplate\Model\ChargeTemplateData" />
+    
+</config>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <!-- 在产品信息区域添加充值模板表单 -->
+        <referenceBlock name="product.info.form.content">
+            <block class="Folix\ChargeTemplate\Block\Product\View\ChargeTemplate" 
+                   name="product.charge.template" 
+                   as="charge_template"
+                   template="Folix_ChargeTemplate::product/view/charge_template.phtml"
+                   before="product.info.addtocart"/>
+        </referenceBlock>
+    </body>
+</page>

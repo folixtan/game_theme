@@ -1,0 +1,85 @@
+<?php
+/**
+ * Folix Charge Template - Product View Template
+ * 
+ * @var $block \Folix\ChargeTemplate\Block\Product\View\ChargeTemplate
+ * @var $this \Magento\Framework\View\Element\Template
+ */
+
+$chargeTemplate = $block->getChargeTemplate();
+
+if (!$chargeTemplate || !is_array($chargeTemplate)):
+    return;
+endif;
+?>
+
+<div class="product-charge-template">
+    <div class="charge-template-title">
+        <h3><?= $block->escapeHtml(__('Top-up Information')) ?></h3>
+    </div>
+    
+    <div class="charge-template-fields">
+        <?php foreach ($chargeTemplate as $index => $field): ?>
+            <?php
+            $fieldName = $block->escapeHtmlAttr($field['charge_field_name'] ?? '');
+            $alias = $block->escapeHtml($field['alias'] ?? '');
+            $placeholder = $block->escapeHtmlAttr($field['placeholder'] ?? '');
+            $type = (int)($field['type'] ?? 1);
+            $options = $field['options'] ?? [];
+            $typeName = $block->getFieldTypeName($type);
+            $isRequired = true; // 默认必填
+            ?>
+            
+            <div class="charge-field charge-field-<?= $block->escapeHtmlAttr($typeName) ?>" 
+                 data-field-index="<?= $index ?>">
+                
+                <label for="charge_<?= $fieldName ?>" class="charge-field-label">
+                    <?= $alias ?>
+                    <?php if ($isRequired): ?>
+                        <span class="required">*</span>
+                    <?php endif; ?>
+                </label>
+                
+                <?php if ($typeName === 'select' && !empty($options)): ?>
+                    <!-- 下拉选择框 -->
+                    <select id="charge_<?= $fieldName ?>" 
+                            name="charge_template[<?= $fieldName ?>]" 
+                            class="charge-field-input charge-select"
+                            data-validate="{required:true}">
+                        <option value=""><?= $block->escapeHtml($placeholder) ?></option>
+                        <?php foreach ($options as $option): ?>
+                            <option value="<?= $block->escapeHtmlAttr($option['id']) ?>">
+                                <?= $block->escapeHtml($option['name']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    
+                <?php elseif ($typeName === 'textarea'): ?>
+                    <!-- 多行文本 -->
+                    <textarea id="charge_<?= $fieldName ?>" 
+                              name="charge_template[<?= $fieldName ?>]" 
+                              class="charge-field-input charge-textarea"
+                              placeholder="<?= $placeholder ?>"
+                              data-validate="{required:true}"></textarea>
+                              
+                <?php else: ?>
+                    <!-- 文本输入框（默认） -->
+                    <input type="text" 
+                           id="charge_<?= $fieldName ?>" 
+                           name="charge_template[<?= $fieldName ?>]" 
+                           class="charge-field-input charge-text"
+                           placeholder="<?= $placeholder ?>"
+                           data-validate="{required:true}"/>
+                <?php endif; ?>
+                
+                <?php if ($typeName === 'select'): ?>
+                    <div class="charge-field-arrow">
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M3 5L6 8L9 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
