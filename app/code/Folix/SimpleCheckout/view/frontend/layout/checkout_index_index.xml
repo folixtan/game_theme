@@ -36,8 +36,8 @@
                                         <item name="componentDisabled" xsi:type="boolean">true</item>
                                     </item>
                                 </item>
-                             <item name="customer-email" xsi:type="array">
-                                <item name="component" xsi:type="string">Magento_Checkout/js/view/form/element/email</item>
+                            <item name="customer-email" xsi:type="array">
+                                <item name="component" xsi:type="string">Folix_SimpleCheckout/js/view/form/element/email</item>
                                 <item name="displayArea" xsi:type="string">customer-email</item>
                                 <item name="tooltip" xsi:type="array">
                                     <item name="description" xsi:type="string" translate="true">We'll send your order confirmation here.</item>
@@ -48,24 +48,20 @@
                                         <item name="displayArea" xsi:type="string">before-login-form</item>
                                         <item name="children" xsi:type="array">
                                             <!-- before login form fields -->
+                                                
                                         </item>
                                     </item>
                                     <item name="additional-login-form-fields" xsi:type="array">
                                         <item name="component" xsi:type="string">uiComponent</item>
                                         <item name="displayArea" xsi:type="string">additional-login-form-fields</item>
                                         <item name="children" xsi:type="array">
-                                            <!-- Login Notice组件 - 移到Email输入框下方 -->
-                                            <item name="authentication" xsi:type="array">
-                                                <item name="component" xsi:type="string">Folix_SimpleCheckout/js/view/authentication</item>
-                                                <item name="displayArea" xsi:type="string">additional-login-form-fields</item>
-                                            </item>
+                                            <!-- additional login form fields -->
                                         </item>
                                     </item>
                                 </item>
-                            </item>
-                            <item name="authentication" xsi:type="array">
-                                        <item name="component" xsi:type="string">Folix_SimpleCheckout/js/view/authentication</item>
-                                </item>
+                              </item>
+                       
+                                
                                 <!-- 禁用 shipping-step -->
                                 <item name="steps" xsi:type="array">
                                     <item name="children" xsi:type="array">
@@ -89,7 +85,7 @@
                                                                     <item name="component" xsi:type="string">Magento_Checkout/js/view/summary/cart-items</item>
                                                                     <item name="children" xsi:type="array">
                                                                         <item name="details" xsi:type="array">
-                                                                            <item name="component" xsi:type="string">Magento_Checkout/js/view/summary/item/details</item>
+                                                                            <item name="component" xsi:type="string">Folix_SimpleCheckout/js/view/summary/item/details</item>
                                                                             <item name="children" xsi:type="array">
                                                                                 <item name="thumbnail" xsi:type="array">
                                                                                     <item name="component" xsi:type="string">Magento_Checkout/js/view/summary/item/details/thumbnail</item>
@@ -114,6 +110,13 @@
                                                     <item name="payments-list" xsi:type="array">
                                                         <item name="config" xsi:type="array">
                                                             <item name="template" xsi:type="string">Folix_SimpleCheckout/payment/payment-methods-list</item>
+                                                        </item>
+                                                        <item name="children" xsi:type="array">
+                                                           <item name="before-place-order" xsi:type="array" >
+                                                              <item name="config" xsi:type="array">
+                                                                <item name="componentDisabled" xsi:type="boolean">true</item>
+                                                              </item>
+                                                            </item>
                                                         </item>
                                                     </item>
                                                 

@@ -1,5 +1,5 @@
 define([
-    'Magento_Checkout/js/view/authentication'
+    'Magento_Checkout/js/view/authentication',
 ], function (Component){
 
 

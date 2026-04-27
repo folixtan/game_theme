@@ -31,10 +31,30 @@
     </div>
 </div>
 
-
-<div class="security-notice">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-    </svg>
-    <span data-bind="i18n: 'SSL encrypted, secure payment'">SSL加密保护,支付安全有保障</span>
+<div class="secure-badge-vertical">
+   <!-- 紧凑型安全徽章图标（仅图标，无文字） -->
+        <svg 
+        class="secure-icon-sm"
+        xmlns="http://www.w3.org/2000/svg" 
+        width="24" 
+        height="24" 
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="white"
+        stroke-width="1.4"
+        class="secure-icon-sm"
+        >
+        <!-- 盾牌外框（极简线条） -->
+        <path d="M12 3L3 8v10c0 5.55 3.84 10.74 9 12.67 5.16-1.93 9-7.12 9-12.67V8z" />
+        <!-- 金色对勾（居中偏下，小巧醒目） -->
+        <polyline 
+            points="8.5 12.5 11.5 15.5 15.5 11.5" 
+            stroke="#FFD700" 
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.6"
+        />
+        </svg>
+  <span class="secure-text-sm">SSL encrypted</span>
 </div>
+

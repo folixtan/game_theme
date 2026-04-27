@@ -23,6 +23,7 @@ define([
     'Magento_Checkout/js/model/checkout-data-resolver',
     'Magento_Customer/js/model/customer',
     'uiRegistry',
+    'Magento_Checkout/js/action/set-billing-address',
     'mage/translate'
 ], function (
     ko,
@@ -32,6 +33,7 @@ define([
     checkoutDataResolver,
     customer,
     registry,
+    setBillingAddressAction,
     $t
 ) {
     'use strict';
@@ -46,7 +48,7 @@ define([
             this._super();
             
             // 解决账单地址(虚拟商品)
-            checkoutDataResolver.resolveBillingAddress();
+           // checkoutDataResolver.resolveBillingAddress();
             
             // 监听支付方式变化,动态更新按钮状态
             var self = this;
@@ -88,6 +90,8 @@ define([
                 event.preventDefault();
             }
 
+            
+
             // ========== 验证流程 ==========
             
             // 1. 验证是否选中支付方式
@@ -111,7 +115,8 @@ define([
             registry.get(componentName, function (paymentComponent) {
                 if (paymentComponent && typeof paymentComponent.placeOrder === 'function') {
                     // 调用支付方式组件的 placeOrder 方法
-                    paymentComponent.placeOrder(null, null);
+                    paymentComponent.isPlaceOrderActionAllowed(true);
+                    paymentComponent.placeOrder(data, event);
                 } else {
                     self.showError($t('Unable to process payment.'));
                 }

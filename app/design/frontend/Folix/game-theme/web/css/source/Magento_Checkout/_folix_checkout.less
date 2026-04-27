@@ -1,0 +1,556 @@
+//
+//  Folix Custom Checkout Styles
+//  _____________________________________________
+& when (@media-common = true) {
+
+    // Checkout Page Specific Styles
+    .checkout-index-index {
+             
+         .secure-badge-vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            font-size: 10px;
+            color: @folix-text-secondary;
+            }
+            .secure-icon-sm {
+            width: 24px;
+            height: 24px;
+            }
+            .secure-text-sm {
+            line-height: 1.2;
+            }
+        .checkout-container {
+
+             position: relative;
+             .login-wrapper {
+                 position: relative;
+                 .authentication-wrapper {
+                     float: none;
+                     margin-top: 5rem;
+
+                     .action.action-auth-toggle{
+                        text-decoration: none;
+                        > span {
+                            border: none;
+                            display: inline-block;
+                            background: @folix-gradient-gold;
+                            border-radius: @folix-radius-md;
+                            color: @folix-btn-secondary-text;
+                            font-size: 14px;
+                            font-weight: @font-weight__medium;
+                            cursor: pointer;
+                            padding: 10px 32px;
+                            transition: @folix-transition-smooth;
+                            box-shadow: 0 0 20px @folix-border-gold;
+                            &:hover {
+                                background: @folix-btn-primary-hover-bg;
+                                transform: translateY(-2px);
+                                box-shadow: 0 4px 14px rgba(74, 144, 226, 0.25);
+                               // box-shadow: 0 0 20px @folix-btn-primary-shadow;
+                            }
+                        }
+                       
+
+                     }
+                     
+                 }
+             }
+             .block.items-in-cart {
+                &.active {
+                    background: @folix-bg-dark-card;
+                    border-radius: @folix-radius-md;
+                    border: 1px solid @folix-border;
+                }
+               .title {
+                  padding: 1rem;
+               }
+               .minicart-items-wrapper {
+                   margin: 0;
+                   border: 0;
+                   border-top: 1px solid @folix-border;
+               }
+             }
+            
+             
+        }
+        // Override button styles to match theme
+        .action.primary.checkout {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%) !important;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+
+            &:hover,
+            &:focus {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 12px rgba(255, 215, 0, 0.4);
+                outline: none;
+            }
+
+            &:active {
+                transform: translateY(0);
+            }
+        }
+
+        // Hide payment area place order buttons since we're using sidebar button
+        .payment-method-content {
+            .actions-toolbar {
+                > .primary {
+                    .action {
+                        &.primary {
+                            display: none !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Style the sidebar summary
+        .opc-block-summary {
+            background: @folix-bg-panel;
+            border: 1px solid @folix-border;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+            .table-totals {
+                .mark {
+                    .value {
+                        color: @folix-text-secondary;
+                    }
+                }
+            }
+        }
+
+        // Custom styling for place order button container in sidebar
+        .folix-place-order {
+            margin-top: 20px;
+            padding: 15px;
+            background: @folix-bg-panel;
+            border-radius: 8px;
+            border: 1px solid @folix-border;
+
+            .security-notice {
+                margin-top: 15px;
+                padding: 10px;
+                background: fade(@folix-success, 10%);
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                font-size: @font-size__base;
+                color: @folix-text-secondary;
+
+                svg {
+                    width: 20px;
+                    height: 20px;
+                    margin-right: 8px;
+                    color: @folix-success;
+                }
+            }
+        }
+
+        // Login notice card styling
+        .authentication-wrapper {
+            .folix-login-notice {
+                background: @folix-bg-panel;
+                border: 1px solid @folix-border;
+                border-radius: 8px;
+                padding: 15px;
+                margin-bottom: 20px;
+
+                .login-notice-icon {
+                    float: left;
+                    width: 40px;
+                    height: 40px;
+                    background: fade(@folix-secondary-dark, 10%);
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: 12px;
+
+                    svg {
+                        width: 20px;
+                        height: 20px;
+                        color: @folix-secondary-dark;
+                    }
+                }
+
+                .login-notice-content {
+                    overflow: hidden;
+
+                    .login-notice-title {
+                        font-weight: @font-weight__bold;
+                        color: @folix-text-primary;
+                        margin-bottom: 5px;
+                    }
+
+                    .login-notice-desc {
+                        font-size: @font-size__base;
+                        color: @folix-text-secondary;
+                        margin-bottom: 10px;
+                    }
+
+                    .login-trigger-btn {
+                        background: linear-gradient(135deg, @folix-secondary-dark 0%, @folix-purple 100%);
+                        color: @folix-text-primary;
+                        border: none;
+                        padding: 8px 16px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-weight: @font-weight__bold;
+
+                        &:hover {
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                        }
+                    }
+                }
+            }
+
+            .mobile-login-link {
+                text-align: center;
+                padding: 10px 0;
+                border-top: 1px solid @folix-border;
+
+                .action-login-trigger {
+                    background: none;
+                    border: 1px solid @folix-border;
+                    padding: 5px 10px;
+                    border-radius: 4px;
+                    margin-left: 5px;
+                    cursor: pointer;
+                }
+            }
+        }
+
+       
+        
+        // Payment methods styling
+         #checkout-payment-method-load {
+            
+            .payment-method {
+                border: 1px solid @folix-border;
+                border-radius: 6px;
+                padding: 15px;
+                margin-bottom: 10px;
+                 background: @folix-bg-card;
+               .payment-method-title.field {
+                 display: flex;
+                 border:0;
+                 flex-direction: row;
+                 gap: 8px;
+
+                }
+            
+
+                &._active {
+                    border-color: @folix-secondary;
+                    border-radius: @folix-radius-md; // 8px
+                    border-top: 2px solid @folix-secondary; /* #FFD700 金色！突出选中态 */
+                    padding: 16px;
+                    box-shadow: @folix-shadow-sm; // 轻微浮起感
+                   
+                }
+            }
+
+            .payment-method-title {
+                font-weight: @font-weight__bold;
+                padding-bottom: 10px;
+                border-bottom: 1px solid @folix-border;
+            }
+            .awx-card-number,
+            .awx-card-expiry-cvc {
+                margin-bottom: 12px;
+            }
+
+            .awx-card-number > div:first-child,
+            .awx-card-expiry > div:first-child,
+            .awx-card-cvc > div:first-child {
+                color: @folix-text-secondary; // #94A3B8（标签文字）
+                font-size: 13px;
+                margin-bottom: 6px;
+            }
+
+            /* 为每个输入框外层加一个轻柔的内阴影（模拟“嵌入感”）*/
+            .airwallex-card {
+                position: relative;
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 0; left: 0; right: 0; bottom: 0;
+                    border-radius: @folix-radius-sm;
+                    box-shadow: inset 0 0 0 1px @folix-border;
+                    pointer-events: none;
+                }
+            }
+
+            /* 选中状态（当该卡被激活时） */
+            .airwallex-card-container._active .airwallex-card::before {
+                box-shadow: inset 0 0 0 2px @folix-secondary; // 金色边框强调
+            }
+
+            .awx-card-number .card-brand-icons {
+                 filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.3));
+             }
+        }
+
+                /* ===================================================================
+        DISCOUNT CODE MODULE - 移动优先设计
+        基于您提供的 HTML 结构
+        使用您定义的 @folix-* 变量
+        ================================================================== */
+
+        /* 基础样式 - 适用于移动设备 (最小屏幕) */
+        .payment-option._collapsible.opc-payment-additional.discount-code {
+            background-color: @folix-bg-card;           /* 深灰蓝背景 */
+            border: 1px solid @folix-border;            /* 轻边框 */
+            border-radius: @folix-radius-md;            /* 中等圆角 */
+            margin-bottom: 16px;                        /* 移动端稍小间距 */
+            box-shadow: @folix-shadow-sm;               /* 轻微阴影 */
+            overflow: hidden;                           /* 防止圆角溢出 */
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code .payment-option-title {
+            padding: 12px 14px;                         /* 移动端标题内边距 */
+            cursor: pointer;
+            border: 0;
+            transition: background-color @folix-transition-fast;
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code .payment-option-title:hover {
+            background-color: @folix-bg-hover;          /* 悬停时加深背景 */
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code .payment-option-title .action-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: @folix-text-primary;                 /* 白色标题文字 */
+            font-size: 15px;                            /* 移动端标题字体大小 */
+            font-weight: @font-weight__medium;          /* 中等粗细 */
+            text-decoration: none;
+            /* 箭头图标 */
+            position: relative;
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code .payment-option-title .action-toggle::after {
+            content: "▶";                               /* 默认折叠状态箭头 (可改为 ▲) */
+            font-size: 11px;                            /* 移动端箭头大小 */
+            margin-left: 6px;                           /* 移动端箭头左边距 */
+            transition: transform @folix-transition-fast;
+            align-self: center;
+        }
+
+        /* 展开状态：箭头向下 */
+        .payment-option._collapsible.opc-payment-additional.discount-code._active .payment-option-title .action-toggle,
+        .payment-option._collapsible.opc-payment-additional.discount-code .payment-option-content[style*="block"] + .payment-option-title .action-toggle {
+            color: @folix-secondary;                    /* 展开时标题变金 */
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code._active .payment-option-title .action-toggle::after,
+        .payment-option._collapsible.opc-payment-additional.discount-code .payment-option-content[style*="block"] + .payment-option-title .action-toggle::after {
+            content: "▼";                               /* 展开状态箭头 */
+            color: @folix-secondary;                    /* 金色箭头 */
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code .payment-option-content {
+            padding: 14px;                              /* 移动端内容区内边距 */
+            background-color: inherit;                  /* 继承背景色 */
+            border-top: 1px solid @folix-border;        /* 顶部分割线 */
+            /* 默认隐藏，由 JS 控制显示 */
+            display: none;
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code .form-discount .payment-option-inner .field {
+            margin-bottom: 10px;                        /* 移动端字段间距 */
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code .form-discount .payment-option-inner .field .label {
+            display: block;
+            margin-bottom: 4px;                         /* 移动端标签间距 */
+            color: @folix-text-secondary;               /* 次要文字颜色 */
+            font-size: 12px;                            /* 移动端标签字体大小 */
+            font-weight: @font-weight__medium;          /* 中等粗细 */
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code .form-discount .payment-option-inner .field .control input.input-text {
+            width: 100%;
+            background-color: @folix-input-bg;          /* 深色输入框背景 */
+            border: 1px solid @folix-border;            /* 输入框边框 */
+            border-radius: @folix-radius-sm;            /* 小圆角 */
+            color: @folix-text-primary;                 /* 白色文字 */
+            padding: 6px 10px;                          /* 移动端输入框内边距 */
+            font-size: 14px;                            /* 移动端输入框字体大小 */
+            transition: border-color @folix-transition-fast;
+            box-sizing: border-box;
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code .form-discount .payment-option-inner .field .control input.input-text::placeholder {
+            color: @folix-input-placeholder;            /* 占位符颜色 */
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code .form-discount .payment-option-inner .field .control input.input-text:focus {
+            outline: none;
+            border-color: @folix-input-focus-border;    /* 焦点时金色边框 */
+            box-shadow: 0 0 0 2px fade(@folix-input-focus-border, 20%); /* 金色外发光 */
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code .form-discount .actions-toolbar {
+            margin-top: 10px;                           /* 移动端按钮区上边距 */
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code .form-discount .actions-toolbar .primary button.action-apply {
+            background: @folix-btn-primary-bg;          /* 金色渐变背景 */
+            color: @folix-btn-primary-text;             /* 深色文字 */
+            border: none;
+            border-radius: @folix-radius-sm;            /* 小圆角 */
+            padding: 6px 14px;                          /* 移动端按钮内边距 */
+            font-size: 13px;                            /* 移动端按钮字体大小 */
+            font-weight: @font-weight__semibold;        /* 半粗体 */
+            cursor: pointer;
+            transition: all @folix-transition-fast;
+            width: 100%;                                /* 移动端按钮全宽 */
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code .form-discount .actions-toolbar .primary button.action-apply:hover {
+            background: @folix-btn-primary-hover-bg;    /* 悬停时更亮的金色 */
+            transform: translateY(-1px);
+            box-shadow: @folix-btn-primary-shadow;      /* 金色发光阴影 */
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code .form-discount .actions-toolbar .primary button.action-apply:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code [data-role="checkout-messages"] {
+            margin-top: 8px;                            /* 移动端消息区上边距 */
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code [data-role="checkout-messages"] .message {
+            padding: 6px 10px;                          /* 移动端消息内边距 */
+            border-radius: @folix-radius-sm;            /* 小圆角 */
+            font-size: 12px;                            /* 移动端消息字体大小 */
+            line-height: 1.4;
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code [data-role="checkout-messages"] .message.error {
+            background-color: @folix-error-bg;          /* 错误背景 */
+            border: 1px solid @folix-error-border;      /* 错误边框 */
+            color: @folix-error;                        /* 错误文字 */
+        }
+
+        .payment-option._collapsible.opc-payment-additional.discount-code [data-role="checkout-messages"] .message.success {
+            background-color: @folix-success-bg;        /* 成功背景 */
+            border: 1px solid @folix-success-border;    /* 成功边框 */
+            color: @folix-success;                      /* 成功文字 */
+        }
+ 
+
+    }
+}
+
+//
+//  Mobile specific styles
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    .checkout-index-index {
+        .authentication-wrapper {
+            .mobile-login-link {
+                display: block;
+            }
+
+            .folix-login-notice {
+                display: none;
+            }
+        }
+    }
+}
+
+//
+//  Desktop specific styles
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .checkout-index-index {
+         .checkout-container {
+              .payment-option._collapsible.opc-payment-additional.discount-code {
+                    margin-bottom: 20px;                    /* 桌面端更大间距 */
+                }
+
+                .payment-option._collapsible.opc-payment-additional.discount-code .payment-option-title {
+                    padding: 14px 16px;                     /* 桌面端标题内边距 */
+                }
+
+                .payment-option._collapsible.opc-payment-additional.discount-code .payment-option-title .action-toggle {
+                    font-size: 16px;                        /* 桌面端标题字体大小 */
+                }
+
+                .payment-option._collapsible.opc-payment-additional.discount-code .payment-option-title .action-toggle::after {
+                    font-size: 12px;                        /* 桌面端箭头大小 */
+                    margin-left: 8px;                       /* 桌面端箭头左边距 */
+                }
+
+                .payment-option._collapsible.opc-payment-additional.discount-code .payment-option-content {
+                    padding: 16px;                          /* 桌面端内容区内边距 */
+                }
+
+                .payment-option._collapsible.opc-payment-additional.discount-code .form-discount .payment-option-inner .field {
+                    margin-bottom: 12px;                    /* 桌面端字段间距 */
+                }
+
+                .payment-option._collapsible.opc-payment-additional.discount-code .form-discount .payment-option-inner .field .label {
+                    font-size: 13px;                        /* 桌面端标签字体大小 */
+                }
+
+                .payment-option._collapsible.opc-payment-additional.discount-code .form-discount .payment-option-inner .field .control input.input-text {
+                    padding: 8px 12px;                      /* 桌面端输入框内边距 */
+                    font-size: 14px;                        /* 桌面端输入框字体大小 */
+                }
+
+                .payment-option._collapsible.opc-payment-additional.discount-code .form-discount .actions-toolbar {
+                    margin-top: 12px;                       /* 桌面端按钮区上边距 */
+                }
+
+                .payment-option._collapsible.opc-payment-additional.discount-code .form-discount .actions-toolbar .primary button.action-apply {
+                    padding: 10px 20px;                      /* 桌面端按钮内边距 */
+                    font-size: 14px;                        /* 桌面端按钮字体大小 */
+                    width: auto;                            /* 桌面端按钮自动宽度 */
+                }
+
+                .payment-option._collapsible.opc-payment-additional.discount-code [data-role="checkout-messages"] {
+                    margin-top: 12px;                       /* 桌面端消息区上边距 */
+                }
+
+                .payment-option._collapsible.opc-payment-additional.discount-code [data-role="checkout-messages"] .message {
+                    padding: 8px 12px;                      /* 桌面端消息内边距 */
+                    font-size: 13px;                        /* 桌面端消息字体大小 */
+                }
+              /* 如果需要针对大屏做进一步微调，可以在这里添加 */
+                /* 例如，稍微增大字体或间距 */
+                .payment-option._collapsible.opc-payment-additional.discount-code .payment-option-title .action-toggle {
+                    font-size: 17px; /* 示例 */
+                }
+             .login-wrapper {
+                 .authentication-wrapper {
+                    width: 100%;
+                    text-align: left;
+                    max-width: 100%;
+
+                 }
+             }
+         }
+        .authentication-wrapper {
+            .folix-login-notice {
+                display: block;
+            }
+
+            .mobile-login-link {
+                display: none;
+            }
+        }
+    }
+}
