@@ -11,7 +11,7 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Psr\Log\LoggerInterface;
-
+use FolixCode\ThirdPartyOrder\Model\ThirdPartyOrderPushFactory;
 /**
  * Order Sync Service - 核心同步逻辑
  * 
@@ -22,40 +22,45 @@ use Psr\Log\LoggerInterface;
  */
 class OrderSyncService
 {
-    /** 订单类型常量 */
-    public const ORDER_TYPE_DIRECT = 'direct';  // 直充
-    public const ORDER_TYPE_CARD = 'card';      // 卡密
+
+   public const API_URI = '/api/user-order/create';
+    
 
     private ExternalApiClientInterface $apiClient;
     private ThirdPartyOrderResource $resource;
-    private \FolixCode\ThirdPartyOrder\Model\ThirdPartyOrderFactory $thirdPartyOrderFactory;
+    private \FolixCode\ThirdPartyOrder\Model\ThirdPartyOrderDbFactory $thirdPartyOrderFactory;
     private OrderRepositoryInterface $orderRepository;
-    private ChargeInfoExtractor $chargeInfoExtractor;
     private ThirdPartyHelper $helper;
     private Json $json;
     private TimezoneInterface $timezone;
     private LoggerInterface $logger;
 
+    private ThirdPartyOrderPushFactory $thirdPartyOrderPushFactory;
+
+    private ThirdPartyOrderDbRepository $thirdPartyOrderDbRepository;
+
     public function __construct(
         ExternalApiClientInterface $apiClient,
         ThirdPartyOrderResource $resource,
-        \FolixCode\ThirdPartyOrder\Model\ThirdPartyOrderFactory $thirdPartyOrderFactory,
+        \FolixCode\ThirdPartyOrder\Model\ThirdPartyOrderDbFactory $thirdPartyOrderFactory,
         OrderRepositoryInterface $orderRepository,
-        ChargeInfoExtractor $chargeInfoExtractor,
         ThirdPartyHelper $helper,
         Json $json,
+        ThirdPartyOrderDbRepository $thirdPartyOrderDbRepository,
         TimezoneInterface $timezone,
+        ThirdPartyOrderPushFactory $thirdPartyOrderPushFactory,
         LoggerInterface $logger
     ) {
         $this->apiClient = $apiClient;
         $this->resource = $resource;
         $this->thirdPartyOrderFactory = $thirdPartyOrderFactory;
         $this->orderRepository = $orderRepository;
-        $this->chargeInfoExtractor = $chargeInfoExtractor;
         $this->helper = $helper;
         $this->json = $json;
         $this->timezone = $timezone;
         $this->logger = $logger;
+        $this->thirdPartyOrderPushFactory = $thirdPartyOrderPushFactory;
+        $this->thirdPartyOrderDbRepository = $thirdPartyOrderDbRepository;
     }
 
     /**
@@ -79,26 +84,8 @@ class OrderSyncService
                 return true;
             }
 
-            // 2. 构建API请求数据
-            $requestData = $this->buildCreateOrderRequest($order);
-
-            $this->logger->info('Calling third party create order API', [
-                'magento_order_id' => $magentoOrderId,
-                'order_type' => $requestData['items'][0]['order_type'] ?? 'unknown'
-            ]);
-
-            // 3. 调用第三方API创建订单
-            $response = $this->apiClient->post('/api/user-order-create/create', $requestData);
-
-            // 4. 处理响应
-            $this->handleCreateOrderResponse($order, $response);
-
-            $duration = round((microtime(true) - $startTime) * 1000, 2);
-            $this->logger->info('Order synced successfully', [
-                'magento_order_id' => $magentoOrderId,
-                'third_party_order_id' => $response['order_id'] ?? 'unknown',
-                'duration_ms' => $duration
-            ]);
+            // 2. API请求数据
+            $requestData = $this->buildCreateOrderRequest($order);      
 
             return true;
 
@@ -121,55 +108,55 @@ class OrderSyncService
      * 构建创建订单请求数据
      *
      * @param OrderInterface $order
-     * @return array
+     * @return ThirdPartyOrderPushManager
      */
-    private function buildCreateOrderRequest(OrderInterface $order): array
+    private function buildCreateOrderRequest(OrderInterface $order): ThirdPartyOrderPushManager
     {
         $orderData = [
-            'user_order_id' => $order->getIncrementId(),
+          
             'notify_url' => $this->helper->getNotifyUrl(),
-            'items' => []
+            
         ];
 
+      
+
         // 遍历订单项
-        foreach ($order->getAllVisibleItems() as $item) {
-            $product = $item->getProduct();
-            
-            // TODO: 根据产品属性判断订单类型(直充/卡密)
-            // $orderType = $product->getData('game_charge_type');
-            $orderType = self::ORDER_TYPE_CARD; // 临时默认
-
-            $itemData = [
-                'product_id' => $product->getSku(),
-                'product_name' => $item->getName(),
-                'quantity' => (int)$item->getQtyOrdered(),
-                'price' => (float)$item->getPrice(),
-                'order_type' => $orderType
-            ];
-
-            // 如果是直充产品,添加充值账号信息
-            if ($orderType === self::ORDER_TYPE_DIRECT) {
-                $chargeInfo = $this->chargeInfoExtractor->extractFromOrderItem($item);
-                if ($chargeInfo) {
-                    $itemData['charge_account'] = $chargeInfo['charge_account'];
-                    $itemData['charge_region'] = $chargeInfo['charge_region'];
-                    
-                    $this->logger->info('Added charge info to order item', [
-                        'order_item_id' => $item->getId(),
-                        'charge_account' => $chargeInfo['charge_account'],
-                        'charge_region' => $chargeInfo['charge_region']
-                    ]);
-                } else {
-                    $this->logger->warning('Missing charge info for direct order', [
-                        'order_item_id' => $item->getId()
-                    ]);
-                }
+        foreach ($order->getItems() as $item) {
+            $product = str_replace(\FolixCode\ProductSync\Service\ProductImporter::SKU_PREFIX,'', $item->getSku());
+            /**
+             * @var ThirdPartyOrderPushManager
+             */
+              $pushToData = $this->thirdPartyOrderPushFactory->create($orderData);
+             $pushToData->setUserOrderId((string)$item->getItemId());
+             // 2. 设置时间戳
+             $pushToData->setTimestamp($this->timezone->date()->getTimestamp());
+            $pushToData->setProductId($product);
+            $pushToData->setBuyNum((string)$item->getQtyOrdered());
+            if($chargeTemplate = $item->getAdditionalData()) {
+                   $chargeInfo = $this->json->unserialize($chargeTemplate);
+                   foreach($chargeInfo as $key => $value) {
+                    $pushToData->setData($key,$value);
+                   }
+                 
             }
+             // 3. 调用第三方API创建订单
+            $response = $this->apiClient->post(self::API_URI, $pushToData->getData());
+              $this->logger->info('Calling third party create order API', [
+                'magento_order_id' => $item->getItemId(),
+                'order_type' =>  $response['order_type'] ?? 'unknown',
+            ]);
 
-            $orderData['items'][] = $itemData;
+
+            // 5. 保存响应数据
+             $response['increment_id'] = $order->getIncrementId();
+             $response['customer_id'] = $order->getCustomerId();
+          
+            // 4. 处理响应
+            $this->handleCreateOrderResponse($item, $response);
+ 
         }
 
-        return $orderData;
+       
     }
 
     /**
@@ -178,18 +165,17 @@ class OrderSyncService
      * @param OrderInterface $order
      * @param array $response
      */
-    private function handleCreateOrderResponse(OrderInterface $order, array $response): void
+    private function handleCreateOrderResponse(\Magento\Sales\Api\Data\OrderItemInterface $orderItem, array $response): void
     {
-        $magentoOrderId = (int)$order->getId();
-
-        // 提取充值信息(用于保存)
-        $chargeInfo = $this->chargeInfoExtractor->extractFromOrder($order);
-
+        $magentoOrderId = (int)$orderItem->getOrderId();
+ 
         // 创建记录
         $thirdPartyOrder = $this->thirdPartyOrderFactory->create([
             'data' => [
                 'magento_order_id' => $magentoOrderId,
-                'customer_id' => $order->getCustomerId(),
+                'entity_id' => $orderItem->getItemId(),
+                'customer_id' =>  $response['customer_id'],
+                'increment_id' => $response['increment_id'],
                 'third_party_order_id' => $response['order_id'] ?? '',
                 'order_type' => $response['order_type'] ?? '',
                 'status_code' => $response['status_code'] ?? 0,
@@ -202,11 +188,13 @@ class OrderSyncService
 
         // 如果是卡密订单,保存卡密信息
         if (!empty($response['cards']) && is_array($response['cards'])) {
-            $thirdPartyOrder->setCardKeys(json_encode($response['cards']));
-            $thirdPartyOrder->setCardsCount(count($response['cards']));
+             $thirdPartyOrder->setCardNo($response['cards'][0]['card_no']);
+             $thirdPartyOrder->setCardPwd($response['cards'][0]['card_pwd']);
+             $thirdPartyOrder->setCardDeadline($response['cards'][0]['card_deadline']);
+         
         }
 
-        $thirdPartyOrder->save();
+        $this->$this->thirdPartyOrderDbRepository->save($thirdPartyOrder);
     }
 
     /**

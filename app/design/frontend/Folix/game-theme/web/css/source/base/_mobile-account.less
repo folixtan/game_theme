@@ -1,0 +1,116 @@
+//
+//  Folix Mobile Account Styles
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .folix-moblie-customer-welcome {
+        display: flex;
+        width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+
+        .customer-menu-moblie {
+            position: relative;
+            width: 100%;
+        }
+
+        .user-menu {
+            display: grid;
+            width: 100%;
+            gap: 10px;
+            margin: 0;
+            padding: 15px;
+            background: @folix-bg-card;
+            border-radius: @folix-radius-md;
+            box-shadow: @folix-shadow-lg;
+            box-sizing: border-box;
+            border: 1px solid @folix-border;
+        }
+
+        .user-menu a {
+            display: block;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: @folix-text-primary;
+            border: 1px solid @folix-border;
+            border-radius: @folix-radius-sm;
+            transition: all @folix-transition-fast ease;
+            font-size: @font-size__base;
+            text-align: left;
+            background: @folix-bg-page-base;
+
+            &:hover {
+                background: @folix-bg-hover;
+                border-color: @folix-secondary;
+                color: @folix-secondary;
+            }
+
+            span {
+                display: block;
+                width: 100%;
+                text-align: left;
+                color: @folix-text-primary;
+            }
+        }
+
+        .divider {
+            height: 1px;
+            background: @folix-border;
+            margin: 8px 0;
+        }
+
+        .logout {
+            color: @folix-error !important;
+
+            &:hover {
+                background: @folix-error-bg !important;
+                border-color: @folix-error !important;
+                color: @folix-error !important;
+            }
+        }
+    }
+}
+
+//  Mobile and Tablet styles
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .folix-moblie-customer-welcome {
+        padding: 10px;
+        flex-direction: column;
+
+        .user-menu {
+            min-width: auto;
+            max-width: 100%;
+            padding: 10px;
+            gap: 8px;
+        }
+
+        .user-menu a {
+            padding: 10px 12px;
+            font-size: @font-size__base - 1;
+
+            span {
+                font-size: @font-size__base - 1;
+            }
+        }
+
+        .divider {
+            margin: 6px 0;
+        }
+    }
+}
+
+//  Small Mobile styles
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    .folix-moblie-customer-welcome {
+        padding: 8px 5px;
+
+        .user-menu {
+            padding: 12px;
+            gap: 8px;
+        }
+
+        .user-menu a {
+            padding: 8px 10px;
+        }
+    }
+}

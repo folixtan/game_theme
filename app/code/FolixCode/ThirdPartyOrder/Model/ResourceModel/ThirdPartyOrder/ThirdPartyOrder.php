@@ -41,7 +41,7 @@ class ThirdPartyOrder extends AbstractDb
         $connection = $this->getConnection();
         $select = $connection->select()
             ->from($this->getMainTable())
-            ->where('magento_order_id = ?', $magentoOrderId);
+            ->where('entity_id = ?', $magentoOrderId);
 
         $result = $connection->fetchRow($select);
         return $result ?: null;
@@ -80,7 +80,7 @@ class ThirdPartyOrder extends AbstractDb
             'updated_at' => $this->timezone->date()->format('Y-m-d H:i:s')
         ]);
 
-        $where = ['magento_order_id = ?' => $magentoOrderId];
+        $where = ['entity_id = ?' => $magentoOrderId];
         return (bool)$connection->update($this->getMainTable(), $updateData, $where);
     }
 
@@ -101,7 +101,7 @@ class ThirdPartyOrder extends AbstractDb
             'updated_at' => $this->timezone->date()->format('Y-m-d H:i:s')
         ];
 
-        $where = ['magento_order_id = ?' => $magentoOrderId];
+        $where = ['entity_id = ?' => $magentoOrderId];
         return (bool)$connection->update($this->getMainTable(), $updateData, $where);
     }
 }

@@ -16,29 +16,5 @@
         </resources>
     </route>
     
-    <!-- 
-        根据Magento订单ID查询第三方订单信息
-        GET /rest/V1/thirdpartyorders/:magentoOrderId
-    -->
-    <route url="/V1/thirdpartyorders/:magentoOrderId" method="GET">
-        <service class="FolixCode\ThirdPartyOrder\Api\ThirdPartyOrderManagementInterface" 
-                 method="getByMagentoOrderId"/>
-        <resources>
-            <!-- 需要登录认证 -->
-            <resource ref="self"/>
-        </resources>
-    </route>
-    
-    <!-- 
-        根据第三方订单ID查询订单信息
-        GET /rest/V1/thirdpartyorders/third-party/:thirdPartyOrderId
-    -->
-    <route url="/V1/thirdpartyorders/third-party/:thirdPartyOrderId" method="GET">
-        <service class="FolixCode\ThirdPartyOrder\Api\ThirdPartyOrderManagementInterface" 
-                 method="getByThirdPartyOrderId"/>
-        <resources>
-            <resource ref="self"/>
-        </resources>
-    </route>
     
 </routes>

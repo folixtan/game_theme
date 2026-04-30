@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
  */
 class Publisher
 {
-    private const TOPIC_ORDER_SYNC = 'folixcode.order.sync';
+    public const TOPIC_ORDER_SYNC = 'folixcode.order.sync';
 
     private MqPublisher $mqPublisher;
     private OperationInterfaceFactory $operationFactory;

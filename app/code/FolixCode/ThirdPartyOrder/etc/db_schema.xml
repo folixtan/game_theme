@@ -8,6 +8,8 @@
         
         <!-- 关联Magento订单 -->
         <column xsi:type="int" name="magento_order_id" padding="10" unsigned="true" nullable="false" comment="Magento Order ID"/>
+        <column xsi:type="int" name="store_id" padding="10" unsigned="true" nullable="false" comment="Store ID"/>
+        <column xsi:type="varchar" name="increment_id" nullable="true"  comment="order increment id" />
         <column xsi:type="int" name="customer_id" padding="10" unsigned="true" nullable="true" comment="Customer ID (用于统计)"/>
         
         <!-- 第三方订单信息 -->
@@ -22,7 +24,9 @@
         <column xsi:type="varchar" name="charge_region" nullable="true" length="255" comment="Charge Region (区服)"/>
         
         <!-- 卡密: 卡密信息 (用户需要复制/发送) -->
-        <column xsi:type="text" name="card_keys" nullable="true" comment="Card Keys JSON: [{card_no, card_pwd, card_deadline}]"/>
+        <column xsi:type="varchar" name="card_no" nullable="true" length="255" comment="Card Number"/>
+        <column xsi:type="varchar" name="card_pwd" nullable="true" length="255" comment="Card Password"/>
+        <column xsi:type="varchar" name="card_deadline" nullable="true" length="20" comment="Card Deadline (过期时间)"/>
         <column xsi:type="smallint" name="cards_count" padding="10" nullable="true" default="0" comment="Cards Count (用于统计active_keys)"/>
         
         <!-- 同步状态 -->

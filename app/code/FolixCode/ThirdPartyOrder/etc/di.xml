@@ -8,6 +8,13 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
+    <!-- API接口绑定 -->
+    <preference for="FolixCode\ThirdPartyOrder\Api\ThirdPartyOrderDbRepositoryInterface" 
+                type="FolixCode\ThirdPartyOrder\Model\ThirdPartyOrderDbRepository" />
+                
+    <preference for="FolixCode\ThirdPartyOrder\Api\Data\ThirdPartyOrderDbInterface" 
+                type="FolixCode\ThirdPartyOrder\Model\ThirdPartyOrderDb" />
+
     <!-- API客户端首选项 -->
     <preference for="FolixCode\BaseSyncService\Api\ExternalApiClientInterface" 
                 type="FolixCode\BaseSyncService\Model\ApiClient"/>
@@ -48,5 +55,14 @@
             <argument name="fileName" xsi:type="string">/var/log/thirdpartyorder.log</argument>
         </arguments>
     </virtualType>
+
+    <!-- Console Command -->
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="process_third_party_orders_command" xsi:type="object">FolixCode\ThirdPartyOrder\Console\Command\ProcessThirdPartyOrdersCommand</item>
+            </argument>
+        </arguments>
+    </type>
 
 </config>

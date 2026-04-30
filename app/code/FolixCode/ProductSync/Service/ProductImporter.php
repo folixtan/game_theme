@@ -67,7 +67,7 @@ class ProductImporter
 
     private $categories = [];
 
-    const SKU_PREFIX = 'vg_';
+    public const SKU_PREFIX = 'vg_';
 
     /**
      * 构造函数

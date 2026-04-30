@@ -47,8 +47,14 @@
         <move element="store_language" destination="folix.top.right" />
         
         <!-- 左侧链接内容 -->
-        <referenceContainer name="folix.top.left">
-            <block class="Magento\Framework\View\Element\Template" name="folix.top.links" template="Magento_Theme::html/header/links-top-left.phtml" before="-" />
+        <referenceContainer name="folix.top.left" >
+            <block class="Magento\Framework\View\Element\Template" name="folix.top.links" template="Magento_Theme::html/container.phtml" before="-" >
+               <block class="Magento\Cms\Block\Block" name="folix.moblie.account" as="folix.account">
+                    <arguments>
+                        <argument name="block_id" xsi:type="string">header-left-content</argument>
+                    </arguments>
+                </block>
+            </block>
         </referenceContainer>
      
        <referenceContainer name="header-wrapper">
@@ -64,13 +70,16 @@
                     <argument name="additionalSearchFormData" xsi:type="object">Magento\Search\ViewModel\AdditionalSearchFormData</argument>
                 </arguments>
             </block>
-
+             <!--mobile account-->
+            <referenceBlock class="Magento\Framework\View\Element\Template" name="store.links" group="navigation-sections" template="Magento_Theme::html/container.phtml" >
+                <block class="Magento\Customer\Block\Account\Customer" name="moblie.folix.customer" template="Magento_Customer::account/moblie-customer.phtml" before="-"/>
+            </referenceBlock>
          </referenceBlock>
          
  
         <move element="navigation.sections" destination="folix.header.nav" />
            
-        
+       
         <move element="logo" destination="folix.header.nav" before="-" />
         <move element="header.links" destination="folix.top.right" after="-" />        <!-- Body Class -->
         <move element="minicart"  destination="folix.header.nav" after="-" />

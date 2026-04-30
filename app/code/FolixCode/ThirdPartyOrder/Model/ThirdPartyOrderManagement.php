@@ -133,11 +133,7 @@ class ThirdPartyOrderManagement implements ThirdPartyOrderManagementInterface
      */
     private function formatOrderData(array $record): array
     {
-        // 解析卡密JSON
-        $cardKeys = [];
-        if (!empty($record['card_keys'])) {
-            $cardKeys = json_decode($record['card_keys'], true) ?: [];
-        }
+         
 
         return [
             'entity_id' => (int)$record['entity_id'],
@@ -148,8 +144,10 @@ class ThirdPartyOrderManagement implements ThirdPartyOrderManagementInterface
             'status_code' => (int)$record['status_code'],
             'charge_account' => $record['charge_account'],
             'charge_region' => $record['charge_region'],
-            'card_keys' => $cardKeys,
-            'cards_count' => (int)$record['cards_count'],
+            'card_no' => $record['card_no'],
+            'card_pwd' => $record['card_pwd'],
+            'card_deadline' => $record['card_deadline'],
+        
             'sync_status' => $record['sync_status'],
             'synced_at' => $record['synced_at'],
             'created_at' => $record['created_at'],

@@ -59,9 +59,11 @@ class OrderStatusHandler
         $magentoOrderId = (int)$record['magento_order_id'];
         $customerId = $record['customer_id'] ? (int)$record['customer_id'] : null;
         $statusCode = (int)($orderData['status_code'] ?? 0);
+        $entityId = $record['entity_id'];
 
         $this->logger->info('Processing order status update', [
             'magento_order_id' => $magentoOrderId,
+            'entity_id'      => $record['entity_id'],
             'third_party_order_id' => $thirdPartyOrderId,
             'status_code' => $statusCode
         ]);
@@ -69,16 +71,16 @@ class OrderStatusHandler
         // 根据状态码处理
         switch ($statusCode) {
             case self::STATUS_SUCCESS:
-                $this->handleSuccess($magentoOrderId, $customerId, $orderData);
+                $this->handleSuccess($entityId, $customerId, $orderData);
                 break;
                 
             case self::STATUS_FAILED:
-                $this->handleFailed($magentoOrderId, $orderData);
+                $this->handleFailed($entityId, $orderData);
                 break;
                 
             case self::STATUS_PROCESSING:
             default:
-                $this->handleProcessing($magentoOrderId, $orderData);
+                $this->handleProcessing($entityId, $orderData);
                 break;
         }
     }
@@ -106,8 +108,11 @@ class OrderStatusHandler
 
             // 提取卡密信息(卡密)
             if (!empty($orderData['cards']) && is_array($orderData['cards'])) {
-                $updateData['card_keys'] = json_encode($orderData['cards']);
-                $updateData['cards_count'] = count($orderData['cards']);
+                  foreach($orderData['cards'] as $card) {
+                      $updateData['card_no'] = $card['card_no'];
+                      $updateData['card_pwd'] = $card['card_pwd'];
+                      $updateData['card_deadline'] = $card['card_deadline'];
+                  } 
             }
 
             // 更新数据库
