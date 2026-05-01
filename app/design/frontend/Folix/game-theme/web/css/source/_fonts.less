@@ -1,0 +1,226 @@
+/**
+ * Folix Game Theme - Fonts
+ * 
+ * 字体方案：Inter + Noto Sans SC
+ * - Inter: 英文和数字（UI 优化，数字清晰）
+ * - Noto Sans SC: 中文（Google 官方字体）
+ * 
+ * 核心原则：
+ * - 尽可能使用原生变量名，确保全局覆盖
+ * - 自定义变量仅用于内部样式规则
+ */
+
+// ============================================================================
+//  Google Fonts Import
+// ============================================================================
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap');
+
+// ============================================================================
+//  原生字体变量覆盖（确保全局生效）
+// ============================================================================
+
+//  Font Families - 核心覆盖
+@font-family__sans-serif: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+@font-family__serif: 'Inter', 'Noto Sans SC', Georgia, 'Times New Roman', Times, serif;
+@font-family__monospace: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', Consolas, 'Courier New', monospace;
+
+//  Base Font（继承 sans-serif）
+// @font-family__base 已在 _theme.less 中覆盖
+
+//  Heading Font Family（所有标题使用相同字体）
+@heading__font-family__base: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+//  Individual Heading Fonts
+@h1__font-family: @heading__font-family__base;
+@h2__font-family: @heading__font-family__base;
+@h3__font-family: @heading__font-family__base;
+@h4__font-family: @heading__font-family__base;
+@h5__font-family: @heading__font-family__base;
+@h6__font-family: @heading__font-family__base;
+
+// ============================================================================
+//  Font Weights（使用原生变量名）
+// ============================================================================
+
+@font-weight__light: 300;
+@font-weight__normal: 400;
+@font-weight__regular: 400;
+@font-weight__medium: 500;
+@font-weight__heavier: 500;
+@font-weight__semibold: 600;
+@font-weight__bold: 700;
+@font-weight__extrabold: 800;
+@font-weight__heavy: 900;
+
+//  Heading Weights
+@heading__font-weight__base: @font-weight__bold;
+@h1__font-weight: @font-weight__bold;
+@h2__font-weight: @font-weight__bold;
+@h3__font-weight: @font-weight__semibold;
+@h4__font-weight: @font-weight__bold;
+@h5__font-weight: @font-weight__bold;
+@h6__font-weight: @font-weight__bold;
+
+// ============================================================================
+//  Font Sizes（使用原生变量名）
+// ============================================================================
+
+//  Base Sizes
+@font-size__base: 14px;
+@font-size__xl: ceil(1.5 * @font-size__base);  // 21px
+@font-size__l: ceil(1.25 * @font-size__base);  // 18px
+@font-size__s: ceil(.85 * @font-size__base);   // 12px
+@font-size__xs: floor(.75 * @font-size__base); // 11px
+
+//  Heading Sizes（保持原生计算逻辑，但调整基础值）
+@h1__font-size: ceil((@font-size__base * 2.57));  // 36px（从 2.85 改为 2.57）
+@h2__font-size: ceil((@font-size__base * 2.14));  // 30px（从 1.85 改为 2.14）
+@h3__font-size: ceil((@font-size__base * 1.71));  // 24px（从 1.28 改为 1.71）
+@h4__font-size: ceil((@font-size__base * 1.43));  // 20px（从 1.0 改为 1.43）
+@h5__font-size: ceil((@font-size__base * 1.14));  // 16px（从 0.85 改为 1.14）
+@h6__font-size: ceil((@font-size__base * 1));     // 14px（从 0.7 改为 1.0）
+
+//  Desktop Adjustments
+@h1__font-size-desktop: ceil((@font-size__base * 2.57));  // 36px
+
+// ============================================================================
+//  Line Heights（使用原生变量名）
+// ============================================================================
+
+@line-height__base: 1.6;
+@line-height__computed: floor(@font-size__base * @line-height__base);
+@line-height__xl: 1.8;
+@line-height__l: 1.6;
+@line-height__s: 1.4;
+
+//  Heading Line Heights
+@heading__line-height__base: 1.3;
+@h1__line-height: @heading__line-height__base;
+@h2__line-height: @heading__line-height__base;
+@h3__line-height: @heading__line-height__base;
+@h4__line-height: @heading__line-height__base;
+@h5__line-height: @heading__line-height__base;
+@h6__line-height: @heading__line-height__base;
+
+// ============================================================================
+//  自定义变量（仅用于内部样式规则）
+// ============================================================================
+
+//  Custom Font Families
+@font-family__inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+@font-family__chinese: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+
+//  Custom Letter Spacing（原生没有这些变量）
+@letter-spacing__base: 0;
+@letter-spacing__heading: -0.02em;
+@letter-spacing__uppercase: 0.05em;
+@letter-spacing__wide: 0.1em;
+
+// ============================================================================
+//  Global Typography Styles
+// ============================================================================
+
+html {
+    font-family: @font-family__base;
+    font-size: @font-size__base;
+    line-height: @line-height__base;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: @font-family__base;
+    font-weight: @font-weight__normal;
+    color: @primary__color;
+}
+
+//  Headings（使用原生变量）
+h1, h2, h3, h4, h5, h6 {
+    font-family: @heading__font-family__base;
+    font-weight: @heading__font-weight__base;
+    line-height: @heading__line-height__base;
+    letter-spacing: @letter-spacing__heading;
+}
+
+h1 { 
+    font-size: @h1__font-size; 
+    font-weight: @h1__font-weight;
+    line-height: @h1__line-height;
+}
+h2 { 
+    font-size: @h2__font-size; 
+    font-weight: @h2__font-weight;
+    line-height: @h2__line-height;
+}
+h3 { 
+    font-size: @h3__font-size; 
+    font-weight: @h3__font-weight;
+    line-height: @h3__line-height;
+}
+h4 { 
+    font-size: @h4__font-size; 
+    font-weight: @h4__font-weight;
+    line-height: @h4__line-height;
+}
+h5 { 
+    font-size: @h5__font-size; 
+    font-weight: @h5__font-weight;
+    line-height: @h5__line-height;
+}
+h6 { 
+    font-size: @h6__font-size; 
+    font-weight: @h6__font-weight;
+    line-height: @h6__line-height;
+}
+
+//  Price Display（数字优化）
+.price {
+    font-family: @font-family__inter;
+    font-weight: @font-weight__semibold;
+    font-variant-numeric: tabular-nums;  // 等宽数字，价格对齐
+}
+
+//  Product Title
+.product-item-name,
+.product-name {
+    font-family: @font-family__base;
+    font-weight: @font-weight__semibold;
+}
+
+//  Button Text
+.action,
+button {
+    font-family: @font-family__base;
+    font-weight: @font-weight__semibold;
+    letter-spacing: @letter-spacing__uppercase;
+}
+
+//  Code / Promo Code（优惠码等宽字体）
+code,
+.promo-code,
+.discount-code {
+    font-family: @font-family__monospace;
+    font-weight: @font-weight__normal;
+}
+
+//  Form Labels
+.label,
+label {
+    font-family: @font-family__base;
+    font-weight: @font-weight__medium;
+}
+
+//  Navigation
+.nav {
+    font-family: @font-family__base;
+    font-weight: @font-weight__medium;
+}
+
+// ============================================================================
+//  Performance Optimization
+// ============================================================================
+
+//  Font Display Swap（字体加载优化）
+// Google Fonts 已自动添加 &display=swap
+// 这确保在字体加载过程中仍然显示系统字体

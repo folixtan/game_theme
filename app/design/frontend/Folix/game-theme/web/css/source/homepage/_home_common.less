@@ -1,0 +1,67 @@
+// /**
+//  * Homepage - Common Styles
+//  * 首页 - 通用样式
+//  */
+
+& when (@media-common = true) {
+    // 区块标题
+    .homepage-section-title {
+        text-align: center;
+        margin: 60px 0 40px;
+
+        h2 {
+            font-size: 36px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            color: @folix-text-primary;
+        }
+
+        .title-line {
+            width: 80px;
+            height: 4px;
+            background: @folix-gradient-gold;
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+
+        p {
+            color: @folix-text-secondary;
+            font-size: 18px;
+        }
+    }
+
+    // Slider 容器
+    .homepage-hero-slider {
+        margin: 40px 0;
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+
+        .slider-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+    }
+}
+
+// 移动端响应式
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .homepage-section-title {
+        margin: 30px 0 20px;
+
+        h2 {
+            font-size: 28px;
+        }
+
+        p {
+            font-size: 16px;
+        }
+    }
+
+    .homepage-hero-slider {
+        margin: 20px 0;
+    }
+}

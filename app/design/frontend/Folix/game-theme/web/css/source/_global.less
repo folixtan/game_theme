@@ -82,6 +82,17 @@
     .pagebuilder-overlay.pagebuilder-poster-overlay {
          background: none !important;
     }
+    .page-footer {
+         .block.newsletter {
+             order: 0;
+         }
+         .footer.links {
+             order:3;
+         }
+         .footer-middle-content {
+             order: 1;
+         }
+    }
 }
 
 //
@@ -91,6 +102,9 @@
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
     body {
         font-size: @font-size__base;
+    }
+    .logo {
+        margin: -8px auto 0px 0;
     }
 }
 
@@ -113,7 +127,12 @@
              margin-top: 0px;
         }
     }
-
+   .footer.content {
+     .footer-middle-content {
+         width: 100%;
+         text-align: center;
+     }
+   }
     // 确保所有可点击元素最小 44x44px (Apple 推荐标准)
     a,
     button,

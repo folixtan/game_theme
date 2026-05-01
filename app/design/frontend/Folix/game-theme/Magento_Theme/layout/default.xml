@@ -93,6 +93,16 @@
                </arguments>
            </block>
         </referenceBlock>
+
+        <referenceContainer name="footer">
+            <block class="Magento\Framework\View\Element\Template" name="folix.footer.middle" template="Magento_Theme::html/footer-middle.phtml" after="-">
+                  <block name="left-links-footer" class="Magento\Cms\Block\BlockByIdentifier" >
+                    <arguments>
+                        <argument name="identifier" xsi:type="string">footer-middle-content</argument>
+                    </arguments>
+                 </block>
+            </block>
+        </referenceContainer>
         
           <!-- Body Class -->
         <attribute name="body" value="folix-theme" />

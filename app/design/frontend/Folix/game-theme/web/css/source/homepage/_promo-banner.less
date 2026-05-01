@@ -1,0 +1,65 @@
+// /**
+//  * Homepage - Promo Banner Styles
+//  * 首页 - 促销横幅样式
+//  */
+
+& when (@media-common = true) {
+    .homepage-promo-banner {
+        margin: 60px 0;
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(255, 59, 48, 0.3);
+
+        .promo-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .promo-button-wrapper {
+            position: absolute;
+            bottom: 40px;
+            left: 150px;
+
+            .promo-btn {
+                display: inline-block;
+                background: @folix-text-primary;
+                color: @folix-accent;
+                padding: 18px 50px;
+                border-radius: 30px;
+                text-decoration: none;
+                font-weight: 700;
+                font-size: 20px;
+                transition: transform 0.3s, box-shadow 0.3s;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+
+                &:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+                    color: @folix-accent-dark;
+                }
+            }
+        }
+    }
+}
+
+// 移动端响应式
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .homepage-promo-banner {
+        margin: 30px 0;
+
+        .promo-button-wrapper {
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            text-align: center;
+
+            .promo-btn {
+                padding: 15px 30px;
+                font-size: 18px;
+                width: 100%;
+            }
+        }
+    }
+}

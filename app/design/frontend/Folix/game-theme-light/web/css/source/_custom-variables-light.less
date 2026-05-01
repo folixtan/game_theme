@@ -1,0 +1,304 @@
+/**
+ * PortGame Light Theme - Custom Variables
+ * 
+ * 方案：简约浅色风（Apple/Stripe 风格）
+ * - 白色背景 + 蓝色主色 + 橙色强调
+ * - 适合通用电商、数字产品
+ * 
+ * 注意：使用与深色主题相同的变量名（@folix-*），只是值不同
+ */
+
+// ============================================================================
+//  BRAND COLORS - 品牌色（浅色简约风）
+// ============================================================================
+
+//  Primary - 白色/浅灰系（背景、基础）
+@folix-primary: #FFFFFF;
+@folix-primary-dark: #F3F4F6;
+@folix-primary-light: #F9FAFB;
+
+//  Secondary - 蓝色系（货币、奖励、主按钮）
+@folix-secondary: #3B82F6;
+@folix-secondary-dark: #2563EB;
+@folix-secondary-light: #60A5FA;
+
+//  Accent - 活力橙系（热销、促销、警告）
+@folix-accent: #F97316;
+@folix-accent-dark: #EA580C;
+@folix-accent-light: #FB923C;
+
+//  Special Colors - 清新绿系（装饰）
+@folix-green: #10B981;
+@folix-green-dark: #059669;
+@folix-green-light: #34D399;
+
+@folix-purple: #8B5CF6;
+@folix-purple-dark: #7C3AED;
+@folix-purple-light: #A78BFA;
+
+// ============================================================================
+//  TEXT COLORS - 文字色（浅色背景）
+// ============================================================================
+
+@folix-text-primary: #1F2937;
+@folix-text-secondary: #4B5563;
+@folix-text-tertiary: #6B7280;
+@folix-text-muted: #9CA3AF;
+@folix-text-light: #D1D5DB;
+@folix-text-lighter: #E5E7EB;
+
+@folix-text-on-dark: #FFFFFF;
+@folix-text-on-dark-muted: #9CA3AF;
+@folix-text-on-gold: #FFFFFF;
+@folix-text-on-red: #FFFFFF;
+
+// ============================================================================
+//  BACKGROUND COLORS - 背景色（浅色简约）
+// ============================================================================
+
+@folix-bg-page: #F9FAFB;
+@folix-bg-page-base: #F9FAFB;
+@folix-bg-panel: #FFFFFF;
+@folix-bg-card: #FFFFFF;
+@folix-bg-hover: #F3F4F6;
+@folix-bg-light: #F9FAFB;
+@folix-bg-selected: rgba(59, 130, 246, 0.1);
+
+//  Light Backgrounds
+@folix-bg-dark: #F3F4F6;
+@folix-bg-dark-alt: #E5E7EB;
+@folix-bg-dark-card: #FFFFFF;
+
+//  Gradients（轻量化渐变）
+@folix-gradient-bg: linear-gradient(135deg, #F9FAFB 0%, #FFFFFF 100%);
+@folix-gradient-header: linear-gradient(180deg, #FFFFFF 0%, #F9FAFB 100%);
+@folix-gradient-footer: linear-gradient(180deg, #F3F4F6 0%, #E5E7EB 100%);
+@folix-gradient-purple: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+@folix-gradient-gold: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+@folix-gradient-red: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+@folix-gradient-header-page: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.95) 100%);
+@folix-gradient-top-search-background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+
+//  Primary Button Gradient（主按钮 - 蓝色系）
+@folix-gradient-primary: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+@folix-gradient-primary-hover: linear-gradient(135deg, #60A5FA 0%, #3B82F6 100%);
+
+//  Secondary Gradient（橙色系）
+@folix-gradient-secondary: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+
+// ============================================================================
+//  BORDER COLORS - 边框色（浅灰边框）
+// ============================================================================
+
+@folix-border: #E5E7EB;
+@folix-border-light: #F3F4F6;
+@folix-border-dark: #D1D5DB;
+@folix-border-gold: rgba(59, 130, 246, 0.3);
+@folix-border-red: rgba(249, 115, 22, 0.3);
+@folix-border-hover: #3B82F6;
+
+// ============================================================================
+//  BUTTON COLORS - 按钮色（浅色简约）
+// ============================================================================
+
+//  Primary Button（蓝色 - 充值、购买）
+@folix-btn-primary-bg: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+@folix-btn-primary-hover-bg: linear-gradient(135deg, #60A5FA 0%, #3B82F6 100%);
+@folix-btn-primary-text: #FFFFFF;
+@folix-btn-primary-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+
+//  Secondary Button（橙色 - 热销、促销）
+@folix-btn-secondary-bg: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+@folix-btn-secondary-hover-bg: linear-gradient(135deg, #FB923C 0%, #F97316 100%);
+@folix-btn-secondary-text: #FFFFFF;
+@folix-btn-secondary-shadow: 0 4px 14px rgba(249, 115, 22, 0.25);
+
+//  Ghost Button（透明按钮）
+@folix-btn-ghost-bg: transparent;
+@folix-btn-ghost-hover-bg: rgba(59, 130, 246, 0.1);
+@folix-btn-ghost-text: #3B82F6;
+@folix-btn-ghost-border: rgba(59, 130, 246, 0.3);
+
+// ============================================================================
+//  FORM COLORS - 表单色（浅色简约）
+// ============================================================================
+
+@folix-input-bg: #FFFFFF;
+@folix-input-border: #D1D5DB;
+@folix-input-focus-border: #3B82F6;
+@folix-input-placeholder: #9CA3AF;
+
+// ============================================================================
+//  NAVIGATION COLORS - 导航色（浅色简约）
+// ============================================================================
+
+@folix-nav-mobile-bg: #FFFFFF;
+@folix-nav-desktop-bg: transparent;
+
+// ============================================================================
+//  HEADER COLORS - 头部色（浅色简约）
+// ============================================================================
+
+@folix-header-top-bg: #FFFFFF;
+@folix-header-top-text: #4B5563;
+@folix-nav-bottom-border: #3B82F6;
+
+// ============================================================================
+//  FOOTER COLORS - 底部色（浅色简约）
+// ============================================================================
+
+@folix-footer-bg: linear-gradient(180deg, #F3F4F6 0%, #E5E7EB 100%);
+@folix-footer-link: #4B5563;
+@folix-footer-link-hover: #3B82F6;
+@folix-footer-border: #E5E7EB;
+
+// ============================================================================
+//  POPUP COLORS - 弹窗色（浅色简约）
+// ============================================================================
+
+@folix-popup-bg: #FFFFFF;
+@folix-popup-border: #E5E7EB;
+@folix-popup-overlay: rgba(0, 0, 0, 0.5);
+
+// ============================================================================
+//  UTILITY COLORS - 工具色（浅色简约）
+// ============================================================================
+
+@folix-error: #EF4444;
+@folix-error-bg: rgba(239, 68, 68, 0.1);
+@folix-error-border: rgba(239, 68, 68, 0.3);
+
+@folix-success: #10B981;
+@folix-success-light: #34D399;
+@folix-success-bg: rgba(16, 185, 129, 0.1);
+@folix-success-border: rgba(16, 185, 129, 0.3);
+@folix-success-shadow-strong: 0 0 40px rgba(16, 185, 129, 0.4);
+
+@folix-warning: #F59E0B;
+@folix-info: #3B82F6;
+@folix-info-bg: rgba(59, 130, 246, 0.1);
+@folix-info-border: rgba(59, 130, 246, 0.3);
+
+// ============================================================================
+//  SHADOWS - 阴影（轻量化）
+// ============================================================================
+
+@folix-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+@folix-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+@folix-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+@folix-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+@folix-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+@folix-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+
+@folix-shadow-gold: 0 4px 14px rgba(59, 130, 246, 0.25);
+@folix-shadow-gold-hover: 0 6px 16px rgba(59, 130, 246, 0.35);
+@folix-shadow-red: 0 4px 14px rgba(249, 115, 22, 0.25);
+@folix-shadow-success: 0 4px 14px rgba(16, 185, 129, 0.25);
+@folix-shadow-secondary: 0 8px 16px -4px rgba(139, 92, 246, 0.2);
+
+// ============================================================================
+//  LAYOUT & SPACING - 布局与间距（与深色主题保持一致）
+// ============================================================================
+
+@folix-radius: 6px;
+@folix-radius-sm: 4px;
+@folix-radius-md: 8px;
+@folix-radius-lg: 12px;
+@folix-radius-xl: 16px;
+@folix-radius-full: 9999px;
+
+// ============================================================================
+//  TRANSITIONS - 过渡动画
+// ============================================================================
+
+@folix-transition: 0.3s ease;
+@folix-transition-fast: 0.2s ease;
+@folix-transition-slow: 0.5s ease;
+@folix-transition-smooth: 0.4s ease;
+
+// ============================================================================
+//  Z-INDEX - 层级
+// ============================================================================
+
+@folix-z-sticky: 100;
+@folix-z-dropdown: 200;
+@folix-z-modal: 1000;
+@folix-z-modal-backdrop: 999;
+
+// ============================================================================
+//  BREAKPOINTS - 断点
+// ============================================================================
+
+@folix-breakpoint-sm: 640px;
+@folix-breakpoint-md: 768px;
+@folix-breakpoint-lg: 1024px;
+@folix-breakpoint-xl: 1280px;
+
+// ============================================================================
+//  NAVIGATION TEXT COLORS - 导航文字色
+// ============================================================================
+
+@folix-nav-text: #1F2937;
+@folix-nav-hover-text: #3B82F6;
+@folix-nav-active-text: #3B82F6;
+@folix-nav-active-bg: rgba(59, 130, 246, 0.1);
+@folix-nav-active-border: #3B82F6;
+@folix-nav-mobile-text: #1F2937;
+
+// ============================================================================
+//  HEADER COLORS - 头部扩展色
+// ============================================================================
+
+@folix-header-bg: transparent;
+@folix-header-border: #E5E7EB;
+@folix-input-text: #1F2937;
+
+// ============================================================================
+//  MISSING VARIABLES - 补充变量（与深色主题保持一致的变量名）
+// ============================================================================
+
+@folix-gold: #3B82F6;
+@folix-copyright-blue: #3B82F6;
+@folix-btn-secondary-border: #D1D5DB;
+@folix-card-bg: #FFFFFF;
+@folix-card-border: #E5E7EB;
+@folix-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+@folix-card-hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+@folix-card-hover-border: #3B82F6;
+@folix-input-error-border: #EF4444;
+@folix-input-success-border: #10B981;
+@folix-nav-bg: #FFFFFF;
+@folix-popup-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+@folix-price: #3B82F6;
+@folix-price-old: #9CA3AF;
+@folix-price-special: #F97316;
+@folix-badge-hot-bg: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+@folix-badge-new-bg: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+@folix-badge-sale-bg: linear-gradient(135deg, #10B981 0%, #059669 100%);
+@folix-table-header-bg: #F9FAFB;
+@folix-table-row-bg: #FFFFFF;
+@folix-table-row-alt-bg: #F9FAFB;
+@folix-table-row-hover-bg: #F3F4F6;
+@folix-table-border: #E5E7EB;
+@folix-gradient-dark: linear-gradient(180deg, #F3F4F6 0%, #E5E7EB 100%);
+@folix-gradient-hero: linear-gradient(135deg, #3B82F6 0%, #F97316 50%, #10B981 100%);
+@folix-header-accent-border: #3B82F6;
+@folix-footer-text: #4B5563;
+@folix-success-dark: #059669;
+@folix-warning-bg: rgba(245, 158, 11, 0.1);
+@folix-warning-border: rgba(245, 158, 11, 0.3);
+@folix-shadow-primary: 0 4px 14px rgba(59, 130, 246, 0.25);
+@folix-z-fixed: 300;
+@folix-z-popover: 600;
+@folix-z-tooltip: 700;
+
+// ============================================================================
+//  FONT WEIGHTS - 字体权重
+// ============================================================================
+
+@font-weight__light: 300;
+@font-weight__normal: 400;
+@font-weight__regular: 400;
+@font-weight__medium: 500;
+@font-weight__semibold: 600;
+@font-weight__bold: 700;

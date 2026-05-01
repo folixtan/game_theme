@@ -1,0 +1,165 @@
+/**
+ * PortGame Light Theme - Typography
+ * 
+ * 字体方案：Inter + Noto Sans SC
+ * - Inter: 英文和数字（UI 优化，数字清晰）
+ * - Noto Sans SC: 中文（Google 官方字体）
+ * 
+ * 注意：与深色主题使用完全相同的字体配置
+ */
+
+// ============================================================================
+//  Google Fonts Import
+// ============================================================================
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap');
+
+// ============================================================================
+//  Font Variables
+// ============================================================================
+
+//  Primary Font - Inter（英文、数字、价格显示）
+@font-family__inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+//  Secondary Font - Noto Sans SC（中文）
+@font-family__chinese: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+
+//  Base Font - 组合使用
+@font-family__base: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+//  Heading Font
+@font-family__heading: 'Inter', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+//  Monospace Font（代码、优惠码）
+@font-family__monospace: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', Consolas, 'Courier New', monospace;
+
+// ============================================================================
+//  Font Weights
+// ============================================================================
+
+@font-weight__light: 300;
+@font-weight__normal: 400;
+@font-weight__regular: 400;
+@font-weight__medium: 500;
+@font-weight__semibold: 600;
+@font-weight__bold: 700;
+@font-weight__extrabold: 800;
+@font-weight__black: 900;
+
+// ============================================================================
+//  Font Sizes
+// ============================================================================
+
+@font-size__h1: 36px;
+@font-size__h2: 30px;
+@font-size__h3: 24px;
+@font-size__h4: 20px;
+@font-size__h5: 16px;
+@font-size__h6: 14px;
+
+@font-size__base: 14px;
+@font-size__small: 12px;
+@font-size__large: 16px;
+@font-size__xlarge: 18px;
+
+// ============================================================================
+//  Line Heights
+// ============================================================================
+
+@line-height__base: 1.6;
+@line-height__heading: 1.3;
+@line-height__tight: 1.2;
+@line-height__loose: 1.8;
+
+// ============================================================================
+//  Letter Spacing
+// ============================================================================
+
+@letter-spacing__base: 0;
+@letter-spacing__heading: -0.02em;
+@letter-spacing__uppercase: 0.05em;
+@letter-spacing__wide: 0.1em;
+
+// ============================================================================
+//  Global Typography Styles
+// ============================================================================
+
+html {
+    font-family: @font-family__base;
+    font-size: @font-size__base;
+    line-height: @line-height__base;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: @font-family__base;
+    font-weight: @font-weight__normal;
+    color: @primary__color;
+}
+
+//  Headings
+h1, h2, h3, h4, h5, h6 {
+    font-family: @font-family__heading;
+    font-weight: @font-weight__bold;
+    line-height: @line-height__heading;
+    letter-spacing: @letter-spacing__heading;
+}
+
+h1 { font-size: @font-size__h1; }
+h2 { font-size: @font-size__h2; }
+h3 { font-size: @font-size__h3; }
+h4 { font-size: @font-size__h4; }
+h5 { font-size: @font-size__h5; }
+h6 { font-size: @font-size__h6; }
+
+//  Price Display（数字优化）
+.price {
+    font-family: @font-family__inter;
+    font-weight: @font-weight__semibold;
+    font-variant-numeric: tabular-nums;  // 等宽数字，价格对齐
+}
+
+//  Product Title
+.product-item-name,
+.product-name {
+    font-family: @font-family__heading;
+    font-weight: @font-weight__semibold;
+}
+
+//  Button Text
+.action,
+button {
+    font-family: @font-family__base;
+    font-weight: @font-weight__semibold;
+    letter-spacing: @letter-spacing__uppercase;
+}
+
+//  Code / Promo Code（优惠码等宽字体）
+code,
+.promo-code,
+.discount-code {
+    font-family: @font-family__monospace;
+    font-weight: @font-weight__normal;
+}
+
+//  Form Labels
+.label,
+label {
+    font-family: @font-family__base;
+    font-weight: @font-weight__medium;
+}
+
+//  Navigation
+.nav {
+    font-family: @font-family__base;
+    font-weight: @font-weight__medium;
+}
+
+// ============================================================================
+//  Performance Optimization
+// ============================================================================
+
+//  Font Display Swap（字体加载优化）
+// Google Fonts 已自动添加 &display=swap
+// 这确保在字体加载过程中仍然显示系统字体

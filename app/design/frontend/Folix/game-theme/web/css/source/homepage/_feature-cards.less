@@ -1,0 +1,139 @@
+// /**
+//  * Homepage - Feature Cards Styles
+//  * 首页 - 特色服务卡片样式
+//  */
+
+& when (@media-common = true) {
+    .homepage-features-section {
+        margin: 60px 0;
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+
+            .feature-card {
+                background: @folix-bg-card;
+                border-radius: 16px;
+                overflow: hidden;
+                transition: transform 0.3s, box-shadow 0.3s;
+
+                // 第1个卡片 - 金色（Fast Delivery）
+                &:nth-child(1) {
+                    border: 2px solid @folix-border-gold;
+
+                    &:hover {
+                        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+                        border-color: @folix-secondary;
+                        transform: translateY(-5px);
+                    }
+
+                    .feature-content {
+                        border-color: @folix-border-gold;
+
+                        .feature-title {
+                            color: @folix-secondary;
+                        }
+                    }
+                }
+
+                // 第2个卡片 - 紫色（Secure Payment）
+                &:nth-child(2) {
+                    border: 2px solid rgba(139, 92, 246, 0.3);
+
+                    &:hover {
+                        box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+                        border-color: @folix-purple;
+                        transform: translateY(-5px);
+                    }
+
+                    .feature-content {
+                        border-color: rgba(139, 92, 246, 0.3);
+
+                        .feature-title {
+                            color: @folix-purple;
+                        }
+                    }
+                }
+
+                // 第3个卡片 - 绿色（24/7 Support）
+                &:nth-child(3) {
+                    border: 2px solid rgba(16, 185, 129, 0.3);
+
+                    &:hover {
+                        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+                        border-color: @folix-success;
+                        transform: translateY(-5px);
+                    }
+
+                    .feature-content {
+                        border-color: rgba(16, 185, 129, 0.3);
+
+                        .feature-title {
+                            color: @folix-success;
+                        }
+                    }
+                }
+
+                // 第4个卡片 - 红色（Best Prices）
+                &:nth-child(4) {
+                    border: 2px solid @folix-border-red;
+
+                    &:hover {
+                        box-shadow: 0 10px 30px rgba(255, 59, 48, 0.2);
+                        border-color: @folix-accent-light;
+                        transform: translateY(-5px);
+                    }
+
+                    .feature-content {
+                        border-color: @folix-border-red;
+
+                        .feature-title {
+                            color: @folix-accent-light;
+                        }
+                    }
+                }
+
+                .feature-image {
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                    border-radius: 16px 16px 0 0;
+                }
+
+                .feature-content {
+                    background: linear-gradient(135deg, @folix-bg-panel 0%, @folix-bg-dark 100%);
+                    padding: 20px;
+                    border-radius: 0 0 16px 16px;
+                    border: 2px solid @folix-border-gold;
+                    border-top: none;
+                    text-align: center;
+
+                    .feature-title {
+                        font-size: 20px;
+                        font-weight: 700;
+                        margin: 0 0 10px 0;
+                    }
+
+                    .feature-description {
+                        color: @folix-text-secondary;
+                        font-size: 14px;
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 移动端响应式
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .homepage-features-section {
+        margin: 30px 0;
+
+        .features-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+    }
+}

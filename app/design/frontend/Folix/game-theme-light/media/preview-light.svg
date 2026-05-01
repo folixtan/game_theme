@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800">
+  <defs>
+    <!-- 渐变定义 - 严格按照浅色主题变量 -->
+    <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700"/>
+      <stop offset="50%" style="stop-color:#FFA500"/>
+      <stop offset="100%" style="stop-color:#FF3B30"/>
+    </linearGradient>
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6"/>
+      <stop offset="100%" style="stop-color:#2563EB"/>
+    </linearGradient>
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#F97316"/>
+      <stop offset="100%" style="stop-color:#EA580C"/>
+    </linearGradient>
+    <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#8B5CF6"/>
+      <stop offset="100%" style="stop-color:#7C3AED"/>
+    </linearGradient>
+    
+    <!-- Logo 发光效果 -->
+    <filter id="logoGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="1200" height="800" fill="#FFFFFF"/>
+  
+  <!-- ==================== HEADER TOP BAR ==================== -->
+  <rect y="0" width="1200" height="40" fill="#F3F4F6"/>
+  <rect y="40" width="1200" height="1" fill="#E5E7EB"/>
+  
+  <!-- Top Bar Left Links -->
+  <text x="40" y="26" font-family="Arial, sans-serif" font-size="13" fill="#6B7280">📰 Folix 新闻</text>
+  <text x="160" y="26" font-family="Arial, sans-serif" font-size="13" fill="#6B7280">⭐ STAR 奖励</text>
+  <text x="280" y="26" font-family="Arial, sans-serif" font-size="13" fill="#6B7280">💬 支持</text>
+  
+  <!-- Top Bar Right - App & Language -->
+  <text x="900" y="26" font-family="Arial, sans-serif" font-size="13" fill="#6B7280">📱 Folix APP</text>
+  <rect x="1020" y="10" width="140" height="24" rx="4" fill="#FFFFFF" stroke="#E5E7EB"/>
+  <text x="1035" y="27" font-family="Arial, sans-serif" font-size="12" fill="#6B7280">🇨🇳 ZH / HKD</text>
+  
+  <!-- ==================== HEADER MAIN BAR ==================== -->
+  <rect y="40" width="1200" height="70" fill="#FFFFFF"/>
+  <rect y="107" width="1200" height="3" fill="url(#primaryGradient)"/>
+  
+  <!-- Logo (简化版 PortGame) -->
+  <rect x="35" y="50" width="160" height="50" rx="8" fill="none" stroke="url(#primaryGradient)" stroke-width="2" opacity="0.5"/>
+  <text x="115" y="82" font-family="Arial Black, Arial, sans-serif" font-size="32" font-weight="900" text-anchor="middle" fill="url(#primaryGradient)" filter="url(#logoGlow)">PortGame</text>
+  
+  <!-- Navigation -->
+  <text x="220" y="85" font-family="Arial, sans-serif" font-size="15" font-weight="600" fill="#1F2937">🎮 游戏 ▼</text>
+  <text x="340" y="85" font-family="Arial, sans-serif" font-size="15" font-weight="600" fill="#1F2937">💳 点卡 ▼</text>
+  <text x="450" y="85" font-family="Arial, sans-serif" font-size="15" font-weight="600" fill="#1F2937">⚡ 游戏直充 ▼</text>
+  <text x="600" y="85" font-family="Arial, sans-serif" font-size="15" font-weight="600" fill="#1F2937">📱 话费充值</text>
+  
+  <!-- Search Box -->
+  <rect x="740" y="58" width="320" height="36" rx="6" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="2"/>
+  <text x="760" y="82" font-family="Arial, sans-serif" font-size="14" fill="#9CA3AF">搜索游戏、商品...</text>
+  <rect x="1040" y="58" width="70" height="36" rx="0 6 6 0" fill="url(#blueGradient)"/>
+  <text x="1060" y="82" font-family="Arial, sans-serif" font-size="14" fill="#FFFFFF">🔍</text>
+  
+  <!-- Login Button -->
+  <rect x="1130" y="55" width="70" height="40" rx="8" fill="url(#blueGradient)"/>
+  <text x="1148" y="81" font-family="Arial, sans-serif" font-size="15" font-weight="600" fill="#FFFFFF">登录</text>
+  
+  <!-- ==================== HERO SLIDER ==================== -->
+  <rect x="40" y="130" width="1120" height="200" rx="12" fill="url(#blueGradient)"/>
+  <rect x="40" y="130" width="1120" height="200" rx="12" fill="url(#primaryGradient)" opacity="0.1"/>
+  
+  <!-- Slider Badge -->
+  <rect x="480" y="160" width="80" height="24" rx="12" fill="url(#accentGradient)"/>
+  <text x="492" y="177" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#FFFFFF">限时特惠</text>
+  
+  <!-- Slider Title -->
+  <text x="340" y="220" font-family="Arial, sans-serif" font-size="32" font-weight="800" fill="#FFFFFF">Mobile Legends 钻石充值</text>
+  <text x="420" y="250" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.9)">直充模式，5 分钟快速到账，安全可靠</text>
+  
+  <!-- Price -->
+  <text x="520" y="285" font-family="Arial, sans-serif" font-size="28" font-weight="800" fill="#FFD700">¥98.00 起</text>
+  
+  <!-- CTA Button -->
+  <rect x="485" y="295" width="130" height="38" rx="8" fill="#FFFFFF"/>
+  <text x="515" y="320" font-family="Arial, sans-serif" font-size="15" font-weight="600" fill="#3B82F6">立即充值</text>
+  
+  <!-- Slider Dots -->
+  <circle cx="560" cy="310" r="6" fill="#FFFFFF"/>
+  <circle cx="578" cy="310" r="6" fill="rgba(255,255,255,0.5)"/>
+  
+  <!-- Slider Arrows -->
+  <circle cx="70" cy="230" r="22" fill="rgba(255,255,255,0.3)"/>
+  <text x="63" y="237" font-family="Arial, sans-serif" font-size="20" fill="#FFFFFF">‹</text>
+  <circle cx="1130" cy="230" r="22" fill="rgba(255,255,255,0.3)"/>
+  <text x="1123" y="237" font-family="Arial, sans-serif" font-size="20" fill="#FFFFFF">›</text>
+  
+  <!-- ==================== SECTION TITLE ==================== -->
+  <text x="40" y="380" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#1F2937">🔥 热销产品</text>
+  <rect x="40" y="388" width="60" height="4" rx="2" fill="url(#primaryGradient)"/>
+  
+  <!-- ==================== PRODUCT CARDS ==================== -->
+  
+  <!-- Product Card 1 -->
+  <rect x="40" y="410" width="265" height="320" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+  <!-- Image Area -->
+  <rect x="40" y="410" width="265" height="140" rx="8" fill="url(#primaryGradient)" opacity="0.8"/>
+  <!-- Badge Direct -->
+  <rect x="240" y="420" width="55" height="22" rx="11" fill="url(#primaryGradient)"/>
+  <text x="252" y="436" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#1E293B">直充</text>
+  <!-- Badge Hot -->
+  <rect x="170" y="420" width="60" height="22" rx="11" fill="url(#accentGradient)"/>
+  <text x="178" y="436" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">🔥 热销</text>
+  <!-- Product Info -->
+  <text x="55" y="575" font-family="Arial, sans-serif" font-size="16" font-weight="600" fill="#1F2937">Mobile Legends 钻石</text>
+  <text x="55" y="600" font-family="Arial, sans-serif" font-size="13" fill="#6B7280">直充模式，5 分钟快速到账</text>
+  <!-- Price -->
+  <text x="55" y="635" font-family="Arial, sans-serif" font-size="22" font-weight="800" fill="#F97316">¥98.00</text>
+  <text x="135" y="635" font-family="Arial, sans-serif" font-size="14" fill="#9CA3AF" text-decoration="line-through">¥120.00</text>
+  <!-- Stock Status -->
+  <rect x="55" y="645" width="50" height="20" rx="10" fill="url(#greenGradient)"/>
+  <text x="65" y="659" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">有货</text>
+  <!-- Buy Button -->
+  <rect x="55" y="680" width="240" height="38" rx="8" fill="url(#blueGradient)"/>
+  <text x="130" y="705" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">立即购买</text>
+  
+  <!-- Product Card 2 -->
+  <rect x="320" y="410" width="265" height="320" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+  <rect x="320" y="410" width="265" height="140" rx="8" fill="url(#accentGradient)" opacity="0.8"/>
+  <!-- Badge Card -->
+  <rect x="520" y="420" width="50" height="22" rx="11" fill="url(#greenGradient)"/>
+  <text x="532" y="436" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">卡密</text>
+  <text x="335" y="575" font-family="Arial, sans-serif" font-size="16" font-weight="600" fill="#1F2937">PUBG Mobile UC</text>
+  <text x="335" y="600" font-family="Arial, sans-serif" font-size="13" fill="#6B7280">卡密自动发货，超值套装</text>
+  <text x="335" y="635" font-family="Arial, sans-serif" font-size="22" font-weight="800" fill="#F97316">¥198.00</text>
+  <rect x="335" y="645" width="50" height="20" rx="10" fill="url(#greenGradient)"/>
+  <text x="345" y="659" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">有货</text>
+  <rect x="335" y="680" width="240" height="38" rx="8" fill="url(#blueGradient)"/>
+  <text x="410" y="705" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">立即购买</text>
+  
+  <!-- Product Card 3 -->
+  <rect x="600" y="410" width="265" height="320" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+  <rect x="600" y="410" width="265" height="140" rx="8" fill="#8B5CF6" opacity="0.8"/>
+  <!-- Badge Direct -->
+  <rect x="800" y="420" width="55" height="22" rx="11" fill="url(#primaryGradient)"/>
+  <text x="812" y="436" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#1E293B">直充</text>
+  <text x="615" y="575" font-family="Arial, sans-serif" font-size="16" font-weight="600" fill="#1F2937">VIP 会员月卡</text>
+  <text x="615" y="600" font-family="Arial, sans-serif" font-size="13" fill="#6B7280">尊享专属折扣和客服</text>
+  <text x="615" y="635" font-family="Arial, sans-serif" font-size="22" font-weight="800" fill="#F97316">¥298.00</text>
+  <text x="695" y="635" font-family="Arial, sans-serif" font-size="14" fill="#9CA3AF" text-decoration="line-through">¥398.00</text>
+  <rect x="615" y="645" width="50" height="20" rx="10" fill="url(#greenGradient)"/>
+  <text x="625" y="659" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">有货</text>
+  <rect x="615" y="680" width="240" height="38" rx="8" fill="url(#blueGradient)"/>
+  <text x="690" y="705" font-family="Arial, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">立即开通</text>
+  
+  <!-- Product Card 4 -->
+  <rect x="880" y="410" width="265" height="320" rx="8" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+  <rect x="880" y="410" width="265" height="140" rx="8" fill="#3B82F6" opacity="0.8"/>
+  <!-- Badge New -->
+  <rect x="1080" y="420" width="50" height="22" rx="11" fill="#8B5CF6"/>
+  <text x="1092" y="436" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#FFFFFF">✨ 新品</text>
+  <text x="895" y="575" font-family="Arial, sans-serif" font-size="16" font-weight="600" fill="#1F2937">游戏点卡 100 元</text>
+  <text x="895" y="600" font-family="Arial, sans-serif" font-size="13" fill="#6B7280">通用点卡，支持多款游戏</text>
+  <text x="895" y="635" font-family="Arial, sans-serif" font-size="22" font-weight="800" fill="#F97316">¥100.00</text>
+  <!-- Out of Stock -->
+  <rect x="895" y="645" width="50" height="20" rx="10" fill="#E5E7EB"/>
+  <text x="898" y="659" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#6B7280">缺货</text>
+  <rect x="895" y="680" width="240" height="38" rx="8" fill="transparent" stroke="#9CA3AF" stroke-width="2"/>
+  <text x="970" y="705" font-family="Arial, sans-serif" font-size="14" fill="#9CA3AF">暂时缺货</text>
+  
+  <!-- ==================== FOOTER ==================== -->
+  <rect y="760" width="1200" height="40" fill="#F3F4F6"/>
+  <rect y="760" width="1200" height="4" fill="url(#primaryGradient)"/>
+  
+  <!-- Footer Links -->
+  <text x="200" y="782" font-family="Arial, sans-serif" font-size="12" fill="#6B7280">关于我们</text>
+  <text x="300" y="782" font-family="Arial, sans-serif" font-size="12" fill="#6B7280">服务条款</text>
+  <text x="410" y="782" font-family="Arial, sans-serif" font-size="12" fill="#6B7280">隐私政策</text>
+  <text x="520" y="782" font-family="Arial, sans-serif" font-size="12" fill="#6B7280">联系我们</text>
+  <text x="620" y="782" font-family="Arial, sans-serif" font-size="12" fill="#6B7280">常见问题</text>
+  
+  <!-- Copyright -->
+  <rect x="800" y="765" width="380" height="30" rx="6" fill="url(#purpleGradient)"/>
+  <text x="870" y="785" font-family="Arial, sans-serif" font-size="11" fill="#FFFFFF">© 2026 PortGame. Powered by Magento</text>
+  
+</svg>

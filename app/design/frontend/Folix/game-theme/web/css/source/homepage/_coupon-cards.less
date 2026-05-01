@@ -1,0 +1,86 @@
+// /**
+//  * Homepage - Coupon Cards Styles
+//  * 首页 - 优惠券卡片样式
+//  */
+
+& when (@media-common = true) {
+    .homepage-coupon-section {
+        margin: 60px 0;
+
+        .coupon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+
+            .coupon-card {
+                background: @folix-bg-card;
+                border: 2px solid @folix-border-gold;
+                border-radius: 16px;
+                overflow: hidden;
+                transition: transform 0.3s, box-shadow 0.3s;
+
+                &:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+                    border-color: @folix-secondary;
+                }
+
+                .coupon-image {
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                    border-radius: 16px 16px 0 0;
+                }
+
+                .coupon-content {
+                    background: linear-gradient(135deg, @folix-bg-panel 0%, @folix-bg-dark 100%);
+                    padding: 20px;
+                    border-radius: 0 0 16px 16px;
+                    border: 2px solid @folix-border-gold;
+                    border-top: none;
+
+                    .coupon-title {
+                        color: @folix-secondary;
+                        font-size: 20px;
+                        font-weight: 700;
+                        margin: 0 0 10px 0;
+                    }
+
+                    .coupon-description {
+                        color: @folix-text-secondary;
+                        font-size: 14px;
+                        margin: 0 0 15px 0;
+                    }
+
+                    .coupon-code {
+                        background: rgba(255, 215, 0, 0.1);
+                        border: 1px dashed @folix-secondary;
+                        padding: 10px 20px;
+                        border-radius: 8px;
+                        text-align: center;
+                        display: block;
+
+                        code {
+                            font-family: 'Courier New', monospace;
+                            font-weight: 700;
+                            color: @folix-secondary;
+                            font-size: 18px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 移动端响应式
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .homepage-coupon-section {
+        margin: 30px 0;
+
+        .coupon-grid {
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+    }
+}

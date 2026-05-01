@@ -1,0 +1,120 @@
+// /**
+//  * Homepage - Game Cards Styles
+//  * 首页 - 游戏卡片样式
+//  */
+
+& when (@media-common = true) {
+    .homepage-games-section {
+        margin: 60px 0;
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+
+            .game-card {
+                background: @folix-bg-card;
+                border: 2px solid @folix-purple;
+                border-color: rgba(139, 92, 246, 0.3);
+                border-radius: 16px;
+                overflow: hidden;
+                transition: transform 0.3s, box-shadow 0.3s;
+                cursor: pointer;
+
+                &:hover {
+                    transform: translateY(-8px);
+                    box-shadow: 0 15px 40px rgba(139, 92, 246, 0.3);
+                    border-color: @folix-purple;
+                }
+
+                .game-image {
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                    border-radius: 16px 16px 0 0;
+                }
+
+                .game-content {
+                    background: linear-gradient(135deg, @folix-bg-panel 0%, @folix-bg-dark 100%);
+                    padding: 20px;
+                    border-radius: 0 0 16px 16px;
+                    border: 2px solid rgba(139, 92, 246, 0.3);
+                    border-top: none;
+
+                    .game-title {
+                        color: @folix-text-primary;
+                        font-size: 18px;
+                        font-weight: 700;
+                        margin: 0 0 8px 0;
+                    }
+
+                    .game-description {
+                        color: @folix-text-secondary;
+                        font-size: 14px;
+                        margin: 0 0 15px 0;
+                    }
+
+                    .game-price-row {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+
+                        .price-group {
+                            .price-current {
+                                color: @folix-secondary;
+                                font-size: 24px;
+                                font-weight: 900;
+                            }
+
+                            .price-original {
+                                color: @folix-text-tertiary;
+                                font-size: 14px;
+                                text-decoration: line-through;
+                                margin-left: 8px;
+                            }
+                        }
+
+                        .game-btn {
+                            background: linear-gradient(135deg, @folix-purple 0%, @folix-purple-dark 100%);
+                            color: @folix-text-primary;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 20px;
+                            font-weight: 700;
+                            cursor: pointer;
+                            transition: transform 0.3s;
+
+                            &:hover {
+                                transform: scale(1.05);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 移动端响应式
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .homepage-games-section {
+        margin: 30px 0;
+
+        .games-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+             .game-price-row{
+                flex-wrap: wrap;
+             }
+        }
+    }
+}
+
+// 平板端响应式
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) and (@break = @screen__l) {
+    .homepage-games-section {
+        .games-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+}
