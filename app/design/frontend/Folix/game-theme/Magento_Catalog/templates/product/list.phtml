@@ -113,6 +113,8 @@ $_helper = $block->getData('outputHelper');
                                                    value="<?=
                                                    /* @noEscape */ $postParams['data'][Action::PARAM_NAME_URL_ENCODED]
                                                     ?>">
+                                                    <input type="hidden" name="product_charge_type"
+                                                                   value="<?= /* @noEscape */ $_product->getData('game_charge_type') ?>"></input>
                                             <?= $block->getBlockHtml('formkey') ?>
                                             <button type="submit"
                                                     title="<?= $escaper->escapeHtmlAttr(__('Add to Cart')) ?>"

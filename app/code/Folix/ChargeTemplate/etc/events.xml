@@ -5,6 +5,11 @@
         <observer name="folix_chargetemplate_add_to_cart" 
                   instance="Folix\ChargeTemplate\Observer\AddChargeTemplateToCart"/>
     </event>
+
+    <event name="checkout_cart_product_add_before">
+        <observer name="folix_chargetemplate_check_product_tye" 
+                  instance="Folix\ChargeTemplate\Observer\CheckProductTypeAndChargeTemplate"/>
+    </event>
     
     <!-- 监听更新购物车事件，保留充值模板数据 -->
     <event name="checkout_cart_update_items_after">

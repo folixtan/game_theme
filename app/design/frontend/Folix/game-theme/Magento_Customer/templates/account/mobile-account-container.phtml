@@ -1,0 +1,67 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details.
+ *  @var \Magento\Framework\Escaper $escaper
+ */
+
+/** @var Magento\Customer\Block\Account\Customer $block */
+
+?>
+<?php if($block->customerLoggedIn()):?>
+<div data-bind="scope: 'mobileCustomer'">
+    <!-- 已登录：移动端列表布局 -->
+    <!-- ko if: customer().firstname -->
+    <div class="folix-moblie-customer-welcome">
+        <div class="customer-menu-moblie">
+            <div class="user-menu">
+                <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account')) ?>">
+                    <span><?= $escaper->escapeHtml(__('My Account')) ?></span>
+                </a>
+                <a href="<?= $escaper->escapeUrl($block->getUrl('sales/order/history')) ?>">
+                    <span><?= $escaper->escapeHtml(__('My Orders')) ?></span>
+                </a>
+                <a href="<?= $escaper->escapeUrl($block->getUrl('wishlist')) ?>">
+                    <span><?= $escaper->escapeHtml(__('My Wishlist')) ?></span>
+                </a>
+                <div class="divider"></div>
+                <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account/logout')) ?>" class="logout">
+                    <span><?= $escaper->escapeHtml(__('Sign Out')) ?></span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- /ko -->
+</div>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Magento_Ui/js/core/app": {
+            "components": {
+                "mobileCustomer": {
+                    "component": "Magento_Customer/js/view/mobile-customer"
+                }
+            }
+        }
+    }
+}
+</script>
+<?php else:?>
+    <div class="folix-moblie-not-login">
+        <ul>
+            <li class="link authorization-link folix-auth-link" data-label="<?= $escaper->escapeHtml(__('or')) ?>">
+                <a class="moblie-login" href="<?= $escaper->escapeUrl($block->getUrl('customer/account/login')) ?>">
+                     <span><?= $escaper->escapeHtml(__('Sign In')) ?></span>
+                </a>
+                
+            </li>
+            <li class="moblie-create-account">
+                <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account/create')) ?>">
+                    <span><?= $escaper->escapeHtml(__('Create Account')) ?></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+<?php endif;?>

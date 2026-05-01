@@ -1,0 +1,328 @@
+//
+//  Folix Checkout Success Page Styles
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .checkout-success {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 20px;
+
+        .success-card {
+            background: @folix-bg-card;
+            border: 1px solid @folix-border;
+            border-radius: @folix-radius-lg;
+            padding: 40px 30px;
+            box-shadow: @folix-shadow-xl;
+        }
+
+        .success-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, @folix-success 0%, @folix-success-light 100%);
+            border-radius: @folix-radius-full;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: @folix-shadow-success;
+            animation: folix-pulse 2s ease-in-out infinite;
+
+            svg {
+                width: 50px;
+                height: 50px;
+                fill: @folix-text-primary;
+            }
+        }
+
+        @keyframes folix-pulse {
+            0%, 100% {
+                box-shadow: @folix-shadow-success;
+            }
+            50% {
+                box-shadow: @folix-success-shadow-strong;
+            }
+        }
+
+        .success-title {
+            color: @folix-text-primary;
+            font-size: 32px;
+            font-weight: @font-weight__bold;
+            margin-bottom: 8px;
+        }
+
+        .success-subtitle {
+            color: @folix-text-secondary;
+            font-size: 16px;
+        }
+
+        .order-info {
+            background: @folix-border-light;
+            border: 1px solid @folix-border;
+            border-radius: @folix-radius-md;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .order-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid @folix-border-light;
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+
+        .order-info-label {
+            color: @folix-text-secondary;
+            font-size: 14px;
+        }
+
+        .order-info-value {
+            color: @folix-text-primary;
+            font-size: 16px;
+            font-weight: @font-weight__semibold;
+
+            &.highlight {
+                color: @folix-secondary;
+                font-size: 20px;
+            }
+        }
+
+        .order-number {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        .next-steps {
+            margin-top: 32px;
+        }
+
+        .next-steps-title {
+            color: @folix-text-primary;
+            font-size: 18px;
+            font-weight: @font-weight__semibold;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            &::before {
+                content: '📋';
+                font-size: 20px;
+            }
+        }
+
+        .steps-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 0;
+            color: @folix-text-light;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, @folix-secondary 0%, @folix-secondary-dark 100%);
+            color: @folix-text-on-gold;
+            border-radius: @folix-radius-full;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: @font-weight__bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .actions-toolbar {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            flex-wrap: wrap;
+            justify-content: center;
+
+            .primary {
+                flex: 1;
+                min-width: 160px;
+            }
+
+            .action {
+                display: inline-block;
+                padding: 14px 32px;
+                border-radius: @folix-radius;
+                font-size: 16px;
+                font-weight: @font-weight__semibold;
+                text-decoration: none;
+                transition: all @folix-transition-fast ease;
+                cursor: pointer;
+                border: none;
+                width: 100%;
+                text-align: center;
+
+                &.primary {
+                    background: @folix-btn-primary-bg;
+                    color: @folix-btn-primary-text;
+                    box-shadow: @folix-shadow-gold;
+
+                    &:hover {
+                        background: @folix-btn-primary-hover-bg;
+                        box-shadow: @folix-shadow-gold-hover;
+                        transform: translateY(-2px);
+                    }
+                }
+
+                &.secondary {
+                    background: transparent;
+                    color: @folix-secondary;
+                    border: 1px solid @folix-border-gold;
+
+                    &:hover {
+                        background: @folix-bg-selected;
+                        border-color: @folix-border-hover;
+                        transform: translateY(-2px);
+                    }
+                }
+            }
+        }
+
+        .support-info {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid @folix-border;
+            text-align: center;
+        }
+
+        .support-text {
+            color: @folix-text-secondary;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .support-link {
+            color: @folix-secondary;
+            text-decoration: none;
+            font-weight: @font-weight__semibold;
+            transition: color @folix-transition-fast ease;
+
+            &:hover {
+                color: @folix-secondary-light;
+                text-decoration: underline;
+            }
+        }
+
+        // 兼容原有的订单号显示
+        > p {
+            color: @folix-text-secondary;
+            font-size: 16px;
+            margin-bottom: 16px;
+            text-align: center;
+
+            a.order-number {
+                color: @folix-secondary;
+                text-decoration: none;
+                font-weight: @font-weight__semibold;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+//  Mobile and Tablet styles (max-width: @screen__m)
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .checkout-success {
+        padding: 10px;
+
+        .success-card {
+            padding: 32px 24px;
+        }
+
+        .success-title {
+            font-size: 28px;
+        }
+
+        .success-subtitle {
+            font-size: 15px;
+        }
+
+        .order-info-value.highlight {
+            font-size: 18px;
+        }
+
+        .actions-toolbar {
+            flex-direction: column;
+
+            .primary {
+                width: 100%;
+            }
+        }
+    }
+}
+
+//  Small Mobile styles (max-width: @screen__s)
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    .checkout-success {
+        padding: 8px 5px;
+
+        .success-card {
+            padding: 28px 20px;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+
+            svg {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        .success-title {
+            font-size: 24px;
+        }
+
+        .success-subtitle {
+            font-size: 14px;
+        }
+
+        .order-info {
+            padding: 20px;
+        }
+
+        .order-info-label {
+            font-size: 13px;
+        }
+
+        .order-info-value {
+            font-size: 15px;
+
+            &.highlight {
+                font-size: 16px;
+            }
+        }
+
+        .step-item {
+            font-size: 14px;
+        }
+    }
+}

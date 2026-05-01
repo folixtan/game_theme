@@ -1,7 +1,6 @@
 <?php
 namespace Folix\ChargeTemplate\Observer;
 
-use Folix\ChargeTemplate\Api\Data\ChargeTemplateDataInterfaceFactory;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -69,7 +68,7 @@ class AddChargeTemplateToCart implements ObserverInterface
             $product = $observer->getProduct();
             
             // 检查是否为直充产品（game_charge_type = 4）
-            $chargeType = $product->getData('game_charge_type');
+            $chargeType = $product->getData(\FolixCode\ProductSync\Setup\Patch\Data\AddProductAttributes::ATTRIBUTE_CODE_CHARGE_TYPE);
             
             if ($chargeType != 4) {
                 // 不是直充产品，不需要处理充值模板

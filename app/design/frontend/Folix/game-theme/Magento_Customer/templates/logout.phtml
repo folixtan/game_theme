@@ -2,11 +2,49 @@
 /**
  * Copyright © Magento, Inc. All rights reserved.
  * See COPYING.txt for license details.
+ *  @var \Magento\Framework\Escaper $escaper
  */
 
 /** @var \Magento\Framework\View\Element\Template $block */
+$cmsBlack = \Magento\Framework\App\ObjectManager::getInstance()
+->create(\Magento\Cms\Block\BlockByIdentifier::class,['data'=> [
+    'identifier' =>'logout-quick-link'
+    ]]);
 ?>
-<p><?= $block->escapeHtml(__('You have signed out and will go to our homepage in 5 seconds.')) ?></p>
+<div class="customer-account-logout">
+    <div class="logout-card">
+        <!-- 图标 -->
+        <div class="logout-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+            </svg>
+        </div>
+
+        <!-- 标题 -->
+        <h1 class="logout-title"><?= $escaper->escapeHtml(__('Successfully Logged Out')) ?></h1>
+
+        <!-- 提示信息 -->
+        <p class="logout-message">
+            <?= $escaper->escapeHtml(__('Thank you for using our service! You can log in again at any time to continue enjoying convenient game recharge services.')) ?>
+        </p>
+
+        <!-- 操作按钮 -->
+        <div class="logout-actions">
+            <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account/login')) ?>" class="btn btn-primary">
+                <?= $escaper->escapeHtml(__('Log In Again')) ?>
+            </a>
+            <a href="<?= $escaper->escapeUrl($block->getUrl()) ?>" class="btn btn-secondary">
+                <?= $escaper->escapeHtml(__('Return to Homepage')) ?>
+            </a>
+        </div>
+
+        <!-- 快捷链接 -->
+        <div class="quick-links">
+            <div class="quick-links-title"><?= $escaper->escapeHtml(__('Popular Games')) ?></div>
+              <?= $cmsBlack->toHtml();?>
+        </div>
+    </div>
+</div>
 <script type="text/x-magento-init">
     {
         "*": {
@@ -16,3 +54,4 @@
         }
     }
 </script>
+

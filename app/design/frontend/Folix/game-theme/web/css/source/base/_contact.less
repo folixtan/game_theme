@@ -1,0 +1,229 @@
+//
+//  Folix Contact Us Page Styles
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .contact-index-index {
+        .page-title-wrapper {
+            display: none;
+
+            .page-title {
+                color: @folix-text-primary;
+                font-size: 32px;
+                font-weight: @font-weight__bold;
+                margin-bottom: 0;
+            }
+        }
+
+        .column.main {
+            .form.contact {
+                background: @folix-bg-card;
+                border: 1px solid @folix-border;
+                border-radius: @folix-radius-lg;
+                padding: 32px;
+                box-shadow: @folix-shadow-xl;
+                max-width: 800px;
+                margin: 0 auto;
+
+                .fieldset {
+                    margin-bottom: 24px;
+                    border: none;
+                    padding: 0;
+
+                    .legend {
+                        color: @folix-text-primary;
+                        font-size: 24px;
+                        font-weight: @font-weight__bold;
+                        margin-bottom: 16px;
+                        padding: 0;
+                        border: none;
+                    }
+
+                    .field.note {
+                        color: @folix-text-secondary;
+                        font-size: 14px;
+                        margin-bottom: 24px;
+                    }
+                }
+
+                .field {
+                    margin-bottom: 24px;
+
+                    &.required {
+                        .label span:after {
+                            content: ' *';
+                            color: #FF3B30;
+                        }
+                    }
+
+                    .label {
+                        color: @folix-text-primary;
+                        font-size: 16px;
+                        font-weight: @font-weight__semibold;
+                        margin-bottom: 8px;
+                        display: block;
+                    }
+
+                    .control {
+                        .input-text,
+                        textarea {
+                            background: @folix-bg-dark;
+                            border: 1px solid @folix-border;
+                            border-radius: @folix-radius;
+                            padding: 12px 16px;
+                            color: @folix-text-primary;
+                            font-size: 14px;
+                            transition: all @folix-transition-fast ease;
+                            width: 100%;
+
+                            &:focus {
+                                border-color: @folix-secondary;
+                                box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+                                outline: none;
+                            }
+
+                            &::-webkit-input-placeholder {
+                                color: @folix-text-secondary;
+                            }
+
+                            &:-moz-placeholder {
+                                color: @folix-text-secondary;
+                            }
+
+                            &::-moz-placeholder {
+                                color: @folix-text-secondary;
+                            }
+
+                            &:-ms-input-placeholder {
+                                color: @folix-text-secondary;
+                            }
+                        }
+
+                        textarea {
+                            min-height: 120px;
+                            resize: vertical;
+                        }
+                    }
+                }
+
+                .actions-toolbar {
+                    margin-top: 32px;
+
+                    .primary {
+                        .action.submit {
+                            background: @folix-btn-primary-bg;
+                            color: @folix-btn-primary-text;
+                            border: none;
+                            border-radius: @folix-radius;
+                            padding: 14px 40px;
+                            font-size: 16px;
+                            font-weight: @font-weight__semibold;
+                            cursor: pointer;
+                            transition: all @folix-transition-fast ease;
+                            box-shadow: @folix-shadow-gold;
+
+                            &:hover {
+                                background: @folix-btn-primary-hover-bg;
+                                box-shadow: @folix-shadow-gold-hover;
+                                transform: translateY(-2px);
+                            }
+
+                            &:active {
+                                transform: translateY(0);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+//  Mobile and Tablet styles (max-width: @screen__m)
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .contact-index-index {
+        .page-title-wrapper {
+            .page-title {
+                font-size: 28px;
+            }
+        }
+
+        .column.main {
+            .form.contact {
+                padding: 24px;
+
+                .fieldset {
+                    .legend {
+                        font-size: 22px;
+                    }
+                }
+
+                .field {
+                    .label {
+                        font-size: 15px;
+                    }
+
+                    .control {
+                        .input-text,
+                        textarea {
+                            padding: 10px 14px;
+                            font-size: 13px;
+                        }
+                    }
+                }
+
+                .actions-toolbar {
+                    .primary {
+                        .action.submit {
+                            width: 100%;
+                            padding: 14px 32px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+//  Small Mobile styles (max-width: @screen__s)
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    .contact-index-index {
+        .page-title-wrapper {
+            .page-title {
+                font-size: 24px;
+            }
+        }
+
+        .column.main {
+            .form.contact {
+                padding: 20px;
+
+                .fieldset {
+                    .legend {
+                        font-size: 20px;
+                    }
+
+                    .field.note {
+                        font-size: 13px;
+                    }
+                }
+
+                .field {
+                    margin-bottom: 20px;
+
+                    .label {
+                        font-size: 14px;
+                    }
+
+                    .control {
+                        .input-text,
+                        textarea {
+                            padding: 8px 12px;
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

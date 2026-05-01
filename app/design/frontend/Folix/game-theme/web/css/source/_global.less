@@ -36,9 +36,16 @@
         background: @folix-gradient-bg;
     }
 
-    
+    .category-view {
+        margin-bottom: 1rem;
+    }
 
-    
+    .products {
+        margin: 0;
+    }
+    .toolbar-products {
+        display: none;
+    }
     //
     //  Page Main - 主内容区
     //  选择器来源: XML layout default.xml
@@ -101,12 +108,20 @@
     .block.newsletter .field .control:before {
         line-height: 3;
     }
+    .folix-nav-container {
+        .minicart-wrapper {
+             margin-top: 0px;
+        }
+    }
 
     // 确保所有可点击元素最小 44x44px (Apple 推荐标准)
     a,
     button,
     .action {
         //min-height: 44px;
+        &.showcart{
+         min-width: 30px;
+        }
         min-width: 44px;
         display: inline-flex;
         align-items: center;

@@ -63,8 +63,28 @@
             </ul>
         </div>
 
-       
-         
+        <!-- 操作按钮 -->
+        <div class="actions-toolbar">
+            <?php if ($block->getCanViewOrder()): ?>
+                <div class="primary">
+                    <a class="action primary" href="<?= $escaper->escapeUrl($block->getViewOrderUrl()) ?>">
+                        <span><?= $escaper->escapeHtml(__('View Order Details')) ?></span>
+                    </a>
+                </div>
+            <?php endif; ?>
+            <div class="secondary">
+                <a class="action secondary" href="<?= $escaper->escapeUrl($block->getContinueUrl()) ?>">
+                    <span><?= $escaper->escapeHtml(__('Continue Shopping')) ?></span>
+                </a>
+            </div>
+            <?php if ($block->customerLoggedIn()): ?>
+                <div class="secondary">
+                    <a class="action secondary" href="<?= $escaper->escapeUrl($block->getUrl('customer/account')) ?>">
+                        <span><?= $escaper->escapeHtml(__('My Account')) ?></span>
+                    </a>
+                </div>
+            <?php endif; ?>
+        </div>
 
         <!-- 客服支持 -->
         <div class="support-info">

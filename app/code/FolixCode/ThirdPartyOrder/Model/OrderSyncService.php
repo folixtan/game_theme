@@ -12,6 +12,7 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use FolixCode\ThirdPartyOrder\Model\ThirdPartyOrderPushFactory;
+use Magento\Catalog\Model\ProductRepository;
 /**
  * Order Sync Service - 核心同步逻辑
  * 
@@ -39,6 +40,8 @@ class OrderSyncService
 
     private ThirdPartyOrderDbRepository $thirdPartyOrderDbRepository;
 
+    private ProductRepository $productRepository;
+
     public function __construct(
         ExternalApiClientInterface $apiClient,
         ThirdPartyOrderResource $resource,
@@ -49,6 +52,7 @@ class OrderSyncService
         ThirdPartyOrderDbRepository $thirdPartyOrderDbRepository,
         TimezoneInterface $timezone,
         ThirdPartyOrderPushFactory $thirdPartyOrderPushFactory,
+        ProductRepository $productRepository,
         LoggerInterface $logger
     ) {
         $this->apiClient = $apiClient;
@@ -61,6 +65,7 @@ class OrderSyncService
         $this->logger = $logger;
         $this->thirdPartyOrderPushFactory = $thirdPartyOrderPushFactory;
         $this->thirdPartyOrderDbRepository = $thirdPartyOrderDbRepository;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -122,6 +127,7 @@ class OrderSyncService
 
         // 遍历订单项
         foreach ($order->getItems() as $item) {
+            //if($item->getProductType() != 'iv')
             $product = str_replace(\FolixCode\ProductSync\Service\ProductImporter::SKU_PREFIX,'', $item->getSku());
             /**
              * @var ThirdPartyOrderPushManager
@@ -132,6 +138,13 @@ class OrderSyncService
              $pushToData->setTimestamp($this->timezone->date()->getTimestamp());
             $pushToData->setProductId($product);
             $pushToData->setBuyNum((string)$item->getQtyOrdered());
+            
+            /**
+             * @var \Magento\Catalog\Model\Product $product
+             */
+            $product = $this->productRepository->get($item->getSku());
+            $pushToData->setChargeType($product->getData(\FolixCode\ProductSync\Setup\Patch\Data\AddProductAttributes::ATTRIBUTE_CODE_CHARGE_TYPE));
+
             if($chargeTemplate = $item->getAdditionalData()) {
                    $chargeInfo = $this->json->unserialize($chargeTemplate);
                    foreach($chargeInfo as $key => $value) {

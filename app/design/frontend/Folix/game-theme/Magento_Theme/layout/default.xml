@@ -48,7 +48,7 @@
         
         <!-- 左侧链接内容 -->
         <referenceContainer name="folix.top.left" >
-            <block class="Magento\Framework\View\Element\Template" name="folix.top.links" template="Magento_Theme::html/container.phtml" before="-" >
+            <block class="Magento\Framework\View\Element\Template" name="folix.top.links" template="Magento_Theme::html/header/links-top-left.phtml" before="-" >
                <block class="Magento\Cms\Block\Block" name="folix.moblie.account" as="folix.account">
                     <arguments>
                         <argument name="block_id" xsi:type="string">header-left-content</argument>
@@ -71,9 +71,8 @@
                 </arguments>
             </block>
              <!--mobile account-->
-            <referenceBlock class="Magento\Framework\View\Element\Template" name="store.links" group="navigation-sections" template="Magento_Theme::html/container.phtml" >
-                <block class="Magento\Customer\Block\Account\Customer" name="moblie.folix.customer" template="Magento_Customer::account/moblie-customer.phtml" before="-"/>
-            </referenceBlock>
+            <referenceBlock class="Magento\Customer\Block\Account\Customer" name="store.links" group="navigation-sections" template="Magento_Customer::account/mobile-account-container.phtml" />
+            
          </referenceBlock>
          
  
@@ -83,6 +82,17 @@
         <move element="logo" destination="folix.header.nav" before="-" />
         <move element="header.links" destination="folix.top.right" after="-" />        <!-- Body Class -->
         <move element="minicart"  destination="folix.header.nav" after="-" />
+
+        <referenceBlock name="footer_links">
+           <referenceBlock name="search-term-popular-link" remove="true" />
+           <referenceBlock name="sales-guest-form-link" remove="true" />
+           <referenceBlock name="catalog-search-advanced-link" remove="true" />
+           <block name="left-links-footer" class="Magento\Cms\Block\BlockByIdentifier" >
+               <arguments>
+                   <argument name="identifier" xsi:type="string">footer-left-content</argument>
+               </arguments>
+           </block>
+        </referenceBlock>
         
           <!-- Body Class -->
         <attribute name="body" value="folix-theme" />

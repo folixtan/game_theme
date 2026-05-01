@@ -69,10 +69,27 @@
             }
         }
     }
+    .folix-moblie-not-login {
+         li {
+             list-style-type: none;
+             a {
+                 padding: 10px 0;
+             }
+         }
+    }
 }
 
+& when (@media-target = 'desktop'), (@media-target = 'all') {
+    @media only screen and (min-width: @screen__s) and (max-width: (@screen__m+1)) {
+        // styles for breakpoint >= 425 and < 769
+        .logo{
+            display: none;
+         }
+    }
+}
 //  Mobile and Tablet styles
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+   
     .folix-moblie-customer-welcome {
         padding: 10px;
         flex-direction: column;
