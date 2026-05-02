@@ -7,5 +7,8 @@
         <observer name="folixcode_thirdpartyorder_order_payment_success" 
                   instance="FolixCode\ThirdPartyOrder\Observer\OrderPaymentSuccess" />
     </event>
-
+    <event name="thirdparty_order_after_sync_success">
+        <observer name="sender_email_to_customer_after_sync_success" 
+                  instance="FolixCode\ThirdPartyOrder\Observer\OrderPlaceAfter" />
+    </event>
 </config>

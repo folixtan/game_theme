@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Email/etc/email_templates.xsd">
+    
+    <!-- 第三方订单 - 卡密邮件 -->
+    <template id="portgame_email_thirdparty_card" 
+              label="Third Party Order - Card" 
+              file="thirdparty_card.html" 
+              type="html" 
+              module="PortGame_Email" 
+              area="frontend"/>
+    
+     
+    
+</config>

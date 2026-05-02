@@ -1,0 +1,22 @@
+{
+    "name": "portgame/module-email",
+    "description": "PortGame Email Module - Lightweight email sending service for third party orders",
+    "type": "magento2-module",
+    "license": [
+        "proprietary"
+    ],
+    "version": "1.0.0",
+    "require": {
+        "php": ">=7.4",
+        "magento/module-email": ">=100.0",
+        "magento/module-store": ">=100.0"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "PortGame\\Email\\": ""
+        }
+    }
+}

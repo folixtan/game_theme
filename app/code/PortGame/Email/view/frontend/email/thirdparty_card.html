@@ -1,0 +1,77 @@
+<!--
+/**
+ * Copyright © PortGame. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<!--@subject {{trans "Your Card Order Information - Order #%order_increment_id"}} @-->
+<!--@vars {
+"var customer_name":"Customer Name",
+"var order_id":"Order ID",
+"var order_increment_id":"Order Increment ID",
+"var card_number":"Card Number",
+"var password":"Password",
+"var expiry_date":"Expiry Date"
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<table class="email-content" width="100%">
+    <tr>
+        <td>
+            <!-- Greeting -->
+            <p class="greeting">{{trans "Hello %customer_name," customer_name=$customer_name}}</p>
+            
+            <!-- Order Confirmation -->
+            <p>{{trans "Thank you for your order from PortGame. Your order #%order_increment_id has been processed successfully." order_increment_id=$order_increment_id}}</p>
+             
+              {{depend charge_account}}
+                    <table class="card-info" width="100%">
+                <tr>
+                    <td>
+                        <h2>{{trans "Your Charge Account"}}</h2>
+                        <p><strong>{{trans "Charge Account:"}}</strong> {{var card_number}}</p>
+                
+                        <p><strong>{{trans "Charge Region:"}}</strong> {{var charge_region}}</p>
+                      
+                    </td>
+                </tr>
+            </table>
+
+               {{/depend}}
+            <!-- Card Information -->
+            {{depend card_number}}
+            <table class="card-info" width="100%">
+                <tr>
+                    <td>
+                        <h2>{{trans "Your Card Information"}}</h2>
+                        <p><strong>{{trans "Card Number:"}}</strong> {{var card_number}}</p>
+                        {{depend password}}
+                        <p><strong>{{trans "Password:"}}</strong> {{var password}}</p>
+                        {{/depend}}
+                        {{depend expiry_date}}
+                        <p><strong>{{trans "Expiry Date:"}}</strong> {{var expiry_date}}</p>
+                        {{/depend}}
+                    </td>
+                </tr>
+            </table>
+            {{/depend}}
+            
+            <!-- Security Notice -->
+            <table class="security-notice" width="100%">
+                <tr>
+                    <td>
+                        <p><strong>{{trans "Security Notice:"}}</strong></p>
+                        <p>{{trans "Please keep your card information safe and do not share it with others."}}</p>
+                    </td>
+                </tr>
+            </table>
+            
+            <!-- Footer Message -->
+            <p>{{trans "If you have any questions, please contact our customer support."}}</p>
+            <p>{{trans "Thank you for choosing PortGame!"}}</p>
+        </td>
+    </tr>
+</table>
+
+{{template config_path="design/email/footer_template"}}

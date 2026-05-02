@@ -133,6 +133,8 @@ class OrderSyncService
               // 添加额外信息到响应
               $response['increment_id'] = $order->getIncrementId();
               $response['customer_id'] = $order->getCustomerId();
+              $response['email'] = $order->getCustomerEmail();
+              $response['customer_name'] = $order->getCustomerName();
           
               // 处理响应并保存（增量更新）
               $this->handleCreateOrderResponse($item, $response);
@@ -171,7 +173,8 @@ class OrderSyncService
             // 2. 触发"同步前"事件（供应商可以监听并扩展）
             $this->eventManager->dispatch('thirdparty_order_before_sync', [
                 'order_item' => $orderItem,
-                'data' => $transformedData
+                'data' => $transformedData,
+                'response' => $response,
             ]);
             
             // 3. 构建更新数据（直接使用 Transformer 返回的数据 + 系统字段）
@@ -184,7 +187,7 @@ class OrderSyncService
             
             // 5. 触发"同步后"事件
             $this->eventManager->dispatch('thirdparty_order_after_sync_success', [
-                'order_item' => $orderItem,
+                'item' => $orderItem,
                 'data' => $transformedData,
                 'entity_id' => $entityId
             ]);
