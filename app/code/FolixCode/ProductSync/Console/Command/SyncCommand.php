@@ -124,7 +124,7 @@ class SyncCommand extends Command
         }
 
         $startTime = microtime(true);
-
+        
        
         try {
             // 根据类型调用对应的 API 并发布到 MQ

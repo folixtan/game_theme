@@ -13,7 +13,7 @@
 // ============================================================================
 
 //  Primary - 白色/浅灰系（背景、基础）
-@folix-primary: #FFFFFF;
+@folix-primary: #F97316;
 @folix-primary-dark: #F3F4F6;
 @folix-primary-light: #F9FAFB;
 
@@ -42,14 +42,14 @@
 
 @folix-text-primary: #1F2937;
 @folix-text-secondary: #4B5563;
-@folix-text-tertiary: #6B7280;
-@folix-text-muted: #9CA3AF;
+@folix-text-tertiary: #9CA3AF;
+@folix-text-muted: #D1D5DB;
 @folix-text-light: #D1D5DB;
 @folix-text-lighter: #E5E7EB;
 
 @folix-text-on-dark: #FFFFFF;
 @folix-text-on-dark-muted: #9CA3AF;
-@folix-text-on-gold: #FFFFFF;
+@folix-text-on-gold: #1F2937;
 @folix-text-on-red: #FFFFFF;
 
 // ============================================================================
@@ -62,7 +62,7 @@
 @folix-bg-card: #FFFFFF;
 @folix-bg-hover: #F3F4F6;
 @folix-bg-light: #F9FAFB;
-@folix-bg-selected: rgba(59, 130, 246, 0.1);
+@folix-bg-selected: rgba(59, 130, 246, 0.08);
 
 //  Light Backgrounds
 @folix-bg-dark: #F3F4F6;
@@ -95,7 +95,7 @@
 @folix-border-dark: #D1D5DB;
 @folix-border-gold: rgba(59, 130, 246, 0.3);
 @folix-border-red: rgba(249, 115, 22, 0.3);
-@folix-border-hover: #3B82F6;
+@folix-border-hover: @folix-secondary;
 
 // ============================================================================
 //  BUTTON COLORS - 按钮色（浅色简约）
@@ -158,7 +158,7 @@
 
 @folix-popup-bg: #FFFFFF;
 @folix-popup-border: #E5E7EB;
-@folix-popup-overlay: rgba(0, 0, 0, 0.5);
+@folix-popup-overlay: rgba(107, 114, 128, 0.5);
 
 // ============================================================================
 //  UTILITY COLORS - 工具色（浅色简约）
@@ -175,26 +175,30 @@
 @folix-success-shadow-strong: 0 0 40px rgba(16, 185, 129, 0.4);
 
 @folix-warning: #F59E0B;
+@folix-warning-bg: rgba(255, 107, 53, 0.1);
+@folix-warning-border: rgba(255, 107, 53, 0.3);
 @folix-info: #3B82F6;
 @folix-info-bg: rgba(59, 130, 246, 0.1);
 @folix-info-border: rgba(59, 130, 246, 0.3);
 
 // ============================================================================
-//  SHADOWS - 阴影（轻量化）
+//  SHADOWS - 阴影（浅色主题使用灰色系）
 // ============================================================================
 
-@folix-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-@folix-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-@folix-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-@folix-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-@folix-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-@folix-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+@folix-shadow: 0 1px 3px rgba(107, 114, 128, 0.1);
+@folix-shadow-sm: 0 1px 2px rgba(107, 114, 128, 0.05);
+@folix-shadow-md: 0 4px 6px -1px rgba(107, 114, 128, 0.1);
+@folix-shadow-lg: 0 10px 15px -3px rgba(107, 114, 128, 0.1);
+@folix-shadow-xl: 0 20px 25px -5px rgba(107, 114, 128, 0.1);
+@folix-shadow-2xl: 0 25px 50px -12px rgba(107, 114, 128, 0.15);
 
 @folix-shadow-gold: 0 4px 14px rgba(59, 130, 246, 0.25);
 @folix-shadow-gold-hover: 0 6px 16px rgba(59, 130, 246, 0.35);
 @folix-shadow-red: 0 4px 14px rgba(249, 115, 22, 0.25);
 @folix-shadow-success: 0 4px 14px rgba(16, 185, 129, 0.25);
 @folix-shadow-secondary: 0 8px 16px -4px rgba(139, 92, 246, 0.2);
+@folix-shadow-search: 0 4px 12px rgba(107, 114, 128, 0.15);
+@folix-shadow-search-focus: 0 0 0 2px rgba(59, 130, 246, 0.3), 0 8px 24px rgba(59, 130, 246, 0.15), 0 4px 12px rgba(107, 114, 128, 0.2);
 
 // ============================================================================
 //  LAYOUT & SPACING - 布局与间距（与深色主题保持一致）
@@ -262,13 +266,13 @@
 @folix-btn-secondary-border: #D1D5DB;
 @folix-card-bg: #FFFFFF;
 @folix-card-border: #E5E7EB;
-@folix-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-@folix-card-hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+@folix-card-shadow: 0 1px 3px rgba(107, 114, 128, 0.1);
+@folix-card-hover-shadow: 0 10px 15px -3px rgba(107, 114, 128, 0.1);
 @folix-card-hover-border: #3B82F6;
 @folix-input-error-border: #EF4444;
 @folix-input-success-border: #10B981;
 @folix-nav-bg: #FFFFFF;
-@folix-popup-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+@folix-popup-shadow: 0 20px 25px -5px rgba(107, 114, 128, 0.1);
 @folix-price: #3B82F6;
 @folix-price-old: #9CA3AF;
 @folix-price-special: #F97316;
@@ -293,7 +297,82 @@
 @folix-z-tooltip: 700;
 
 // ============================================================================
-//  FONT WEIGHTS - 字体权重
+//  OPACITY VARIABLES - 透明度变量（用于主题切换）
+// ============================================================================
+
+//  Golden Opacity（金色透明度 - 发光效果，浅色主题改为蓝色系）
+@folix-opacity-gold-5: rgba(59, 130, 246, 0.05);
+@folix-opacity-gold-8: rgba(59, 130, 246, 0.08);
+@folix-opacity-gold-10: rgba(59, 130, 246, 0.1);
+@folix-opacity-gold-20: rgba(59, 130, 246, 0.2);
+@folix-opacity-gold-30: rgba(59, 130, 246, 0.3);
+@folix-opacity-gold-40: rgba(59, 130, 246, 0.4);
+@folix-opacity-gold-50: rgba(59, 130, 246, 0.5);
+@folix-opacity-gold-90: rgba(59, 130, 246, 0.9);
+//  Dark Opacity（深色透明度 - 阴影效果,浅色主题改为灰色系）
+@folix-opacity-dark-5: rgba(107, 114, 128, 0.05);
+@folix-opacity-dark-10: rgba(107, 114, 128, 0.1);
+@folix-opacity-dark-15: rgba(107, 114, 128, 0.15);
+@folix-opacity-dark-20: rgba(107, 114, 128, 0.2);
+@folix-opacity-dark-25: rgba(107, 114, 128, 0.25);
+@folix-opacity-dark-30: rgba(107, 114, 128, 0.3);
+@folix-opacity-dark-40: rgba(107, 114, 128, 0.4);
+@folix-opacity-dark-50: rgba(107, 114, 128, 0.5);
+@folix-opacity-dark-60: rgba(107, 114, 128, 0.6);
+@folix-opacity-dark-65: rgba(107, 114, 128, 0.65);
+@folix-opacity-dark-80: rgba(107, 114, 128, 0.8);
+@folix-opacity-dark-85: rgba(107, 114, 128, 0.85);
+@folix-opacity-dark-90: rgba(107, 114, 128, 0.9);
+@folix-opacity-dark-95: rgba(107, 114, 128, 0.95);
+//  White Opacity（白色透明度 - 高光效果）
+@folix-opacity-white-3: rgba(255, 255, 255, 0.03);
+@folix-opacity-white-5: rgba(255, 255, 255, 0.05);
+@folix-opacity-white-10: rgba(255, 255, 255, 0.1);
+@folix-opacity-white-15: rgba(255, 255, 255, 0.15);
+@folix-opacity-white-20: rgba(255, 255, 255, 0.2);
+@folix-opacity-white-30: rgba(255, 255, 255, 0.3);
+@folix-opacity-white-35: rgba(255, 255, 255, 0.35);
+@folix-opacity-white-40: rgba(255, 255, 255, 0.4);
+@folix-opacity-white-50: rgba(255, 255, 255, 0.5);
+@folix-opacity-white-70: rgba(255, 255, 255, 0.7);
+@folix-opacity-white-80: rgba(255, 255, 255, 0.8);
+@folix-opacity-white-90: rgba(255, 255, 255, 0.9);
+@folix-opacity-white-100: rgba(255, 255, 255, 1);
+//  Purple Opacity（紫色透明度 - 装饰效果）
+@folix-opacity-purple-20: rgba(139, 92, 246, 0.2);
+@folix-opacity-purple-30: rgba(139, 92, 246, 0.3);
+
+//  Green Opacity（绿色透明度 - 成功效果）
+@folix-opacity-green-20: rgba(16, 185, 129, 0.2);
+@folix-opacity-green-30: rgba(16, 185, 129, 0.3);
+
+//  Blue Opacity（蓝色透明度 - 浅色主题使用主色系蓝色）
+@folix-opacity-blue-10: rgba(59, 130, 246, 0.1);
+@folix-opacity-blue-25: rgba(59, 130, 246, 0.25);
+
+//  Red Opacity（红色透明度 - 浅色主题改为橙色系，更符合浅色简约风格）
+@folix-opacity-red-10: rgba(255, 107, 53, 0.1);
+@folix-opacity-red-15: rgba(255, 107, 53, 0.15);
+@folix-opacity-red-20: rgba(255, 107, 53, 0.2);
+@folix-opacity-red-30: rgba(255, 107, 53, 0.3);
+@folix-opacity-red-50: rgba(255, 107, 53, 0.5);
+
+// ============================================================================
+//  STATUS COLORS - 状态颜色（订单状态等）
+// ============================================================================
+
+//  Completed Status（完成状态 - 绿色）
+@folix-status-completed-bg: rgba(5, 150, 105, 0.2);
+@folix-status-completed-color: #10b981;
+@folix-status-completed-border: rgba(16, 185, 129, 0.3);
+
+//  Pending Status（待处理状态 - 蓝色系）
+@folix-status-pending-bg: rgba(59, 130, 246, 0.2);
+@folix-status-pending-color: #3B82F6;
+@folix-status-pending-border: rgba(59, 130, 246, 0.3);
+
+// ============================================================================
+//  FONT WEIGHTS - 字体权重（补充Magento原生未定义的变量）
 // ============================================================================
 
 @font-weight__light: 300;
@@ -302,3 +381,16 @@
 @font-weight__medium: 500;
 @font-weight__semibold: 600;
 @font-weight__bold: 700;
+
+// ============================================================================
+//  MAGENTO NATIVE VARIABLES OVERRIDE - 覆盖原生Magento变量
+// ============================================================================
+//  说明: 覆盖 Magento 原生变量,实现主题切换,无需修改业务代码
+
+// Header Variables
+@header__background-color: @folix-gradient-header-page;  // 头部背景 (浅色主题使用渐变)
+@header-panel__background-color: #F8FAFC;  // Topbar 背景 (浅灰色)
+@header-panel__text-color: @folix-text-secondary;  // Topbar 文字颜色
+
+// Border Colors
+@border-color__base: @folix-border;  // 基础边框颜色

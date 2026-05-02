@@ -23,7 +23,7 @@
                     border: 2px solid @folix-border-gold;
 
                     &:hover {
-                        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+                        box-shadow: 0 10px 30px @folix-opacity-gold-20;
                         border-color: @folix-secondary;
                         transform: translateY(-5px);
                     }
@@ -39,16 +39,16 @@
 
                 // 第2个卡片 - 紫色（Secure Payment）
                 &:nth-child(2) {
-                    border: 2px solid rgba(139, 92, 246, 0.3);
+                    border: 2px solid @folix-opacity-purple-30;
 
                     &:hover {
-                        box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+                        box-shadow: 0 10px 30px @folix-opacity-purple-20;
                         border-color: @folix-purple;
                         transform: translateY(-5px);
                     }
 
                     .feature-content {
-                        border-color: rgba(139, 92, 246, 0.3);
+                        border-color: @folix-opacity-purple-30;
 
                         .feature-title {
                             color: @folix-purple;
@@ -58,16 +58,16 @@
 
                 // 第3个卡片 - 绿色（24/7 Support）
                 &:nth-child(3) {
-                    border: 2px solid rgba(16, 185, 129, 0.3);
+                    border: 2px solid @folix-opacity-green-30;
 
                     &:hover {
-                        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.2);
+                        box-shadow: 0 10px 30px @folix-opacity-green-20;
                         border-color: @folix-success;
                         transform: translateY(-5px);
                     }
 
                     .feature-content {
-                        border-color: rgba(16, 185, 129, 0.3);
+                        border-color: @folix-opacity-green-30;
 
                         .feature-title {
                             color: @folix-success;
@@ -80,17 +80,9 @@
                     border: 2px solid @folix-border-red;
 
                     &:hover {
-                        box-shadow: 0 10px 30px rgba(255, 59, 48, 0.2);
+                        box-shadow: 0 10px 30px @folix-opacity-red-20;
                         border-color: @folix-accent-light;
                         transform: translateY(-5px);
-                    }
-
-                    .feature-content {
-                        border-color: @folix-border-red;
-
-                        .feature-title {
-                            color: @folix-accent-light;
-                        }
                     }
                 }
 

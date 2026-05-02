@@ -20,7 +20,7 @@
         border-radius: 16px;
         overflow: hidden;
         margin-bottom: 40px;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 10px 25px -5px @folix-opacity-dark-50;
     }
 
     //
@@ -113,7 +113,7 @@
 
                 // 当前激活项
                 &.current {
-                    background: rgba(255, 215, 0, 0.1);
+                    background: @folix-opacity-gold-10;
                     border-left: 3px solid @folix-secondary;
 
                     strong {
@@ -138,7 +138,7 @@
     //  _____________________________________________
 
     .account .column.main .block {
-        background: rgba(0, 0, 0, 0.3);
+        background: @folix-opacity-dark-30;
         border: 1px solid @folix-border;
         border-radius: 12px;
         padding: 24px;
@@ -147,7 +147,7 @@
 
         &:hover {
             border-color: @folix-border-hover;
-            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.1);
+            box-shadow: 0 4px 12px @folix-opacity-gold-10;
             transform: translateY(-2px);
         }
 
@@ -175,7 +175,7 @@
     //  _____________________________________________
 
     .account .column.main .block .block-content .box {
-        background: rgba(0, 0, 0, 0.2);
+        background: @folix-opacity-dark-20;
         border: 1px solid @folix-border-light;
         border-radius: 8px;
         padding: 20px;
@@ -216,7 +216,7 @@
                 transition: all 0.3s ease;
 
                 &:hover {
-                    background: rgba(255, 215, 0, 0.1);
+                    background: @folix-opacity-gold-10;
                     color: @folix-secondary-light;
                 }
 

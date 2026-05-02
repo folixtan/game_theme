@@ -66,10 +66,11 @@ class RecalculateCustomerStats
             
             $processed = 0;
             $errors = 0;
-            
+           echo $customerCollection->getSelect();exit;
             foreach ($customerCollection as $customer) {
                 try {
                     $customerId = (int)$customer->getId();
+                    var_dump($customerId);
                     $this->customerStatsRepository->recalculate($customerId);
                     $processed++;
                 } catch (\Exception $e) {

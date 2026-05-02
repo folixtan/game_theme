@@ -1,0 +1,71 @@
+/**
+ * Folix Light Theme - User Dropdown Menu Styles Override
+ *
+ * 覆盖深色主题的下拉菜单样式,适配浅色主题
+ */
+
+& when (@media-common = true) {
+
+    // ============================================
+    //  User Dropdown Container - 下拉菜单容器
+    //  ============================================
+
+    .folix-user-dropdown {
+        background: @folix-bg-panel;  // 白色背景 (覆盖深色主题的深蓝)
+        border: 1px solid @folix-border;  // 浅灰边框
+        box-shadow: @folix-shadow-xl;
+
+        // ============================================
+        //  Dropdown Trigger - 触发器区域
+        //  ============================================
+
+        .user-dropdown-trigger {
+            background: @folix-gradient-primary;  // 蓝色渐变
+            border-bottom: 1px solid @folix-border;
+
+            &:hover {
+                background: @folix-gradient-primary-hover;
+            }
+
+            // 头像
+            .avatar {
+                background: @folix-gradient-primary;  // 蓝色渐变
+                border: 2px solid rgba(59, 130, 246, 0.3);
+                box-shadow: 0 2px 8px @folix-opacity-blue-25;
+                color: @folix-text-on-dark;  // 白色文字
+            }
+
+            // 用户名
+            .username {
+                color: @folix-text-on-dark;  // 白色文字
+            }
+        }
+
+        // ============================================
+        //  Dropdown Menu Items - 菜单项
+        //  ============================================
+
+        .user-dropdown-menu {
+            a {
+                color: @folix-text-secondary;  // 深灰文字
+
+                &:hover {
+                    background: @folix-bg-light;  // 浅灰背景
+                    color: @folix-secondary;  // 蓝色文字
+                }
+
+                &.logout {
+                    color: @folix-accent;  // 橙色文字
+
+                    &:hover {
+                        background: @folix-error-bg;  // 红色背景
+                    }
+                }
+            }
+
+            .divider {
+                background: @folix-border-light;  // 浅灰分割线
+            }
+        }
+    }
+}

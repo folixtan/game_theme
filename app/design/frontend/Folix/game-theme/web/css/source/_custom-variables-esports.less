@@ -199,6 +199,9 @@
 @folix-shadow-red: 0 4px 12px rgba(255, 59, 48, 0.3);
 @folix-shadow-success: 0 0 30px rgba(5, 150, 105, 0.4);
 @folix-shadow-secondary: 0 8px 16px -4px rgba(139, 92, 246, 0.4), 0 4px 8px -2px rgba(139, 92, 246, 0.3);
+// 搜索框阴影
+@folix-shadow-search: 0 4px 16px rgba(0, 0, 0, 0.3);
+@folix-shadow-search-focus: 0 0 0 2px rgba(255, 215, 0, 0.4), 0 8px 32px rgba(255, 215, 0, 0.2), 0 4px 16px rgba(0, 0, 0, 0.4);
 
 // ============================================================================
 //  TRANSITIONS - 过渡动画
@@ -318,6 +321,83 @@
 @folix-z-fixed: 300;                        // 固定定位层级
 @folix-z-popover: 600;                      // 弹出层层级
 @folix-z-tooltip: 700;                      // 提示层级
+
+// ============================================================================
+//  OPACITY VARIABLES - 透明度变量（用于阴影、遮罩等）
+// ============================================================================
+
+//  Golden Opacity（金色透明度 - 发光效果）
+@folix-opacity-gold-5: rgba(255, 215, 0, 0.05);
+@folix-opacity-gold-8: rgba(255, 215, 0, 0.08);
+@folix-opacity-gold-10: rgba(255, 215, 0, 0.1);
+@folix-opacity-gold-20: rgba(255, 215, 0, 0.2);
+@folix-opacity-gold-30: rgba(255, 215, 0, 0.3);
+@folix-opacity-gold-40: rgba(255, 215, 0, 0.4);
+@folix-opacity-gold-50: rgba(255, 215, 0, 0.5);
+@folix-opacity-gold-90: rgba(255, 215, 0, 0.9);
+
+//  Dark Opacity（深色透明度 - 阴影效果）
+@folix-opacity-dark-5: rgba(0, 0, 0, 0.05);
+@folix-opacity-dark-10: rgba(0, 0, 0, 0.1);
+@folix-opacity-dark-15: rgba(0, 0, 0, 0.15);
+@folix-opacity-dark-20: rgba(0, 0, 0, 0.2);
+@folix-opacity-dark-25: rgba(0, 0, 0, 0.25);
+@folix-opacity-dark-30: rgba(0, 0, 0, 0.3);
+@folix-opacity-dark-40: rgba(0, 0, 0, 0.4);
+@folix-opacity-dark-50: rgba(0, 0, 0, 0.5);
+@folix-opacity-dark-60: rgba(0, 0, 0, 0.6);
+@folix-opacity-dark-65: rgba(0, 0, 0, 0.65);
+@folix-opacity-dark-80: rgba(0, 0, 0, 0.8);
+@folix-opacity-dark-85: rgba(0, 0, 0, 0.85);
+@folix-opacity-dark-90: rgba(0, 0, 0, 0.9);
+@folix-opacity-dark-95: rgba(0, 0, 0, 0.95);
+
+//  White Opacity（白色透明度 - 高光效果）
+@folix-opacity-white-3: rgba(255, 255, 255, 0.03);
+@folix-opacity-white-5: rgba(255, 255, 255, 0.05);
+@folix-opacity-white-10: rgba(255, 255, 255, 0.1);
+@folix-opacity-white-15: rgba(255, 255, 255, 0.15);
+@folix-opacity-white-20: rgba(255, 255, 255, 0.2);
+@folix-opacity-white-30: rgba(255, 255, 255, 0.3);
+@folix-opacity-white-35: rgba(255, 255, 255, 0.35);
+@folix-opacity-white-40: rgba(255, 255, 255, 0.4);
+@folix-opacity-white-50: rgba(255, 255, 255, 0.5);
+@folix-opacity-white-70: rgba(255, 255, 255, 0.7);
+@folix-opacity-white-80: rgba(255, 255, 255, 0.8);
+@folix-opacity-white-90: rgba(255, 255, 255, 0.9);
+@folix-opacity-white-100: rgba(255, 255, 255, 1);
+
+//  Purple Opacity（紫色透明度 - 装饰效果）
+@folix-opacity-purple-20: rgba(139, 92, 246, 0.2);
+@folix-opacity-purple-30: rgba(139, 92, 246, 0.3);
+
+//  Green Opacity（绿色透明度 - 成功效果）
+@folix-opacity-green-20: rgba(16, 185, 129, 0.2);
+@folix-opacity-green-30: rgba(16, 185, 129, 0.3);
+
+//  Blue Opacity（蓝色透明度 - 聚焦效果）
+@folix-opacity-blue-10: rgba(74, 144, 226, 0.1);
+@folix-opacity-blue-25: rgba(74, 144, 226, 0.25);
+
+//  Red Opacity（红色透明度 - 警告/退出效果）
+@folix-opacity-red-10: rgba(255, 59, 48, 0.1);
+@folix-opacity-red-15: rgba(255, 59, 48, 0.15);
+@folix-opacity-red-20: rgba(255, 59, 48, 0.2);
+@folix-opacity-red-30: rgba(255, 59, 48, 0.3);
+@folix-opacity-red-50: rgba(255, 59, 48, 0.5);
+
+// ============================================================================
+//  STATUS COLORS - 状态颜色（订单状态等）
+// ============================================================================
+
+//  Completed Status（完成状态 - 绿色）
+@folix-status-completed-bg: rgba(5, 150, 105, 0.2);
+@folix-status-completed-color: #10b981;
+@folix-status-completed-border: rgba(16, 185, 129, 0.3);
+
+//  Pending Status（待处理状态 - 金色）
+@folix-status-pending-bg: rgba(255, 215, 0, 0.2);
+@folix-status-pending-border: rgba(255, 215, 0, 0.3);
 
 // ============================================================================
 //  FONT WEIGHTS - 字体权重（补充Magento原生未定义的变量）

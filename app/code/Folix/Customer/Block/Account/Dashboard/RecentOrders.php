@@ -154,7 +154,7 @@ class RecentOrders extends Template
      */
     public function canReorder($order)
     {
-        return $this->helper(\Magento\Sales\Helper\Reorder::class)->canReorder($order->getEntityId());
+        return  \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Sales\Helper\Reorder::class)->canReorder($order->getEntityId());
     }
 
     /**

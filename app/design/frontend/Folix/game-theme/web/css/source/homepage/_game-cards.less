@@ -14,16 +14,15 @@
 
             .game-card {
                 background: @folix-bg-card;
-                border: 2px solid @folix-purple;
-                border-color: rgba(139, 92, 246, 0.3);
+                border: 2px solid @folix-opacity-purple-30;
                 border-radius: 16px;
                 overflow: hidden;
-                transition: transform 0.3s, box-shadow 0.3s;
+                transition: transform @folix-transition, box-shadow @folix-transition;
                 cursor: pointer;
 
                 &:hover {
                     transform: translateY(-8px);
-                    box-shadow: 0 15px 40px rgba(139, 92, 246, 0.3);
+                    box-shadow: 0 15px 40px @folix-opacity-purple-30;
                     border-color: @folix-purple;
                 }
 
@@ -38,7 +37,7 @@
                     background: linear-gradient(135deg, @folix-bg-panel 0%, @folix-bg-dark 100%);
                     padding: 20px;
                     border-radius: 0 0 16px 16px;
-                    border: 2px solid rgba(139, 92, 246, 0.3);
+                    border: 2px solid @folix-opacity-purple-30;
                     border-top: none;
 
                     .game-title {
@@ -82,7 +81,7 @@
                             border-radius: 20px;
                             font-weight: 700;
                             cursor: pointer;
-                            transition: transform 0.3s;
+                            transition: transform @folix-transition;
 
                             &:hover {
                                 transform: scale(1.05);

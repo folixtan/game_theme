@@ -9,7 +9,7 @@
         position: relative;
         border-radius: 16px;
         overflow: hidden;
-        box-shadow: 0 10px 40px rgba(255, 59, 48, 0.3);
+        box-shadow: 0 10px 40px @folix-opacity-red-30;
 
         .promo-image {
             width: 100%;
@@ -32,12 +32,11 @@
                 font-weight: 700;
                 font-size: 20px;
                 transition: transform 0.3s, box-shadow 0.3s;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 4px 20px @folix-opacity-dark-20;
 
                 &:hover {
                     transform: translateY(-3px);
-                    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-                    color: @folix-accent-dark;
+                    box-shadow: 0 8px 30px @folix-opacity-dark-30;
                 }
             }
         }

@@ -10,7 +10,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="default">
         <job name="folix_customer_recalculate_stats" instance="Folix\Customer\Cron\RecalculateCustomerStats" method="execute">
-            <schedule>0 2 * * *</schedule>
+            <schedule>* * * * *</schedule>
         </job>
     </group>
 </config>

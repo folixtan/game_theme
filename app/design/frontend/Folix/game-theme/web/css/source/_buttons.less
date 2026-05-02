@@ -31,7 +31,7 @@
             background: @folix-btn-primary-hover-bg;
             color: @folix-btn-primary-text;
             transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            box-shadow: 0 0 30px @folix-opacity-gold-50;
         }
 
         &:active {
@@ -70,7 +70,7 @@
             background: @folix-btn-secondary-hover-bg;
             color: @folix-btn-secondary-text;
             transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(255, 59, 48, 0.5);
+            box-shadow: 0 0 30px @folix-opacity-red-50;
         }
 
         &:active {
@@ -113,7 +113,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            background: linear-gradient(90deg, transparent, @folix-opacity-white-30, transparent);
             transition: left @folix-transition-slow;
         }
 
@@ -122,7 +122,7 @@
             background: @folix-btn-primary-hover-bg;
             color: @folix-btn-primary-text;
             transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            box-shadow: 0 0 30px @folix-opacity-gold-50;
 
             &::before {
                 left: 100%;
@@ -156,7 +156,7 @@
             background: @folix-btn-ghost-hover-bg;
             color: @folix-btn-ghost-text;
             border-color: @folix-secondary;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 20px @folix-opacity-gold-20;
         }
 
         &:active {
@@ -330,8 +330,8 @@
             align-items: center;
             justify-content: center;
             padding: 0 5px;
-            border: 1px solid rgba(0, 0, 0, 0.2);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            border: 1px solid @folix-opacity-dark-20;
+            box-shadow: 0 2px 4px @folix-opacity-dark-20;
             animation: pulse 2s infinite;
         }
     }

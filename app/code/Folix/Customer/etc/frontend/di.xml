@@ -8,4 +8,7 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <!-- 后续可在此添加前端相关的DI配置 -->
+    <type name="Magento\Quote\Model\Quote\Item\Processor">
+       <plugin name="Folix_Customer::customer_resales_plugin" type="Folix\Customer\Plugin\QuoteItemProcessor" />
+    </type>
 </config>

@@ -104,7 +104,7 @@
     border: 1px solid @folix-border;
     border-radius: @folix-radius-md;
     position: relative;
-    transition: all 0.3s ease;
+    transition: all @folix-transition;
 }
 
     //
@@ -231,13 +231,13 @@
             font-weight: @font-weight__semibold;
             padding: 10px 20px;
             font-size: 12px;
-            transition: all @folix-transition-fast;
+            transition: all @folix-transition;
             box-shadow: @folix-btn-primary-shadow;
 
             &:hover {
                 background: @folix-btn-primary-hover-bg;
                 transform: translateY(-2px);
-                box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+                box-shadow: 0 0 30px @folix-opacity-gold-50;
             }
         }
     }

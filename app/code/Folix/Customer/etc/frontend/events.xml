@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!-- 监听添加保存购物车数据库之前，处得地址数据 -->
+    <event name="sales_quote_save_before">
+        <observer name="folix_sales_quote_save_before" 
+                  instance="Folix\Customer\Observer\QuoteBillAddress"/>
+    </event>
+ 
+</config>

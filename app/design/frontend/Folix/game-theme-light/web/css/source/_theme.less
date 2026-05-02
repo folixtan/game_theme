@@ -97,8 +97,9 @@
 @navigation-desktop-level0-item__active__border-color: @folix-secondary;
 
 @submenu-desktop__font-weight: @font-weight__regular;
-@submenu-item__active__border-color: @folix-secondary;
+@submenu-desktop-item__active__color: @navigation-level0-item__active__color;
 @submenu-item__color: @folix-text-primary;
+@submenu-item__active__border-color: @folix-secondary;
 @submenu-desktop__background: @folix-bg-panel;
 @submenu-desktop__border-color: @folix-border;
 @submenu-desktop-item__color: @folix-text-primary;
@@ -120,6 +121,7 @@
 @tab-control__active__background-color: @folix-bg-panel;
 @tab-control__active__color: @folix-text-primary;
 
+//  Tabs content
 @tab-content__padding-top: 35px;
 @tab-content__padding-right: @tab-control__padding-right;
 @tab-content__background-color: @folix-bg-panel;
@@ -156,7 +158,7 @@
 @button__border-radius: 6px;
 
 @button__background: @folix-bg-hover;
-@button__border: 1px solid @folix-border;
+@button__border: 1px solid @folix-border-gold;
 @button__hover__color: @folix-secondary;
 @button__hover__background: @folix-bg-selected;
 @button__active__background: @folix-bg-selected;
@@ -173,21 +175,20 @@
 
 @button-icon__line-height: @icon-font__line-height;
 
-@button__shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+@button__shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 @button__shadow-active: 0 1px 2px rgba(0, 0, 0, 0.15);
 
 //
 //  Icons
 //  ---------------------------------------------
 
-@icon-wishlist-empty: false;
+@icon-wishlist-empty: '\e601';
 @icon-comment-reflected: false;
 @icon-compare-empty: false;
 @icon-arrow-up-thin: false;
 @icon-arrow-right-thin: false;
 @icon-arrow-left-thin: false;
 @icon-arrow-down-thin: false;
-@icon-wishlist-empty: '\e601';
 
 @icon-success: '\e60e';
 @icon-error: '\e61f';
@@ -211,21 +212,25 @@
 @message-error-icon: @icon-error;
 @message-success-icon: @icon-success;
 
+//  Info
 @message-info__color: #92400E;
 @message-info__background: #FEF3C7;
 @message-info-icon__background: #D97706;
 @message-info-icon__color-inner: #FEF3C7;
 
+//  Error
 @message-error__color: #DC2626;
 @message-error__background: #FEE2E2;
 @message-error-icon__background: #DC2626;
 @message-error-icon__color-inner: #FEE2E2;
 
+//  Success
 @message-success__color: #059669;
 @message-success__background: #D1FAE5;
 @message-success-icon__background: #059669;
 @message-success-icon__color-inner: #D1FAE5;
 
+//  Message Global
 @message-global-note__background: @message-info__background;
 @message-global-note__border-color: @message-info-icon__background;
 @message-global-note__color: @message-info__color;
@@ -237,17 +242,20 @@
 //  Loaders
 //  ---------------------------------------------
 
-@loader-overlay__background-color: rgba(0, 0, 0, .5);
+@loader-overlay__background-color: rgba(0, 0, 0, .8);
 
 //
 //  Forms
 //  ---------------------------------------------
 
+
+//  Select
 @select__background: @folix-input-bg url('../images/select-bg.svg') no-repeat 100% 45%;
 @select__border: 1px solid @folix-input-border;
 @select__height: 32px;
 @select__padding: 4px 25px @indent__xs @indent__s;
 
+//  Form element
 @form-element-input__background: @folix-input-bg;
 @form-element-input__border-color: @folix-input-border;
 @form-element-input__border-radius: 6px;
@@ -255,18 +263,22 @@
 @form-element-input-placeholder__color: @folix-input-placeholder;
 @form-element-input__focus__border: 1px solid @folix-input-focus-border;
 
+//  Form fieldset
 @form-fieldset-legend__font-size: 18px;
 @form-fieldset-legend__font-weight: @font-weight__light;
 @form-fieldset-legend__margin: 0 0 @indent__base;
 @form-fieldset-legend__padding: 0 0 @indent__s;
 @form-fieldset-legend__width: 100%;
 
+//  Form field
 @form-field-type-revert: false;
 @form-field__additional-vertical-indent: @indent__s;
 
+//  Form field label
 @form-field-label__font-weight: @font-weight__semibold;
 @form-field-type-label-block__margin: 0 0 8px;
 
+//  Form field note icon
 @form-field-note-icon-font__content: false;
 
 //
@@ -278,8 +290,10 @@
 @pager-item__margin: 0 8px 0 0;
 @pager-item__padding: 0 @indent__xs;
 
+//  Pager current page
 @pager-current__background: @color-gray90;
 
+//  Pager link.action
 @pager-icon__font-margin: 0;
 @pager-icon__font-size: 16px;
 @pager-current__color: @primary__color;
@@ -288,8 +302,13 @@
 @pager-action__border: @border-width__base solid @border-color__base;
 @pager-action__color: @primary__color__lighter;
 
+//  Pager link.action visited
 @pager-action__visited__color: @text__color__muted;
+
+//  Pager link.action hover
 @pager-action__hover__color: @text__color__muted;
+
+//  Pager link.action active
 @pager-action__active__color: @text__color__muted;
 
 //
@@ -298,7 +317,7 @@
 
 @rating-icon__font-size: 16px;
 @rating-icon__letter-spacing: 2px;
-@rating-icon__color: rgba(0, 0, 0, 0.1);
+@rating-icon__color: rgba(255, 255, 255, 0.1);
 @rating-icon__active__color: @folix-secondary;
 
 //
@@ -309,13 +328,16 @@
 @dropdown-toggle-icon__active__content: @icon-up;
 @dropdown-toggle-icon__font-size: 12px;
 
+//  Split dropdown
 @dropdown-split-actions__padding: 0 @indent__xs;
 @dropdown-split-toggle__actions__padding: false;
 
+//  Dropdown list
 @dropdown-list__background: @folix-bg-panel;
 @dropdown-list__border: 1px solid @folix-border;
 @dropdown-list-item__hover: @folix-bg-hover;
 
+//  Actions-toolbar
 @actions-toolbar-actions__position: left;
 @actions-toolbar-actions-primary__margin: 0 15px 0 0;
 
@@ -340,7 +362,7 @@
 @popup__background: @folix-popup-bg;
 @popup__border-color: @folix-popup-border;
 @popup__border: 1px solid @popup__border-color;
-@popup__shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+@popup__shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
 @popup-title-headings__level: h2;
 
 @popup-icon-font__size: 16px;
@@ -350,8 +372,8 @@
 @popup-icon-font__color-active: @popup-icon-font__color-hover;
 
 @overlay__background: @folix-popup-overlay;
-@overlay__opacity: .5;
-@overlay__opacity-old: 50;
+@overlay__opacity: .8;
+@overlay__opacity-old: 80;
 
 @gallery-thumb-border-color-active: @active__color;
 
@@ -390,7 +412,7 @@
 
 @copyright__background-color: @folix-gradient-purple;
 @copyright__border-color: @folix-footer-border;
-@copyright__color: @folix-text-secondary;
+@copyright__color: @folix-text-lighter;
 
 //
 //  Product Listing
@@ -427,4 +449,4 @@
 @customer-welcome__z-index: 200;
 @block-items__counter__color: @folix-text-tertiary;
 
-@font-weight__medium: 600;
+ @font-weight__medium:600;

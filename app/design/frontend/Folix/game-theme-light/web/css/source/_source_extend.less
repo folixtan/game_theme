@@ -1,0 +1,326 @@
+// /**
+//  * Folix Light Theme - Source Extend
+//  * 浅色主题自定义样式覆盖
+//  * 
+//  * 原则：
+//  * 1. 移动优先 (Mobile-First)
+//  * 2. 仅覆盖与父主题冲突的样式
+//  * 3. 仅在此文件中修改，不修改其他文件
+//  * 4. 遵循 Magento 样式标准
+//  * 5. 正确使用变量：
+//  *    - @folix-primary = 白色 #FFFFFF (浅色主题主色)
+//  *    - @folix-secondary = 蓝色 #3B82F6 (浅色主题强调色/主按钮)
+//  *    - @folix-accent = 橙色 #F97316 (辅助色)
+//  */
+
+& when (@media-common = true) {
+
+    // ============================================================================
+    //  PAGE HEADER - 页面头部样式覆盖
+    // ============================================================================
+
+    .page-header {
+        // 覆盖深色渐变背景为浅色
+        background: @folix-gradient-header-page;
+        border-bottom: 2px solid @folix-border;
+        box-shadow: 0 4px 20px @folix-opacity-dark-10;
+
+        // Top Bar 背景色覆盖
+        .panel.wrapper {
+            background: rgba(10, 22, 40, 0.5);  // 深色半透明背景
+            border-bottom: 1px solid @folix-border-light !important;
+
+            .panel.header {
+                // 左侧链接
+                .header-links-left {
+                    .header-links-top {
+                        li {
+                            a {
+                                color: @folix-text-secondary;
+
+                                &:hover {
+                                    color: @folix-secondary;  // 蓝色悬停 (不是 @folix-primary!)
+                                    text-shadow: none;  // 移除金色发光
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // 右侧链接
+                .header-links-right {
+                    // App 下载链接
+                    .app-download-link {
+                        color: @folix-text-secondary;
+                        border-color: @folix-border;
+
+                        &:hover {
+                            color: @folix-secondary;  // 蓝色
+                            border-color: @folix-secondary;
+                            box-shadow: none;  // 移除金色发光
+                        }
+                    }
+
+                    // 语言切换器
+                    .switcher {
+                        .switcher-trigger {
+                            background: @folix-bg-light;
+                            border: 1px solid @folix-border;
+                            color: @folix-text-secondary;
+
+                            &:hover {
+                                color: @folix-secondary;  // 蓝色
+                                border-color: @folix-secondary;
+                            }
+                        }
+                    }
+
+                    // 用户欢迎图标
+                    .greet.welcome {
+                        .folix-header-user-avatar {
+                            background: @folix-gradient-primary;  // 蓝紫渐变
+                            color: @folix-text-on-dark;  // 白色文字
+                            box-shadow: 0 2px 8px @folix-opacity-blue-25;  // 蓝色阴影
+
+                            &:hover {
+                                box-shadow: 0 4px 12px @folix-opacity-dark-30;  // 使用 @folix-opacity-dark-30 替代不存在的 @folix-opacity-blue-50
+                            }
+                        }
+
+                        .not-logged-in {
+                            color: @folix-text-secondary;
+                        }
+                    }
+
+                    // 用户头像按钮
+                    .customer-welcome.folix-customer-welcome {
+                        .folix-avar {
+                            background: @folix-gradient-primary;  // 蓝紫渐变
+                            color: @folix-text-on-dark;  // 白色
+                            box-shadow: 0 2px 8px @folix-opacity-blue-25;
+
+                            &:hover {
+                                box-shadow: 0 4px 12px @folix-opacity-dark-30;  // 使用存在的变量
+                            }
+                        }
+
+                        // 用户下拉菜单
+                        .customer-menu.folix-user-dropdown {
+                            background: @folix-bg-card;  // 白色
+                            border: 1px solid @folix-border;
+                            box-shadow: 0 8px 32px @folix-opacity-dark-10;
+
+                            .user-dropdown-trigger {
+                                border-bottom: 1px solid @folix-border-light;
+
+                                .avatar {
+                                    background: @folix-gradient-primary;
+                                    color: @folix-text-on-dark;
+                                }
+
+                                .username {
+                                    color: @folix-text-primary;
+                                }
+                            }
+
+                            .user-dropdown-menu {
+                                a {
+                                    color: @folix-text-secondary;
+
+                                    &:hover {
+                                        background: @folix-bg-light;
+                                        color: @folix-secondary;  // 蓝色
+                                    }
+
+                                    &.logout {
+                                        color: @folix-accent;
+
+                                        &:hover {
+                                            background: rgba(255, 59, 48, 0.1);  // 与深色主题保持一致
+                                        }
+                                    }
+                                }
+
+                                .divider {
+                                    background: @folix-border-light;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Header 主内容区
+        .header.content {
+            .folix-nav-container {
+                // 购物车图标
+                .minicart-wrapper {
+                    .action.showcart {
+                        background: @folix-bg-light;
+                        border: 2px solid @folix-secondary;  // 蓝色边框 (不是 @folix-primary!)
+                        color: @folix-secondary;
+
+                        &:hover {
+                            background: @folix-secondary;
+                            color: @folix-text-on-dark;  // 白色文字
+                            box-shadow: 0 4px 12px @folix-opacity-dark-20;  // 使用 @folix-opacity-dark-20 替代不存在的 @folix-opacity-blue-30
+
+                            &::before {
+                                color: @folix-text-on-dark;
+                            }
+                        }
+
+                        // 购物车数量徽章
+                        .counter.qty {
+                            background: @folix-secondary;  // 蓝色徽章
+                            color: @folix-text-on-dark;
+                            box-shadow: 0 2px 8px @folix-opacity-blue-25;
+
+                            &.empty {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // ============================================================================
+    //  NAVIGATION - 导航菜单样式覆盖
+    // ============================================================================
+
+    .sections.nav-sections {
+        background: transparent;
+    }
+}
+
+// ============================================================================
+//  Desktop (≥ 768px) - 桌面端样式
+// ============================================================================
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    .page-header {
+        // 桌面端头部容器
+        .header.content {
+            .folix-nav-container {
+                // 购物车按钮内边距
+                .minicart-wrapper {
+                    .action.showcart {
+                        padding: 8px 14px;
+                    }
+                }
+            }
+        }
+    }
+
+    // 导航菜单项 - 选中状态
+    .navigation li.level0 {
+        // 激活状态 - 蓝色背景 + 白色文字
+        &.active .level-top,
+        &.has-active > .level-top {
+            background: @folix-secondary;  // 蓝色背景 (不是 @folix-primary!)
+            color: @folix-text-on-dark !important;  // 白色文字
+            box-shadow: 0 0 20px @folix-opacity-dark-20;  // 使用 @folix-opacity-dark-20 替代不存在的 @folix-opacity-blue-30
+
+            .ui-menu-icon {
+                color: @folix-text-on-dark !important;
+            }
+        }
+
+        // 悬停状态（非激活）
+        &:hover:not(.active) {
+            .level-top {
+                background: @folix-bg-light;
+                color: @folix-secondary;  // 蓝色
+            }
+        }
+    }
+
+    // 搜索框样式覆盖
+    .folix-top-search {
+        .block-search {
+            .form.minisearch {
+                // 浅灰渐变背景
+                background: linear-gradient(135deg, @folix-bg-dark 0%, @folix-bg-card 100%);
+                box-shadow: 
+                    0 4px 16px @folix-opacity-dark-10,
+                    inset 0 1px 0 rgba(255, 255, 255, 1);
+
+                // 焦点状态 - 蓝色发光
+                &:focus-within {
+                    box-shadow: 
+                        0 0 0 2px @folix-opacity-blue-25,  // 使用 @folix-opacity-blue-25 替代不存在的 @folix-opacity-blue-30
+                        0 8px 32px @folix-opacity-blue-10,  // 使用 @folix-opacity-blue-10 替代不存在的 @folix-opacity-blue-15
+                        0 4px 16px @folix-opacity-dark-10;
+                }
+
+                .field.search {
+                    .control {
+                        input {
+                            color: @folix-text-primary;
+
+                            &::placeholder {
+                                color: @folix-text-secondary;
+                            }
+
+                            &:focus::placeholder {
+                                color: @folix-text-tertiary;
+                            }
+                        }
+                    }
+                }
+
+                // 搜索按钮
+                .actions {
+                    .action.search {
+                        background: @folix-gradient-top-search-background;  // 蓝色渐变
+                        color: @folix-text-on-dark;  // 白色
+
+                        &::before {
+                            filter: drop-shadow(0 2px 4px @folix-opacity-dark-10);
+                        }
+
+                        &:hover:not(:disabled) {
+                            box-shadow: 
+                                0 4px 16px @folix-opacity-dark-30,  // 使用 @folix-opacity-dark-30 替代不存在的 @folix-opacity-blue-40
+                                0 2px 8px @folix-opacity-dark-20;  // 使用 @folix-opacity-dark-20 替代不存在的 @folix-opacity-blue-30
+                        }
+
+                        &:active:not(:disabled) {
+                            box-shadow: 
+                                0 2px 8px @folix-opacity-dark-20,  // 使用 @folix-opacity-dark-20 替代不存在的 @folix-opacity-blue-30
+                                0 1px 4px @folix-opacity-blue-25;  // 使用 @folix-opacity-blue-25 替代不存在的 @folix-opacity-blue-20
+                        }
+                    }
+                }
+            }
+        }
+
+        // 搜索自动补全下拉框
+        .search-autocomplete {
+            background: linear-gradient(135deg, @folix-bg-card 0%, @folix-bg-dark 100%);
+            border: 1px solid @folix-border;
+            box-shadow: 
+                0 8px 32px @folix-opacity-dark-10,
+                0 0 0 1px @folix-opacity-blue-10;  // 使用 @folix-opacity-blue-10 替代不存在的 @folix-opacity-blue-10(这个已经存在)
+        }
+    }
+}
+
+// ============================================================================
+//  Mobile (< 768px) - 移动端样式
+// ============================================================================
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .folix-nav-container {
+        .sections.nav-sections {
+            flex-direction: column;
+        }
+    }
+
+    .folix-top-search {
+        flex: 1;
+    }
+}

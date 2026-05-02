@@ -20,7 +20,7 @@
         // 新增圆角和阴影
         border-radius: @folix-radius-lg;
         overflow: hidden;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 8px 24px @folix-opacity-dark-15;
         
         // Slick List - 原生已有 min-height: inherit
         .slick-list {
@@ -75,7 +75,7 @@
                     width: 12px;
                     height: 12px;
                     border-radius: 50%;
-                    background: rgba(255, 255, 255, 0.5);
+                    background: @folix-opacity-white-80;
                     border: none;
                     cursor: pointer;
                     transition: all 0.3s ease;
@@ -86,7 +86,7 @@
                     box-shadow: none;
                     
                     &:hover {
-                        background: rgba(255, 255, 255, 0.8);
+                        background: @folix-opacity-white-80;
                     }
                 }
                 
@@ -125,7 +125,7 @@
         // Slick Prev & Next - 公共样式
         .slick-prev,
         .slick-next {
-            background: rgba(255, 255, 255, 0.2);
+            background: @folix-opacity-white-35;
             backdrop-filter: blur(10px);
             border-radius: 50%;
             width: 50px;
@@ -134,7 +134,7 @@
 
             &:hover,
             &:focus {
-                background: rgba(255, 255, 255, 0.35);
+                background: @folix-opacity-white-35;
 
                 &:before {
                     color: @folix-text-primary;
@@ -169,7 +169,7 @@
     .pagebuilder-overlay {
         // 渐变遮罩 - 游戏风格
         &.pagebuilder-poster-overlay {
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.65) 100%);
+            background: linear-gradient(135deg, @folix-opacity-dark-85 0%, @folix-opacity-dark-65 100%);
         }
     }
 
@@ -189,7 +189,7 @@
             h1, h2, h3 {
                 color: @folix-text-primary;
                 margin-bottom: 16px;
-                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+                text-shadow: 0 2px 4px @folix-opacity-dark-30;
             }
 
             h2 {
@@ -206,7 +206,7 @@
             p {
                 font-size: 16px;
                 line-height: 1.6;
-                color: rgba(255, 255, 255, 0.9);
+                color: @folix-opacity-white-90;
                 margin-bottom: 20px;
             }
 
@@ -226,7 +226,7 @@
                 &:hover {
                     transform: translateY(-3px);
                     background: linear-gradient(135deg, @folix-secondary-light 0%, @folix-secondary 100%);
-                    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+                    box-shadow: 0 10px 30px @folix-opacity-gold-50;
                     text-decoration: none;
                 }
             }
@@ -239,13 +239,13 @@
                 font-size: 16px;
                 font-weight: 600;
                 border-radius: @folix-radius;
-                border: 2px solid rgba(255, 255, 255, 0.8);
+                border: 2px solid @folix-opacity-white-80;
                 cursor: pointer;
                 transition: all 0.3s ease;
                 
                 &:hover {
-                    background: rgba(255, 255, 255, 0.15);
-                    border-color: rgba(255, 255, 255, 1);
+                    background: @folix-opacity-white-15;
+                    border-color: @folix-opacity-white-100;
                 }
             }
         }

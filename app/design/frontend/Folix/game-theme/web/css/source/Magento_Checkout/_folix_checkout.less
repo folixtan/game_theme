@@ -48,7 +48,7 @@
                             &:hover {
                                 background: @folix-btn-primary-hover-bg;
                                 transform: translateY(-2px);
-                                box-shadow: 0 4px 14px rgba(74, 144, 226, 0.25);
+                                box-shadow: 0 4px 14px @folix-shadow-primary;
                                // box-shadow: 0 0 20px @folix-btn-primary-shadow;
                             }
                         }
@@ -78,15 +78,15 @@
         }
         // Override button styles to match theme
         .action.primary.checkout {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%) !important;
+            background: @folix-gradient-gold !important;
             border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            box-shadow: @folix-shadow-sm;
+            transition: @folix-transition-smooth;
 
             &:hover,
             &:focus {
                 transform: translateY(-2px);
-                box-shadow: 0 6px 12px rgba(255, 215, 0, 0.4);
+                box-shadow: 0 6px 12px @folix-opacity-gold-40;
                 outline: none;
             }
 
@@ -203,7 +203,7 @@
                         font-weight: @font-weight__bold;
 
                         &:hover {
-                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+                            box-shadow: 0 4px 8px @folix-opacity-dark-15;
                         }
                     }
                 }
@@ -225,7 +225,6 @@
             }
         }
 
-       
         
         // Payment methods styling
          #checkout-payment-method-load {
@@ -292,7 +291,7 @@
             }
 
             .awx-card-number .card-brand-icons {
-                 filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.3));
+                 filter: drop-shadow(0 0 4px @folix-opacity-gold-30);
              }
         }
 
