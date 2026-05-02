@@ -14,7 +14,8 @@
         
         <!-- 第三方订单信息 -->
         <column xsi:type="varchar" name="third_party_order_id" nullable="true" length="100" comment="Third Party Order ID"/>
-        <column xsi:type="varchar" name="order_type" nullable="true" length="20" comment="Order Type: direct/card"/>
+        <column xsi:type="varchar" name="order_type" nullable="true" length="20" comment="Order Type: 直充/卡密"/>
+        <column xsi:type="smallint" name="goods_type" padding="10" nullable="false" default="0" comment="Goods Type: 3=卡密, 4=直充 (对应产品属性值)"/>
         
         <!-- 核心状态 -->
         <column xsi:type="smallint" name="status_code" padding="10" nullable="true" default="0" comment="Status: 0=Processing, 2=Success, 3=Failed"/>

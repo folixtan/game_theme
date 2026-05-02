@@ -3,23 +3,43 @@
 /**
  * Folix Customer Module - Declarative Schema
  *
- * 用户统计表定义
+ * 用户每日统计表定义
+ * 
+ * 设计原则：
+ * - 按天统计：每天每个客户一条记录
+ * - 防重复：同一天多次执行只会覆盖
+ * - 易追溯：可查看历史趋势
  */
 -->
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
-    <table name="folix_customer_stats" resource="default" engine="innodb" comment="Folix Customer Statistics">
+    <table name="folix_customer_daily_stats" resource="default" engine="innodb" comment="Folix Customer Daily Statistics">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Primary Key"/>
         <column xsi:type="int" name="customer_id" unsigned="true" nullable="false" identity="false" comment="Customer ID"/>
-        <column xsi:type="int" name="total_orders" unsigned="true" nullable="false" identity="false" default="0" comment="Total Orders Count"/>
-        <column xsi:type="decimal" name="total_spent" scale="4" precision="12" unsigned="false" nullable="false" default="0.0000" comment="Total Spent Amount"/>
-        <column xsi:type="int" name="active_keys" unsigned="true" nullable="false" identity="false" default="0" comment="Active Game Keys Count"/>
-        <column xsi:type="timestamp" name="last_order_at" on_update="false" nullable="true" default="NULL" comment="Last Order Created At"/>
-        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <column xsi:type="date" name="stat_date" nullable="false" comment="Statistics Date (YYYY-MM-DD)"/>
+        <column xsi:type="int" name="orders_count" unsigned="true" nullable="false" identity="false" default="0" comment="Orders Count for This Day"/>
+        <column xsi:type="decimal" name="orders_amount" scale="4" precision="12" unsigned="false" nullable="false" default="0.0000" comment="Orders Amount for This Day"/>
+        <column xsi:type="int" name="active_keys_count" unsigned="true" nullable="false" identity="false" default="0" comment="Active Keys Count for This Day"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        
         <constraint xsi:type="primary" referenceId="PRIMARY">
-            <column name="customer_id"/>
+            <column name="entity_id"/>
         </constraint>
-        <constraint xsi:type="foreign" referenceId="FOLIX_CUSTOMER_STATS_CUSTOMER_ID_CUSTOMER_ENTITY_ENTITY_ID" table="folix_customer_stats" column="customer_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
-        <index referenceId="FOLIX_CUSTOMER_STATS_UPDATED_AT" indexType="btree">
-            <column name="updated_at"/>
+        
+        <!-- 唯一索引：防止同一天重复统计 -->
+        <constraint xsi:type="unique" referenceId="FOLIX_CUSTOMER_DAILY_STATS_CUSTOMER_DATE_UNIQUE">
+            <column name="customer_id"/>
+            <column name="stat_date"/>
+        </constraint>
+        
+        <!-- 外键约束 -->
+        <constraint xsi:type="foreign" referenceId="FOLIX_CUST_DAILY_STATS_CUST_ID_CUST_ENTITY_ENT_ID" table="folix_customer_daily_stats" column="customer_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        
+        <!-- 索引优化查询 -->
+        <index referenceId="FOLIX_CUSTOMER_DAILY_STATS_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <index referenceId="FOLIX_CUSTOMER_DAILY_STATS_STAT_DATE" indexType="btree">
+            <column name="stat_date"/>
         </index>
     </table>
 </schema>

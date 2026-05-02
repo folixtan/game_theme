@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace FolixCode\ThirdPartyOrder\Model;
 
 use FolixCode\BaseSyncService\Api\ExternalApiClientInterface;
+use FolixCode\ThirdPartyOrder\Api\Data\ApiResponseTransformerInterface;
 use FolixCode\ThirdPartyOrder\Helper\Data as ThirdPartyHelper;
-use FolixCode\ThirdPartyOrder\Model\ResourceModel\ThirdPartyOrder\ThirdPartyOrder as ThirdPartyOrderResource;
+use FolixCode\ThirdPartyOrder\Model\ResourceModel\ThirdPartyOrderDbResource as ThirdPartyOrderResource;
+use Magento\Framework\Event\ManagerInterface as EventManager;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -13,6 +15,7 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 use Psr\Log\LoggerInterface;
 use FolixCode\ThirdPartyOrder\Model\ThirdPartyOrderPushFactory;
 use Magento\Catalog\Model\ProductRepository;
+
 /**
  * Order Sync Service - 核心同步逻辑
  * 
@@ -38,9 +41,13 @@ class OrderSyncService
 
     private ThirdPartyOrderPushFactory $thirdPartyOrderPushFactory;
 
-    private ThirdPartyOrderDbRepository $thirdPartyOrderDbRepository;
-
     private ProductRepository $productRepository;
+
+    private ApiResponseTransformerInterface $transformer;
+
+    private EventManager $eventManager;
+
+    private OrderStateUpdater $orderStateUpdater;
 
     public function __construct(
         ExternalApiClientInterface $apiClient,
@@ -49,10 +56,12 @@ class OrderSyncService
         OrderRepositoryInterface $orderRepository,
         ThirdPartyHelper $helper,
         Json $json,
-        ThirdPartyOrderDbRepository $thirdPartyOrderDbRepository,
         TimezoneInterface $timezone,
         ThirdPartyOrderPushFactory $thirdPartyOrderPushFactory,
         ProductRepository $productRepository,
+        ApiResponseTransformerInterface $transformer,
+        EventManager $eventManager,
+        OrderStateUpdater $orderStateUpdater,
         LoggerInterface $logger
     ) {
         $this->apiClient = $apiClient;
@@ -64,8 +73,10 @@ class OrderSyncService
         $this->timezone = $timezone;
         $this->logger = $logger;
         $this->thirdPartyOrderPushFactory = $thirdPartyOrderPushFactory;
-        $this->thirdPartyOrderDbRepository = $thirdPartyOrderDbRepository;
         $this->productRepository = $productRepository;
+        $this->transformer = $transformer;
+        $this->eventManager = $eventManager;
+        $this->orderStateUpdater = $orderStateUpdater;
     }
 
     /**
@@ -79,162 +90,138 @@ class OrderSyncService
     {
         $magentoOrderId = (int)$order->getEntityId();
         $startTime = microtime(true);
-        // 1. 检查是否已同步
-        if ($this->resource->loadByMagentoOrderId($magentoOrderId)) {
-            $this->logger->info('Order already synced, skipping', [
-                'magento_order_id' => $magentoOrderId
-            ]);
-            return true;
-        }
 
-        // 2. API请求数据
-        $requestData = $this->buildCreateOrderRequest($order);      
-
-        return true;
-
-        
-    }
-
-    /**
-     * 构建创建订单请求数据
-     *
-     * @param OrderInterface $order
-     * @return bool
-     */
-    private function buildCreateOrderRequest(OrderInterface $order): bool
-    {
-        $orderData = [
-          
-            'notify_url' => $this->helper->getNotifyUrl(),
-            
-        ];
-
-      
-
-      
-        $order_status = false;
-        $order_id = $order->getEntityId();
         // 遍历订单项
         foreach ($order->getItems() as $item) {
            $itemId = $item->getItemId();
           try { 
-              //if($item->getProductType() != 'iv')
-             $product = str_replace(\FolixCode\ProductSync\Service\ProductImporter::SKU_PREFIX,'', $item->getSku());
-            /**
-             * @var ThirdPartyOrderPushManager
-             */
-              $pushToData = $this->thirdPartyOrderPushFactory->create($orderData);
-              $pushToData->setUserOrderId((string)$item->getItemId());
-                // 2. 设置时间戳
-                $pushToData->setTimestamp($this->timezone->date()->getTimestamp());
-                $pushToData->setProductId($product);
-                $pushToData->setBuyNum((string)$item->getQtyOrdered());
-                
-                /**
-                 * @var \Magento\Catalog\Model\Product $product
-                 */
-                $product = $this->productRepository->get($item->getSku());
-                $pushToData->setChargeType($product->getData(\FolixCode\ProductSync\Setup\Patch\Data\AddProductAttributes::ATTRIBUTE_CODE_CHARGE_TYPE));
-
-                if($chargeTemplate = $item->getAdditionalData()) {
-                    $chargeInfo = $this->json->unserialize($chargeTemplate);
-                    foreach($chargeInfo as $key => $value) {
-                        $pushToData->setData($key,$value);
-                    }
-                    
-                }
-                // 3. 调用第三方API创建订单
-                $response = $this->apiClient->post(self::API_URI, $pushToData->getData());
-                $this->logger->info('Calling third party create order API', [
-                    'magento_order_id' => $item->getItemId(),
-                    'order_type' =>  $response['order_type'] ?? 'unknown',
-                ]);
-
-
-                // 5. 保存响应数据
-                $response['increment_id'] = $order->getIncrementId();
-                $response['customer_id'] = $order->getCustomerId();
+              $product = str_replace(\FolixCode\ProductSync\Service\ProductImporter::SKU_PREFIX,'', $item->getSku());
             
-                // 4. 处理响应
-                $this->handleCreateOrderResponse($item, $response);
+              // 构建请求数据
+              $requestData = [
+                  'notify_url' => $this->helper->getNotifyUrl(),
+                  'user_order_id' => (string)$item->getItemId(),
+                  'timestamp' => $this->timezone->date()->getTimestamp(),
+                  'product_id' => $product,
+                  'buy_num' => (string)$item->getQtyOrdered()
+              ];
+              
+              // 获取商品属性
+              $productModel = $this->productRepository->get($item->getSku());
+              $requestData['charge_type'] = $productModel->getData(\FolixCode\ProductSync\Setup\Patch\Data\AddProductAttributes::ATTRIBUTE_CODE_CHARGE_TYPE);
+
+              // 合并额外数据（从 additional_data）
+              if($chargeTemplate = $item->getAdditionalData()) {
+                  $chargeInfo = $this->json->unserialize($chargeTemplate);
+                  foreach($chargeInfo as $key => $value) {
+                      $requestData[$key] = $value;
+                  }
+              }
+              
+              $pushToData = $this->thirdPartyOrderPushFactory->create($requestData);
+              
+              // 调用第三方API创建订单
+              $response = $this->apiClient->post(self::API_URI, $pushToData->getData());
+
+              
+              $this->logger->info('Calling third party create order API', [
+                  'item_id' => $itemId,
+                  'magento_order_id' => $magentoOrderId,
+                  'order_type' =>  $response['order_type'] ?? 'unknown',
+              ]);
+
+              // 添加额外信息到响应
+              $response['increment_id'] = $order->getIncrementId();
+              $response['customer_id'] = $order->getCustomerId();
+          
+              // 处理响应并保存（增量更新）
+              $this->handleCreateOrderResponse($item, $response);
+              
         } catch (\Exception $e) {
-            $this->logger->error('Failed to build create order Item request', [
+            $this->logger->error('Failed to sync order item', [
                 'item_id' => $itemId,
-                'magento_order_id' => $order_id,
+                'magento_order_id' => $magentoOrderId,
                 'error' => $e->getMessage()
             ]);
              // 更新同步失败状态
             $this->saveFailedStatus($itemId, $e->getMessage());
-
         }
-           
- 
         }
 
-       return $order_status;
+        // 所有 Items 处理完成后，检查是否全部同步成功
+        $this->orderStateUpdater->checkAndMarkOrderComplete((int)$magentoOrderId);
+
+        return true;
     }
 
     /**
-     * 处理创建订单响应
+     * 处理创建订单响应（增量更新）
      *
-     * @param OrderInterface $order
+     * @param \Magento\Sales\Api\Data\OrderItemInterface $orderItem
      * @param array $response
      */
     private function handleCreateOrderResponse(\Magento\Sales\Api\Data\OrderItemInterface $orderItem, array $response): void
     {
-        $magentoOrderId = (int)$orderItem->getOrderId();
- 
-        // 创建记录
-        $thirdPartyOrder = $this->thirdPartyOrderFactory->create([
-            'data' => [
-                'magento_order_id' => $magentoOrderId,
-                'entity_id' => $orderItem->getItemId(),
-                'customer_id' =>  $response['customer_id'],
-                'increment_id' => $response['increment_id'],
-                'third_party_order_id' => $response['order_id'] ?? '',
-                'order_type' => $response['order_type'] ?? '',
-                'status_code' => $response['status_code'] ?? 0,
-                'charge_account' => $chargeInfo['charge_account'] ?? null,
-                'charge_region' => $chargeInfo['charge_region'] ?? null,
-                'sync_status' => 'synced',
-                'synced_at' => $this->timezone->date()->format('Y-m-d H:i:s')
-            ]
-        ]);
-
-        // 如果是卡密订单,保存卡密信息
-        if (!empty($response['cards']) && is_array($response['cards'])) {
-             $thirdPartyOrder->setCardNo($response['cards'][0]['card_no']);
-             $thirdPartyOrder->setCardPwd($response['cards'][0]['card_pwd']);
-             $thirdPartyOrder->setCardDeadline($response['cards'][0]['card_deadline']);
-         
+        $entityId = $orderItem->getItemId();
+        
+        try {
+            // 1. 使用 Transformer 转换数据（返回完整的数据库字段）
+            $transformedData = $this->transformer->transformCreateOrderResponse($response);
+            
+            // 2. 触发"同步前"事件（供应商可以监听并扩展）
+            $this->eventManager->dispatch('thirdparty_order_before_sync', [
+                'order_item' => $orderItem,
+                'data' => $transformedData
+            ]);
+            
+            // 3. 构建更新数据（直接使用 Transformer 返回的数据 + 系统字段）
+            $updateData = $transformedData;
+            $updateData['sync_status'] = 'synced';
+            $updateData['synced_at'] = $this->timezone->date()->format('Y-m-d H:i:s');
+            
+            // 4. 执行 UPDATE（基于 entity_id）
+            $this->resource->updateByEntityId((int)$entityId, $updateData);
+            
+            // 5. 触发"同步后"事件
+            $this->eventManager->dispatch('thirdparty_order_after_sync_success', [
+                'order_item' => $orderItem,
+                'data' => $transformedData,
+                'entity_id' => $entityId
+            ]);
+            
+            $this->logger->info('Order item synced successfully', [
+                'entity_id' => $entityId,
+                'third_party_order_id' => $response['order_id'] ?? ''
+            ]);
+            
+        } catch (\Exception $e) {
+            $this->logger->error('Failed to handle create order response', [
+                'entity_id' => $entityId,
+                'error' => $e->getMessage()
+            ]);
+            throw $e;
         }
-
-        $this->$this->thirdPartyOrderDbRepository->save($thirdPartyOrder);
     }
 
     /**
      * 保存失败状态
      *
-     * @param int $magentoOrderId
+     * @param int $entityId
      * @param string $errorMessage
      */
-    private function saveFailedStatus(int $item_id, string $errorMessage): void
+    private function saveFailedStatus(int $entityId, string $errorMessage): void
     {
         try {
-            $existingRecord = $this->resource->loadByMagentoOrderId($item_id);
+            $updateData = [
+                'sync_status' => 'failed',
+                'last_error' => substr($errorMessage, 0, 1000)
+            ];
             
-            if (!$existingRecord) {
-                $thirdPartyOrder = $this->thirdPartyOrderFactory->create([
-                    'data' => [
-                        'entity_id' => $item_id,
-                        'sync_status' => 'failed'
-                    ]
-                ]);
-                $this->$this->thirdPartyOrderDbRepository->save($thirdPartyOrder);
-            }
+            $this->resource->updateByEntityId((int)$entityId, $updateData);
+            
         } catch (\Exception $e) {
             $this->logger->error('Failed to save failed status', [
-                'magento_order_id' => $item_id,
+                'entity_id' => $entityId,
                 'error' => $e->getMessage()
             ]);
         }

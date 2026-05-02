@@ -12,6 +12,7 @@ interface ThirdPartyOrderDbInterface
     const CUSTOMER_ID = 'customer_id';
     const THIRD_PARTY_ORDER_ID = 'third_party_order_id';
     const ORDER_TYPE = 'order_type';
+    const GOODS_TYPE = 'goods_type';
     const STATUS_CODE = 'status_code';
     const CHARGE_ACCOUNT = 'charge_account';
     const CHARGE_REGION = 'charge_region';
@@ -83,6 +84,21 @@ interface ThirdPartyOrderDbInterface
      * @return $this
      */
     public function setOrderType(string $orderType): self;
+
+    /**
+     * Get Goods Type
+     *
+     * @return int|null
+     */
+    public function getGoodsType(): ?int;
+
+    /**
+     * Set Goods Type
+     *
+     * @param int $goodsType
+     * @return $this
+     */
+    public function setGoodsType(int $goodsType): self;
 
     /**
      * Get Status Code

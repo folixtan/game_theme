@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace FolixCode\ThirdPartyOrder\Model;
 
-use FolixCode\ThirdPartyOrder\Model\ResourceModel\ThirdPartyOrder\ThirdPartyOrder as ThirdPartyOrderResource;
-use Magento\Framework\DB\Adapter\AdapterInterface;
+use FolixCode\ThirdPartyOrder\Model\ResourceModel\ThirdPartyOrderDbResource as ThirdPartyOrderResource;
 use Magento\Framework\App\ResourceConnection;
 use Psr\Log\LoggerInterface;
 

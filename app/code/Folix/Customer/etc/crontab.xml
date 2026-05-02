@@ -4,13 +4,18 @@
  * Folix Customer Module - Cron Configuration
  *
  * Cron定时任务配置
- * 每天凌晨2点执行，校准用户统计数据
+ * 
+ * 每日统计策略：
+ * - 每 10 分钟执行一次
+ * - 只统计最近时间段内有新订单的客户
+ * - 按天统计，通过唯一索引防止重复
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="default">
-        <job name="folix_customer_recalculate_stats" instance="Folix\Customer\Cron\RecalculateCustomerStats" method="execute">
-            <schedule>* * * * *</schedule>
+        <!-- 每日增量统计（主要任务） -->
+        <job name="folix_customer_daily_stats" instance="Folix\Customer\Cron\DailyCustomerStats" method="execute">
+            <schedule>*/10 * * * *</schedule>
         </job>
     </group>
 </config>

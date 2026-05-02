@@ -15,6 +15,10 @@
     <preference for="FolixCode\ThirdPartyOrder\Api\Data\ThirdPartyOrderDbInterface" 
                 type="FolixCode\ThirdPartyOrder\Model\ThirdPartyOrderDb" />
 
+    <!-- API Response Transformer 接口绑定 -->
+    <preference for="FolixCode\ThirdPartyOrder\Api\Data\ApiResponseTransformerInterface" 
+                type="FolixCode\ThirdPartyOrder\Model\Transformer\DefaultApiResponseTransformer" />
+
     <!-- API客户端首选项 -->
     <preference for="FolixCode\BaseSyncService\Api\ExternalApiClientInterface" 
                 type="FolixCode\BaseSyncService\Model\ApiClient"/>
@@ -23,8 +27,12 @@
     <preference for="FolixCode\BaseSyncService\Api\EncryptionStrategyInterface" 
                 type="FolixCode\BaseSyncService\Model\Encryption\Aes256CbcStrategy"/>
 
-    <!-- ThirdPartyOrder专用的ApiClient实例 -->
-    <virtualType name="ThirdPartyOrderApiClient" type="FolixCode\BaseSyncService\Model\ApiClient">
+    <!-- ThirdPartyOrder专用的ApiClient实例（可切换为Mock） -->
+    <!-- 
+        开发环境使用 Mock: type="FolixCode\ThirdPartyOrder\Model\MockApiClient"
+        生产环境使用真实: type="FolixCode\BaseSyncService\Model\ApiClient"
+    -->
+    <virtualType name="ThirdPartyOrderApiClient" type="FolixCode\ThirdPartyOrder\Model\MockApiClient">
         <arguments>
             <argument name="vendorConfig" xsi:type="object">FolixCode\BaseSyncService\Model\DefaultVendorConfig</argument>
             <argument name="encryptionStrategy" xsi:type="object">FolixCode\BaseSyncService\Api\EncryptionStrategyInterface</argument>

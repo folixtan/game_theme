@@ -13,27 +13,29 @@ namespace Folix\Customer\Api;
 interface CustomerStatsRepositoryInterface
 {
     /**
-     * 获取用户统计数据
+     * 获取用户累计统计数据（从开始到现在）
      *
      * @param int $customerId
-     * @return array
+     * @return array ['total_orders' => int, 'total_spent' => float, 'active_keys' => int]
      */
-    public function getByCustomerId(int $customerId): array;
+    public function getCustomerTotalStats(int $customerId): array;
 
     /**
-     * 更新用户统计数据
+     * 获取用户指定日期范围内的统计数据
      *
      * @param int $customerId
-     * @param array $data
-     * @return void
+     * @param string|null $startDate 开始日期 (Y-m-d)
+     * @param string|null $endDate 结束日期 (Y-m-d)
+     * @return array ['total_orders' => int, 'total_spent' => float, 'active_keys' => int]
      */
-    public function save(int $customerId, array $data): void;
+    public function getCustomerStatsByRange(int $customerId, ?string $startDate = null, ?string $endDate = null): array;
 
     /**
-     * 重新计算用户统计数据
+     * 重新计算用户某天的统计数据（幂等操作）
      *
      * @param int $customerId
+     * @param string $statDate 日期 (Y-m-d)
      * @return array
      */
-    public function recalculate(int $customerId): array;
+    public function recalculateDailyStats(int $customerId, string $statDate): array;
 }

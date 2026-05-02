@@ -92,7 +92,7 @@ class ProcessThirdPartyOrdersCommand extends Command
                 'data' => [
                     'topic_name' => \FolixCode\ThirdPartyOrder\Model\MessageQueue\Publisher::TOPIC_ORDER_SYNC,
                     'serialized_data' => json_encode([
-                        'order_id' => 4
+                        'order_id' => 18
                     ]),
                     'status' => 4
                 ]

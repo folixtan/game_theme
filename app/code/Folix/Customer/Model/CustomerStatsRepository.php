@@ -8,8 +8,7 @@
 namespace Folix\Customer\Model;
 
 use Folix\Customer\Api\CustomerStatsRepositoryInterface;
-use Folix\Customer\Model\ResourceModel\CustomerStats as CustomerStatsResource;
-use Magento\Framework\Exception\NoSuchEntityException;
+use Folix\Customer\Model\ResourceModel\CustomerDailyStats as CustomerDailyStatsResource;
 
 /**
  * Customer Stats Repository
@@ -17,48 +16,41 @@ use Magento\Framework\Exception\NoSuchEntityException;
 class CustomerStatsRepository implements CustomerStatsRepositoryInterface
 {
     /**
-     * @var CustomerStatsResource
+     * @var CustomerDailyStatsResource
      */
-    private $resource;
+    private $dailyStatsResource;
 
     /**
-     * @param CustomerStatsResource $resource
+     * @param CustomerDailyStatsResource $dailyStatsResource
      */
     public function __construct(
-        CustomerStatsResource $resource
+        CustomerDailyStatsResource $dailyStatsResource
     ) {
-        $this->resource = $resource;
+        $this->dailyStatsResource = $dailyStatsResource;
     }
 
     /**
      * @inheritDoc
      */
-    public function getByCustomerId(int $customerId): array
+    public function getCustomerTotalStats(int $customerId): array
     {
-        $stats = $this->resource->getStatsByCustomerId($customerId);
-        
-        if (empty($stats)) {
-            throw new NoSuchEntityException(
-                __('Customer stats for customer ID "%1" does not exist.', $customerId)
-            );
-        }
-        
-        return $stats;
+        // 聚合所有天的数据
+        return $this->dailyStatsResource->getAggregatedStats($customerId);
     }
 
     /**
      * @inheritDoc
      */
-    public function save(int $customerId, array $data): void
+    public function getCustomerStatsByRange(int $customerId, ?string $startDate = null, ?string $endDate = null): array
     {
-        $this->resource->saveStats($customerId, $data);
+        return $this->dailyStatsResource->getAggregatedStats($customerId, $startDate, $endDate);
     }
 
     /**
      * @inheritDoc
      */
-    public function recalculate(int $customerId): array
+    public function recalculateDailyStats(int $customerId, string $statDate): array
     {
-        return $this->resource->recalculateStats($customerId);
+        return $this->dailyStatsResource->recalculateDailyStats($customerId, $statDate);
     }
 }

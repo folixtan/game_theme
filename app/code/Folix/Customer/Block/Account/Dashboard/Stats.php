@@ -9,7 +9,7 @@ use Folix\Customer\Api\CustomerStatsRepositoryInterface;
 use Magento\Customer\Helper\Session\CurrentCustomer;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
-use Magento\Framework\Exception\NoSuchEntityException;
+use Psr\Log\LoggerInterface;
 
 /**
  * Dashboard Stats Block
@@ -32,6 +32,11 @@ class Stats extends Template
     private $currentCustomer;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @var array|null
      */
     private $cachedStats = null;
@@ -42,16 +47,19 @@ class Stats extends Template
      * @param Context $context
      * @param CurrentCustomer $currentCustomer
      * @param CustomerStatsRepositoryInterface $customerStatsRepository
+     * @param LoggerInterface $logger
      * @param array $data
      */
     public function __construct(
         Context $context,
         CurrentCustomer $currentCustomer,
         CustomerStatsRepositoryInterface $customerStatsRepository,
+        LoggerInterface $logger,
         array $data = []
     ) {
         $this->currentCustomer = $currentCustomer;
         $this->customerStatsRepository = $customerStatsRepository;
+        $this->logger = $logger;
         parent::__construct($context, $data);
     }
 
@@ -65,14 +73,22 @@ class Stats extends Template
         if ($this->cachedStats === null) {
             try {
                 $customerId = $this->currentCustomer->getCustomerId();
-                $stats = $this->customerStatsRepository->getByCustomerId($customerId);
+                
+                // 获取累计统计数据（从开始到现在）
+                $stats = $this->customerStatsRepository->getCustomerTotalStats($customerId);
+                
                 $this->cachedStats = [
-                    'total_orders' => (int)$stats->getTotalOrders(),
-                    'total_spent' => (float)$stats->getTotalSpent(),
-                    'active_keys' => (int)$stats->getActiveKeysCount()
+                    'total_orders' => (int)($stats['total_orders'] ?? 0),
+                    'total_spent' => (float)($stats['total_spent'] ?? 0.0),
+                    'active_keys' => (int)($stats['active_keys'] ?? 0)
                 ];
-            } catch (NoSuchEntityException $e) {
+            } catch (\Exception $e) {
                 // 如果统计表没有数据，返回默认值
+                $this->logger->error('Failed to get customer stats', [
+                    'customer_id' => $customerId ?? 'unknown',
+                    'error' => $e->getMessage()
+                ]);
+                
                 $this->cachedStats = [
                     'total_orders' => 0,
                     'total_spent' => 0.0,

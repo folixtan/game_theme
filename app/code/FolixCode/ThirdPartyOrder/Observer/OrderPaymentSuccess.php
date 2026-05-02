@@ -4,8 +4,10 @@ declare(strict_types=1);
 namespace FolixCode\ThirdPartyOrder\Observer;
 
 use FolixCode\ThirdPartyOrder\Model\MessageQueue\Publisher;
+use FolixCode\ThirdPartyOrder\Model\ResourceModel\ThirdPartyOrderDbResource as ThirdPartyOrderResource;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Sales\Model\Order;
 use Psr\Log\LoggerInterface;
 
@@ -19,13 +21,19 @@ use Psr\Log\LoggerInterface;
 class OrderPaymentSuccess implements ObserverInterface
 {
     private Publisher $publisher;
+    private ThirdPartyOrderResource $resource;
+    private TimezoneInterface $timezone;
     private LoggerInterface $logger;
 
     public function __construct(
         Publisher $publisher,
+        ThirdPartyOrderResource $resource,
+        TimezoneInterface $timezone,
         LoggerInterface $logger
     ) {
         $this->publisher = $publisher;
+        $this->resource = $resource;
+        $this->timezone = $timezone;
         $this->logger = $logger;
     }
 
@@ -50,22 +58,63 @@ class OrderPaymentSuccess implements ObserverInterface
                 return;
             }
 
-            $this->logger->info('Order payment success, publishing sync message', [
+            $this->logger->info('Order payment success, pre-initializing third party orders', [
                 'order_id' => $order->getId(),
                 'increment_id' => $order->getIncrementId()
             ]);
 
+           
             // 发布MQ消息,异步处理
             $this->publisher->publishOrderSync([
                 'order_id' => $order->getId(),
                 'increment_id' => $order->getIncrementId()
             ]);
 
+             // 【优化】预初始化所有 Items 到数据库
+            $this->preInitializeOrderItems($order);
+
+
         } catch (\Exception $e) {
             // 不阻塞主流程,只记录错误
             $this->logger->error('Failed to publish order sync message', [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
+            ]);
+        }
+    }
+
+    /**
+     * 预初始化订单的所有 Items 到第三方订单表
+     *
+     * @param Order $order
+     * @return void
+     */
+    private function preInitializeOrderItems(Order $order): void
+    {
+        $items = [];
+        $now = $this->timezone->date()->format('Y-m-d H:i:s');
+
+        foreach ($order->getItems() as $item) {
+            // 跳过虚拟商品或非需要同步的商品类型
+            // 这里可以根据实际业务需求添加过滤条件
+            
+            $items[] = [
+                'entity_id' => $item->getItemId(),
+                'magento_order_id' => $order->getId(),
+                'customer_id' => $order->getCustomerId(),
+                'increment_id' => $order->getIncrementId(),
+                'sync_status' => 'pending',  // 初始状态：待同步
+                'created_at' => $now,
+                'updated_at' => $now
+            ];
+        }
+
+        if (!empty($items)) {
+            $this->resource->batchInsert($items);
+            
+            $this->logger->info('Pre-initialized order items', [
+                'order_id' => $order->getId(),
+                'items_count' => count($items)
             ]);
         }
     }

@@ -82,6 +82,22 @@ class ThirdPartyOrderDb extends AbstractModel implements ThirdPartyOrderDbInterf
     /**
      * {@inheritdoc}
      */
+    public function getGoodsType(): ?int
+    {
+        return $this->getData(self::GOODS_TYPE);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setGoodsType(int $goodsType): ThirdPartyOrderDbInterface
+    {
+        return $this->setData(self::GOODS_TYPE, $goodsType);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getStatusCode(): ?int
     {
         return $this->getData(self::STATUS_CODE);

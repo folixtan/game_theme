@@ -5,7 +5,7 @@ namespace FolixCode\ThirdPartyOrder\Model;
 
 use FolixCode\BaseSyncService\Helper\Data as BaseSyncHelper;
 use FolixCode\ThirdPartyOrder\Api\ThirdPartyOrderManagementInterface;
-use FolixCode\ThirdPartyOrder\Model\ResourceModel\ThirdPartyOrder\ThirdPartyOrder as ThirdPartyOrderResource;
+use FolixCode\ThirdPartyOrder\Model\ResourceModel\ThirdPartyOrderDbResource as ThirdPartyOrderResource;
 use Magento\Framework\Exception\LocalizedException;
 use Psr\Log\LoggerInterface;
 
