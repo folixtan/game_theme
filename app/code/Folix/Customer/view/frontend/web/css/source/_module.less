@@ -1,0 +1,129 @@
+/**
+ * Game Keys List Styles
+ */
+
+// ============================================================================
+// 模块级自定义变量定义
+// 说明：仅定义 Magento 原生不存在的变量（如 border-radius）
+// ============================================================================
+
+// Border radius - Magento 原生没有定义，模块内自定义
+@folix-radius-sm: 4px;   // 小元素圆角（按钮、标签）
+@folix-radius-md: 8px;   // 中等圆角（卡片）
+
+.game-keys-list,
+.game-keys-history {
+    .card-value {
+        font-family: @font-family__monospace;
+        font-size: 13px;
+        padding: @indent__xs @indent__s;
+        background: @panel__background-color;
+        border-radius: @folix-radius-sm;
+        word-break: break-all;
+        display: inline-block;
+        margin-right: @indent__xs;
+        
+        &.masked {
+            letter-spacing: 2px;
+        }
+        
+        &.deadline-value {
+            &.expired {
+                color: @error__color;
+                
+                .expired-badge {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 4px;
+                    margin-left: @indent__xs;
+                    padding: 2px 6px;
+                    background: lighten(@error__color, 45%);
+                    color: @error__color;
+                    border-radius: @folix-radius-sm;
+                    font-size: 11px;
+                    font-weight: @font-weight__bold;
+                    
+                    svg {
+                        width: 12px;
+                        height: 12px;
+                    }
+                }
+            }
+        }
+    }
+    
+    .action.copy-btn,
+    .action.toggle-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: @indent__xs @indent__s;
+        border: 1px solid @border-color__base;
+        background: @color-white;
+        border-radius: @folix-radius-sm;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 12px;
+        margin-left: @indent__xs;
+        
+        &:hover:not(:disabled) {
+            background: @panel__background-color;
+            border-color: darken(@border-color__base, 10%);
+        }
+        
+        &:active:not(:disabled) {
+            transform: scale(0.98);
+        }
+        
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .copy-icon,
+        .eye-icon {
+            width: 14px;
+            height: 14px;
+        }
+        
+        span {
+            white-space: nowrap;
+        }
+    }
+    
+    .action.toggle-btn {
+        &.active {
+            background: lighten(@theme__color__primary-alt, 30%);
+            border-color: @theme__color__primary-alt;
+        }
+    }
+    
+    .text-muted {
+        color: @primary__color__lighter;
+        font-style: italic;
+    }
+}
+
+// 表格响应式优化
+@media (max-width: 767px) {
+    .game-keys-history {
+        .table-game-keys {
+            tbody tr td {
+                display: block;
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+                
+                &::before {
+                    content: attr(data-th);
+                    font-weight: @font-weight__semibold;
+                    position: absolute;
+                    left: @indent__s;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    text-align: left;
+                }
+            }
+        }
+    }
+}

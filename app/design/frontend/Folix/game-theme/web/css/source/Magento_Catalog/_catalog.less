@@ -18,6 +18,10 @@
      margin: 10px 15px;
 
 }
+   .sidebar.sidebar-additional{
+      display: none;
+   }
+
     //
     //  Override _listings.less line 68-75
     //  _____________________________________________
@@ -339,7 +343,13 @@
     //  PC端 hover 效果：最小高度、渐变阴影，去掉原生背景和边框
     //  _____________________________________________
 
+    .page-products .product-item-info {
+        width: 300px;
+    }
     .product-item-info {
+        img.product-image-photo {
+             border-radius: @folix-radius-md;
+        }
         .products-grid & {
             &:hover,
             &.active {

@@ -29,11 +29,11 @@
 //  _____________________________________________
 
 & when (@media-common = true) {
-
+  
     //
     //  Product Detail Wrapper - 60/40 布局
     //  _____________________________________________
-
+  .catalog-product-view {
     .product-detail-wrapper {
         display: flex;
         flex-direction: column;
@@ -1046,6 +1046,7 @@
             }
         }
     }
+ }
 }
 
 //
@@ -1057,7 +1058,7 @@
     //
     //  55/45 两列布局 - 图片区域更紧凑
     //  _____________________________________________
-    
+    .catalog-product-view {
     .product-detail-wrapper {
         flex-direction: row;
         gap: @indent__xl;
@@ -1169,4 +1170,5 @@
         margin-top: 0;
         width: 100%;
     }
+}
 }

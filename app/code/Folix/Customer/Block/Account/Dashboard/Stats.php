@@ -63,8 +63,7 @@ class Stats extends Template
         parent::__construct($context, $data);
     }
 
-    /**
-     * 获取统计数据（带缓存）
+    /*     * 获取统计数据（直接查询，不依赖统计表）
      *
      * @return array
      */
@@ -73,17 +72,40 @@ class Stats extends Template
         if ($this->cachedStats === null) {
             try {
                 $customerId = $this->currentCustomer->getCustomerId();
+                $resource = $this->_resource->getConnection();
                 
-                // 获取累计统计数据（从开始到现在）
-                $stats = $this->customerStatsRepository->getCustomerTotalStats($customerId);
+                // 1. 查询订单统计
+                $orderTable = $this->_resource->getTableName('sales_order');
+                $orderSelect = $resource->select()
+                    ->from($orderTable, [
+                        'total_orders' => 'COUNT(entity_id)',
+                        'total_spent' => 'SUM(grand_total)'
+                    ])
+                    ->where('customer_id = ?', $customerId)
+                    ->where('status IN (?)', ['complete', 'processing', 'pending']);
+                
+                $orderStats = $resource->fetchRow($orderSelect) ?: [
+                    'total_orders' => 0,
+                    'total_spent' => 0.0
+                ];
+                
+                // 2. 查询活跃卡密数量（goods_type = 4）
+                $thirdPartyOrderTable = $this->_resource->getTableName('folix_third_party_orders');
+                $keysSelect = $resource->select()
+                    ->from($thirdPartyOrderTable, ['active_keys' => 'COUNT(*)'])
+                    ->where('customer_id = ?', $customerId)
+                    ->where('goods_type = ?', 4)
+                    ->where('sync_status = ?', 'synced');
+                
+                $keysStats = $resource->fetchRow($keysSelect);
                 
                 $this->cachedStats = [
-                    'total_orders' => (int)($stats['total_orders'] ?? 0),
-                    'total_spent' => (float)($stats['total_spent'] ?? 0.0),
-                    'active_keys' => (int)($stats['active_keys'] ?? 0)
+                    'total_orders' => (int)($orderStats['total_orders'] ?? 0),
+                    'total_spent' => (float)($orderStats['total_spent'] ?? 0.0),
+                    'active_keys' => (int)($keysStats['active_keys'] ?? 0)
                 ];
             } catch (\Exception $e) {
-                // 如果统计表没有数据，返回默认值
+                // 如果查询失败，返回默认值
                 $this->logger->error('Failed to get customer stats', [
                     'customer_id' => $customerId ?? 'unknown',
                     'error' => $e->getMessage()

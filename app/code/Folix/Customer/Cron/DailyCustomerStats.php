@@ -147,8 +147,6 @@ class DailyCustomerStats
             ->where('status IN (?)', ['complete', 'processing', 'pending'])
             ->group(['customer_id', 'DATE(created_at)']);
         
-        $results = $connection->fetchAll($select);
-        
-        return $results ?: [];
+        return $connection->fetchAll($select) ?: [];
     }
 }

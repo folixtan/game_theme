@@ -22,7 +22,7 @@ class RecentOrders extends Template
     /**
      * 订单数量限制
      */
-    const ORDER_LIMIT = 2;
+    const ORDER_LIMIT = 4;
 
     /**
      * @var CollectionFactoryInterface

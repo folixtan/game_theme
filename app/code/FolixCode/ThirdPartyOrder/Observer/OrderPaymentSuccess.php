@@ -103,6 +103,7 @@ class OrderPaymentSuccess implements ObserverInterface
                 'magento_order_id' => $order->getId(),
                 'customer_id' => $order->getCustomerId(),
                 'increment_id' => $order->getIncrementId(),
+                'product_name' => $item->getName(),
                 'sync_status' => 'pending',  // 初始状态：待同步
                 'created_at' => $now,
                 'updated_at' => $now

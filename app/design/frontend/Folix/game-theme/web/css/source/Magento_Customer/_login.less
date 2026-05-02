@@ -1,0 +1,212 @@
+// /**
+//  * Folix Game Theme - Login Page Styles
+//  * 
+//  * 模块：Magento_Customer - Login/Register Page
+//  * 
+//  * 设计原则：
+//  * - 基于原生 Luma 主题样式进行扩展
+//  * - 只覆盖需要改变的样式
+//  * - 保持原生结构和变量使用
+//  */
+
+//
+//  公共样式（所有设备共享）
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    // 扩展原生登录容器
+    .login-container {
+        // 登录表单区块
+        .block-customer-login {
+            // 只需覆盖背景色和边框
+            background: @folix-bg-card;
+            border-radius: @folix-radius-xl;
+            padding: @indent__xl;
+            border: 1px solid @folix-border;
+            
+            .block-title {
+                // 覆盖标题样式
+                border-bottom: 2px solid @folix-secondary;
+                
+                strong {
+                    color: @folix-text-primary;
+                }
+            }
+            
+            .block-content {
+                .fieldset.login {
+                    .field.note {
+                        color: @folix-text-secondary;
+                    }
+                    
+                    .field {
+                        .label {
+                            color: @folix-text-primary;
+                        }
+                        
+                        .control {
+                            .input-text {
+                                background: @folix-input-bg;
+                                border-color: @folix-input-border;
+                                color: @folix-input-text;
+                                
+                                &:focus {
+                                    border-color: @folix-input-focus-border;
+                                }
+                                
+                                &::-webkit-input-placeholder {
+                                    color: @folix-input-placeholder;
+                                }
+                            }
+                        }
+                    }
+                    
+                    .field.choice {
+                        .label {
+                            color: @folix-text-secondary;
+                        }
+                    }
+                    
+                    .actions-toolbar {
+                        .secondary {
+                            .action.remind {
+                                color: @folix-text-secondary;
+                                
+                                &:hover {
+                                    color: @folix-secondary;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // 注册区块
+        .block-new-customer {
+            background: linear-gradient(135deg, @folix-primary 0%, darken(@folix-primary, 10%) 100%);
+            border-radius: @folix-radius-xl;
+            padding: @indent__xl;
+            color: @color-white;
+            position: relative;
+            overflow: hidden;
+            
+            &:before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                right: -50%;
+                width: 100%;
+                height: 100%;
+                background: radial-gradient(circle, @folix-opacity-white-10 0%, transparent 70%);
+                pointer-events: none;
+            }
+            
+            .block-title {
+                strong {
+                    color: @color-white;
+                }
+            }
+            
+            .block-content {
+                position: relative;
+                z-index: 1;
+                
+                p {
+                    color: @color-white;
+                    opacity: 0.95;
+                }
+                
+                .actions-toolbar {
+                    .primary {
+                        .action.create {
+                            background: @color-white;
+                            color: @folix-primary;
+                            border-radius: @folix-radius-full;
+                            font-weight: @font-weight__bold;
+                            box-shadow: @folix-shadow-lg;
+                            
+                            &:hover {
+                                transform: translateY(-2px);
+                                box-shadow: @folix-shadow-xl;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // 社交登录按钮
+    .block.social-login-authentication-channel {
+        margin-bottom: @indent__xl;
+        text-align: center;
+        
+        .social-btn-actions-toolbar {
+            .btn-google {
+            
+                background: @color-white;
+                border: 2px solid @folix-border;
+                border-radius: @folix-radius;
+                color: @folix-text-secondary;
+                font-weight: @font-weight__semibold;
+                text-decoration: none;
+                transition: @folix-transition;
+                
+                &:hover {
+                    border-color: @folix-secondary;
+                    box-shadow: 0 2px 10px @folix-opacity-gold-20;
+                    transform: translateY(-2px);
+                }
+                
+                .fa-google {
+                    font-size: 20px;
+                    color: #DB4437;
+                }
+            }
+        }
+    }
+}
+
+//
+//  移动端适配
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .login-container {
+        .block-customer-login,
+        .block-new-customer {
+            .actions-toolbar {
+                .primary,
+                .secondary {
+                    .action {
+                        width: 100%;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+        
+        .block-new-customer {
+            .actions-toolbar .primary .action.create {
+                width: 100%;
+            }
+        }
+    }
+}
+
+//
+//  桌面端适配 - 覆盖原生两栏布局宽度
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    // 只在登录页面覆盖原生 .abs-blocks-2columns 的宽度（从 48% 改为 40%）
+    .customer-account-login {
+        .login-container {
+            .block {
+                width: 40%;
+            }
+        }
+    }
+}

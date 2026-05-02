@@ -7,39 +7,68 @@
 <view xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/view.xsd">
     <media>
         <images module="Magento_Catalog">
-            <!-- Product list page images -->
+            <!-- Product list page images - 300x450 长方形标准 -->
             <image id="category_page_grid" type="small_image">
                 <width>300</width>
-                <height>300</height>
-            </image>
-            <image id="category_page_list" type="small_image">
-                <width>240</width>
-                <height>300</height>
-            </image>
-            <!-- Product page images - 450x450 正方形，匹配实际图片尺寸 -->
-            <image id="product_page_image_medium" type="image">
-                <width>450</width>
                 <height>450</height>
             </image>
+            <image id="category_page_list" type="small_image">
+                <width>300</width>
+                <height>450</height>
+            </image>
+            
+            <!-- Cart 购物车缩略图 - 保持原生的 150x150 正方形 -->
+            <image id="mini_cart_product_thumbnail" type="thumbnail">
+                <width>150</width>
+                <height>150</height>
+            </image>
+            <image id="cart_page_product_thumbnail" type="small_image">
+                <width>150</width>
+                <height>150</height>
+            </image>
+            
+            <!-- Product page images - 按比例放大 -->
+            <image id="product_page_image_medium" type="image">
+                <width>450</width>
+                <height>675</height>
+            </image>
             <image id="product_page_image_large" type="image">
-                <width>700</width>
-                <height>700</height>
+                <width>600</width>
+                <height>900</height>
             </image>
             <image id="product_page_image_small" type="thumbnail">
                 <width>60</width>
-                <height>60</height>
+                <height>90</height>
             </image>
             <image id="product_page_main_image" type="image">
                 <width>450</width>
-                <height>450</height>
+                <height>675</height>
             </image>
             <image id="product_page_main_image_default" type="image">
                 <width>450</width>
-                <height>450</height>
+                <height>675</height>
             </image>
             <image id="product_page_more_views" type="thumbnail">
                 <width>60</width>
-                <height>60</height>
+                <height>90</height>
+            </image>
+            
+            <!-- 其他常用图片 - 保持原生配置 -->
+            <image id="product_comparison_list" type="small_image">
+                <width>140</width>
+                <height>140</height>
+            </image>
+            <image id="wishlist_sidebar_block" type="thumbnail">
+                <width>75</width>
+                <height>90</height>
+            </image>
+            <image id="wishlist_small_image" type="small_image">
+                <width>113</width>
+                <height>113</height>
+            </image>
+            <image id="wishlist_thumbnail" type="small_image">
+                <width>240</width>
+                <height>300</height>
             </image>
         </images>
     </media>

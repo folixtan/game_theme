@@ -1,0 +1,200 @@
+// /**
+//  * Folix Game Theme - Customer Registration Page Styles
+//  * 
+//  * 模块：Magento_Customer - Create Account Page
+//  * 
+//  * 设计原则：
+//  * - 基于原生 Luma 主题样式进行扩展
+//  * - 只覆盖需要改变的样式
+//  * - 保持原生结构和变量使用
+//  * - 移动优先设计
+//  */
+
+//
+//  公共样式（所有设备共享）
+//  _____________________________________________
+
+& when (@media-common = true) {
+
+    // 以 .customer-account-create 为根容器
+    .customer-account-create {
+        .page-title-wrapper {
+             text-align: center;
+        }
+        // 扩展原生注册表单
+        .form-create-account {
+            // 添加背景卡片
+            background: @folix-bg-card;
+            border-radius: @folix-radius-xl;
+            padding: @indent__xl;
+            border: 1px solid @folix-border;
+            max-width: 600px;
+            margin: 0 auto;
+            
+            .fieldset {
+                &.create.info,
+                &.create.account {
+                    // 图例样式
+                    .legend {
+                        border-bottom: 2px solid @folix-secondary;
+                        margin-bottom: @indent__l;
+                        padding-bottom: @indent__s;
+                        
+                        span {
+                            color: @folix-text-primary;
+                            font-size: @font-size__l;
+                            font-weight: @font-weight__semibold;
+                        }
+                    }
+                    
+                    // 字段标签
+                    .field {
+                        .label {
+                            color: @folix-text-primary;
+                            
+                            span {
+                                color: @folix-text-primary;
+                            }
+                        }
+                        
+                        // 输入框样式
+                        .control {
+                            .input-text {
+                                background: @folix-input-bg;
+                                border-color: @folix-input-border;
+                                color: @folix-input-text;
+                                
+                                &:focus {
+                                    border-color: @folix-input-focus-border;
+                                }
+                                
+                                &::-webkit-input-placeholder {
+                                    color: @folix-input-placeholder;
+                                }
+                            }
+                        }
+                    }
+                    
+                    // 复选框字段（Newsletter、Show Password等）
+                    .field.choice {
+                        margin-top: @indent__s;
+                        
+                        .label {
+                            color: @folix-text-secondary;
+                            
+                            span {
+                                color: @folix-text-secondary;
+                            }
+                        }
+                        
+                        .checkbox {
+                            margin-right: @indent__xs;
+                        }
+                    }
+                    
+                    // 密码强度指示器
+                    .password-strength-meter {
+                        background-color: @folix-input-bg;
+                        border-radius: @folix-radius-sm;
+                        padding: @indent__xs;
+                        margin-top: @indent__xs;
+                        
+                        #password-strength-meter-label {
+                            color: @folix-text-secondary;
+                        }
+                    }
+                }
+            }
+            
+            // 提交按钮区域
+            .actions-toolbar {
+                margin-top: @indent__xl;
+                
+                .primary {
+                    .action.submit {
+                        background: @folix-btn-primary-bg;
+                        border: none;
+                        color: @folix-btn-primary-text;
+                        font-weight: @font-weight__semibold;
+                        border-radius: @folix-radius-full;
+                        padding: 12px 32px;
+                        font-size: @font-size__s;
+                        transition: @folix-transition;
+                        box-shadow: @folix-btn-primary-shadow;
+                        cursor: pointer;
+                        
+                        &:hover,
+                        &:focus {
+                            background: @folix-btn-primary-hover-bg;
+                            color: @folix-btn-primary-text;
+                            transform: translateY(-2px);
+                            box-shadow: 0 0 30px @folix-opacity-gold-50;
+                        }
+                        
+                        &:active {
+                            transform: translateY(0);
+                            box-shadow: @folix-btn-primary-shadow;
+                        }
+                    }
+                }
+                
+                .secondary {
+                    .action.back {
+                        color: @folix-text-secondary;
+                        text-decoration: none;
+                        
+                        &:hover {
+                            color: @folix-secondary;
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  桌面端适配 - 覆盖原生两栏布局宽度
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    // 只在注册页面覆盖原生表单字段宽度
+    .customer-account-create {
+        .form-create-account {
+            .fieldset {
+                > .field {
+                    > .control {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//
+//  移动端适配
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .customer-account-create {
+        .form-create-account {
+            padding: @indent__l;
+            
+            .actions-toolbar {
+                .primary {
+                    .action.submit {
+                        width: 100%;
+                        text-align: center;
+                    }
+                }
+                
+                .secondary {
+                    margin-top: @indent__s;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

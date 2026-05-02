@@ -2,29 +2,64 @@
 /**
  * Folix Game Theme - Account Dashboard Active Keys
  *
- * 活跃卡密模板
+ * 活跃卡密模板 - 显示最新卡密，方便客户复制
  */
 
 /** @var \Folix\Customer\Block\Account\Dashboard\ActiveKeys $block */
 $keys = $block->getActiveKeys();
+
 ?>
 <?php if (!empty($keys)): ?>
 <div class="card card-active-keys">
     <div class="card-header">
         <h2 class="card-title">
-            <span class="card-title-icon">🔑</span>
+            <span class="card-title-icon"></span>
             <?= $block->escapeHtml(__('Active Game Keys')) ?>
         </h2>
-        <a href="#" class="card-action"><?= $block->escapeHtml(__('View All →')) ?></a>
+        <?php if (!empty($keys)): ?>
+        <a href="<?= $block->escapeUrl($block->getUrl('sales/order/history')) ?>" class="card-action">
+            <?= $block->escapeHtml(__('View All →')) ?>
+        </a>
+        <?php endif; ?>
     </div>
     <div class="card-content">
-        <div class="keys-preview">
+        <div class="keys-preview" data-mage-init='{"Folix_Customer/js/active-keys": {}}'>
             <?php foreach ($keys as $key): ?>
             <div class="key-item">
-                <div class="key-code"><?= $block->escapeHtml($key['key_code']) ?></div>
-                <div class="key-product"><?= $block->escapeHtml($key['product_name']) ?></div>
-                <div class="key-status <?= $block->escapeHtml($block->getKeyStatusClass($key)) ?>">
-                    ✓ <?= $block->escapeHtml($block->getKeyStatusLabel($key)) ?> - Expires <?= $block->escapeHtml($key['expires_at']) ?>
+                <!-- 卡号 -->
+                <div class="key-info">
+                    <div class="key-label"><?= $block->escapeHtml(__('Card No:')) ?></div>
+                    <div class="key-value key-code"><?= $block->escapeHtml($key['key_code']) ?></div>
+                    <button type="button" class="btn-copy" data-field="card_no">
+                        📋 <?= $block->escapeHtml(__('Copy')) ?>
+                    </button>
+                </div>
+                
+                <!-- 密码 (默认隐藏) -->
+                <?php if (!empty($key['card_pwd']) && $key['card_pwd'] !== 'N/A'): ?>
+                <div class="key-info">
+                    <div class="key-label"><?= $block->escapeHtml(__('Password:')) ?></div>
+                    <div class="key-value key-password-masked" data-masked="true">••••••••</div>
+                    <div class="key-value key-password-plain" style="display:none;"><?= $block->escapeHtml($key['card_pwd']) ?></div>
+                    <button type="button" class="btn-toggle">
+                        👁 <span class="toggle-text"><?= $block->escapeHtml(__('Show')) ?></span>
+                    </button>
+                    <button type="button" class="btn-copy btn-copy-pwd" data-field="card_pwd" disabled>
+                        📋 <?= $block->escapeHtml(__('Copy')) ?>
+                    </button>
+                </div>
+                <?php endif; ?>
+                
+                <!-- 状态和过期时间 -->
+                <div class="key-meta">
+                    <span class="key-status <?= $block->escapeHtml($block->getKeyStatusClass($key)) ?>">
+                        ✓ <?= $block->escapeHtml($block->getKeyStatusLabel($key)) ?>
+                    </span>
+                    <?php if ($key['expires_at'] !== 'N/A'): ?>
+                    <span class="key-expires">
+                        Expires: <?= $block->escapeHtml($key['expires_at']) ?>
+                    </span>
+                    <?php endif; ?>
                 </div>
             </div>
             <?php endforeach; ?>

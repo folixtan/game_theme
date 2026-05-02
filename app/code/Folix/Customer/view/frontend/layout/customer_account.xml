@@ -29,5 +29,19 @@
         <!-- 移除右侧附加侧边栏 -->
         <!-- ========================================== -->
         <referenceContainer name="sidebar.additional" remove="true"/>
+        
+        <!-- ========================================== -->
+        <!-- 在账户导航中添加游戏卡密链接 -->
+        <!-- ========================================== -->
+        <referenceBlock name="customer_account_navigation">
+            <block class="Magento\Customer\Block\Account\SortLinkInterface" 
+                   name="customer-account-navigation-game-keys-link">
+                <arguments>
+                    <argument name="path" xsi:type="string">folix/game_keys</argument>
+                    <argument name="label" xsi:type="string" translate="true">Game Keys</argument>
+                    <argument name="sortOrder" xsi:type="number">250</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
     </body>
 </page>

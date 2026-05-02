@@ -1,0 +1,112 @@
+<?php
+/**
+ * Copyright © Folix Game Theme. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+
+use Magento\Framework\Escaper;
+
+/** @var \Folix\Customer\Block\Account\GameKeys $block */
+/** @var Escaper $escaper */
+$gameKeys = $block->getGameKeys();
+?>
+
+<?php if ($gameKeys && count($gameKeys)) : ?>
+    <div class="table-wrapper game-keys-history" data-mage-init='{"Folix_Customer/js/card-info": {}}'>
+        <table class="data table table-game-keys history" id="my-game-keys-table">
+            <caption class="table-caption"><?= $escaper->escapeHtml(__('My Game Keys')) ?></caption>
+            <thead>
+                <tr>
+                    <th scope="col" class="col product"><?= $escaper->escapeHtml(__('Product')) ?></th>
+                    <th scope="col" class="col card-no"><?= $escaper->escapeHtml(__('Card Number')) ?></th>
+                    <th scope="col" class="col password"><?= $escaper->escapeHtml(__('Password')) ?></th>
+                    <th scope="col" class="col expires"><?= $escaper->escapeHtml(__('Expires')) ?></th>
+                    <th scope="col" class="col date"><?= $escaper->escapeHtml(__('Date')) ?></th>
+                    <th scope="col" class="col actions"><?= $escaper->escapeHtml(__('Action')) ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($gameKeys as $key) : ?>
+                    <?php 
+                    $isExpired = !empty($key->getCardDeadline()) && strtotime($key->getCardDeadline()) < time();
+                    ?>
+                    <tr data-entity-id="<?= $escaper->escapeHtmlAttr((string)$key->getId()) ?>">
+                        <td data-th="<?= $escaper->escapeHtml(__('Product')) ?>" class="col product">
+                            <?= $escaper->escapeHtml($key->getProductName() ?? __('Game Key Product')) ?>
+                        </td>
+                        
+                        <td data-th="<?= $escaper->escapeHtml(__('Card Number')) ?>" class="col card-no">
+                            <span class="card-value card-no"><?= $escaper->escapeHtml($key->getCardNo()) ?></span>
+                            <button type="button" class="action copy-btn" data-field="card_no" title="<?= $escaper->escapeHtmlAttr(__('Copy to clipboard')) ?>">
+                                <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                <span><?= $escaper->escapeHtml(__('Copy')) ?></span>
+                            </button>
+                        </td>
+                        
+                        <td data-th="<?= $escaper->escapeHtml(__('Password')) ?>" class="col password">
+                            <?php if (!empty($key->getCardPwd()) && $key->getCardPwd() !== 'N/A'): ?>
+                                <span class="card-value masked" data-masked="true">••••••••••••</span>
+                                <span class="card-value plain" style="display:none;"><?= $escaper->escapeHtml($key->getCardPwd()) ?></span>
+                                <button type="button" class="action toggle-btn" data-action="toggle" title="<?= $escaper->escapeHtmlAttr(__('Show/Hide Password')) ?>">
+                                    <svg class="eye-icon eye-open" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <svg class="eye-icon eye-closed" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                                    </svg>
+                                    <span class="toggle-text"><?= $escaper->escapeHtml(__('Show')) ?></span>
+                                </button>
+                                <button type="button" class="action copy-btn copy-pwd-btn" data-field="card_pwd" title="<?= $escaper->escapeHtmlAttr(__('Copy to clipboard')) ?>" disabled>
+                                    <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                    <span><?= $escaper->escapeHtml(__('Copy')) ?></span>
+                                </button>
+                            <?php else: ?>
+                                <span class="text-muted">N/A</span>
+                            <?php endif; ?>
+                        </td>
+                        
+                        <td data-th="<?= $escaper->escapeHtml(__('Expires')) ?>" class="col expires">
+                            <span class="deadline-value <?= $isExpired ? 'expired' : '' ?>">
+                                <?= $escaper->escapeHtml($key->getCardDeadline() ?? 'N/A') ?>
+                                <?php if ($isExpired): ?>
+                                    <span class="expired-badge">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                        </svg>
+                                        <?= $escaper->escapeHtml(__('Expired')) ?>
+                                    </span>
+                                <?php endif; ?>
+                            </span>
+                        </td>
+                        
+                        <td data-th="<?= $escaper->escapeHtml(__('Date')) ?>" class="col date">
+                            <?= $escaper->escapeHtml($block->formatDate($key->getCreatedAt())) ?>
+                        </td>
+                        
+                        <td data-th="<?= $escaper->escapeHtml(__('Actions')) ?>" class="col actions">
+                            <a href="<?= $escaper->escapeUrl($block->getOrderViewUrl($key->getMagentoOrderId())) ?>" class="action view">
+                                <span><?= $escaper->escapeHtml(__('View Order')) ?></span>
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+    
+    <?php if ($block->getPagerHtml()) : ?>
+        <div class="game-keys-toolbar toolbar bottom"><?= /* @noEscape */ $block->getPagerHtml() ?></div>
+    <?php endif ?>
+<?php else : ?>
+    <div class="message info empty"><span><?= $escaper->escapeHtml($block->getEmptyMessage()) ?></span></div>
+<?php endif ?>
