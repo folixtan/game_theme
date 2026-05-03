@@ -18,7 +18,7 @@
     // ============================================================================
     //  PAGE HEADER - 页面头部样式覆盖
     // ============================================================================
-
+    
     .page-header {
         // 覆盖深色渐变背景为浅色
         background: @folix-gradient-header-page;
@@ -94,6 +94,12 @@
 
                     // 用户头像按钮
                     .customer-welcome.folix-customer-welcome {
+                        &+li.authorization-link {
+                             display: none;
+                             &+li {
+                                 display: none;
+                             }
+                        }
                         .folix-avar {
                             background: @folix-gradient-primary;  // 蓝紫渐变
                             color: @folix-text-on-dark;  // 白色

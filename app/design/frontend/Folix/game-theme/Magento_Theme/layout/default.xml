@@ -80,7 +80,7 @@
            
        
         <move element="logo" destination="folix.header.nav" before="-" />
-        <move element="header.links" destination="folix.top.right" after="-" />        <!-- Body Class -->
+             <!-- Body Class -->
         <move element="minicart"  destination="folix.header.nav" after="-" />
 
         <referenceBlock name="footer_links">

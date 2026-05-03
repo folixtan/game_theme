@@ -8,13 +8,7 @@
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <!-- 更新 Authorization Link 模板 -->
-        <referenceBlock name="authorization-link" template="Magento_Customer::account/link/authorization.phtml"/>
-
-        <!-- 更新 Customer Block 模板 -->
-        <referenceBlock name="customer" template="Magento_Customer::account/customer.phtml"/>
-
-        <!-- 更新 Authentication Popup 模板 -->
-        <referenceBlock name="authentication-popup" template="Magento_Customer::account/authentication-popup.phtml"/>
+      
+         <move element="header.links" destination="folix.top.right" after="-" />  
     </body>
 </page>
