@@ -25,8 +25,8 @@ class ChargeType extends AbstractSource
     {
         if ($this->_options === null) {
             $this->_options = [
-                ['label' => __('直充'), 'value' => self::DIRECT],
-                ['label' => __('卡密'), 'value' => self::CARD]
+                ['label' => __('Direct Charging'), 'value' => self::DIRECT],
+                ['label' => __('Card & key'), 'value' => self::CARD]
             ];
         }
 
