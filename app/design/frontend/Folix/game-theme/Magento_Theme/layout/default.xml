@@ -34,7 +34,7 @@
             <container name="folix.top.center" label="Folix Top Center" htmlTag="div" htmlClass="header-links-center" after="folix.top.left" />
             
             <!-- 右侧容器 -->
-            <container name="folix.top.right" label="Folix Top Right" htmlTag="div" htmlClass="header-links-right" after="folix.top.center" />
+            <container name="folix.top.right" label="Folix Top Right" htmlTag="div" htmlClass="header-links-right" after="folix.top.center"  />
         </referenceContainer>
         
         <!-- 移除不需要的原生元素 -->
