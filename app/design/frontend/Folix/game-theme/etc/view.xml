@@ -9,7 +9,7 @@
         <images module="Magento_Catalog">
             <!-- Product list page images - 300x450 长方形标准 -->
             <image id="category_page_grid" type="small_image">
-                <width>300</width>
+                <width>400</width>
                 <height>450</height>
             </image>
             <image id="category_page_list" type="small_image">
