@@ -5,9 +5,11 @@
  */
 
 /** @var Magento\Customer\Block\Account\Customer $block */
+
 ?>
 <?php if ($block->customerLoggedIn()) : ?>
     <li class="customer-welcome folix-customer-welcome">
+         
         <span class="customer-name"
               role="link"
               tabindex="0"
@@ -21,13 +23,37 @@
                           <path d="M12 14C8.5 14 5 15.5 5 18V19C5 19.6 5.4 20 6 20H18C18.6 20 19 19.6 19 19V18C19 15.5 15.5 14 12 14Z" fill="#7C3AED"/>
                     </svg>
            </span>
-            <button style="display: none;" type="button"
-                    class="action switch"
+            <button  style="display: none;" type="button"
+                    class="action switch folix-customer-btn"
                     tabindex="-1"
                     data-action="customer-menu-toggle">
                 <span><?= $block->escapeHtml(__('Change')) ?></span>
+               
             </button>
         </span>
+        <!-- 用户下拉菜单 - 使用原生 dropdown -->
+        <div class="customer-menu folix-user-dropdown" data-target="dropdown">
+            <div class="user-dropdown-trigger">
+                <div class="avatar"><?= mb_strtoupper(mb_substr($block->escapeHtml($block->getCustomerName()), 0, 2)) ?></div>
+                <span class="username"><?= $block->escapeHtml($block->getCustomerName()) ?></span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="user-dropdown-menu">
+                <a href="<?= $block->escapeUrl($block->getUrl('customer/account')) ?>">
+                    <span><?= $block->escapeHtml(__('My Account')) ?></span>
+                </a>
+                <a href="<?= $block->escapeUrl($block->getUrl('sales/order/history')) ?>">
+                    <span><?= $block->escapeHtml(__('My Orders')) ?></span>
+                </a>
+                <a href="<?= $block->escapeUrl($block->getUrl('wishlist')) ?>">
+                    <span><?= $block->escapeHtml(__('My Wishlist')) ?></span>
+                </a>
+                <div class="divider"></div>
+                <a href="<?= $block->escapeUrl($block->getUrl('customer/account/logout')) ?>" class="logout">
+                    <span><?= $block->escapeHtml(__('Sign Out')) ?></span>
+                </a>
+            </div>
+        </div>
         <script type="text/x-magento-init">
         {
             "*": {
@@ -41,15 +67,5 @@
             }
         }
         </script>
-        <?php if ($block->getChildHtml()) :?>
-            <div class="customer-menu folix-user-dropdown" data-target="dropdown">
-                 <div class="user-dropdown-trigger">
-                    <div class="avatar"><?= mb_strtoupper(mb_substr($block->escapeHtml($block->getCustomerName()), 0, 2)) ?></div>
-                    <span class="username"><?= $block->escapeHtml($block->getCustomerName()) ?></span>
-                    <span class="arrow">▼</span>
-              </div>
-                <?= $block->getChildHtml() ?>
-            </div>
-        <?php endif; ?>
     </li>
 <?php endif; ?>

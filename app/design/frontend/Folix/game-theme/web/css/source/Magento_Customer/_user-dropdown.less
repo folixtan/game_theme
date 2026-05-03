@@ -213,6 +213,16 @@
     .customer-welcome.folix-customer-welcome.active {
         .folix-user-dropdown {
             display: block;
+            ul.user-dropdown-menu {
+                position: relative;
+                z-index: 0;
+                &::after {
+                    display: none;
+                }
+                &::before { 
+                    display: none;
+                }
+            }
         }
 
         .user-dropdown-trigger {

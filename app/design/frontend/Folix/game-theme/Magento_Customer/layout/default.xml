@@ -7,8 +7,12 @@
  */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <body>
-      
+    <body>  
+        <referenceBlock name="top.links">
+            <arguments>
+               <argument name="css_class" xsi:type="string">user-dropdown-menu</argument>
+            </arguments>
+        </referenceBlock>
          <move element="header.links" destination="folix.top.right" after="-" />  
     </body>
 </page>

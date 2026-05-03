@@ -71,7 +71,10 @@
                 </arguments>
             </block>
              <!--mobile account-->
-            <referenceBlock class="Magento\Customer\Block\Account\Customer" name="store.links" group="navigation-sections" template="Magento_Customer::account/mobile-account-container.phtml" />
+            <referenceBlock class="Magento\Customer\Block\Account\Customer" name="store.links" group="navigation-sections" template="Magento_Customer::account/mobile-account-container.phtml">
+                <block class="Magento\Customer\Block\Account\AuthorizationLink" name="authorization-link-mobile"
+                   template="Magento_Customer::account/link/mobile-authorization.phtml"/>
+            </referenceBlock> 
             
          </referenceBlock>
          

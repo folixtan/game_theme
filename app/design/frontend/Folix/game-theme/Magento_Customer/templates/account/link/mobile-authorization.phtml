@@ -1,0 +1,22 @@
+<?php
+/**
+ * Copyright © Magento, Inc. All rights reserved.
+ * See COPYING.txt for license details
+ * @var \Magento\Customer\Block\Account\AuthorizationLink $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$dataPostParam = '';
+if ($block->isLoggedIn()) {
+    $dataPostParam = sprintf(" data-post='%s'", $block->getPostParams());
+}
+?>
+
+<?php if($block->isLoggedIn()):?>
+ <a <?= /* @noEscape */ $block->getLinkAttributes() ?>
+       <?= /* @noEscape */ $dataPostParam ?>
+       
+       class="logout">
+                    <span><?= $escaper->escapeHtml(__('Sign Out')) ?></span>
+</a>
+
+<?php endif;?>

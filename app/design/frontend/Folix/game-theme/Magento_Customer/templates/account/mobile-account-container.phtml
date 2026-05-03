@@ -25,9 +25,7 @@
                     <span><?= $escaper->escapeHtml(__('My Wishlist')) ?></span>
                 </a>
                 <div class="divider"></div>
-                <a href="<?= $escaper->escapeUrl($block->getUrl('customer/account/logout')) ?>" class="logout">
-                    <span><?= $escaper->escapeHtml(__('Sign Out')) ?></span>
-                </a>
+                <?php echo $block->getChildHtml('authorization-link-mobile');?>
             </div>
         </div>
     </div>
