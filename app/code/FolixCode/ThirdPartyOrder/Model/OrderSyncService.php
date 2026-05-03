@@ -103,7 +103,7 @@ class OrderSyncService
                   'user_order_id' => (string)$item->getItemId(),
                   'timestamp' => $this->timezone->date()->getTimestamp(),
                   'product_id' => $product,
-                  'buy_num' => (string)$item->getQtyOrdered()
+                  'buy_num' => (int)$item->getQtyOrdered()
               ];
               
               // 获取商品属性
@@ -134,7 +134,7 @@ class OrderSyncService
               $response['increment_id'] = $order->getIncrementId();
               $response['customer_id'] = $order->getCustomerId();
               $response['email'] = $order->getCustomerEmail();
-              $response['customer_name'] = $order->getCustomerName();
+              $response['customer_name'] = $order->getCustomerName() ?? sprintf('%s %s', $order->getCustomerFirstname(), $order->getCustomerLastname());
           
               // 处理响应并保存（增量更新）
               $this->handleCreateOrderResponse($item, $response);

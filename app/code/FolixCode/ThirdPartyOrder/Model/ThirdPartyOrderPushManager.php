@@ -37,7 +37,7 @@ class ThirdPartyOrderPushManager extends DataObject implements ThirdPartyOrderIn
     /**
      * {@inheritdoc}
      */
-    public function setBuyNum(string $buyNum): ThirdPartyOrderInterface
+    public function setBuyNum(int $buyNum): ThirdPartyOrderInterface
     {
         return $this->setData(self::BUY_NUM, $buyNum);
     }

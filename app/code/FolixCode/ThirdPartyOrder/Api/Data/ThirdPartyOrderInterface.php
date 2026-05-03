@@ -59,7 +59,7 @@ interface ThirdPartyOrderInterface
      * @param string $buyNum
      * @return $this
      */
-    public function setBuyNum(string $buyNum): self;
+    public function setBuyNum(int $buyNum): self;
 
     /**
      * 获取充值账号
