@@ -146,7 +146,7 @@ class OrderSyncService
                 'error' => $e->getMessage()
             ]);
              // 更新同步失败状态
-            $this->saveFailedStatus($itemId, $e->getMessage());
+            $this->saveFailedStatus((int)$itemId, $e->getMessage());
         }
         }
 
