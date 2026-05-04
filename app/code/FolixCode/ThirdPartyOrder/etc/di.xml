@@ -44,6 +44,7 @@
     <type name="FolixCode\ThirdPartyOrder\Model\OrderSyncService">
         <arguments>
             <argument name="apiClient" xsi:type="object">ThirdPartyOrderApiClient</argument>
+            <argument name="logger" xsi:type="object">FolixCodeThirdPartyOrderLogger</argument>
         </arguments>
     </type>
 

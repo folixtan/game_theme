@@ -5,7 +5,8 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Serialize\Serializer\Json;
 use Psr\Log\LoggerInterface;
-use  Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Observer: 在添加到购物车时收集充值模板数据
@@ -60,92 +61,62 @@ class AddChargeTemplateToCart implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        try {
-            /** @var \Magento\Quote\Model\Quote\Item $quoteItem */
-            $quoteItem = $observer->getQuoteItem();
-         
-            /** @var \Magento\Catalog\Model\Product $product */
-            $product = $observer->getProduct();
-            
-            // 检查是否为直充产品（game_charge_type = 4）
-            $chargeType = $product->getData(\FolixCode\ProductSync\Setup\Patch\Data\AddProductAttributes::ATTRIBUTE_CODE_CHARGE_TYPE);
-            
-            if ($chargeType != 4) {
-                // 不是直充产品，不需要处理充值模板
-                return;
-            }
-            
-            /** @var \Magento\Framework\App\RequestInterface $request */
-            $request = \Magento\Framework\App\ObjectManager::getInstance()->get(RequestInterface::class);
-            
-            // 从 POST 请求中获取充值模板数据
-            // 注意：直接从请求参数获取，不是从 $buyRequest
-            $chargeTemplateData = $request->getParam('charge_template');
-            
-            // 调试日志：记录所有 POST 数据
-            $this->logger->info('=== Charge Template Debug ===', [
-                'all_post_params' => $request->getParams(),
-                'charge_template_raw' => $chargeTemplateData,
-                'charge_template_type' => gettype($chargeTemplateData),
-                'product_id' => $product->getId(),
-                'game_charge_type' => $product->getData('game_charge_type')
-            ]);
-            
-            // 如果没有充值数据，直接返回，不影响正常流程
-            if (!$chargeTemplateData || !is_array($chargeTemplateData)) {
-                return;
-            }
-            
-            // 验证产品是否有 charge_template 配置
-            $productChargeTemplate = $product->getData('charge_template');
-            if (!$productChargeTemplate) {
-                return;
-            }
-            
-            // 验证必填字段
-            $validationResult = $this->validateChargeTemplate($product, $chargeTemplateData);
-            if ($validationResult !== true) {
-                // 不要抛出异常，改为记录日志并继续
-                // 这样不会中断购物车流程
-                $this->logger->warning('Charge template validation failed: ' . $validationResult, [
-                    'product_id' => $product->getId()
-                ]);
-                return;
-            }
-            
-            // 创建 ChargeTemplateData 对象
-            /** @var \Folix\ChargeTemplate\Api\Data\ChargeTemplateDataInterface $chargeTemplateObj */
-            $chargeTemplateObj = $this->chargeTemplateDataFactory->create();
-            
-            // 设置充值数据到接口对象
-            $this->setChargeDataToInterface($chargeTemplateObj, $chargeTemplateData);
-            
-            // 保存到 extension_attributes
-            $extensionAttributes = $quoteItem->getExtensionAttributes();
-            if ($extensionAttributes) {
-                $extensionAttributes->setChargeTemplateData($chargeTemplateObj);
-                $quoteItem->setExtensionAttributes($extensionAttributes);
-            }
-            
-            // 同时保存到 additional_data（用于 Order Item 自动流转）
-            // 将接口对象序列化为 JSON 存储
-            $chargeTemplateJson = json_encode($chargeTemplateData);
-            $quoteItem->setAdditionalData($chargeTemplateJson);
-            
-            $this->logger->info('Charge template data saved to quote item', [
-                'quote_item_id' => $quoteItem->getId() ?: 'new',
-                'product_id' => $product->getId(),
-                'charge_type' => $chargeType,
-                'charge_data' => $chargeTemplateData
-            ]);
-            
-        } catch (\Exception $e) {
-            // 记录错误但不要让 Observer 失败影响购物车流程
-            $this->logger->error('Failed to process charge template: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
-            ]);
-            // 不重新抛出异常，允许购物车继续正常流程
+        /** @var \Magento\Quote\Model\Quote\Item $quoteItem */
+        $quoteItem = $observer->getQuoteItem();
+     
+        /** @var \Magento\Catalog\Model\Product $product */
+        $product = $observer->getProduct();
+        
+        // 检查是否为直充产品（game_charge_type = 4）
+        $chargeType = $product->getData(\FolixCode\ProductSync\Setup\Patch\Data\AddProductAttributes::ATTRIBUTE_CODE_CHARGE_TYPE);
+        
+        if ($chargeType != 4) {
+            // 不是直充产品，不需要处理充值模板
+            return;
         }
+        
+        /** @var \Magento\Framework\App\RequestInterface $request */
+        $request = \Magento\Framework\App\ObjectManager::getInstance()->get(RequestInterface::class);
+        
+        // 从 POST 请求中获取充值模板数据
+        $chargeTemplateData = $request->getParam('charge_template');
+        
+        // 如果没有充值数据，直接返回，不影响正常流程
+        if (!$chargeTemplateData || !is_array($chargeTemplateData)) {
+            return;
+        }
+        
+        // 验证产品是否有 charge_template 配置
+        $productChargeTemplate = $product->getData('charge_template');
+        if (!$productChargeTemplate) {
+            return;
+        }
+        
+        // 验证必填字段和特殊字符
+        $validationResult = $this->validateChargeTemplate($product, $chargeTemplateData);
+        if ($validationResult !== true) {
+            // 抛出异常，中断购物车流程并提示用户修正
+            throw new LocalizedException(__($validationResult));
+        }
+        
+        // 创建 ChargeTemplateData 对象
+        /** @var \Folix\ChargeTemplate\Api\Data\ChargeTemplateDataInterface $chargeTemplateObj */
+        $chargeTemplateObj = $this->chargeTemplateDataFactory->create();
+        
+        // 设置充值数据到接口对象
+        $this->setChargeDataToInterface($chargeTemplateObj, $chargeTemplateData);
+        
+        // 保存到 extension_attributes
+        $extensionAttributes = $quoteItem->getExtensionAttributes();
+        if ($extensionAttributes) {
+            $extensionAttributes->setChargeTemplateData($chargeTemplateObj);
+            $quoteItem->setExtensionAttributes($extensionAttributes);
+        }
+        
+        // 同时保存到 additional_data（用于 Order Item 自动流转）
+        // 将接口对象序列化为 JSON 存储
+        $chargeTemplateJson = json_encode($chargeTemplateData);
+        $quoteItem->setAdditionalData($chargeTemplateJson);
     }
 
     /**
@@ -162,28 +133,82 @@ class AddChargeTemplateToCart implements ObserverInterface
             return true; // 产品没有充值模板配置，跳过验证
         }
         
-        try {
-            $template = $this->jsonSerializer->unserialize($chargeTemplateJson);
-            if (!is_array($template)) {
-                return true;
+        $template = $this->jsonSerializer->unserialize($chargeTemplateJson);
+        if (!is_array($template)) {
+            return true;
+        }
+        
+        // 验证必填字段和特殊字符
+        foreach ($template as $field) {
+            $fieldName = $field['charge_field_name'] ?? '';
+            $alias = $field['alias'] ?? 'Field';
+            
+            if (!isset($chargeData[$fieldName]) || empty(trim($chargeData[$fieldName]))) {
+                return __('%1 is required', $alias);
             }
             
-            // 验证必填字段
-            foreach ($template as $field) {
-                $fieldName = $field['charge_field_name'] ?? '';
-                $alias = $field['alias'] ?? 'Field';
-                
-                if (!isset($chargeData[$fieldName]) || empty(trim($chargeData[$fieldName]))) {
-                    return __('%1 is required', $alias);
+            // 验证特殊字符（仅对字符串类型的字段）
+            $fieldValue = trim($chargeData[$fieldName]);
+            if (is_string($fieldValue) && !empty($fieldValue)) {
+                $validationError = $this->validateGameAccountFormat($fieldValue, $alias);
+                if ($validationError !== true) {
+                    return $validationError;
                 }
             }
-            
-            return true;
-            
-        } catch (\Exception $e) {
-            $this->logger->error('Failed to validate charge template: ' . $e->getMessage());
-            return __('Invalid charge template configuration');
         }
+        
+        return true;
+    }
+
+    /**
+     * 验证游戏账号格式（检查特殊字符和SQL注入风险）
+     * 
+     * @param string $value 要验证的值
+     * @param string $fieldName 字段名称（用于错误提示）
+     * @return bool|string 返回 true 表示验证通过，返回字符串表示错误信息
+     */
+    protected function validateGameAccountFormat(string $value, string $fieldName)
+    {
+        // 定义不允许的特殊字符（常见SQL注入和危险字符）
+        $dangerousChars = [
+            "'",      // 单引号 - SQL注入
+            '"',      // 双引号 - SQL注入
+            ';',      // 分号 - SQL语句分隔
+            '--',     // SQL注释
+            '/*',     // SQL块注释开始
+            '*/',     // SQL块注释结束
+            'xp_',    // SQL扩展存储过程
+            'exec(',  // SQL执行命令
+            'union',  // SQL联合查询
+            'select', // SQL查询
+            'insert', // SQL插入
+            'update', // SQL更新
+            'delete', // SQL删除
+            'drop',   // SQL删除表
+            'alter',  // SQL修改表
+            '<script>', // XSS攻击
+            '</script>', // XSS攻击
+            'javascript:', // XSS攻击
+            'onerror=', // XSS事件
+            'onclick=', // XSS事件
+        ];
+        
+        // 检查是否包含危险字符或关键词（不区分大小写）
+        $lowerValue = strtolower($value);
+        foreach ($dangerousChars as $dangerousChar) {
+            if (strpos($lowerValue, strtolower($dangerousChar)) !== false) {
+                return __('%1 contains invalid characters or keywords. Please remove special symbols like quotes, semicolons, and SQL commands.', $fieldName);
+            }
+        }
+        
+        // 检查是否包含其他常见的危险特殊字符
+        // 允许的字符：字母、数字、下划线(_)、连字符(-)、点号(.)、@符号(邮箱)、中文字符、空格
+        // 禁止的字符：! # $ % ^ & * ( ) + = [ ] { } | \ : " < > , ? / ` ~ 等
+        if (preg_match('/[!#$%^&*()+\=\[\]{}|\\:"<>?,\/`~]/', $value)) {
+            return __('%1 contains special characters that are not allowed. Allowed: letters, numbers, underscores (_), hyphens (-), dots (.), @ symbol, and spaces.', $fieldName);
+        }
+        
+        return true;
     }
 
     /**

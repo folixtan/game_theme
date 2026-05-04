@@ -59,40 +59,42 @@ class SenderBuilder
     /**
      * Prepare and send email message
      *
-     * @param string $templateType Template type (configured in system.xml)
      * @param string $customerEmail Customer email address
      * @param string $customerName Customer name
      * @return void
      */
     public function send(
-        string $templateType,
         string $customerEmail,
         string $customerName
     ): void {
-        try { 
-            $this->configureEmailTemplate($templateType);
+        try {
+            // Check if email is enabled
+            if (!$this->emailConfig->isEnabled()) {
+                return;
+            }
 
-        $this->transportBuilder->addTo($customerEmail, $customerName);
+            $this->configureEmailTemplate();
 
-        $transport = $this->transportBuilder->getTransport();
-        $transport->sendMessage();
+            $this->transportBuilder->addTo($customerEmail, $customerName);
+
+            $transport = $this->transportBuilder->getTransport();
+            $transport->sendMessage();
         } catch (\Exception $e) {
-           $this->logger->error('card Failed to send email: ' . $e->getMessage());
+           $this->logger->error('Failed to send email: ' . $e->getMessage());
         }
-        
+        $this->templateContainer->_resetState();
     }
 
     /**
      * Configure email template
      *
-     * @param string $templateType
      * @return void
      */
-    protected function configureEmailTemplate(string $templateType): void
+    protected function configureEmailTemplate(): void
     {
         // Get template ID and identity from config
-        $templateId = $this->emailConfig->getTemplateId($templateType);
-        $identity = $this->emailConfig->getIdentity($templateType);
+        $templateId = $this->emailConfig->getTemplateId();
+        $identity = $this->emailConfig->getIdentity();
         $store = $this->emailConfig->getStore();
 
         $this->transportBuilder->setTemplateIdentifier($templateId);

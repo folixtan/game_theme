@@ -3,42 +3,32 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     
     <system>
-        <section id="portgame_email" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>PortGame Email Settings</label>
-            <tab>general</tab>
+        <section id="portgame" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>PortGame Settings</label>
+            <tab>folixcode</tab>
             <resource>PortGame_Email::config</resource>
             
-            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>General Configuration</label>
+            <group id="email" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Email Configuration</label>
                 
-                <field id="enable_thirdparty_email" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Third Party Order Email</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-            </group>
-            
-            <group id="thirdparty_card" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Third Party Card Order</label>
                 
-                <field id="template" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Email Template</label>
-                    <comment>Email template for  orders</comment>
+                <field id="template" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Third Party Card Order Email Template</label>
+                    <comment>Email template for third party card orders</comment>
                     <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
                 </field>
                 
-                <field id="identity" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="identity" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Send From</label>
                     <comment>Sender identity for email</comment>
                     <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
                 </field>
-                
-                <field id="enabled" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-            </group>
             
-          
+            </group>
             
         </section>
     </system>

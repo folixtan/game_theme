@@ -44,7 +44,7 @@ class OrderPlaceAfter implements ObserverInterface
          ];
          $this->template->setTemplateVars($templateVar);
 
-         $this->senderBuilder()->send('portgame_email_thirdparty_card', $response['email'], $response['customer_name'] ?? 'Guest');
+         $this->senderBuilder()->send( $response['email'], $response['customer_name'] ?? 'Guest');
    }
 
    private function senderBuilder()

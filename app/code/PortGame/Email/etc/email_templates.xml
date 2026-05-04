@@ -3,8 +3,8 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Email/etc/email_templates.xsd">
     
     <!-- 第三方订单 - 卡密邮件 -->
-    <template id="portgame_email_thirdparty_card" 
-              label="Third Party Order - Card" 
+    <template id="portgame_email_template" 
+              label="Third Party Order - Notification" 
               file="thirdparty_card.html" 
               type="html" 
               module="PortGame_Email" 
