@@ -1,0 +1,54 @@
+<?php
+/**
+ * @var \FolixCode\ThirdPartyOrder\Block\Adminhtml\Orders\View $block
+ * 
+ */
+?>
+
+<div class="page-main-actions">
+    <div class="page-actions">
+        <div class="page-actions-buttons">
+            <button id="back" 
+                    title="<?= $block->escapeHtmlAttr(__('Back')) ?>" 
+                    type="button" 
+                    class="action-back" 
+                    onclick="setLocation('<?= $block->escapeUrl($block->getBackUrl()) ?>')">
+                <span><?= $block->escapeHtml(__('Back')) ?></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<?php $orderData = $block->getOrderDetails(); ?>
+
+<?php if ($orderData && !empty($orderData)): ?>
+    <div class="admin__page-section">
+        <div class="admin__page-section-title">
+            <span class="title"><?= $block->escapeHtml(__('Order Details')) ?></span>
+        </div>
+        <div class="admin__page-section-content">
+            <table class="admin__table-secondary data-table">
+                <tbody>
+                <?php foreach ($orderData as $key => $value): ?>
+                    <tr>
+                        <th><?= $block->escapeHtml(__($key)) ?></th>
+                        <td>
+                            <?php if ($block->isNestedValue($value)): ?>
+                                <pre><?= $block->escapeHtml($block->formatNestedValue($value)) ?></pre>
+                            <?php else: ?>
+                                <?= $block->escapeHtml($value ?? 'N/A') ?>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<?php else: ?>
+    <div class="messages">
+        <div class="message message-error">
+            <?= $block->escapeHtml(__('Order details not found or failed to load.')) ?>
+        </div>
+    </div>
+<?php endif; ?>

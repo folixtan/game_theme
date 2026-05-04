@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Third Party Orders Grid UI Component
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">folixcode_thirdpartyorder_orders_grid.folixcode_thirdpartyorder_orders_grid_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>folixcode_thirdpartyorder_orders_columns</spinner>
+        <deps>
+            <dep>folixcode_thirdpartyorder_orders_grid.folixcode_thirdpartyorder_orders_grid_data_source</dep>
+        </deps>
+    </settings>
+    
+    <!-- 数据源配置 -->
+    <dataSource name="folixcode_thirdpartyorder_orders_grid_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>FolixCode_ThirdPartyOrder::third_party_orders</aclResource>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="folixcode_thirdpartyorder_orders_grid_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>main_table.entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    
+    <!-- 列表工具栏 -->
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filters name="listing_filters"/>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    
+    <!-- 列定义 -->
+    <columns name="folixcode_thirdpartyorder_orders_columns">
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">folixcode_thirdpartyorder_orders_grid.folixcode_thirdpartyorder_orders_grid.folixcode_thirdpartyorder_orders_columns.actions</item>
+                    <item name="target" xsi:type="string">applyAction</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">view</item>
+                        <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
+
+        
+        <!-- ID -->
+        <column name="entity_id">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>desc</sorting>
+            </settings>
+        </column>
+        
+        <!-- Magento 订单号 -->
+        <column name="increment_id">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Magento Order ID</label>
+            </settings>
+        </column>
+        
+        <!-- 第三方订单号 -->
+        <column name="third_party_order_id">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Third Party Order ID</label>
+            </settings>
+        </column>
+        
+        <!-- 订单类型 -->
+        <column name="order_type" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <options class="FolixCode\ThirdPartyOrder\Model\Config\Source\OrderType"/>
+                <dataType>select</dataType>
+                <label translate="true">Order Type</label>
+            </settings>
+        </column>
+        
+        <!-- 状态码 -->
+        <column name="status_code" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <options class="FolixCode\ThirdPartyOrder\Model\Config\Source\StatusCode"/>
+                <dataType>select</dataType>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+        
+        <!-- 充值账号（直充） -->
+        <column name="charge_account">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Charge Account</label>
+            </settings>
+        </column>
+        
+        <!-- 区服（直充） -->
+        <column name="charge_region">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Region/Server</label>
+            </settings>
+        </column>
+        
+        <!-- 卡密号（卡密） -->
+        <column name="card_no">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Card Number</label>
+            </settings>
+        </column>
+        
+        <!-- 同步状态 -->
+        <column name="sync_status" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <filter>select</filter>
+                <options class="FolixCode\ThirdPartyOrder\Model\Config\Source\SyncStatus"/>
+                <dataType>select</dataType>
+                <label translate="true">Sync Status</label>
+            </settings>
+        </column>
+        
+        <!-- 错误信息 -->
+        <column name="last_error">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Error Message</label>
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+            </settings>
+        </column>
+        
+        <!-- 创建时间 -->
+        <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Created At</label>
+            </settings>
+        </column>
+        
+        <!-- 更新时间 -->
+        <column name="updated_at" class="Magento\Ui\Component\Listing\Columns\Date">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Updated At</label>
+            </settings>
+        </column>
+        
+        <!-- 操作列 -->
+        <actionsColumn name="actions" class="FolixCode\ThirdPartyOrder\Ui\Component\Listing\Column\Actions">
+            <settings>
+                <indexField>entity_id</indexField>
+            </settings>
+        </actionsColumn>
+        
+    </columns>
+</listing>

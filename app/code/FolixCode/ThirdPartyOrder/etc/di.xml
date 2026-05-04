@@ -74,4 +74,24 @@
         </arguments>
     </type>
 
+    <!-- UI Component CollectionFactory 配置 -->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="folixcode_thirdpartyorder_orders_grid_data_source" 
+                      xsi:type="string">FolixCode\ThirdPartyOrder\Model\ResourceModel\ThirdPartyOrder\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- View Block 配置 - 复用 ThirdPartyOrderApiClient -->
+    <type name="FolixCode\ThirdPartyOrder\Block\Adminhtml\Orders\View">
+        <arguments>
+            <argument name="apiClient" xsi:type="object">ThirdPartyOrderApiClient</argument>
+            <argument name="timezone" xsi:type="object">Magento\Framework\Stdlib\DateTime\TimezoneInterface</argument>
+            <argument name="helper" xsi:type="object">FolixCode\ThirdPartyOrder\Helper\Data</argument>
+            <argument name="logger" xsi:type="object">FolixCodeThirdPartyOrderLogger</argument>
+        </arguments>
+    </type>
+
 </config>

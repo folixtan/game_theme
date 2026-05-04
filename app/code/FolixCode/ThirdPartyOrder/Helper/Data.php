@@ -13,14 +13,9 @@ use Magento\Store\Model\ScopeInterface;
 class Data extends AbstractHelper
 {
     /** 配置路径常量 */
-    public const XML_PATH_ENABLED = 'folixcode_thirdpartyorder/general/enabled';
-    public const XML_PATH_API_BASE_URL = 'folixcode_thirdpartyorder/general/api_base_url';
+    public const XML_PATH_ENABLE_ORDER_SYNC = 'folixcode_thirdpartyorder/general/enable_order_sync';
+    public const XML_PATH_ENABLE_VIEW_API = 'folixcode_thirdpartyorder/general/enable_view_api';
     public const XML_PATH_NOTIFY_URL = 'folixcode_thirdpartyorder/general/notify_url';
-    public const XML_PATH_APP_KEY = 'folixcode_thirdpartyorder/general/app_key';
-    public const XML_PATH_SECRET_KEY = 'folixcode_thirdpartyorder/general/secret_key';
-    public const XML_PATH_RETRY_TIMES = 'folixcode_thirdpartyorder/sync/retry_times';
-    public const XML_PATH_RETRY_INTERVAL = 'folixcode_thirdpartyorder/sync/retry_interval';
-    public const XML_PATH_MAX_QUERY_AGE_HOURS = 'folixcode_thirdpartyorder/sync/max_query_age_hours';
 
     public function __construct(
         Context $context
@@ -29,33 +24,33 @@ class Data extends AbstractHelper
     }
 
     /**
-     * 检查模块是否启用
+     * 检查订单同步是否启用
      *
      * @param int|null $storeId
      * @return bool
      */
-    public function isEnabled(?int $storeId = null): bool
+    public function isOrderSyncEnabled(?int $storeId = null): bool
     {
         return (bool)$this->scopeConfig->getValue(
-            self::XML_PATH_ENABLED,
+            self::XML_PATH_ENABLE_ORDER_SYNC,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
     }
 
     /**
-     * 获取API基础URL
+     * 检查 View 页面 API 是否启用
      *
      * @param int|null $storeId
-     * @return string
+     * @return bool
      */
-    public function getApiBaseUrl(?int $storeId = null): string
+    public function isViewApiEnabled(?int $storeId = null): bool
     {
-        return (string)$this->scopeConfig->getValue(
-            self::XML_PATH_API_BASE_URL,
+        return (bool)$this->scopeConfig->getValue(
+            self::XML_PATH_ENABLE_VIEW_API,
             ScopeInterface::SCOPE_STORE,
             $storeId
-        ) ?: 'https://playsentral.qr67.com';
+        );
     }
 
     /**
@@ -79,80 +74,5 @@ class Data extends AbstractHelper
         // 自动生成默认URL
         $baseUrl = $this->_urlBuilder->getBaseUrl();
         return rtrim($baseUrl, '/') . '/rest/V1/thirdpartyorders/notification';
-    }
-
-    /**
-     * 获取App Key
-     *
-     * @param int|null $storeId
-     * @return string
-     */
-    public function getAppKey(?int $storeId = null): string
-    {
-        return (string)$this->scopeConfig->getValue(
-            self::XML_PATH_APP_KEY,
-            ScopeInterface::SCOPE_STORE,
-            $storeId
-        );
-    }
-
-    /**
-     * 获取Secret Key
-     *
-     * @param int|null $storeId
-     * @return string
-     */
-    public function getSecretKey(?int $storeId = null): string
-    {
-        return (string)$this->scopeConfig->getValue(
-            self::XML_PATH_SECRET_KEY,
-            ScopeInterface::SCOPE_STORE,
-            $storeId
-        );
-    }
-
-    /**
-     * 获取重试次数
-     *
-     * @param int|null $storeId
-     * @return int
-     */
-    public function getRetryTimes(?int $storeId = null): int
-    {
-        return (int)$this->scopeConfig->getValue(
-            self::XML_PATH_RETRY_TIMES,
-            ScopeInterface::SCOPE_STORE,
-            $storeId
-        ) ?: 3;
-    }
-
-    /**
-     * 获取重试间隔(秒)
-     *
-     * @param int|null $storeId
-     * @return int
-     */
-    public function getRetryInterval(?int $storeId = null): int
-    {
-        return (int)$this->scopeConfig->getValue(
-            self::XML_PATH_RETRY_INTERVAL,
-            ScopeInterface::SCOPE_STORE,
-            $storeId
-        ) ?: 60;
-    }
-
-    /**
-     * 获取最大查询年龄(小时)
-     *
-     * @param int|null $storeId
-     * @return int
-     */
-    public function getMaxQueryAgeHours(?int $storeId = null): int
-    {
-        return (int)$this->scopeConfig->getValue(
-            self::XML_PATH_MAX_QUERY_AGE_HOURS,
-            ScopeInterface::SCOPE_STORE,
-            $storeId
-        ) ?: 24;
     }
 }

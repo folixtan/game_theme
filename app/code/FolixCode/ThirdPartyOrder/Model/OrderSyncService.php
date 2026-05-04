@@ -80,7 +80,7 @@ class OrderSyncService
     }
 
     /**
-     * 同步订单到第三方
+     * Sync order to third party API
      *
      * @param OrderInterface $order
      * @return bool
@@ -88,6 +88,14 @@ class OrderSyncService
      */
     public function syncOrder(OrderInterface $order): bool
     {
+        // Check if order sync is enabled
+        if (!$this->helper->isOrderSyncEnabled()) {
+            $this->logger->info('Order sync is disabled by configuration', [
+                'order_id' => $order->getEntityId()
+            ]);
+            return false;
+        }
+
         $magentoOrderId = (int)$order->getEntityId();
         $startTime = microtime(true);
 

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Third Party Order View Layout
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="FolixCode\ThirdPartyOrder\Block\Adminhtml\Orders\View" 
+                   name="thirdpartyorder.order.view" 
+                   template="FolixCode_ThirdPartyOrder::order/view.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

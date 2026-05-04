@@ -9,13 +9,11 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <folixcode_thirdpartyorder>
-            <settings>
-                <is_enabled>0</is_enabled>
-                <api_base_url>https://playsentral.qr67.com</api_base_url>
+            <general>
+                <enable_order_sync>0</enable_order_sync>
+                <enable_view_api>0</enable_view_api>
                 <notify_url></notify_url>
-                <sync_retry_times>3</sync_retry_times>
-                <sync_retry_interval>60</sync_retry_interval>
-            </settings>
+            </general>
         </folixcode_thirdpartyorder>
     </default>
 </config>

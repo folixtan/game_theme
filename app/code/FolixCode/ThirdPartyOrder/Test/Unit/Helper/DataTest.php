@@ -35,122 +35,72 @@ class DataTest extends TestCase
     }
 
     /**
-     * 测试模块启用状态
+     * 测试订单同步启用状态
      */
-    public function testIsEnabled(): void
+    public function testIsOrderSyncEnabled(): void
     {
         $this->scopeConfig->expects($this->any())
             ->method('getValue')
             ->willReturn('1');
         
-        $this->assertTrue($this->helper->isEnabled());
+        $this->assertTrue($this->helper->isOrderSyncEnabled());
     }
 
     /**
-     * 测试模块禁用状态
+     * 测试订单同步禁用状态
      */
-    public function testIsDisabled(): void
+    public function testIsOrderSyncDisabled(): void
     {
         $this->scopeConfig->expects($this->any())
             ->method('getValue')
             ->willReturn('0');
         
-        $this->assertFalse($this->helper->isEnabled());
+        $this->assertFalse($this->helper->isOrderSyncEnabled());
     }
 
     /**
-     * 测试获取API Base URL
+     * 测试 View API 启用状态
      */
-    public function testGetApiBaseUrl(): void
+    public function testIsViewApiEnabled(): void
     {
         $this->scopeConfig->expects($this->any())
             ->method('getValue')
-            ->willReturn('https://test-api.com');
+            ->willReturn('1');
         
-        $this->assertEquals('https://test-api.com', $this->helper->getApiBaseUrl());
+        $this->assertTrue($this->helper->isViewApiEnabled());
     }
 
     /**
-     * 测试API Base URL默认值
+     * 测试 View API 禁用状态
      */
-    public function testGetApiBaseUrlWithDefault(): void
+    public function testIsViewApiDisabled(): void
     {
         $this->scopeConfig->expects($this->any())
             ->method('getValue')
-            ->willReturn(null);
+            ->willReturn('0');
         
-        $this->assertEquals('https://playsentral.qr67.com', $this->helper->getApiBaseUrl());
+        $this->assertFalse($this->helper->isViewApiEnabled());
     }
 
     /**
-     * 测试获取App Key
+     * 测试获取自定义 Notify URL
      */
-    public function testGetAppKey(): void
+    public function testGetNotifyUrlWithCustom(): void
     {
         $this->scopeConfig->expects($this->any())
             ->method('getValue')
-            ->willReturn('test-app-key');
+            ->willReturn('https://custom-notify.com/callback');
         
-        $this->assertEquals('test-app-key', $this->helper->getAppKey());
+        $this->assertEquals('https://custom-notify.com/callback', $this->helper->getNotifyUrl());
     }
 
     /**
-     * 测试获取Secret Key
+     * 测试获取默认 Notify URL（需要 mock urlBuilder）
      */
-    public function testGetSecretKey(): void
+    public function testGetNotifyUrlWithDefault(): void
     {
-        $this->scopeConfig->expects($this->any())
-            ->method('getValue')
-            ->willReturn('encrypted-secret-key');
-        
-        $this->assertEquals('encrypted-secret-key', $this->helper->getSecretKey());
-    }
-
-    /**
-     * 测试获取重试次数
-     */
-    public function testGetRetryTimes(): void
-    {
-        $this->scopeConfig->expects($this->any())
-            ->method('getValue')
-            ->willReturn(3);
-        
-        $this->assertEquals(3, $this->helper->getRetryTimes());
-    }
-
-    /**
-     * 测试重试次数默认值
-     */
-    public function testGetRetryTimesWithDefault(): void
-    {
-        $this->scopeConfig->expects($this->any())
-            ->method('getValue')
-            ->willReturn(null);
-        
-        $this->assertEquals(3, $this->helper->getRetryTimes());
-    }
-
-    /**
-     * 测试获取重试间隔
-     */
-    public function testGetRetryInterval(): void
-    {
-        $this->scopeConfig->expects($this->any())
-            ->method('getValue')
-            ->willReturn(60);
-        
-        $this->assertEquals(60, $this->helper->getRetryInterval());
-    }
-
-    /**
-     * 测试最大查询年龄
-     */
-    public function testGetMaxQueryAgeHours(): void
-    {
-        $this->scopeConfig->expects($this->any())
-            ->method('getValue')
-            ->willReturn(24);
-        
-        $this->assertEquals(24, $this->helper->getMaxQueryAgeHours());
+        // 由于 getNotifyUrl 会调用 _urlBuilder，这里简化测试
+        // 实际使用时应通过集成测试验证默认 URL 生成逻辑
+        $this->markTestSkipped('Requires full Context with urlBuilder for default URL generation');
     }
 }
