@@ -111,13 +111,13 @@
                                                         <item name="config" xsi:type="array">
                                                             <item name="template" xsi:type="string">Folix_SimpleCheckout/payment/payment-methods-list</item>
                                                         </item>
-                                                        <item name="children" xsi:type="array">
+                                                       <!--  <item name="children" xsi:type="array">
                                                            <item name="before-place-order" xsi:type="array" >
                                                               <item name="config" xsi:type="array">
                                                                 <item name="componentDisabled" xsi:type="boolean">true</item>
                                                               </item>
                                                             </item>
-                                                        </item>
+                                                        </item> -->
                                                     </item>
                                                 
                                                 </item>
@@ -149,12 +149,8 @@
                                                     </item>
                                                     <item name="itemsAfter" xsi:type="array">
                                                         <item name="children" xsi:type="array">
-                                                             <item name="place-order-captcha" xsi:type="array">
-                                                                <item name="component" xsi:type="string">Magento_Checkout/js/view/checkout/placeOrderCaptcha</item>
-                                                                <item name="displayArea" xsi:type="string">place-order-captcha</item>
-                                                                <item name="formId" xsi:type="string">payment_processing_request</item>
-                                                                <item name="configSource" xsi:type="string">checkoutConfig</item>
-                                                            </item>
+                                                            
+                                                                
                                                             <item name="place_order" xsi:type="array">
                                                                 <item name="component" xsi:type="string">Folix_SimpleCheckout/js/view/place-order-button</item>
                                                             

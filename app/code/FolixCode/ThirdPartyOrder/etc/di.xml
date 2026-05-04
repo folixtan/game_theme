@@ -88,8 +88,6 @@
     <type name="FolixCode\ThirdPartyOrder\Block\Adminhtml\Orders\View">
         <arguments>
             <argument name="apiClient" xsi:type="object">ThirdPartyOrderApiClient</argument>
-            <argument name="timezone" xsi:type="object">Magento\Framework\Stdlib\DateTime\TimezoneInterface</argument>
-            <argument name="helper" xsi:type="object">FolixCode\ThirdPartyOrder\Helper\Data</argument>
             <argument name="logger" xsi:type="object">FolixCodeThirdPartyOrderLogger</argument>
         </arguments>
     </type>
