@@ -6,6 +6,7 @@
 //  * 文件组织结构：
 //  * - 全局样式：web/css/source/ （此文件所在位置）
 //  * - 模块样式：web/css/source/Magento_XXX/ （按模块分目录）
+//  * - 第三方库：web/css/vendor/ （统一管理第三方库）
 //  * 
 //  * Magento 自动加载机制：
 //  * - _variables.less 和 _theme.less：自动加载，无需引入
@@ -13,10 +14,10 @@
 //  */
 
 //
-//  Typography - 字体（优先加载）
+//  Font Awesome 图标库（按需加载）
 //  _____________________________________________
 
-@import '_typography.less';     // 全局字体：Inter + Noto Sans SC
+@import 'fontawesome/_font-awesome-config.less';  // Font Awesome 6.4.0 模块化配置
 
 //
 //  全局样式引入
@@ -72,5 +73,7 @@
 
 //  Base 模块 - 全局样式
 @import 'base/_contact.less';
+@import 'base/_error-404.less';  // 404 错误页面样式
+@import 'base/_news.less';       // News 单页样式
 @import 'homepage/_homepage.less';
 @import (reference) '_source_extend.less';

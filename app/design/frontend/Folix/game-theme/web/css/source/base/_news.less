@@ -1,0 +1,373 @@
+// /**
+//  * Copyright © Folix Game Theme. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  News Page Styles
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .news-page {
+        // 页面基础样式
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+        background: @folix-gradient-bg;
+        
+        // 背景装饰
+        .page-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            
+            &::before {
+                content: '';
+                position: absolute;
+                top: -30%;
+                right: -15%;
+                width: 700px;
+                height: 700px;
+                background: radial-gradient(circle, @folix-opacity-gold-8 0%, transparent 70%);
+                animation: float-slow 20s ease-in-out infinite;
+            }
+            
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: -20%;
+                left: -10%;
+                width: 600px;
+                height: 600px;
+                background: radial-gradient(circle, @folix-opacity-red-10 0%, transparent 70%);
+                animation: float-slow 25s ease-in-out infinite reverse;
+            }
+        }
+
+        // 浮动动画
+        @keyframes float-slow {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(30px, -30px) rotate(120deg);
+            }
+            66% {
+                transform: translate(-20px, 20px) rotate(240deg);
+            }
+        }
+
+        // 页面头部
+        .news-header {
+            position: relative;
+            z-index: 1;
+            padding: @indent__xl * 2 @indent__base @indent__xl;
+            text-align: center;
+            
+            .header-content {
+                max-width: 900px;
+                margin: 0 auto;
+            }
+        }
+
+        // 标题
+        .news-title {
+            font-size: 48px;
+            font-weight: @font-weight__bold;
+            margin-bottom: @indent__m;
+            background: @folix-gradient-gold;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 15px @folix-opacity-gold-30);
+            
+            i {
+                margin-right: @indent__s;
+                -webkit-text-fill-color: @folix-secondary;
+            }
+        }
+
+        // 副标题
+        .news-subtitle {
+            font-size: 18px;
+            color: @folix-text-lighter;
+            line-height: 1.6;
+        }
+
+        // 新闻容器
+        .news-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 @indent__base @indent__xl * 2;
+        }
+
+        // 新闻卡片通用样式
+        .news-card {
+            background: @folix-bg-panel;
+            border-radius: @folix-radius-lg;
+            border: 1px solid @folix-border-gold;
+            overflow: hidden;
+            transition: @folix-transition;
+            box-shadow: @folix-shadow-sm;
+            
+            &:hover {
+                transform: translateY(-5px);
+                box-shadow: @folix-shadow-gold-hover;
+                border-color: @folix-secondary;
+            }
+        }
+
+        // 精选新闻（大卡片）
+        .news-card.featured {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: @indent__l;
+            margin-bottom: @indent__xl * 2;
+            padding: @indent__l;
+            
+            .card-badge {
+                position: absolute;
+                top: @indent__m;
+                left: @indent__m;
+                background: @folix-gradient-gold;
+                color: @folix-text-on-gold;
+                padding: @indent__s @indent__m;
+                border-radius: @folix-radius-full;
+                font-weight: @font-weight__bold;
+                font-size: 14px;
+                z-index: 2;
+                
+                i {
+                    margin-right: 5px;
+                }
+            }
+            
+            .card-image {
+                position: relative;
+                border-radius: @folix-radius-md;
+                overflow: hidden;
+                aspect-ratio: 16/9;
+                
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transition: transform 0.5s ease;
+                }
+            }
+            
+            &:hover .card-image img {
+                transform: scale(1.05);
+            }
+            
+            .card-content {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: @indent__m;
+            }
+            
+            .card-title {
+                font-size: 28px;
+                margin-bottom: @indent__m;
+            }
+            
+            .card-excerpt {
+                font-size: 16px;
+                line-height: 1.8;
+                margin-bottom: @indent__l;
+            }
+        }
+
+        // 普通新闻卡片
+        .news-card:not(.featured) {
+            position: relative;
+            
+            .card-image {
+                position: relative;
+                aspect-ratio: 16/9;
+                overflow: hidden;
+                
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transition: transform 0.5s ease;
+                }
+            }
+            
+            &:hover .card-image img {
+                transform: scale(1.1);
+            }
+            
+            .card-content {
+                padding: @indent__m;
+            }
+            
+            .card-title {
+                font-size: 20px;
+                margin-bottom: @indent__s;
+            }
+            
+            .card-excerpt {
+                font-size: 14px;
+                line-height: 1.6;
+                margin-bottom: @indent__m;
+            }
+        }
+
+        // 卡片元信息
+        .card-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: @indent__s;
+            font-size: 13px;
+        }
+
+        .card-category {
+            color: @folix-secondary;
+            font-weight: @font-weight__semibold;
+            
+            i {
+                margin-right: 5px;
+            }
+        }
+
+        .card-date {
+            color: @folix-text-muted;
+        }
+
+        // 卡片标题
+        .card-title {
+            font-weight: @font-weight__bold;
+            color: @folix-text-primary;
+            line-height: 1.4;
+            margin-bottom: @indent__s;
+        }
+
+        // 卡片摘要
+        .card-excerpt {
+            color: @folix-text-secondary;
+            line-height: 1.6;
+            margin-bottom: @indent__m;
+        }
+
+        // 卡片链接
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            color: @folix-secondary;
+            font-weight: @font-weight__semibold;
+            text-decoration: none;
+            transition: @folix-transition;
+            
+            i {
+                margin-left: 5px;
+                transition: transform 0.3s ease;
+            }
+            
+            &:hover {
+                color: @folix-accent;
+                
+                i {
+                    transform: translateX(5px);
+                }
+            }
+        }
+
+        // 新闻网格布局
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: @indent__l;
+            margin-bottom: @indent__xl * 2;
+        }
+    }
+}
+
+//
+//  Tablet (≤ 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .news-page {
+        .news-header {
+            padding: @indent__xl @indent__base;
+        }
+
+        .news-title {
+            font-size: 36px;
+        }
+
+        .news-subtitle {
+            font-size: 16px;
+        }
+
+        .news-card.featured {
+            grid-template-columns: 1fr;
+            
+            .card-title {
+                font-size: 24px;
+            }
+        }
+
+        .news-grid {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: @indent__m;
+        }
+    }
+}
+
+//
+//  Mobile (≤ 640px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs) {
+    .news-page {
+        .news-header {
+            padding: @indent__l @indent__s;
+        }
+
+        .news-title {
+            font-size: 28px;
+        }
+
+        .news-subtitle {
+            font-size: 14px;
+        }
+
+        .news-container {
+            padding: 0 @indent__s @indent__xl;
+        }
+
+        .news-card.featured {
+            padding: @indent__m;
+            
+            .card-title {
+                font-size: 20px;
+            }
+            
+            .card-excerpt {
+                font-size: 14px;
+            }
+        }
+
+        .news-grid {
+            grid-template-columns: 1fr;
+            gap: @indent__m;
+        }
+
+        .news-card:not(.featured) {
+            .card-title {
+                font-size: 18px;
+            }
+        }
+    }
+}

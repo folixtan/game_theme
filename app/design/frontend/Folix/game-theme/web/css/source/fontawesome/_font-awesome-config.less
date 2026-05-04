@@ -1,0 +1,78 @@
+// /**
+//  * Copyright © Folix Game Theme. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  Font Awesome 6.4.0 - Modular Import
+//  按需加载策略：只导入需要的图标模块
+//  _____________________________________________
+
+//
+//  配置字体路径（相对于编译后的CSS文件）
+//  _____________________________________________
+
+@fa-font-path: "../../fonts/fontawesome";
+
+//
+//  核心变量配置
+//  _____________________________________________
+
+@fa-css-prefix:       fa;
+@fa-style:            900;
+@fa-style-family:     "Font Awesome 6 Free";
+
+@fa-display:          inline-block;
+@fa-transform:        none;
+@fa-rotate-types:     2x, 3x, 4x, 5x, up, down, left, right;
+@fa-flip-types:       horizontal, vertical, both;
+
+@fa-border-color:     #eee;
+@fa-border-padding:   .2em .25em .15em;
+@fa-border-radius:    .1em;
+@fa-border-style:     solid;
+@fa-border-width:     .08em;
+
+@fa-li-width:         2em;
+@fa-li-margin:        @fa-li-width * 5/4;
+
+//
+//  导入核心样式（必须）
+//  _____________________________________________
+
+@import 'fontawesome.less';
+
+//
+//  按需导入图标模块
+//  取消注释以启用对应模块
+//  _____________________________________________
+
+// ✅ Solid 实心图标（最常用，推荐启用）
+@import 'solid.less';
+
+// ⚠️ Regular 线框图标（可选）
+// @import 'regular.less';
+
+// ⚠️ Brands 品牌图标（如需要社交媒体图标则启用）
+// @import 'brands.less';
+
+// ❌ Light 细线图标（Pro版本，免费版不可用）
+// @import 'light.less';
+
+// ❌ Thin 极细图标（Pro版本，免费版不可用）
+// @import 'thin.less';
+
+// ❌ Duotone 双色图标（Pro版本，免费版不可用）
+// @import 'duotone.less';
+
+// ❌ Sharp Solid 锐利实心（Pro版本，免费版不可用）
+// @import 'sharp-solid.less';
+
+// ❌ Sharp Regular 锐利线框（Pro版本，免费版不可用）
+// @import 'sharp-regular.less';
+
+// ❌ Sharp Light 锐利细线（Pro版本，免费版不可用）
+// @import 'sharp-light.less';
+
+// ❌ Sharp Thin 锐利极细（Pro版本，免费版不可用）
+// @import 'sharp-thin.less';

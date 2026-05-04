@@ -8,7 +8,7 @@
 //  _____________________________________________
 //
 //  规则：
-//  * - 此文件覆盖父主题变量，映射到自定义变量体系
+//  * - 此文件只覆盖父主题已存在的变量
 //  * - 新变量在 _custom-variables-esports.less 中定义
 //  * - 使用自定义变量覆盖原生变量，便于换肤
 //  * - 色系：电竞风（深蓝 + 金色 + 电竞红）
@@ -34,6 +34,10 @@
 @font-weight__medium: 500;
 @font-weight__semibold: 600;
 @font-weight__bold: 700;
+
+//  Fonts
+@icons__font-path: '@{baseDir}fonts/Luma-Icons';
+@icons__font-name: 'luma-icons';
 
 //  Color nesting
 @panel__background-color: @folix-bg-panel;
@@ -67,6 +71,10 @@
 //  Tables
 //  ---------------------------------------------
 
+@table-cell__padding-vertical: 11px;
+@table-cell-stripped__background-color: @table-cell__hover__background-color;
+@table-responsive-th__background-color: @table-cell-stripped__background-color;
+@table-responsive-cell__padding: @indent__xs @indent__s;
 @table-cell__hover__background-color: @panel__background-color;
 @table-td__color: @primary__color;
 @table-th__color: @primary__color;
@@ -75,9 +83,15 @@
 //  Layout grid
 //  ---------------------------------------------
 
+@total-columns: 24;
+
 //  Variables for layout columns
+@layout-column__sidebar-width: 5;
 @sidebar__background-color: @folix-bg-panel;
 @content__background: @folix-bg-panel;
+
+//  Checkout columns width
+@layout-column-checkout__width-left: 6;
 
 //
 //  Navigation
@@ -112,6 +126,8 @@
 @tab-control__color: @folix-text-secondary;
 @tab-control__font-weight: @font-weight__regular;
 @tab-control__height: @indent__base*2;
+@tab-control__margin-right: -1px;
+@tab-control__padding-top: 1px;
 @tab-control__padding-right: 35px;
 @tab-control__background-color: @folix-bg-panel;
 @tab-control__hover__background-color: @folix-bg-hover;
@@ -184,6 +200,13 @@
 //  Icons
 //  ---------------------------------------------
 
+@icon-wishlist-empty: false;
+@icon-comment-reflected: false;
+@icon-compare-empty: false;
+@icon-arrow-up-thin: false;
+@icon-arrow-right-thin: false;
+@icon-arrow-left-thin: false;
+@icon-arrow-down-thin: false;
 @icon-wishlist-empty: '\e601';
 
 @icon-success: '\e60e';
@@ -243,6 +266,7 @@
 //
 //  Forms
 //  ---------------------------------------------
+
 
 //  Select
 @select__background: @folix-input-bg url('../images/select-bg.svg') no-repeat 100% 45%;
@@ -453,3 +477,5 @@
 @error__color: @folix-error;
 @customer-welcome__z-index: 200;
 @block-items__counter__color: @folix-text-tertiary;
+
+ @font-weight__medium:600;

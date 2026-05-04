@@ -1,0 +1,258 @@
+// /**
+//  * Copyright © Folix Game Theme. All rights reserved.
+//  * See COPYING.txt for license details.
+//  */
+
+//
+//  404 Error Page Styles
+//  _____________________________________________
+
+& when (@media-common = true) {
+    .error-404-page {
+        // 页面基础样式
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+        background: @folix-gradient-bg;
+        
+        // 背景装饰
+        .page-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            
+            &::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                right: -20%;
+                width: 600px;
+                height: 600px;
+                background: radial-gradient(circle, @folix-opacity-gold-8 0%, transparent 70%);
+                pointer-events: none;
+            }
+            
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: -30%;
+                left: -10%;
+                width: 500px;
+                height: 500px;
+                background: radial-gradient(circle, @folix-opacity-red-10 0%, transparent 70%);
+                pointer-events: none;
+            }
+        }
+
+        // 页面容器
+        .error-container {
+            text-align: center;
+            padding: @indent__xl @indent__base;
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+
+        // 404 数字
+        .error-code {
+            font-size: 180px;
+            font-weight: @font-weight__bold;
+            line-height: 1;
+            margin-bottom: @indent__l;
+            background: @folix-gradient-gold;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px @folix-opacity-gold-40);
+            animation: error-glow 3s ease-in-out infinite;
+        }
+
+        // 发光动画
+        @keyframes error-glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 20px @folix-opacity-gold-40);
+            }
+            50% {
+                filter: drop-shadow(0 0 40px @folix-opacity-gold-50);
+            }
+        }
+
+        // 标题
+        .error-title {
+            font-size: 36px;
+            font-weight: @font-weight__bold;
+            margin-bottom: @indent__m;
+            color: @folix-text-primary;
+        }
+
+        // 描述文字
+        .error-description {
+            font-size: 18px;
+            color: @folix-text-lighter;
+            margin-bottom: @indent__xl;
+            line-height: 1.6;
+        }
+
+        // 按钮组
+        .error-button-group {
+            display: flex;
+            gap: @indent__l;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        // 主按钮
+        .btn-error-primary {
+            display: inline-block;
+            padding: @indent__m @indent__xl;
+            background: @folix-btn-primary-bg;
+            color: @folix-btn-primary-text;
+            text-decoration: none;
+            font-weight: @font-weight__bold;
+            font-size: 16px;
+            border-radius: @folix-radius-full;
+            transition: @folix-transition;
+            box-shadow: @folix-shadow-gold;
+
+            &:hover {
+                transform: translateY(-3px);
+                box-shadow: @folix-shadow-gold-hover;
+            }
+
+            // 图标样式（使用 Font Awesome）
+            i {
+                margin-right: 8px;
+            }
+        }
+
+        // 次要按钮
+        .btn-error-secondary {
+            display: inline-block;
+            padding: @indent__m @indent__xl;
+            background: @folix-btn-ghost-bg;
+            color: @folix-btn-ghost-text;
+            text-decoration: none;
+            font-weight: @font-weight__semibold;
+            font-size: 16px;
+            border-radius: @folix-radius-full;
+            border: 2px solid @folix-btn-ghost-border;
+            transition: @folix-transition;
+
+            &:hover {
+                border-color: @folix-secondary;
+                background: @folix-btn-ghost-hover-bg;
+                transform: translateY(-3px);
+            }
+
+            // 图标样式（使用 Font Awesome）
+            i {
+                margin-right: 8px;
+            }
+        }
+
+        // 游戏图标装饰
+        .game-icons {
+            margin-top: @indent__xl * 2;  // 修复：@indent__xxl 不存在，改用计算值 (80px)
+            display: flex;
+            justify-content: center;
+            gap: @indent__xl;
+            opacity: 0.3;
+        }
+
+        .game-icon {
+            width: 60px;
+            height: 60px;
+            border: 2px solid @folix-border-gold;
+            border-radius: @folix-radius-md;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: @folix-secondary;
+        }
+    }
+}
+
+//
+//  Tablet (≤ 768px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .error-404-page {
+        .error-code {
+            font-size: 120px;
+        }
+
+        .error-title {
+            font-size: 28px;
+        }
+
+        .error-description {
+            font-size: 16px;
+        }
+
+        .error-button-group {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn-error-primary,
+        .btn-error-secondary {
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .game-icons {
+            gap: @indent__l;
+        }
+
+        .game-icon {
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+        }
+    }
+}
+
+//
+//  Mobile (≤ 640px)
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__xs) {
+    .error-404-page {
+        .error-container {
+            padding: @indent__l @indent__s;
+        }
+
+        .error-code {
+            font-size: 100px;
+        }
+
+        .error-title {
+            font-size: 24px;
+        }
+
+        .error-description {
+            font-size: 14px;
+        }
+
+        .game-icons {
+            margin-top: @indent__xl;  // 修复：移动端使用 @indent__xl (40px)
+            gap: @indent__m;
+        }
+
+        .game-icon {
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
+        }
+    }
+}
