@@ -22,7 +22,7 @@
                 
                 <field id="template" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Email Template</label>
-                    <comment>Email template for card orders</comment>
+                    <comment>Email template for  orders</comment>
                     <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
                 </field>
                 
@@ -38,26 +38,7 @@
                 </field>
             </group>
             
-            <group id="thirdparty_direct" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Third Party Direct Top-up</label>
-                
-                <field id="template" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Email Template</label>
-                    <comment>Email template for direct top-up orders</comment>
-                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
-                </field>
-                
-                <field id="identity" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Send From</label>
-                    <comment>Sender identity for email</comment>
-                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
-                </field>
-                
-                <field id="enabled" translate="label" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-            </group>
+          
             
         </section>
     </system>
