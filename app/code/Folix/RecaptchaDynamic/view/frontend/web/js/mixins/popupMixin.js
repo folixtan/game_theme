@@ -5,7 +5,7 @@ define([
     'use strict';
 
     /**
-     * 检查 reCAPTCHA 是否已启用并可用，同时提取所需数据
+     * 检查 recaptcha-popup-login 是否已启用并可用，同时提取所需数据
      * @returns {Object|null} 返回包含所有必要数据的对象，如果未启用则返回 null
      */
     function getReCaptchaData() {
@@ -15,15 +15,27 @@ define([
             return null;
         }
         
-        // 检查 2: registry 中是否有已注册的 widget
+        // 获取 registry 数据
+        var ids = registry.ids();
         var captchaList = registry.captchaList();
-        if (!captchaList || captchaList.length === 0) {
-            console.log('[ReCaptcha] No captcha widgets registered in registry');
+        var tokenFields = registry.tokenFields();
+        
+        // 检查 2: 查找 recaptcha-popup-login 是否存在
+        var targetIndex = ids.indexOf('recaptcha-popup-login');
+        
+        if (targetIndex === -1) {
+            console.log('[ReCaptcha] recaptcha-popup-login not found in registry (may be disabled for social login)');
             return null;
         }
         
-        // 检查 3: registry 中是否有 token fields
-        var tokenFields = registry.tokenFields();
+        // 检查 3: 对应的 widget ID 是否有效
+        var widgetId = captchaList[targetIndex];
+        if (!widgetId) {
+            console.warn('[ReCaptcha] Widget ID is null for recaptcha-popup-login');
+            return null;
+        }
+        
+        // 检查 4: token fields 是否可用
         if (!tokenFields || tokenFields.length === 0) {
             console.log('[ReCaptcha] No token fields available in registry');
             return null;
@@ -32,46 +44,9 @@ define([
         // ✅ 一次性提取所有需要的数据
         return {
             grecaptcha: window.grecaptcha,
-            captchaList: captchaList,
-            tokenFields: tokenFields,
-            ids: registry.ids()
+            widgetId: widgetId,
+            tokenFields: tokenFields
         };
-    }
-
-    /**
-     * 从 registry 数据中获取可用的 widget ID
-     * @param {Array} ids - registry.ids()
-     * @param {Array} captchaList - registry.captchaList()
-     * @returns {String|null}
-     */
-    function getWidgetId(ids, captchaList) {
-        // 优先查找 'recaptcha-popup-login'
-        var targetIndex = ids.indexOf('recaptcha-popup-login');
-        
-        if (targetIndex !== -1 && captchaList[targetIndex]) {
-            return captchaList[targetIndex];
-        }
-        
-        // 如果没有找到指定的，使用第一个可用的
-        if (captchaList.length > 0) {
-            return captchaList[0];
-        }
-        
-        return null;
-    }
-
-    /**
-     * 从 token fields 中提取有效的 token
-     * @param {Array} tokenFields - registry.tokenFields()
-     * @returns {String|null}
-     */
-    function extractToken(tokenFields) {
-        for (var i = 0; i < tokenFields.length; i++) {
-            if (tokenFields[i] && tokenFields[i].value) {
-                return tokenFields[i].value;
-            }
-        }
-        return null;
     }
 
     return function (targetWidget) {
@@ -102,19 +77,11 @@ define([
              * @private
              */
             _injectReCaptchaToken: function (recaptchaData) {
-                // 从预提取的数据中获取 widget ID
-                var widgetId = getWidgetId(recaptchaData.ids, recaptchaData.captchaList);
-                
-                if (!widgetId) {
-                    console.warn('[ReCaptcha] Widget ID not found');
-                    return;
-                }
-                
-                console.log('[ReCaptcha] Executing reCAPTCHA for widget:', widgetId);
+                console.log('[ReCaptcha] Executing reCAPTCHA for widget:', recaptchaData.widgetId);
                 
                 // 执行验证
                 try {
-                    recaptchaData.grecaptcha.execute(widgetId);
+                    recaptchaData.grecaptcha.execute(recaptchaData.widgetId);
                     
                     // 监听 token 返回（通过轮询 registry.tokenFields）
                     this._waitForToken(recaptchaData);
@@ -137,7 +104,13 @@ define([
                     attempts++;
                     
                     // ✅ 直接从预提取的数据中读取 token
-                    var token = extractToken(recaptchaData.tokenFields);
+                    var token = null;
+                    for (var i = 0; i < recaptchaData.tokenFields.length; i++) {
+                        if (recaptchaData.tokenFields[i] && recaptchaData.tokenFields[i].value) {
+                            token = recaptchaData.tokenFields[i].value;
+                            break;
+                        }
+                    }
                     
                     if (token) {
                         clearInterval(checkToken);
