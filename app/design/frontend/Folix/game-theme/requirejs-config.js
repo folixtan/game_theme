@@ -13,15 +13,6 @@
  */
 
 var config = {
-    config: {
-        mixins: {
-            // 示例：使用 mixin 扩展原生组件
-            // 'mage/menu': {
-            //     'Magento_Theme/js/menu-mixin': true
-            // }
-        }
-    },
-
     paths: {
         // 自定义模块路径别名（可选）
         // 'folixSlider': 'Magento_Theme/js/slider'
