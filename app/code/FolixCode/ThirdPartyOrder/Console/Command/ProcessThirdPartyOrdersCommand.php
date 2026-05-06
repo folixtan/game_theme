@@ -16,6 +16,7 @@ use Magento\Framework\App\State;
 use Psr\Log\LoggerInterface;
 use FolixCode\ThirdPartyOrder\Model\MessageQueue\Consumer\OrderSyncConsumer;
 use  Magento\AsynchronousOperations\Api\Data\OperationInterfaceFactory;
+use Symfony\Component\Console\Input\InputOption;
 
 class ProcessThirdPartyOrdersCommand extends Command
 {
