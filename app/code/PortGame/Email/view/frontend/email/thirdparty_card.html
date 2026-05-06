@@ -4,7 +4,7 @@
  * See COPYING.txt for license details.
  */
 -->
-<!--@subject {{trans "Your Card Order Information - Order #%order_increment_id"}} @-->
+<!--@subject {{trans "Your Card Order Information - Order #%order_increment_id" order_increment_id=$order_increment_id}} @-->
 <!--@vars {
 "var customer_name":"Customer Name",
 "var order_id":"Order ID",
@@ -36,7 +36,7 @@
             </table>
             {{/depend}}
 
-            {{depend card_number}}
+            {{if card_number}}
             <table class="card-info" width="100%">
                 <tr>
                     <td>
@@ -48,7 +48,7 @@
                     </td>
                 </tr>
             </table>
-            {{/depend}}
+            {{/if}}
 
             <table class="security-notice" width="100%">
                 <tr>
