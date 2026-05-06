@@ -11,7 +11,9 @@
 "var order_increment_id":"Order Increment ID",
 "var card_number":"Card Number",
 "var password":"Password",
-"var expiry_date":"Expiry Date"
+"var expiry_date":"Expiry Date",
+"var charge_account":"Charge Account",
+"var charge_region":"Charge Region"
 } @-->
 
 {{template config_path="design/email/header_template"}}
@@ -19,27 +21,21 @@
 <table class="email-content" width="100%">
     <tr>
         <td>
-            <!-- Greeting -->
             <p class="greeting">{{trans "Hello %customer_name," customer_name=$customer_name}}</p>
-            
-            <!-- Order Confirmation -->
             <p>{{trans "Thank you for your order from PortGame. Your order #%order_increment_id has been processed successfully." order_increment_id=$order_increment_id}}</p>
-             
-              {{depend charge_account}}
-                    <table class="card-info" width="100%">
+
+            {{depend charge_account}}
+            <table class="card-info" width="100%">
                 <tr>
                     <td>
                         <h2>{{trans "Your Charge Account"}}</h2>
                         <p><strong>{{trans "Charge Account:"}}</strong> {{var charge_account}}</p>
-                
                         <p><strong>{{trans "Charge Region:"}}</strong> {{var charge_region}}</p>
-                      
                     </td>
                 </tr>
             </table>
+            {{/depend}}
 
-               {{/depend}}
-            <!-- Card Information -->
             {{depend card_number}}
             <table class="card-info" width="100%">
                 <tr>
@@ -56,8 +52,7 @@
                 </tr>
             </table>
             {{/depend}}
-            
-            <!-- Security Notice -->
+
             <table class="security-notice" width="100%">
                 <tr>
                     <td>
@@ -66,8 +61,7 @@
                     </td>
                 </tr>
             </table>
-            
-            <!-- Footer Message -->
+
             <p>{{trans "If you have any questions, please contact our customer support."}}</p>
             <p>{{trans "Thank you for choosing PortGame!"}}</p>
         </td>
