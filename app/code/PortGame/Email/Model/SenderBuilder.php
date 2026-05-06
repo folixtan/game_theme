@@ -80,7 +80,7 @@ class SenderBuilder
             }
             //if email has been sent
            if($entityId = $this->templateContainer->getTemplateVarsByKey('entity_id')) {
-               if($this->resource->getSenderEmailStatus($entityId)) return;
+               if($this->resource->getSenderEmailStatus((int)$entityId)) return;
            }
             $this->configureEmailTemplate();
 
