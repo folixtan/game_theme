@@ -86,7 +86,7 @@ class OrderStatusHandler
         // 根据状态码处理
         switch ($statusCode) {
             case self::STATUS_SUCCESS:
-                $this->handleSuccess($entityId, $magentoOrderId, $customerId, $orderData);
+                $this->handleSuccess($entityId, $magentoOrderId, $customerId, $orderData,$record);
                 break;
                 
             case self::STATUS_FAILED:
@@ -108,7 +108,7 @@ class OrderStatusHandler
      * @param int|null $customerId
      * @param array $orderData
      */
-    private function handleSuccess(int $entityId, int $magentoOrderId, ?int $customerId, array $orderData): void
+    private function handleSuccess(int $entityId, int $magentoOrderId, ?int $customerId, array $orderData,array $record): void
     {
         try {
             // 1. 使用 Transformer 转换数据（返回完整的数据库字段）
@@ -129,12 +129,7 @@ class OrderStatusHandler
             // 4. 执行 UPDATE
             $this->resource->updateByEntityId($entityId, $updateData);
             
-            // 5. 触发"同步后"事件
-            $this->eventManager->dispatch('thirdparty_order_after_sync_success', [
-                'entity_id' => $entityId,
-                'data' => $transformedData
-            ]);
-
+           
             $this->logger->info('Order item marked as success', [
                 'entity_id' => $entityId
             ]);
@@ -146,6 +141,12 @@ class OrderStatusHandler
             
             // 7. 检查并更新整个订单的状态
             $this->orderStateUpdater->checkAndMarkOrderComplete($magentoOrderId);
+
+             // 5. 触发"同步后"事件
+            $this->eventManager->dispatch('thirdparty_order_after_sync_success', [
+                'entity_id' => $entityId,
+                'data' => array_merge($transformedData,$record)
+            ]);
 
         } catch (\Exception $e) {
             $this->logger->error('Failed to handle success status', [

@@ -22,22 +22,19 @@ class OrderPlaceAfter implements ObserverInterface
     /**
      * @var \Magento\Sales\Api\Data\OrderItemInterface $orderItem
      */
-         $orderItem = $observer->getEvent()->getItem();
          $data      = $observer->getEvent()->getData();
-         $response  = $observer->getEvent()->getResponse();
-
-         $this->template->setTemplateId('portgame_email_thirdparty_card');
+      
 
          $templateVar = [
-            'product_name' => $orderItem->getName(),
-             'product_sku' => $orderItem->getSku(),
-             'entity_id' => $orderItem->getItemId(),
+            'product_name' => $data['product_name'] ?? '',
+             'product_sku' => $data['product_sku'] ??'',
+             'entity_id' =>  $data['entity_id'] ?? '',
              'charge_account' => $data['charge_account'] ?? '',
               'charge_type' => $data['charge_type'] ?? '',
-              'customer_name' => $response['customer_name'] ?? 'Guest',
+              'customer_name' => $data['customer_name'] ?? 'Guest',
               'charge_amount' => $data['charge_amount'] ?? '',
               'goods_type' => $data['goods_type'] ?? '',
-              'order_increment_id' => $response['increment_id'] ?? '',
+              'order_increment_id' => $data['increment_id'] ?? '',
               'charge_region' => $data['charge_region'] ?? '',
               'card_number' => $data['card_no'] ?? '',
                'password' => $data['card_pwd'] ?? '',
@@ -45,7 +42,7 @@ class OrderPlaceAfter implements ObserverInterface
          ];
          $this->template->setTemplateVars($templateVar);
 
-         $this->senderBuilder()->send( $response['email'], $response['customer_name'] ?? 'Guest');
+         $this->senderBuilder()->send( $data['customer_email'], $data['customer_name'] ?? 'Guest');
    }
 
    private function senderBuilder()

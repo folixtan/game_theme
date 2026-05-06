@@ -193,9 +193,17 @@ class OrderSyncService
             // 4. 执行 UPDATE（基于 entity_id）
             $this->resource->updateByEntityId((int)$entityId, $updateData);
             
+            /**
+             *  
+             */
+            $transformedData['customer_email'] = $response['email'];
+            $transformedData['customer_name'] = $response['customer_name'];
+            $transformedData['product_name']  = $orderItem->getName();
+            $transformedData['product_sku'] = $orderItem->getSku();
+            $transformedData['entity_id'] = $entityId;
             // 5. 触发"同步后"事件
+            
             $this->eventManager->dispatch('thirdparty_order_after_sync_success', [
-                'item' => $orderItem,
                 'data' => $transformedData,
                 'entity_id' => $entityId
             ]);

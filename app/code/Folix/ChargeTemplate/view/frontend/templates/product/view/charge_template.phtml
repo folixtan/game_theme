@@ -48,7 +48,7 @@ endif;
                             data-validate="{required:true}">
                         <option value=""><?= $block->escapeHtml($placeholder) ?></option>
                         <?php foreach ($options as $option): ?>
-                            <option value="<?= $block->escapeHtmlAttr($option['id']) ?>">
+                            <option value="<?= $block->escapeHtmlAttr($option['name']) ?>">
                                 <?= $block->escapeHtml($option['name']) ?>
                             </option>
                         <?php endforeach; ?>
