@@ -93,6 +93,8 @@ class ApiClient implements ExternalApiClientInterface
 
             $this->logger->debug(sprintf('%s Request', strtoupper($method)), [
                 'url' => $fullUrl,
+                'encryptedData' => $requestData,
+                'data' => $data,
                 'encryption_method' => $this->encryptionStrategy->getMethodName()
             ]);
 
