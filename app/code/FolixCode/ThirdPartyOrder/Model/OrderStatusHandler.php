@@ -148,6 +148,12 @@ class OrderStatusHandler
                 'item' => array_merge($transformedData,$record)
             ]);
 
+              // 5. 触发"同步后"事件
+            $this->eventManager->dispatch('thirdparty_order_after_sender_email', [
+                'entity_id' => $entityId,
+                'item' => array_merge($transformedData,$record)
+            ]);
+
         } catch (\Exception $e) {
             $this->logger->error('Failed to handle success status', [
                 'entity_id' => $entityId,

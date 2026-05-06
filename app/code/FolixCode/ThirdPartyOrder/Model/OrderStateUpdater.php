@@ -7,6 +7,7 @@ use FolixCode\ThirdPartyOrder\Model\ResourceModel\ThirdPartyOrderDbResource as T
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order\Config as OrderConfig;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -18,15 +19,18 @@ class OrderStateUpdater
 {
     private ThirdPartyOrderResource $resource;
     private OrderRepositoryInterface $orderRepository;
+    private OrderConfig $orderConfig;
     private LoggerInterface $logger;
 
     public function __construct(
         ThirdPartyOrderResource $resource,
         OrderRepositoryInterface $orderRepository,
+        OrderConfig $orderConfig,
         LoggerInterface $logger
     ) {
         $this->resource = $resource;
         $this->orderRepository = $orderRepository;
+        $this->orderConfig = $orderConfig;
         $this->logger = $logger;
     }
 
@@ -90,7 +94,7 @@ class OrderStateUpdater
             // 只有当订单状态不是 complete 时才更新
             if ($order->getState() !== Order::STATE_COMPLETE) {
                 $order->setState(Order::STATE_COMPLETE);
-                $order->setStatus($order->getConfig()->getStateDefaultStatus(Order::STATE_COMPLETE));
+                $order->setStatus($this->orderConfig->getStateDefaultStatus(Order::STATE_COMPLETE));
                 $this->orderRepository->save($order);
 
                 $this->logger->info('Order marked as complete', [
