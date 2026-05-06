@@ -66,7 +66,7 @@ class ThirdPartyOrderManagement implements ThirdPartyOrderManagementInterface
                 'third_party_order_id' => $orderData['order_id']
             ]);
 
-            return true;
+            return 200;
 
         } catch (\Exception $e) {
             $this->logger->error('Failed to handle notification', [
