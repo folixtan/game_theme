@@ -21,12 +21,12 @@ class Template implements ResetAfterRequestInterface
     /**
      * @var array
      */
-    protected $vars;
+    protected $vars = [] ;
 
     /**
      * @var array
      */
-    protected $options;
+    protected $options = [];
 
     /**
      * @var string
@@ -62,10 +62,10 @@ class Template implements ResetAfterRequestInterface
      */
     public function getTemplateVars()
     {
-        return $this->vars;
+        return $this->vars ?? [];
     }
 
-    public function getTemplateVarsByKey($key)
+    public function getTemplateVarsByKey(string $key)
     {
         return $this->vars[$key] ?? null;
     }
@@ -76,7 +76,7 @@ class Template implements ResetAfterRequestInterface
      */
     public function getTemplateOptions()
     {
-        return $this->options;
+        return $this->options ?? [];
     }
 
     /**
@@ -107,8 +107,8 @@ class Template implements ResetAfterRequestInterface
      */
     public function _resetState(): void
     {
-        $this->vars = null;
-        $this->options = null;
+        $this->vars = [];
+        $this->options = [];
         $this->templateId = null;
     }
 }
