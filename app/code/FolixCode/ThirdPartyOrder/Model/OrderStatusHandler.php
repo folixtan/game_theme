@@ -25,6 +25,7 @@ class OrderStatusHandler
     private ApiResponseTransformerInterface $transformer;
     private EventManager $eventManager;
     private OrderStateUpdater $orderStateUpdater;
+    private TimezoneInterface $timezone;
     private LoggerInterface $logger;
 
     public function __construct(
@@ -33,6 +34,7 @@ class OrderStatusHandler
         ApiResponseTransformerInterface $transformer,
         EventManager $eventManager,
         OrderStateUpdater $orderStateUpdater,
+        TimezoneInterface $timezone,
         LoggerInterface $logger
     ) {
         $this->resource = $resource;
@@ -40,6 +42,7 @@ class OrderStatusHandler
         $this->transformer = $transformer;
         $this->eventManager = $eventManager;
         $this->orderStateUpdater = $orderStateUpdater;
+        $this->timezone = $timezone;
         $this->logger = $logger;
     }
 
@@ -121,7 +124,7 @@ class OrderStatusHandler
             $updateData = $transformedData;
             $updateData['status_code'] = self::STATUS_SUCCESS;
             $updateData['sync_status'] = 'synced';
-            $updateData['synced_at'] = date('Y-m-d H:i:s');
+            $updateData['synced_at'] = $this->timezone->date()->format('Y-m-d H:i:s');
 
             // 4. 执行 UPDATE
             $this->resource->updateByEntityId($entityId, $updateData);

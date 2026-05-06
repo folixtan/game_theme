@@ -35,6 +35,7 @@
         <column xsi:type="varchar" name="sync_status" nullable="false" length="20" default="pending" comment="Sync Status: pending/synced/failed"/>
         <column xsi:type="timestamp" name="synced_at" nullable="true" comment="Synced At"/>
         <column xsi:type="text" name="last_error" nullable="true"   comment="Failed Message"/>
+        <column xsi:type="smallint" name="sender_email" padding="10" nullable="true" default="0" comment="Sender Email"/>
         
         <!-- 时间戳 -->
         <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>

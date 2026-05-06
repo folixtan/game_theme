@@ -16,29 +16,11 @@ interface ThirdPartyOrderManagementInterface
      * 
      * POST /rest/V1/thirdpartyorders/notification
      *
-     * @param array $notificationData 通知数据
-     * @return bool true表示处理成功
+     * @param mixed $data 通知数据
+     * @return int 200e表示处理成功
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function handleNotification(array $notificationData): bool;
+    public function handleNotification(string $data): int;
 
-    /**
-     * 根据Magento订单ID获取第三方订单信息
-     * 
-     * GET /rest/V1/thirdpartyorders/:magentoOrderId
-     *
-     * @param int $magentoOrderId Magento订单ID
-     * @return array|null 第三方订单信息
-     */
-    public function getByMagentoOrderId(int $magentoOrderId): ?array;
-
-    /**
-     * 根据第三方订单ID获取订单信息
-     * 
-     * GET /rest/V1/thirdpartyorders/third-party/:thirdPartyOrderId
-     *
-     * @param string $thirdPartyOrderId 第三方订单ID
-     * @return array|null 订单信息
-     */
-    public function getByThirdPartyOrderId(string $thirdPartyOrderId): ?array;
+    
 }

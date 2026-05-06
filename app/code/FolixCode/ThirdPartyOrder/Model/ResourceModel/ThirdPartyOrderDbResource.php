@@ -157,4 +157,43 @@ class ThirdPartyOrderDbResource extends AbstractDb
         
         return $connection->fetchAll($select) ?: [];
     }
+
+    /**
+     * 设置发送邮件状态
+     *
+     * @param int $entityId
+     * @param string $status
+     * @return bool
+     */
+    public function setSenderEmailStatus(int $entityId, string $status): bool
+    {
+        $connection = $this->getConnection();
+        $updateData = [
+            'sender_email' => $status,
+            'updated_at' => $this->timezone->date()->format('Y-m-d H:i:s')
+        ];
+
+        $where = ['entity_id = ?' => $entityId];
+        return (bool)$connection->update($this->getMainTable(), $updateData, $where);
+    }
+
+   
+    /**
+     * 获取发送邮件状态
+     *
+     * @param int $entityId
+     * @return string
+     */
+    public function getSenderEmailStatus(int $entityId): string
+    {
+        $connection = $this->getConnection();
+        $select = $connection->select()
+            ->from($this->getMainTable(), ['sender_email'])
+            ->where('entity_id = ?', $entityId);
+        
+        $result = $connection->fetchRow($select);
+        return $result['sender_email'] ?? '';
+    }
 }
+
+

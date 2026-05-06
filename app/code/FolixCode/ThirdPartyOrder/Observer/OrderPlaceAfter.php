@@ -31,6 +31,7 @@ class OrderPlaceAfter implements ObserverInterface
          $templateVar = [
             'product_name' => $orderItem->getName(),
              'product_sku' => $orderItem->getSku(),
+             'entity_id' => $orderItem->getItemId(),
              'charge_account' => $data['charge_account'] ?? '',
               'charge_type' => $data['charge_type'] ?? '',
               'customer_name' => $response['customer_name'] ?? 'Guest',

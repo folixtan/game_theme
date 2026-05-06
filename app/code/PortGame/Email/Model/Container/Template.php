@@ -65,6 +65,10 @@ class Template implements ResetAfterRequestInterface
         return $this->vars;
     }
 
+    public function getTemplateVarsByKey($key)
+    {
+        return $this->vars[$key] ?? null;
+    }
     /**
      * Get email template options
      *

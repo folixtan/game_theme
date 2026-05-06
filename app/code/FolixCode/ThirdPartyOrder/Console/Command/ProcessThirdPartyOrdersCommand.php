@@ -63,6 +63,14 @@ class ProcessThirdPartyOrdersCommand extends Command
     protected function configure()
     {
         $this->setName(self::COMMAND_NAME)
+            ->setDefinition([
+                new InputOption(
+                    'order_id',
+                    'o',
+                    InputOption::VLUE_REQUIRED,
+                    'Order ID to process'
+                )
+            ])
             ->setDescription('Process third party orders');
 
         parent::configure();
@@ -87,12 +95,13 @@ class ProcessThirdPartyOrdersCommand extends Command
         $output->writeln('<info>========================================</info>');
         
         try {
+            $orderId = $input->getOption('order_id');
             $operation = $this->operationFactory->create(
                [
                 'data' => [
                     'topic_name' => \FolixCode\ThirdPartyOrder\Model\MessageQueue\Publisher::TOPIC_ORDER_SYNC,
                     'serialized_data' => json_encode([
-                        'order_id' => 18
+                        'order_id' => $orderId
                     ]),
                     'status' => 4
                 ]

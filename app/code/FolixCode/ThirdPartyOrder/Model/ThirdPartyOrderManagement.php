@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace FolixCode\ThirdPartyOrder\Model;
 
-use FolixCode\BaseSyncService\Helper\Data as BaseSyncHelper;
+
 use FolixCode\ThirdPartyOrder\Api\ThirdPartyOrderManagementInterface;
 use FolixCode\ThirdPartyOrder\Model\ResourceModel\ThirdPartyOrderDbResource as ThirdPartyOrderResource;
 use Magento\Framework\Exception\LocalizedException;
 use Psr\Log\LoggerInterface;
+use FolixCode\BaseSyncService\Api\EncryptionStrategyInterface;
+use Magento\Framework\Serialize\Serializer\Json;
 
 
 /**
@@ -17,43 +19,36 @@ class ThirdPartyOrderManagement implements ThirdPartyOrderManagementInterface
 {
     private ThirdPartyOrderResource $resource;
     private OrderStatusHandler $orderStatusHandler;
-    private BaseSyncHelper $baseHelper;
+    private EncryptionStrategyInterface $encryption;
     private LoggerInterface $logger;
+    private Json $json;
 
     public function __construct(
         ThirdPartyOrderResource $resource,
         OrderStatusHandler $orderStatusHandler,
-        BaseSyncHelper $baseHelper,
+        EncryptionStrategyInterface $encryption,
+        Json $json,
         LoggerInterface $logger
     ) {
         $this->resource = $resource;
         $this->orderStatusHandler = $orderStatusHandler;
-        $this->baseHelper = $baseHelper;
+        $this->encryption = $encryption;
         $this->logger = $logger;
+        $this->json = $json;
     }
 
     /**
      * @inheritdoc
      */
-    public function handleNotification(array $notificationData): bool
+    public function handleNotification(string $data): int
     {
         try {
-            $this->logger->info('Received third party notification via REST API', [
-                'has_data' => isset($notificationData['data']),
-                'has_secret_id' => isset($notificationData['secret_id'])
-            ]);
+             
+           if(empty($data)) throw new  LocalizedException(__('Empty data'));
 
-            // 1. 验证签名(如果需要)
-            if (!$this->validateSignature($notificationData)) {
-                throw new LocalizedException(__('Invalid signature'));
-            }
+             
 
-            // 2. 解密data字段
-            if (!isset($notificationData['data'])) {
-                throw new LocalizedException(__('Missing data field'));
-            }
-
-            $orderData = $this->baseHelper->decryptResponseData($notificationData['data']);
+            $orderData = $this->encryption->decrypt($data);
             
             if (empty($orderData) || !isset($orderData['order_id'])) {
                 throw new LocalizedException(__('Invalid order data after decryption'));
@@ -64,8 +59,12 @@ class ThirdPartyOrderManagement implements ThirdPartyOrderManagementInterface
                 'status_code' => $orderData['status_code'] ?? 'unknown'
             ]);
 
-            // 3. 处理订单状态更新
+            // 3. 调用 OrderStatusHandler 处理订单状态更新
             $this->orderStatusHandler->handleNotification($orderData);
+
+            $this->logger->info('Notification processed successfully, returning HTTP 200', [
+                'third_party_order_id' => $orderData['order_id']
+            ]);
 
             return true;
 
@@ -77,81 +76,5 @@ class ThirdPartyOrderManagement implements ThirdPartyOrderManagementInterface
             throw new LocalizedException(__($e->getMessage()));
         }
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getByMagentoOrderId(int $magentoOrderId): ?array
-    {
-        $record = $this->resource->loadByMagentoOrderId($magentoOrderId);
-        
-        if (!$record) {
-            return null;
-        }
-
-        // 格式化返回数据
-        return $this->formatOrderData($record);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getByThirdPartyOrderId(string $thirdPartyOrderId): ?array
-    {
-        $record = $this->resource->loadByThirdPartyOrderId($thirdPartyOrderId);
-        
-        if (!$record) {
-            return null;
-        }
-
-        return $this->formatOrderData($record);
-    }
-
-    /**
-     * 验证签名
-     *
-     * @param array $params
-     * @return bool
-     */
-    private function validateSignature(array $params): bool
-    {
-        // TODO: 根据第三方文档实现签名验证逻辑
-        // 示例伪代码:
-        // $expectedSign = $params['sign'];
-        // $calculatedSign = $this->calculateSignature($params);
-        // return hash_equals($expectedSign, $calculatedSign);
-        
-        // 暂时跳过,等待确认签名算法
-        return true;
-    }
-
-    /**
-     * 格式化订单数据返回
-     *
-     * @param array $record
-     * @return array
-     */
-    private function formatOrderData(array $record): array
-    {
-         
-
-        return [
-            'entity_id' => (int)$record['entity_id'],
-            'magento_order_id' => (int)$record['magento_order_id'],
-            'customer_id' => $record['customer_id'] ? (int)$record['customer_id'] : null,
-            'third_party_order_id' => $record['third_party_order_id'],
-            'order_type' => $record['order_type'],
-            'status_code' => (int)$record['status_code'],
-            'charge_account' => $record['charge_account'],
-            'charge_region' => $record['charge_region'],
-            'card_no' => $record['card_no'],
-            'card_pwd' => $record['card_pwd'],
-            'card_deadline' => $record['card_deadline'],
-        
-            'sync_status' => $record['sync_status'],
-            'synced_at' => $record['synced_at'],
-            'created_at' => $record['created_at'],
-            'updated_at' => $record['updated_at']
-        ];
-    }
+ 
 }

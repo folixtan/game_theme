@@ -11,7 +11,7 @@ namespace PortGame\Email\Model;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use PortGame\Email\Model\Container\Template;
 use Psr\Log\LoggerInterface;
-
+use FolixCode\ThirdPartyOrder\Model\ResourceModel\ThirdPartyOrderDbResource;
 /**
  * Email Sender Builder
  * 
@@ -38,6 +38,10 @@ class SenderBuilder
     private $logger;
 
     /**
+     * @var ThirdPartyOrderDbResource
+     */
+    private $resource;
+    /**
      * Constructor
      *
      * @param Template $templateContainer
@@ -48,12 +52,14 @@ class SenderBuilder
         Template $templateContainer,
         TransportBuilder $transportBuilder,
         LoggerInterface $logger,
+        ThirdPartyOrderDbResource $resource,
         EmailConfig $emailConfig
     ) {
         $this->templateContainer = $templateContainer;
         $this->transportBuilder = $transportBuilder;
         $this->emailConfig = $emailConfig;
         $this->logger = $logger;
+        $this->resource = $resource;
     }
 
     /**
@@ -72,13 +78,20 @@ class SenderBuilder
             if (!$this->emailConfig->isEnabled()) {
                 return;
             }
-
+            //if email has been sent
+           if($entityId = $this->templateContainer->getTemplateVarsByKey('entity_id')) {
+               if($this->resource->getSenderEmailStatus($entityId)) return;
+           }
             $this->configureEmailTemplate();
 
             $this->transportBuilder->addTo($customerEmail, $customerName);
 
             $transport = $this->transportBuilder->getTransport();
             $transport->sendMessage();
+
+            if($entityId = $this->templateContainer->getTemplateVarsByKey('entity_id')) 
+                $this->resource->setSenderEmailStatus((int)$entityId, 1);
+
         } catch (\Exception $e) {
            $this->logger->error('Failed to send email: ' . $e->getMessage());
         }
