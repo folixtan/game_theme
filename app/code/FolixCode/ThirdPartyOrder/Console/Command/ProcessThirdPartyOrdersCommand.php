@@ -68,7 +68,7 @@ class ProcessThirdPartyOrdersCommand extends Command
                 new InputOption(
                     'order_id',
                     'o',
-                    InputOption::VLUE_REQUIRED,
+                    InputOption::VALUE_REQUIRED,
                     'Order ID to process'
                 )
             ])
