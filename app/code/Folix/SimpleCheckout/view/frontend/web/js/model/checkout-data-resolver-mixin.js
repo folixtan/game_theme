@@ -22,34 +22,19 @@ define([
       checkoutDataResolver.resolvePaymentMethod = wrapper.wrapSuper(
         checkoutDataResolver.resolvePaymentMethod,
          function () {
-              var self = this;
-            if(!customer.isLoggedIn()){
-                  var defaultBillingAddress = window.checkoutConfig.defaultBillingAddress;
+        
+              var defaultBillingAddress = window.checkoutConfig.defaultBillingAddress;
 
-                    if(!checkoutData.getBillingAddressFromData()) {
-                        checkoutData.setSelectedBillingAddress(window.checkoutConfig.defaultBillingAddress)
-                    }
-                    if(quote.isVirtual() && !quote.billingAddress()) {
-                        selectBillingAddress(defaultBillingAddress);
-                        setBillingAddressAction(defaultBillingAddress);
-                 
-                    }
-                return;
+            if(!checkoutData.getBillingAddressFromData()) {
+                checkoutData.setSelectedBillingAddress(window.checkoutConfig.defaultBillingAddress)
+            }
+            if(quote.isVirtual() && !quote.billingAddress()) {
+                selectBillingAddress(defaultBillingAddress);
+                setBillingAddressAction(defaultBillingAddress);
+            
             }
         
-        // 对于虚拟商品，不自动选择支付方式
-            if (quote.isVirtual()) {
-                var selectedPaymentMethod = checkoutData.getSelectedPaymentMethod();
-                
-                if (!quote.paymentMethod() && selectedPaymentMethod) {
-                
-                    setTimeout(function () {
-                        self._super();
-                    }, 100);
-                }
-                return;
-            }
-            
+        
             // 非虚拟商品保持原生逻辑
            return  this._super();
       });

@@ -107,7 +107,7 @@ class OrderSyncService
             
               // 构建请求数据
               $requestData = [
-                  'notify_url' => $this->helper->getNotifyUrl(),
+                  'user_notify_url' => $this->helper->getNotifyUrl(),
                   'user_order_id' => (string)$item->getItemId(),
                   'timestamp' => $this->timezone->date()->getTimestamp(),
                   'product_id' => $product,
