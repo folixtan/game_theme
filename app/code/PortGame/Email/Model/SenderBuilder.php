@@ -82,7 +82,7 @@ class SenderBuilder
             if (!$this->emailConfig->isEnabled()) {
                 return;
             }
-            $this->store_id = $storeId;
+         
             //if email has been sent
            if($entityId = $this->templateContainer->getTemplateVarsByKey('entity_id')) {
                if($this->resource->getSenderEmailStatus((int)$entityId)) return;
