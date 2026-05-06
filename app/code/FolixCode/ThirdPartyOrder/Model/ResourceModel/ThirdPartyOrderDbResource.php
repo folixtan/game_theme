@@ -165,7 +165,7 @@ class ThirdPartyOrderDbResource extends AbstractDb
      * @param string $status
      * @return bool
      */
-    public function setSenderEmailStatus(int $entityId, string $status): bool
+    public function setSenderEmailStatus(int $entityId, int $status): bool
     {
         $connection = $this->getConnection();
         $updateData = [
