@@ -12,7 +12,7 @@
     </event>
     
     <!-- 监听更新购物车事件，保留充值模板数据 -->
-    <event name="checkout_cart_update_items_before">
+    <event name="checkout_cart_product_update_after">
         <observer name="folix_chargetemplate_update_cart" 
                   instance="Folix\ChargeTemplate\Observer\UpdateChargeTemplateInCart"/>
     </event>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    
+    <!-- 配置 ChargeTemplateDataInterface 的实现类 -->
+    <preference for="Folix\ChargeTemplate\Api\Data\ChargeTemplateDataInterface" 
+                type="Folix\ChargeTemplate\Model\ChargeTemplateData" />
+    
+    <!-- 配置 ItemPool，将直充商品类型映射到 ChargeItem 处理器 -->
+    <!-- 注意：这里假设直充商品的产品类型是 'virtual' 或 'simple' -->
+    <!-- 如果是自定义产品类型，请替换为实际的产品类型代码 -->
+    <type name="Magento\Checkout\CustomerData\ItemPool">
+        <arguments>
+            <argument name="itemMap" xsi:type="array">
+                <!-- 如果直充商品使用 virtual 类型 -->
+                <item name="virtual" xsi:type="string">Folix\ChargeTemplate\CustomerData\ChargeItem</item>
+                <!-- 如果直充商品使用 simple 类型，取消下面注释 -->
+                <!-- <item name="simple" xsi:type="string">Folix\ChargeTemplate\CustomerData\ChargeItem</item> -->
+            </argument>
+        </arguments>
+    </type>
+    
+</config>

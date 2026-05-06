@@ -9,5 +9,6 @@
                    template="Folix_ChargeTemplate::product/view/charge_template.phtml"
                    before="product.info.addtocart"/>
         </referenceBlock>
+        
     </body>
 </page>

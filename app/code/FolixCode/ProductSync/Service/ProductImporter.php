@@ -91,23 +91,7 @@ class ProductImporter
 
     /**
      * 导入产品
-     *     array(7) {
-      ["name"]=>
-      string(18) "Sandbox card 1 USD"
-      ["face_value"]=>
-      int(1)
-      ["product_id"]=>
-      string(8) "78979978"
-      ["product_type"]=>
-      int(3)
-      ["sales_price"]=>
-      string(6) "0.9450"
-      ["sales_currency"]=>
-      string(3) "USD"
-      ["goods_category_id"]=>
-      int(50)
-    }
-
+     *    
      * @param array $productData API返回的产品数据
      * @return int|string|null
      * @throws LocalizedException
