@@ -22,7 +22,7 @@ class OrderPlaceAfter implements ObserverInterface
     /**
      * @var \Magento\Sales\Api\Data\OrderItemInterface $orderItem
      */
-         $data      = $observer->getEvent()->getData();
+         $data      = $observer->getEvent()->getItem();
       
 
          $templateVar = [

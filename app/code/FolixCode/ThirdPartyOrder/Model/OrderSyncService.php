@@ -181,7 +181,7 @@ class OrderSyncService
             // 2. 触发"同步前"事件（供应商可以监听并扩展）
             $this->eventManager->dispatch('thirdparty_order_before_sync', [
                 'order_item' => $orderItem,
-                'data' => $transformedData,
+                'trans_item' => $transformedData,
                 'response' => $response,
             ]);
             
@@ -204,7 +204,7 @@ class OrderSyncService
             // 5. 触发"同步后"事件
             
             $this->eventManager->dispatch('thirdparty_order_after_sync_success', [
-                'data' => $transformedData,
+                'item' => $transformedData,
                 'entity_id' => $entityId
             ]);
             

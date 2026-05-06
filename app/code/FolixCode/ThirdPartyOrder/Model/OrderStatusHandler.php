@@ -117,7 +117,7 @@ class OrderStatusHandler
             // 2. 触发"同步前"事件
             $this->eventManager->dispatch('thirdparty_order_before_sync', [
                 'entity_id' => $entityId,
-                'data' => $transformedData
+                'item' => $transformedData
             ]);
             
             // 3. 构建更新数据（直接使用 Transformer 返回的数据 + 系统字段）
@@ -145,7 +145,7 @@ class OrderStatusHandler
              // 5. 触发"同步后"事件
             $this->eventManager->dispatch('thirdparty_order_after_sync_success', [
                 'entity_id' => $entityId,
-                'data' => array_merge($transformedData,$record)
+                'item' => array_merge($transformedData,$record)
             ]);
 
         } catch (\Exception $e) {
