@@ -22,7 +22,7 @@ define([
       checkoutDataResolver.resolvePaymentMethod = wrapper.wrapSuper(
         checkoutDataResolver.resolvePaymentMethod,
          function () {
-              
+              var self = this;
             if(!customer.isLoggedIn()){
                   var defaultBillingAddress = window.checkoutConfig.defaultBillingAddress;
 
@@ -42,7 +42,7 @@ define([
                 var selectedPaymentMethod = checkoutData.getSelectedPaymentMethod();
                 
                 if (!quote.paymentMethod() && selectedPaymentMethod) {
-                    var self = this;
+                
                     setTimeout(function () {
                         self._super();
                     }, 100);
