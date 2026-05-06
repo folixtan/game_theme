@@ -82,7 +82,19 @@
                 <label translate="true">Third Party Order ID</label>
             </settings>
         </column>
-        
+        <column name="customer_email">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Customer Email</label>
+            </settings>
+    
+        </column>
+
+        <column name="customer_name">
+            <settings>
+                <label translate="true">Customer Name</label>
+            </settings>
+        </column>
         <!-- 订单类型 -->
         <column name="order_type" component="Magento_Ui/js/grid/columns/select">
             <settings>
@@ -122,8 +134,17 @@
         <!-- 卡密号（卡密） -->
         <column name="card_no">
             <settings>
-                <filter>text</filter>
                 <label translate="true">Card Number</label>
+            </settings>
+        </column>
+        <column name="card_pwd"> 
+            <settings>
+                <label translate="true">Card Pwd</label>
+            </settings>
+        </column>
+        <column name="card_deadline">
+           <settings>
+                <label translate="true">Card DeadLine</label>
             </settings>
         </column>
         
