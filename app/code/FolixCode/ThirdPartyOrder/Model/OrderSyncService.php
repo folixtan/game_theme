@@ -201,7 +201,8 @@ class OrderSyncService
             $transformedData['product_name']  = $orderItem->getName();
             $transformedData['product_sku'] = $orderItem->getSku();
             $transformedData['entity_id'] = $entityId;
-            $transformedData['store_id'] = $orderItem->getStoreId();
+            $transformedData['order_id'] = $response['order_id'];
+            $transformedData['increment_id'] = $response['increment_id'];
             // 5. 触发"同步后"事件
             
             $this->eventManager->dispatch('thirdparty_order_after_sync_success', [
