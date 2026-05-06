@@ -11,6 +11,8 @@ namespace PortGame\Email\Model;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use PortGame\Email\Model\Container\Template;
 use Psr\Log\LoggerInterface;
+use Magento\Framework\App\Area;
+use Magento\Store\Model\ScopeInterface;
 use FolixCode\ThirdPartyOrder\Model\ResourceModel\ThirdPartyOrderDbResource;
 /**
  * Email Sender Builder
@@ -41,6 +43,8 @@ class SenderBuilder
      * @var ThirdPartyOrderDbResource
      */
     private $resource;
+
+    private $store_id = 1;
     /**
      * Constructor
      *
@@ -78,6 +82,7 @@ class SenderBuilder
             if (!$this->emailConfig->isEnabled()) {
                 return;
             }
+            $this->store_id = $storeId;
             //if email has been sent
            if($entityId = $this->templateContainer->getTemplateVarsByKey('entity_id')) {
                if($this->resource->getSenderEmailStatus((int)$entityId)) return;
@@ -110,8 +115,13 @@ class SenderBuilder
         $identity = $this->emailConfig->getIdentity();
         $store = $this->emailConfig->getStore();
 
+        $templateOptions = array_merge([
+                'area' => Area::AREA_FRONTEND, // 前台用frontend，后台用adminhtml
+                'store' => $this->store_id
+                ],(array)$this->templateContainer->getTemplateOptions());
+
         $this->transportBuilder->setTemplateIdentifier($templateId);
-        $this->transportBuilder->setTemplateOptions($this->templateContainer->getTemplateOptions());
+        $this->transportBuilder->setTemplateOptions($templateOptions);
         $this->transportBuilder->setTemplateVars($this->templateContainer->getTemplateVars());
         $this->transportBuilder->setFromByScope($identity, $store->getId());
     }

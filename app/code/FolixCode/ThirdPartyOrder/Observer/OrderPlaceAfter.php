@@ -42,6 +42,13 @@ class OrderPlaceAfter implements ObserverInterface
          ];
          $this->template->setTemplateVars($templateVar);
 
+         $store_id = $data['store_id'] ?? 1;
+
+         $this->template->setTemplateOptions([
+            'area' => \Magento\Framework\App\Area::AREA_FRONTEND,
+            'store' => $store_id
+        ]);
+
          $this->senderBuilder()->send( $data['customer_email'], $data['customer_name'] ?? 'Guest');
    }
 
