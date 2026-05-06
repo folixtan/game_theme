@@ -85,7 +85,8 @@ class CustomerDailyStats extends AbstractDb
             ->from($this->getMainTable(), [
                 'total_orders' => 'SUM(orders_count)',
                 'total_spent' => 'SUM(orders_amount)',
-                'active_keys' => 'SUM(active_keys_count)'
+                'active_keys' => 'SUM(active_keys_count)',
+                'direct_charges' => 'SUM(direct_charges_count)'
             ])
             ->where('customer_id = ?', $customerId);
         
@@ -101,7 +102,8 @@ class CustomerDailyStats extends AbstractDb
         return $result ?: [
             'total_orders' => 0,
             'total_spent' => 0.0,
-            'active_keys' => 0
+            'active_keys' => 0,
+            'direct_charges' => 0
         ];
     }
 
@@ -115,43 +117,33 @@ class CustomerDailyStats extends AbstractDb
     public function recalculateDailyStats(int $customerId, string $statDate): array
     {
         $connection = $this->getConnection();
+        $thirdPartyOrderTable = $this->getTable('folix_third_party_orders');
         
-        // 1. 计算当天的订单数和金额
-        $orderTable = $this->getTable('sales_order');
         $dateStart = $statDate . ' 00:00:00';
         $dateEnd = $statDate . ' 23:59:59';
         
-        $orderSelect = $connection->select()
-            ->from($orderTable, [
-                'orders_count' => 'COUNT(entity_id)',
-                'orders_amount' => 'SUM(grand_total)'
+        // ✅ 单表查询所有统计数据
+        $select = $connection->select()
+            ->from($thirdPartyOrderTable, [
+                'orders_count' => new \Zend_Db_Expr('COUNT(DISTINCT magento_order_id)'),
+                'orders_amount' => new \Zend_Db_Expr('SUM(row_total)'),
+                'active_keys_count' => new \Zend_Db_Expr('SUM(CASE WHEN goods_type = 3 AND status_code = 2 THEN 1 ELSE 0 END)'),
+                'direct_charges_count' => new \Zend_Db_Expr('SUM(CASE WHEN goods_type = 4 AND status_code = 2 THEN 1 ELSE 0 END)')
             ])
             ->where('customer_id = ?', $customerId)
             ->where('created_at >= ?', $dateStart)
-            ->where('created_at <= ?', $dateEnd)
-            ->where('status IN (?)', ['complete', 'processing', 'pending']);
-        
-        $orderStats = $connection->fetchRow($orderSelect) ?: [
-            'orders_count' => 0,
-            'orders_amount' => 0.0
-        ];
-        
-        // 2. 计算当天的活跃卡密数量（goods_type = 4）
-        $thirdPartyOrderTable = $this->getTable('folix_third_party_orders');
-        $keysSelect = $connection->select()
-            ->from($thirdPartyOrderTable, ['active_keys_count' => 'COUNT(*)'])
-            ->where('customer_id = ?', $customerId)
-            ->where('goods_type = ?', 4)  // goods_type = 4 表示卡密
-            ->where('sync_status = ?', 'synced')
-            ->where('created_at >= ?', $dateStart)
             ->where('created_at <= ?', $dateEnd);
         
-        $keysStats = $connection->fetchRow($keysSelect);
-        $orderStats['active_keys_count'] = (int)($keysStats['active_keys_count'] ?? 0);
+        $stats = $connection->fetchRow($select) ?: [
+            'orders_count' => 0,
+            'orders_amount' => 0.0,
+            'active_keys_count' => 0,
+            'direct_charges_count' => 0
+        ];
         
-        // 3. 保存到统计表（防重复）
-        $this->saveDailyStats($customerId, $statDate, $orderStats);
+        // 保存到统计表（防重复）
+        $this->saveDailyStats($customerId, $statDate, $stats);
         
-        return $orderStats;
+        return $stats;
     }
 }

@@ -106,6 +106,7 @@ class OrderPaymentSuccess implements ObserverInterface
                 'customer_email' => $order->getCustomerEmail(),
                 'customer_name' => $order->getCustomerName(),
                 'product_name' => $item->getName(),
+                'row_total' => $item->getRowTotal(),  // Item 金额（含所有费用）
                 'sync_status' => 'pending',  // 初始状态：待同步
                 'created_at' => $now,
                 'updated_at' => $now

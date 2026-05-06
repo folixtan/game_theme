@@ -5,7 +5,7 @@
  */
 namespace Folix\Customer\Block\Account\Dashboard;
 
-use Folix\Customer\Api\CustomerStatsRepositoryInterface;
+use Folix\Customer\Model\ResourceModel\CustomerDailyStats as CustomerDailyStatsResource;
 use Magento\Customer\Helper\Session\CurrentCustomer;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
@@ -18,13 +18,14 @@ use Psr\Log\LoggerInterface;
  * - Total Orders: 总订单数
  * - Total Spent: 总消费金额
  * - Active Keys: 活跃卡密数
+ * - Direct Charges: 直充数量
  */
 class Stats extends Template
 {
     /**
-     * @var CustomerStatsRepositoryInterface
+     * @var CustomerDailyStatsResource
      */
-    private $customerStatsRepository;
+    private $customerDailyStatsResource;
 
     /**
      * @var CurrentCustomer
@@ -46,24 +47,25 @@ class Stats extends Template
      *
      * @param Context $context
      * @param CurrentCustomer $currentCustomer
-     * @param CustomerStatsRepositoryInterface $customerStatsRepository
+     * @param CustomerDailyStatsResource $customerDailyStatsResource
      * @param LoggerInterface $logger
      * @param array $data
      */
     public function __construct(
         Context $context,
         CurrentCustomer $currentCustomer,
-        CustomerStatsRepositoryInterface $customerStatsRepository,
+        CustomerDailyStatsResource $customerDailyStatsResource,
         LoggerInterface $logger,
         array $data = []
     ) {
         $this->currentCustomer = $currentCustomer;
-        $this->customerStatsRepository = $customerStatsRepository;
+        $this->customerDailyStatsResource = $customerDailyStatsResource;
         $this->logger = $logger;
         parent::__construct($context, $data);
     }
 
-    /*     * 获取统计数据（直接查询，不依赖统计表）
+    /**
+     * 获取统计数据（从统计表查询）
      *
      * @return array
      */
@@ -72,37 +74,15 @@ class Stats extends Template
         if ($this->cachedStats === null) {
             try {
                 $customerId = $this->currentCustomer->getCustomerId();
-                $resource = $this->_resource->getConnection();
                 
-                // 1. 查询订单统计
-                $orderTable = $this->_resource->getTableName('sales_order');
-                $orderSelect = $resource->select()
-                    ->from($orderTable, [
-                        'total_orders' => 'COUNT(entity_id)',
-                        'total_spent' => 'SUM(grand_total)'
-                    ])
-                    ->where('customer_id = ?', $customerId)
-                    ->where('status IN (?)', ['complete', 'processing', 'pending']);
-                
-                $orderStats = $resource->fetchRow($orderSelect) ?: [
-                    'total_orders' => 0,
-                    'total_spent' => 0.0
-                ];
-                
-                // 2. 查询活跃卡密数量（goods_type = 4）
-                $thirdPartyOrderTable = $this->_resource->getTableName('folix_third_party_orders');
-                $keysSelect = $resource->select()
-                    ->from($thirdPartyOrderTable, ['active_keys' => 'COUNT(*)'])
-                    ->where('customer_id = ?', $customerId)
-                    ->where('goods_type = ?', 4)
-                    ->where('sync_status = ?', 'synced');
-                
-                $keysStats = $resource->fetchRow($keysSelect);
+                // ✅ 从统计表获取聚合数据（极速查询）
+                $stats = $this->customerDailyStatsResource->getAggregatedStats($customerId);
                 
                 $this->cachedStats = [
-                    'total_orders' => (int)($orderStats['total_orders'] ?? 0),
-                    'total_spent' => (float)($orderStats['total_spent'] ?? 0.0),
-                    'active_keys' => (int)($keysStats['active_keys'] ?? 0)
+                    'total_orders' => (int)($stats['total_orders'] ?? 0),
+                    'total_spent' => (float)($stats['total_spent'] ?? 0.0),
+                    'active_keys' => (int)($stats['active_keys'] ?? 0),
+                    'direct_charges' => (int)($stats['direct_charges'] ?? 0)
                 ];
             } catch (\Exception $e) {
                 // 如果查询失败，返回默认值
@@ -114,7 +94,8 @@ class Stats extends Template
                 $this->cachedStats = [
                     'total_orders' => 0,
                     'total_spent' => 0.0,
-                    'active_keys' => 0
+                    'active_keys' => 0,
+                    'direct_charges' => 0
                 ];
             }
         }
@@ -153,5 +134,16 @@ class Stats extends Template
     {
         $stats = $this->getStats();
         return $stats['active_keys'];
+    }
+
+    /**
+     * 获取直充数量
+     *
+     * @return int
+     */
+    public function getDirectCharges(): int
+    {
+        $stats = $this->getStats();
+        return $stats['direct_charges'];
     }
 }

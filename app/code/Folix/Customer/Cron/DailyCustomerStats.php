@@ -130,21 +130,20 @@ class DailyCustomerStats
     private function getRecentOrderCustomersWithDates(): array
     {
         $connection = $this->resourceConnection->getConnection();
-        $orderTable = $this->resourceConnection->getTableName('sales_order');
+        $thirdPartyOrderTable = $this->resourceConnection->getTableName('folix_third_party_orders');
         
         // 计算时间窗口
         $sinceTime = date('Y-m-d H:i:s', strtotime('-' . self::TIME_WINDOW_MINUTES . ' minutes'));
         
-        // 查询最近 N 分钟内有订单的客户和日期（去重）
+        // 查询最近 N 分钟内有第三方订单记录的客户和日期（去重）
         $select = $connection->select()
-            ->from($orderTable, [
+            ->from($thirdPartyOrderTable, [
                 'customer_id',
                 'stat_date' => new \Zend_Db_Expr('DATE(created_at)')
             ])
             ->where('customer_id IS NOT NULL')
             ->where('customer_id > 0')
             ->where('created_at >= ?', $sinceTime)
-            ->where('status IN (?)', ['complete', 'processing', 'pending'])
             ->group(['customer_id', 'DATE(created_at)']);
         
         return $connection->fetchAll($select) ?: [];

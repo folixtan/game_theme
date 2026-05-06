@@ -19,6 +19,7 @@
         <column xsi:type="int" name="orders_count" unsigned="true" nullable="false" identity="false" default="0" comment="Orders Count for This Day"/>
         <column xsi:type="decimal" name="orders_amount" scale="4" precision="12" unsigned="false" nullable="false" default="0.0000" comment="Orders Amount for This Day"/>
         <column xsi:type="int" name="active_keys_count" unsigned="true" nullable="false" identity="false" default="0" comment="Active Keys Count for This Day"/>
+        <column xsi:type="int" name="direct_charges_count" unsigned="true" nullable="false" identity="false" default="0" comment="Direct Charges Count for This Day"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
         
         <constraint xsi:type="primary" referenceId="PRIMARY">

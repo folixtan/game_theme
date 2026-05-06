@@ -151,7 +151,7 @@ class OrderStatusHandler
               // 5. 触发"同步后"事件
             $this->eventManager->dispatch('thirdparty_order_after_sender_email', [
                 'entity_id' => $entityId,
-                'item' => array_merge($transformedData,$record)
+                'item' => array_merge($record, $transformedData)
             ]);
 
         } catch (\Exception $e) {
