@@ -42,7 +42,7 @@ class View extends Template
         'created_at', 'updated_at',
         
         // Nested objects (will be displayed as JSON)
-        'account', 'cards', 'split_orders'
+        'account', 'cards',
     ];
 
     /**
@@ -116,7 +116,7 @@ class View extends Template
             ];
 
             // Call third party API using configured client
-            $response = $this->apiClient->get(self::API_URI, $params);
+            $response = $this->apiClient->post(self::API_URI, $params);
 
             // Filter response by whitelist
             if (is_array($response)) {
@@ -161,7 +161,7 @@ class View extends Template
      */
     public function isNestedValue($value): bool
     {
-        return is_array($value) && !empty($value);
+        return is_array($value);
     }
 
     /**
@@ -172,6 +172,7 @@ class View extends Template
      */
     public function formatNestedValue($value): string
     {
+        if(empty($value)) return '';
         return json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 
