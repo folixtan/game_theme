@@ -36,7 +36,7 @@ define([
                         this.options.childProductTemplates || {},
                         window.folixChargeTemplateConfig
                     );
-                    console.log('Folix ChargeTemplate (Swatches): Loaded child product templates', this.options.childProductTemplates);
+                   
                 }
 
                 // 绑定 change 事件监听器
@@ -186,7 +186,7 @@ define([
                 // 初始化表单验证
                 this._initFormValidation($fieldsContainer);
 
-                console.log('Folix ChargeTemplate: Rendered template for product', simpleProductId);
+              
             },
 
             /**
