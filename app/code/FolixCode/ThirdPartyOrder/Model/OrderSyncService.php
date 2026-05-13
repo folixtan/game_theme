@@ -102,6 +102,7 @@ class OrderSyncService
         // 遍历订单项
         foreach ($order->getItems() as $item) {
            $itemId = $item->getItemId();
+           if(!$item->getIsVirtual()) continue;
           try { 
               $product = str_replace(\FolixCode\ProductSync\Service\ProductImporter::SKU_PREFIX,'', $item->getSku());
             

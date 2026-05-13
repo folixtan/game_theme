@@ -23,6 +23,11 @@
             </container>
         </referenceContainer>
 
+    <referenceBlock name="product.info" >
+        <container name="product.form.chage.template" htmlTag="div" htmlClass="product-form-change-template" />
+        
+
+    </referenceBlock>
         <!-- 移动原生 blocks 到新容器 -->
         
         <!-- 移动产品标题到右侧 -->

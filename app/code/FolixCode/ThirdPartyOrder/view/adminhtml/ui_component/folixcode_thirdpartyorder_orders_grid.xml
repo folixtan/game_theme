@@ -148,15 +148,6 @@
             </settings>
         </column>
         
-        <!-- 同步状态 -->
-        <column name="sync_status" component="Magento_Ui/js/grid/columns/select">
-            <settings>
-                <filter>select</filter>
-                <options class="FolixCode\ThirdPartyOrder\Model\Config\Source\SyncStatus"/>
-                <dataType>select</dataType>
-                <label translate="true">Sync Status</label>
-            </settings>
-        </column>
         
         <!-- 错误信息 -->
         <column name="last_error">

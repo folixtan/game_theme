@@ -1,9 +1,5 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <head>
-        <!-- 加载充值模板 CustomerData JS 组件 -->
-        <link src="Folix_ChargeTemplate::js/charge-template-customer-data.js"/>
-    </head>
     <body>
         <!-- 使用原生方式加载 JS Components -->
         <referenceBlock name="head.components">

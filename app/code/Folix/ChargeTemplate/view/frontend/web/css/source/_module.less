@@ -1,0 +1,66 @@
+// Folix ChargeTemplate - Configurable Product Styles
+
+.product-charge-template {
+    .charge-template-message {
+        padding: @indent__m;
+        margin-bottom: @indent__m;
+        background-color: @color-gray-light01;
+        border-left: 4px solid @color-blue1;
+        border-radius: 4px;
+
+        p {
+            margin: 0;
+            font-size: 14px;
+            color: @text__color__muted;
+        }
+    }
+
+    .charge-template-fields {
+        .charge-field {
+            margin-bottom: @indent__m;
+
+            .charge-field-label {
+                display: block;
+                margin-bottom: @indent__xs;
+                font-weight: @font-weight__semibold;
+                color: @text__color;
+
+                .required {
+                    color: @error__color;
+                    margin-left: 2px;
+                }
+            }
+
+            .charge-field-input {
+                width: 100%;
+                padding: @indent__s;
+                border: 1px solid @border-color__base;
+                border-radius: 4px;
+                font-size: 14px;
+                transition: border-color 0.2s;
+
+                &:focus {
+                    border-color: @color-blue1;
+                    outline: none;
+                }
+
+                &.charge-select {
+                    appearance: none;
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+                    background-repeat: no-repeat;
+                    background-position: right @indent__s center;
+                    padding-right: 30px;
+                }
+
+                &.charge-textarea {
+                    min-height: 80px;
+                    resize: vertical;
+                }
+            }
+
+            .charge-field-arrow {
+                display: none; // 使用 CSS background 替代
+            }
+        }
+    }
+}

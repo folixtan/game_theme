@@ -2,21 +2,72 @@
 /**
  * Folix Charge Template - Product View Template
  * 
+ * 支持标准产品（Virtual）和配置产品（Configurable）
+ * 
  * @var $block \Folix\ChargeTemplate\Block\Product\View\ChargeTemplate
  * @var $this \Magento\Framework\View\Element\Template
  */
 
 $chargeTemplate = $block->getChargeTemplate();
+$isConfigurable = $block->isConfigurableProduct();
 
+
+// 如果是配置产品且没有默认模板，显示初始提示
+if ($isConfigurable && !$chargeTemplate):
+?>
+<div id="charge-template-container" class="product-charge-template" style="display: none;">
+    <div class="charge-template-title">
+        <h3><?= $block->escapeHtml(__('Top-up Information')) ?></h3>
+    </div>
+    
+    <!-- 配置产品：初始提示信息 -->
+    <div class="charge-template-message">
+        <p><?= $block->escapeHtml(__('Please select a package to continue')) ?></p>
+    </div>
+    
+    <!-- 充值模板字段容器（动态渲染） -->
+    <div class="charge-template-fields"></div>
+</div>
+
+<?php if ($isConfigurable): ?>
+<!-- Debug Info -->
+<!-- isConfigurable: <?= $isConfigurable ? 'true' : 'false' ?> -->
+<!-- Product Type: <?= $block->getProduct()->getTypeId() ?> -->
+<!-- Child Templates Count: <?= count($block->getChildProductChargeTemplates()) ?> -->
+<script type="text/javascript">
+    console.log('Folix ChargeTemplate Debug - PHP Side:', {
+        isConfigurable: <?= $isConfigurable ? 'true' : 'false' ?>,
+        productType: '<?= $block->getProduct()->getTypeId() ?>',
+        childTemplates: <?= /* @noEscape */ json_encode($block->getChildProductChargeTemplates()) ?>
+    });
+    
+    window.folixChargeTemplateConfig = <?= /* @noEscape */ json_encode($block->getChildProductChargeTemplates()) ?>;
+    
+    console.log('window.folixChargeTemplateConfig set:', window.folixChargeTemplateConfig);
+</script>
+<?php endif; ?>
+
+<?php
+return;
+endif;
+
+// 标准产品或配置产品有默认模板
 if (!$chargeTemplate || !is_array($chargeTemplate)):
     return;
 endif;
 ?>
 
-<div class="product-charge-template">
+<div id="charge-template-container" class="product-charge-template">
     <div class="charge-template-title">
         <h3><?= $block->escapeHtml(__('Top-up Information')) ?></h3>
     </div>
+    
+    <?php if ($isConfigurable): ?>
+    <!-- 配置产品：初始提示信息（会被 JS 隐藏） -->
+    <div class="charge-template-message">
+        <p><?= $block->escapeHtml(__('Please select a package to continue')) ?></p>
+    </div>
+    <?php endif; ?>
     
     <div class="charge-template-fields">
         <?php foreach ($chargeTemplate as $index => $field): ?>

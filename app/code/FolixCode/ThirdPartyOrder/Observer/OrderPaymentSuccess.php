@@ -97,6 +97,7 @@ class OrderPaymentSuccess implements ObserverInterface
         foreach ($order->getItems() as $item) {
             // 跳过虚拟商品或非需要同步的商品类型
             // 这里可以根据实际业务需求添加过滤条件
+            if(!$item->getIsVirtual()) continue;
             
             $items[] = [
                 'entity_id' => $item->getItemId(),
