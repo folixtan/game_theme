@@ -15,7 +15,7 @@ $isConfigurable = $block->isConfigurableProduct();
 // 如果是配置产品且没有默认模板，显示初始提示
 if ($isConfigurable && !$chargeTemplate):
 ?>
-<div id="charge-template-container" class="product-charge-template" style="display: none;">
+<div id="charge-template-container" class="product-charge-template  <?php echo $isConfigurable ? 'configurable-template':'';?>" style="display: none;">
     <div class="charge-template-title">
         <h3><?= $block->escapeHtml(__('Top-up Information')) ?></h3>
     </div>
@@ -30,20 +30,9 @@ if ($isConfigurable && !$chargeTemplate):
 </div>
 
 <?php if ($isConfigurable): ?>
-<!-- Debug Info -->
-<!-- isConfigurable: <?= $isConfigurable ? 'true' : 'false' ?> -->
-<!-- Product Type: <?= $block->getProduct()->getTypeId() ?> -->
-<!-- Child Templates Count: <?= count($block->getChildProductChargeTemplates()) ?> -->
 <script type="text/javascript">
-    console.log('Folix ChargeTemplate Debug - PHP Side:', {
-        isConfigurable: <?= $isConfigurable ? 'true' : 'false' ?>,
-        productType: '<?= $block->getProduct()->getTypeId() ?>',
-        childTemplates: <?= /* @noEscape */ json_encode($block->getChildProductChargeTemplates()) ?>
-    });
     
     window.folixChargeTemplateConfig = <?= /* @noEscape */ json_encode($block->getChildProductChargeTemplates()) ?>;
-    
-    console.log('window.folixChargeTemplateConfig set:', window.folixChargeTemplateConfig);
 </script>
 <?php endif; ?>
 
@@ -58,10 +47,11 @@ endif;
 ?>
 
 <div id="charge-template-container" class="product-charge-template">
+    <?php if(!$isConfigurable):?>
     <div class="charge-template-title">
         <h3><?= $block->escapeHtml(__('Top-up Information')) ?></h3>
     </div>
-    
+    <?php endif;?>
     <?php if ($isConfigurable): ?>
     <!-- 配置产品：初始提示信息（会被 JS 隐藏） -->
     <div class="charge-template-message">

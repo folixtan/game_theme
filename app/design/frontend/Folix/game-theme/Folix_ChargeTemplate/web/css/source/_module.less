@@ -9,6 +9,7 @@
     //  _____________________________________________
 
     .product-charge-template {
+       
         margin: @indent__l 0;
         padding: @indent__l;
         background: @folix-bg-card;
@@ -30,7 +31,7 @@
                 transparent 100%);
             border-radius: 2px;
         }
-    }
+    
 
     .charge-template-title {
         margin-bottom: @indent__m;
@@ -243,7 +244,18 @@
                 }
             }
         }
+
+          
+      }
+
+     &.configurable-template {
+            margin: 0;
+            .charge-template-title {
+                display: none;
+            }
+        }
     }
+}
 
     //
     //  Desktop Styles
@@ -258,4 +270,4 @@
             font-size: 18px;
         }
     }
-}
+

@@ -102,7 +102,14 @@ class OrderSyncService
         // 遍历订单项
         foreach ($order->getItems() as $item) {
            $itemId = $item->getItemId();
-           if(!$item->getIsVirtual()) continue;
+           $this->logger->info('Processing order item', [
+               'item_id' => $itemId,
+               'order_type' => $item->getProductType(),
+               'is_virtual' => $item->getIsVirtual(),
+               'magento_order_id' => $magentoOrderId
+           ]);
+
+           if($item->getProductType() === 'configurable') continue;
           try { 
               $product = str_replace(\FolixCode\ProductSync\Service\ProductImporter::SKU_PREFIX,'', $item->getSku());
             

@@ -48,10 +48,19 @@ $canApplyMsrp = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinima
                     <?php endif; ?>
                 </strong>
                 <?php if($additionalData && is_array($additionalData)):?>
-                   <span>
-                      <span><?= $escaper->escapeHtml(__('Charge Account')) ?>: <?=  $additionalData['charge_account'] ?? "unkown"; ?></p>
-                      <span><?= $escaper->escapeHtml(__('Charge Region')) ?>: <?=  $additionalData['charge_region'] ?? "unkown"; ?></p>
-                   </span>
+                   <div class="charge-info">
+                      <?php foreach($additionalData as $key => $value): ?>
+                          <?php 
+                          // 下划线替换为空格，每个单词首字母大写
+                          $readableKey = ucwords(str_replace('_', ' ', $key));
+                          $displayValue = $value ?? 'Unknown';
+                          ?>
+                          <div class="charge-info-item">
+                              <span class="charge-info-label"><?= $escaper->escapeHtml($readableKey) ?>:</span>
+                              <span class="charge-info-value"><?= $escaper->escapeHtml($displayValue) ?></span>
+                          </div>
+                      <?php endforeach; ?>
+                   </div>
                  <?php endif;?>   
                 <?php if ($_options = $block->getOptionList()): ?>
                     <dl class="item-options">

@@ -94,10 +94,22 @@ class OrderPaymentSuccess implements ObserverInterface
         $items = [];
         $now = $this->timezone->date()->format('Y-m-d H:i:s');
 
+        $configureInfo = [];
+
         foreach ($order->getItems() as $item) {
             // 跳过虚拟商品或非需要同步的商品类型
             // 这里可以根据实际业务需求添加过滤条件
-            if(!$item->getIsVirtual()) continue;
+             $this->logger->info('add order item', [
+               'item_id' => $item->getItemId(),
+               'order_type' => $item->getProductType(),
+               'is_virtual' => $item->getIsVirtual(),
+               'magento_order_id' => $order->getId(),
+           ]);
+            if($item->getProductType() === 'configurable'){
+                $configureInfo[$item->getItemId()] =  $item->getRowTotal();
+                 continue;
+                
+                 }
             
             $items[] = [
                 'entity_id' => $item->getItemId(),
@@ -107,7 +119,7 @@ class OrderPaymentSuccess implements ObserverInterface
                 'customer_email' => $order->getCustomerEmail(),
                 'customer_name' => $order->getCustomerName(),
                 'product_name' => $item->getName(),
-                'row_total' => $item->getRowTotal(),  // Item 金额（含所有费用）
+                'row_total' => isset($configureInfo[$item->getItemId()]) ? $configureInfo[$item->getItemId()] : $item->getRowTotal(),  // Item 金额（含所有费用）
                 'sync_status' => 'pending',  // 初始状态：待同步
                 'created_at' => $now,
                 'updated_at' => $now
