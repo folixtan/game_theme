@@ -47,6 +47,32 @@ class SyncProducts
     }
 
     /**
+     * 保存最后同步页码配置
+     *
+     * @param int $page
+     * @return void
+     */
+    private function saveLastSyncPage(int $page): void
+    {
+        try {
+            $this->configResource->saveConfig(
+                ProductSyncHelper::XML_PATH_LAST_SYNC_PAGE,
+                $page,
+                ScopeInterface::SCOPE_STORE,
+                0
+            );
+            
+            $this->logger->info('ProductSync last sync page updated', [
+                'page' => $page
+            ]);
+        } catch (\Exception $e) {
+            $this->logger->error('Failed to save last sync page', [
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+
+    /**
      * 执行产品同步任务
      * 
      * 流程：
@@ -80,22 +106,25 @@ class SyncProducts
             ]);
 
             $totalPublished = 0;
-            $totalPagesProcessed = 0;
+            $pagesProcessed = 0;
 
-            // ✅ 循环处理每种产品类型（API 每次只支持单个 product_type）
-            foreach ($productTypes as $productType) {
-                $this->logger->info('ProductSync Products Cron: Processing product type', [
-                    'product_type' => $productType
-                ]);
+            // ✅ 从配置中读取上次同步的页码（断点续传）
+            $page = $this->productSyncHelper->getLastSyncPage();
+            $lastPage = 1; // 初始值，会在第一次API调用后更新
 
-                // 重置页码，从第1页开始
-                $page = 1;
-                $lastPage = 1;
-                $typePublished = 0;
-                $typePagesProcessed = 0;
+            $this->logger->info('ProductSync Products Cron: Resuming from page', [
+                'start_page' => $page
+            ]);
 
-                while (true) {
-                    try {
+            while ($page <= $lastPage) {
+                try {
+                    // 循环处理每种产品类型（API 每次只支持单个 product_type）
+                    foreach ($productTypes as $productType) {
+                        $this->logger->info('ProductSync Products Cron: Processing product type', [
+                            'product_type' => $productType,
+                            'page' => $page
+                        ]);
+
                         // 构建 API 请求参数
                         $apiParams = [
                             'page' => $page,
@@ -117,14 +146,13 @@ class SyncProducts
                                 'product_type' => $productType,
                                 'page' => $page
                             ]);
-                            break;
+                            continue; // 继续下一个产品类型
                         }
 
                         // 更新总页数（只在第一次获取）
-                        if ($typePagesProcessed === 0 && isset($productsData['last_page']) && $productsData['last_page'] > 0) {
+                        if ($pagesProcessed === 0 && isset($productsData['last_page']) && $productsData['last_page'] > 0) {
                             $lastPage = (int) $productsData['last_page'];
-                            $this->logger->info('ProductSync Products Cron: Total pages fetched for product type', [
-                                'product_type' => $productType,
+                            $this->logger->info('ProductSync Products Cron: Total pages fetched', [
                                 'total_pages' => $lastPage
                             ]);
                         }
@@ -138,43 +166,37 @@ class SyncProducts
 
                         // 将产品数据发布到消息队列（异步导入）
                         $this->publisher->publishProductImport($productsData['data']);
-                        $typePublished += count($productsData['data']);
-                        $typePagesProcessed++;
-
-                        // 检查是否还有下一页
-                        if ($page >= $lastPage) {
-                            break;
-                        }
-
-                        $page++;
-
-                    } catch (\Exception $e) {
-                        $this->logger->error('ProductSync Products Cron: Failed to fetch products', [
-                            'product_type' => $productType,
-                            'page' => $page,
-                            'error' => $e->getMessage()
-                        ]);
-                        // 失败时中断当前类型的处理，继续下一个类型
-                        break;
+                        $totalPublished += count($productsData['data']);
                     }
+
+                    $pagesProcessed++;
+
+                    // ✅ 每页处理完后，立即更新页码配置（断点续传关键点）
+                    $this->saveLastSyncPage($page + 1);
+
+                    $page++;
+
+                } catch (\Exception $e) {
+                    $this->logger->error('ProductSync Products Cron: Failed to fetch products', [
+                        'page' => $page,
+                        'error' => $e->getMessage()
+                    ]);
+                    // ❌ 失败时不更新页码，下次Cron会从当前页重试
+                    break;
                 }
-
-                $this->logger->info('ProductSync Products Cron: Product type processing completed', [
-                    'product_type' => $productType,
-                    'published' => $typePublished,
-                    'pages_processed' => $typePagesProcessed
-                ]);
-
-                $totalPublished += $typePublished;
-                $totalPagesProcessed += $typePagesProcessed;
             }
 
-            $this->logger->info('ProductSync Products Cron: All product types synchronization completed', [
+            $this->logger->info('ProductSync Products Cron: Synchronization completed', [
                 'total_published' => $totalPublished,
-                'total_pages_processed' => $totalPagesProcessed,
-                'product_types_count' => count($productTypes)
+                'pages_processed' => $pagesProcessed,
+                'next_start_page' => $page
             ]);
 
+            // ✅ 如果所有页都处理完了，重置页码为1（下一轮从头开始）
+            if ($page > $lastPage && $lastPage > 0) {
+                $this->saveLastSyncPage(1);
+                $this->logger->info('ProductSync Products Cron: All pages processed, resetting to page 1');
+            }
         } catch (\Exception $e) {
             $this->logger->error('ProductSync Products Cron: Product synchronization failed', [
                 'error' => $e->getMessage(),

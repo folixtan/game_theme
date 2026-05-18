@@ -121,4 +121,5 @@ class Data extends AbstractHelper
 
         return (int)$value;
     }
+
 }
