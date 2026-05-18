@@ -182,8 +182,10 @@ class SyncCommand extends Command
                 // ✅ 添加产品类型筛选（支持逗号分隔，如 "3,4"）
                 if ($productType) {
                     $apiParams['product_type'] = $productType;
-                } else {
-                    $apiParams['product_type'] = '3,4'; // 默认：卡密 + 直充
+                }
+
+                if($productId) {
+                     $apiParams['product_id'] = $productId;
                 }
                 
                 // ✅ 添加分类ID筛选
