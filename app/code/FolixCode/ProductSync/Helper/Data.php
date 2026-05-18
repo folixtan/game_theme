@@ -79,4 +79,46 @@ class Data extends AbstractHelper
             ScopeInterface::SCOPE_STORE
         ) ?: 1; // 默认从第1页开始
     }
+
+    /**
+     * 获取产品类型筛选配置
+     * 3=卡密, 4=直充
+     *
+     * @return array 产品类型数组，如 [3, 4]
+     */
+    public function getProductTypes(): array
+    {
+        $value = $this->scopeConfig->getValue(
+            'folixcode_productsync/settings/product_types',
+            ScopeInterface::SCOPE_STORE
+        );
+
+        // 如果配置为空或未设置，默认返回卡密和直充
+        if (empty($value)) {
+            return [3, 4]; // 默认：卡密 + 直充
+        }
+
+        // 解析逗号分隔的值，如 "3,4"
+        $types = array_map('intval', explode(',', $value));
+        return array_filter($types); // 移除空值
+    }
+
+    /**
+     * 获取商品分类ID筛选配置
+     *
+     * @return int|null 分类ID，null表示不限制
+     */
+    public function getGoodsCategoryId(): ?int
+    {
+        $value = $this->scopeConfig->getValue(
+            'folixcode_productsync/settings/goods_category_id',
+            ScopeInterface::SCOPE_STORE
+        );
+
+        if (empty($value)) {
+            return null; // 不限制分类
+        }
+
+        return (int)$value;
+    }
 }

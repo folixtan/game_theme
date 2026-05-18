@@ -89,7 +89,19 @@ class SyncCommand extends Command
                     'sku',
                     null,
                     InputOption::VALUE_OPTIONAL,
-                    'Product ID for detail sync (default: null for list sync)'
+                    'Product SKU for detail sync (default: null for list sync)'
+                ),
+                new InputOption(
+                    'product_type',
+                    null,
+                    InputOption::VALUE_OPTIONAL,
+                    'Product type filter: 3=Card Key, 4=Direct Top-up. Can use comma-separated values like "3,4" (default: 3,4)'
+                ),
+                new InputOption(
+                    'goods_category_id',
+                    null,
+                    InputOption::VALUE_OPTIONAL,
+                    'Goods category ID filter (default: null for all categories)'
                 )
             ]);
 
@@ -106,6 +118,9 @@ class SyncCommand extends Command
         $productId = $input->getOption('product_id');
         $sku       = $input->getOption('sku');
         $timestamp = (int)$input->getOption('timestamp');
+        $productType = $input->getOption('product_type');
+        $goodsCategoryId = $input->getOption('goods_category_id');
+        
         $timestamp = $timestamp > 0 ?: $this->timezone->date()->getTimestamp();
 
         $output->writeln('<info>========================================</info>');
@@ -115,6 +130,20 @@ class SyncCommand extends Command
         $output->writeln('<comment>Limit:</comment> ' . $limit);
         $output->writeln('<comment>Page:</comment> ' . $page);
         $output->writeln('<comment>Timestamp:</comment> ' . ($timestamp ?: 'Full sync'));
+        
+        // ✅ 显示产品类型和分类ID筛选信息
+        if ($productType) {
+            $output->writeln('<comment>Product Type:</comment> ' . $productType);
+        } else {
+            $output->writeln('<comment>Product Type:</comment> 3,4 (default: Card Key + Direct Top-up)');
+        }
+        
+        if ($goodsCategoryId) {
+            $output->writeln('<comment>Goods Category ID:</comment> ' . $goodsCategoryId);
+        } else {
+            $output->writeln('<comment>Goods Category ID:</comment> All categories');
+        }
+        
         $output->writeln('<info>Note: Data will be published to MQ, Consumer handles import</info>');
         $output->writeln('<info>========================================</info>');
 
@@ -143,12 +172,27 @@ class SyncCommand extends Command
             if ($type === 'products' || $type === 'all') {
                 $output->writeln('<comment>Fetching products from API...</comment>');
                 
-                // 从 API 获取产品列表
-                $productsData = $this->apiService->getProductList([
+                // 构建 API 请求参数
+                $apiParams = [
                     'per_page' => $limit,
                     'page'    => $page,
                     'timestamp' => $timestamp
-                ]);
+                ];
+                
+                // ✅ 添加产品类型筛选（支持逗号分隔，如 "3,4"）
+                if ($productType) {
+                    $apiParams['product_type'] = $productType;
+                } else {
+                    $apiParams['product_type'] = '3,4'; // 默认：卡密 + 直充
+                }
+                
+                // ✅ 添加分类ID筛选
+                if ($goodsCategoryId) {
+                    $apiParams['goods_category_id'] = $goodsCategoryId;
+                }
+                
+                // 从 API 获取产品列表
+                $productsData = $this->apiService->getProductList($apiParams);
                 
                 $output->writeln(sprintf('<comment>Found %d products, publishing to MQ...</comment>', count($productsData)));
                 
@@ -171,12 +215,12 @@ class SyncCommand extends Command
                 
                 // ✅ 修复：直接导入但采用分批处理策略避免锁竞争
                 // 策略：
-                // 1. 每批处理 10 个分类（可配置）
+                // 1. 每批处理 5 个分类（减少并发压力）
                 // 2. 每批之间添加短暂延迟，减轻数据库压力
                 // 3. 单个分类失败不影响其他分类
                 // 4. 实时显示进度
                 
-                $batchSize = 10; // 每批处理的分类数量
+                $batchSize = 5; // ✅ 减小批次大小，降低锁竞争风险
                 $successCount = 0;
                 $failCount = 0;
                 $currentBatch = 0;

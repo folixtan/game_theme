@@ -142,7 +142,7 @@ class VirtualGoodsApiService implements VirtualGoodsApiInterface
             }
 
             $this->logger->info('Successfully fetched product detail', ['params' => $params, 'detail' => $response]);
-
+           
             return $response;
 
         } catch (\Exception $e) {

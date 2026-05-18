@@ -12,9 +12,17 @@
                     <label>Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="batch_size" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Batch Siz</label>
-                  
+                <field id="batch_size" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Batch Size</label>
+                    <comment>Number of products to sync per batch (default: 100)</comment>
+                </field>
+                <field id="product_types" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Types</label>
+                    <comment>Comma-separated product types to sync. 3=Card Key, 4=Direct Top-up. Default: 3,4</comment>
+                </field>
+                <field id="goods_category_id" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Goods Category ID</label>
+                    <comment>Filter by category ID. Leave empty to sync all categories.</comment>
                 </field>
                
  
