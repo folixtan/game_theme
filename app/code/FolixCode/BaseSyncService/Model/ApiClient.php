@@ -76,7 +76,7 @@ class ApiClient implements ExternalApiClientInterface
      */
     private function request(string $method, string $url, array $data = [], array $headers = []): array
     {
-        $fullUrl = rtrim($this->vendorConfig->getApiBaseUrl(), '/') . '/' . ltrim($url, '/');
+        $fullUrl = trim(rtrim($this->vendorConfig->getApiBaseUrl(), '/') . '/' . ltrim($url, '/'));
      
         try {
             // 加密请求数据

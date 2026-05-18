@@ -1056,7 +1056,7 @@
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
     
     //
-    //  55/45 两列布局 - 图片区域更紧凑
+    //  35/60 两列布局 - 左侧图片区域更紧凑，右侧信息区域更宽
     //  _____________________________________________
     .catalog-product-view {
     .product-detail-wrapper {
@@ -1065,13 +1065,13 @@
     }
     
     .product-detail-left {
-        flex: 0 0 40%;
-        width: 40%;
+        flex: 0 0 35%;
+        width: 35%;
     }
     
     .product-detail-right {
-        flex: 0 0 55%;
-        width: 55%;
+        flex: 0 0 60%;
+        width: 60%;
     }
     
     // 右侧 sticky
