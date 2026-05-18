@@ -227,8 +227,9 @@ class CategoryProcessor
             foreach ($pathParts as $pathPart) {
                 $path .= $this->standardizeString($pathPart);
                 if (!isset($this->categories[$path])) {
-                 
-                    $this->categories[$path] = $this->createCategory($pathPart, $parentId,$attributes[$pathPart]);
+                    // ✅ 修复：只有在 attributes 中存在对应 key 时才传递，否则传空数组
+                    $categoryAttributes = isset($attributes[$pathPart]) ? $attributes[$pathPart] : [];
+                    $this->categories[$path] = $this->createCategory($pathPart, $parentId, $categoryAttributes);
                 }
                 $parentId = $this->categories[$path];
                 $path .= self::DELIMITER_CATEGORY;
