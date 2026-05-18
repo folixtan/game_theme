@@ -155,24 +155,12 @@ class CategoryProcessor
         $category->setAttributeSetId($category->getDefaultAttributeSetId());
         $category->setStoreId(Store::DEFAULT_STORE_ID);
         
-        // ✅ 保存分类
-        $category = $this->categoryRepository->save($category);
+        // ✅ 使用原生的 save() 方法（与 Magento Import 模块一致）
+        // 不使用 Repository::save()，避免额外的验证和锁竞争
+        // Magento 的 save() 会自动处理 path 的更新（追加当前分类 ID）
+        $category->save();
         
-        // ✅ 验证 path 是否正确（检查是否包含当前分类 ID）
-        $expectedPath = $parentCategory->getPath() . '/' . $category->getId();
-        if ($category->getPath() !== $expectedPath) {
-            // ❌ path 不正确，需要手动修正
-            // 这种情况会导致分类被错误地关联到根分类
-            $this->resourceConnection->getConnection()->update(
-                $this->resourceConnection->getTableName('catalog_category_entity'),
-                ['path' => $expectedPath],
-                ['entity_id = ?' => $category->getId()]
-            );
-            
-            // 同时更新缓存中的对象
-            $category->setPath($expectedPath);
-        }
-        
+        // ✅ 更新缓存
         $this->categoriesCache[$category->getId()] = $category;
         return $category->getId();
     }
