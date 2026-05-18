@@ -166,18 +166,69 @@ class SyncCommand extends Command
                     'timestamp' => $timestamp
                 ]);
                 
-                $output->writeln(sprintf('<comment>Found %d categories, publishing to MQ...</comment>', count($categoriesData)));
+                $totalCategories = count($categoriesData);
+                $output->writeln(sprintf('<comment>Found %d categories, starting import...</comment>', $totalCategories));
                 
-                // 发布到消息队列
+                // ✅ 修复：直接导入但采用分批处理策略避免锁竞争
+                // 策略：
+                // 1. 每批处理 10 个分类（可配置）
+                // 2. 每批之间添加短暂延迟，减轻数据库压力
+                // 3. 单个分类失败不影响其他分类
+                // 4. 实时显示进度
+                
+                $batchSize = 10; // 每批处理的分类数量
+                $successCount = 0;
+                $failCount = 0;
+                $currentBatch = 0;
+                
                 $import = ObjectManager::getInstance()->get(\FolixCode\ProductSync\Service\CategoryImporter::class);
-                foreach ($categoriesData as $id  =>  $name) {
-                    var_dump($id,$name);
-                    $import->import([
-                         'id'    => $id,
-                         'name'  => $name
-                    ]);
+                
+                foreach (array_chunk($categoriesData, $batchSize, true) as $batch) {
+                    $currentBatch++;
+                    $batchStart = microtime(true);
+                    
+                    $output->writeln(sprintf(
+                        '<comment>Processing batch %d/%d (%d categories)...</comment>',
+                        $currentBatch,
+                        ceil($totalCategories / $batchSize),
+                        count($batch)
+                    ));
+                    
+                    foreach ($batch as $id => $name) {
+                        try {
+                            $import->import([
+                                'id'    => $id,
+                                'name'  => $name
+                            ]);
+                            $successCount++;
+                        } catch (\Exception $e) {
+                            $failCount++;
+                            $output->writeln(sprintf(
+                                '<error>✗ Failed to import category %s: %s</error>',
+                                $id,
+                                $e->getMessage()
+                            ));
+                        }
+                    }
+                    
+                    $batchTime = round(microtime(true) - $batchStart, 2);
+                    $output->writeln(sprintf(
+                        '<info>✓ Batch %d completed in %.2fs (Success: %d, Failed: %d)</info>',
+                        $currentBatch,
+                        $batchTime,
+                        $successCount,
+                        $failCount
+                    ));
+                    
+                    // ✅ 在批次之间添加短暂延迟，减轻数据库锁竞争
+                    // 如果不是最后一批，则等待 0.5 秒
+                    if ($currentBatch < ceil($totalCategories / $batchSize)) {
+                        usleep(500000); // 0.5 秒
+                    }
                 }
-                $output->writeln(sprintf('<info>✓ Published %d categories to MQ</info>', count($categoriesData)));
+                
+                $output->writeln('');
+                $output->writeln(sprintf('<info>✓ Import completed: %d succeeded, %d failed</info>', $successCount, $failCount));
             }
 
             $endTime = microtime(true);
