@@ -15,6 +15,7 @@ class ChargeType extends AbstractSource
      */
     public const DIRECT = 4;
     public const CARD = 3;
+    public const GIFT_CARD = 5;
 
     /**
      * 获取所有选项
@@ -25,8 +26,10 @@ class ChargeType extends AbstractSource
     {
         if ($this->_options === null) {
             $this->_options = [
+                ['label' => __('Please select'), 'value' => ''],
                 ['label' => __('Direct Charging'), 'value' => self::DIRECT],
                 ['label' => __('Card & key'), 'value' => self::CARD]
+                , ['label' => __('Gift Card'), 'value' => self::GIFT_CARD]
             ];
         }
 
