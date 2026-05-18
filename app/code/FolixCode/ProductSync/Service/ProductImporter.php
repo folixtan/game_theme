@@ -20,6 +20,8 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use FolixCode\ProductSync\Exception\ApiSyncException;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute\Set\CollectionFactory as AttributeSetCollectionFactory;
 use Magento\Catalog\Api\Data\ProductAttributeInterfaceFactory;
+use FolixCode\ProductSync\Model\CategoryProcessor;
+use FolixCode\ProductSync\Helper\Data as ConfigHelper;
 
 /**
  * 产品导入服务 - 游戏充值项目
@@ -84,6 +86,7 @@ class ProductImporter
         private TimezoneInterface $timezone,
         private VirtualGoodsApiService $apiService,
         private AttributeSetCollectionFactory $attributeSetCollectionFactory,
+        private ConfigHelper $configHelper,
         private ProductAttributeInterfaceFactory $productAttributeFactory
     ) {
       
@@ -275,8 +278,11 @@ class ProductImporter
             'errors' => []
         ];
 
+        $productTypes = $this->configHelper->getProductTypes();
+
         foreach ($productsData as $productData) {
             try {
+                if(!in_array((int)$productData['product_type'], $productTypes,true)) continue;
                $id = $this->import($productData);
                $results['ids'][$id] = $id;
                 $results['success']++;
