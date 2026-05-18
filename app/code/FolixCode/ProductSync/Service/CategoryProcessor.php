@@ -134,7 +134,7 @@ class CategoryProcessor
         $this->storeManager->setCurrentStore(0);
         
         // ✅ 新增逻辑：在创建之前先检查是否已存在同名分类
-        $existingCategoryId = $this->findCategoryByNameAndParent($name, $parentId);
+        $existingCategoryId = $this->findCategoryByNameAndParent($name, (int)$parentId);
         if ($existingCategoryId) {
             // 分类已存在，直接返回 ID
             return $existingCategoryId;
