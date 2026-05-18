@@ -170,9 +170,12 @@ class SyncCommand extends Command
                 
                 // 发布到消息队列
                 $import = ObjectManager::getInstance()->get(\FolixCode\ProductSync\Service\CategoryImporter::class);
-                foreach ($categoriesData as $category) {
-                    var_dump($category);
-                    $import->import($category);
+                foreach ($categoriesData as $id  =>  $name) {
+                    var_dump($id,$name);
+                    $import->import([
+                         'id'    => $id,
+                         'name'  => $name
+                    ]);
                 }
                 $output->writeln(sprintf('<info>✓ Published %d categories to MQ</info>', count($categoriesData)));
             }
