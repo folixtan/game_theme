@@ -154,14 +154,25 @@ class CategoryProcessor
         $category->setIncludeInMenu(isset($attributes['include_in_menu']) ?? false);
         $category->setAttributeSetId($category->getDefaultAttributeSetId());
         $category->setStoreId(Store::DEFAULT_STORE_ID);
+        
+        // ✅ 保存分类
         $category = $this->categoryRepository->save($category);
-        //更改path
-    //   var_dump($category->getPath());exit;
-        $this->resourceConnection->getConnection()->update(
-            $this->resourceConnection->getTableName('catalog_category_entity'),
-            ['path' => $category->getPath().self::DELIMITER_CATEGORY.$category->getId()],
-            ['entity_id = ?' => $category->getId()]
-        );;
+        
+        // ✅ 验证 path 是否正确（检查是否包含当前分类 ID）
+        $expectedPath = $parentCategory->getPath() . '/' . $category->getId();
+        if ($category->getPath() !== $expectedPath) {
+            // ❌ path 不正确，需要手动修正
+            // 这种情况会导致分类被错误地关联到根分类
+            $this->resourceConnection->getConnection()->update(
+                $this->resourceConnection->getTableName('catalog_category_entity'),
+                ['path' => $expectedPath],
+                ['entity_id = ?' => $category->getId()]
+            );
+            
+            // 同时更新缓存中的对象
+            $category->setPath($expectedPath);
+        }
+        
         $this->categoriesCache[$category->getId()] = $category;
         return $category->getId();
     }
