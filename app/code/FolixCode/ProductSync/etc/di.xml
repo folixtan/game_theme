@@ -24,7 +24,9 @@
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="folixcode_sync_products" xsi:type="object">FolixCode\ProductSync\Console\Command\SyncCommand</item>
+                <item name="folixcode_sync_products" xsi:type="object">FolixCode\ProductSync\Console\Command\SyncCommand</item>    
+                <item name="folixcode_create_category_structure" xsi:type="object">FolixCode\ProductSync\Console\Command\CreateCategoryStructureCommand</item>
+                <item name="folixcode_restructure_categories" xsi:type="object">FolixCode\ProductSync\Console\Command\RestructureCategoriesCommand</item>
             </argument>
         </arguments>
     </type>

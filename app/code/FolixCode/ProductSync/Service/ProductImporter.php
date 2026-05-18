@@ -20,7 +20,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use FolixCode\ProductSync\Exception\ApiSyncException;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute\Set\CollectionFactory as AttributeSetCollectionFactory;
 use Magento\Catalog\Api\Data\ProductAttributeInterfaceFactory;
-use FolixCode\ProductSync\Model\CategoryProcessor;
 use FolixCode\ProductSync\Helper\Data as ConfigHelper;
 
 /**
@@ -77,7 +76,6 @@ class ProductImporter
     public function __construct(
         private ProductRepositoryInterface $productRepository,
         private ProductFactory $productFactory,
-        private CategoryProcessor $categoryProcessor,
         private ResourceConnection $resourceConnection,
         private AttributeRepository $attributeRepository,
         private AttributeManagement $attributeManagement,
