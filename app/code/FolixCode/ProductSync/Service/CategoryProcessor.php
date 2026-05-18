@@ -151,7 +151,7 @@ class CategoryProcessor
 
        // var_dump($category->getDefaultAttributeSetId());exit;
 
-        $category->setIncludeInMenu(true);
+        $category->setIncludeInMenu(isset($attributes['include_in_menu']) ?? false);
         $category->setAttributeSetId($category->getDefaultAttributeSetId());
         $category->setStoreId(Store::DEFAULT_STORE_ID);
         $category = $this->categoryRepository->save($category);

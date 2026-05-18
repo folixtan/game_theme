@@ -169,13 +169,11 @@ class SyncCommand extends Command
                 $output->writeln(sprintf('<comment>Found %d categories, publishing to MQ...</comment>', count($categoriesData)));
                 
                 // 发布到消息队列
-                foreach ($categoriesData as $id => $name) {
-                    $this->publisher->publishCategoryImport([
-                        'id' => $id,
-                        'name' => $name
-                    ]);
+                $import = ObjectManager::getInstance()->get(\FolixCode\ProductSync\Service\CategoryImporter::class);
+                foreach ($categoriesData as $category) {
+                    var_dump($category);
+                    $import->import($category);
                 }
-                
                 $output->writeln(sprintf('<info>✓ Published %d categories to MQ</info>', count($categoriesData)));
             }
 
