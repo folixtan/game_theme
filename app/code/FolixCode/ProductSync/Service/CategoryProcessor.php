@@ -25,6 +25,9 @@ class CategoryProcessor
 
     /**
      * Categories text-path to ID hash.
+     * 用途: 快速通过分类路径字符串查找分类 ID
+     * 结构: ['default category/电子产品' => 15, 'default category/电子产品/手机' => 16]
+     * 场景: upsertCategory() 方法中避免重复创建相同路径的分类
      *
      * @var array
      */
@@ -32,6 +35,9 @@ class CategoryProcessor
 
     /**
      * Categories id to object cache.
+     * 用途: 快速获取完整的分类对象（包含 name, parent_id 等属性）
+     * 结构: [15 => Category对象, 16 => Category对象]
+     * 场景: findCategoryByNameAndParent() 方法中遍历查找同名同父级的分类
      *
      * @var array
      */
@@ -126,6 +132,14 @@ class CategoryProcessor
     protected function createCategory($name, $parentId,array $attributes = [])
     {
         $this->storeManager->setCurrentStore(0);
+        
+        // ✅ 新增逻辑：在创建之前先检查是否已存在同名分类
+        $existingCategoryId = $this->findCategoryByNameAndParent($name, $parentId);
+        if ($existingCategoryId) {
+            // 分类已存在，直接返回 ID
+            return $existingCategoryId;
+        }
+        
         /** @var \Magento\Catalog\Model\Category $category */
         $category = $this->categoryFactory->create();
         if (!($parentCategory = $this->getCategoryById($parentId))) {
@@ -356,6 +370,45 @@ class CategoryProcessor
     }
 
     
+    /**
+     * 根据名称和父分类ID查找已存在的分类
+     *
+     * @param string $name 分类名称
+     * @param int $parentId 父分类ID
+     * @return int|null 如果找到则返回分类ID，否则返回null
+     */
+    protected function findCategoryByNameAndParent(string $name, int $parentId): ?int
+    {
+        // 清理分类名称（去除引号分隔符）
+        $cleanName = $this->unquoteDelimiter($name);
+        
+        // ✅ 优化：先尝试从缓存中快速查找（避免不必要的数据库查询）
+        // 遍历 categoriesCache (id => category对象)
+        foreach ($this->categoriesCache as $categoryId => $cachedCategory) {
+            if ($cachedCategory->getName() === $cleanName && 
+                $cachedCategory->getParentId() == $parentId) {
+                return $categoryId;
+            }
+        }
+        
+        // ✅ 缓存未命中，查询数据库
+        // 注意：只查询必要的字段，提高性能
+        $collection = $this->categoryColFactory->create();
+        $collection->addAttributeToSelect('name')
+            ->addAttributeToFilter('name', $cleanName)
+            ->addAttributeToFilter('parent_id', $parentId)
+            ->setStoreId(\Magento\Store\Model\Store::DEFAULT_STORE_ID)
+            ->setPageSize(1);
+        
+        if ($collection->getSize() > 0) {
+            $existingCategory = $collection->getFirstItem();
+            // ✅ 更新缓存，下次直接从内存读取
+            $this->categoriesCache[$existingCategory->getId()] = $existingCategory;
+            return $existingCategory->getId();
+        }
+        
+        return null;
+    }
 
     public function cleanCache(): void
     {
