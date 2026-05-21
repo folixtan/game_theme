@@ -530,3 +530,15 @@
     }
 
 }
+ 
+
+//tablet
+
+& when (@media-target = 'desktop'), (@media-target = 'all') {
+    @media only screen and   (max-width: (@screen__m + 1)) {
+        // styles for breakpoint  < 769
+        .folix-top-search {
+             display: none;
+        }
+    }
+}

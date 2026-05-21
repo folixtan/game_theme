@@ -9,10 +9,9 @@
     //  _____________________________________________
 
     .product-charge-template {
-       
-        margin: @indent__l 0;
-        padding: @indent__l;
-        background: @folix-bg-card;
+  
+        padding: @indent__m;
+      
         border-radius: @folix-radius-lg;
         border: 1px solid @folix-border;
         position: relative;
@@ -35,7 +34,7 @@
 
     .charge-template-title {
         margin-bottom: @indent__m;
-        padding-bottom: @indent__s;
+      
         border-bottom: 1px solid @folix-border;
         
         h3 {
@@ -262,9 +261,7 @@
     //  _____________________________________________
 
     .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
-        .product-charge-template {
-            padding: @indent__xl;
-        }
+        
         
         .charge-template-title h3 {
             font-size: 18px;

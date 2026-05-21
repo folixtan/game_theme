@@ -20,6 +20,7 @@ class Publisher implements PublisherInterface
     private SerializerInterface $serializer;
     private LoggerInterface $logger;
     private LoggerInterface $publisherLogger;
+    private array $excludedProductIds;
 
     // Topic名称
     private const TOPIC_PRODUCT_IMPORT = 'folixcode.product.import';
@@ -37,6 +38,7 @@ class Publisher implements PublisherInterface
         $this->serializer = $serializer;
         $this->logger = $logger;
         $this->publisherLogger = $publisherLogger;
+        $this->excludedProductIds = (array) include __DIR__ . '/../Config/ExcludedProducts.php';
     }
 
     /**
@@ -45,11 +47,31 @@ class Publisher implements PublisherInterface
     public function publishProductImport(array $productData): void
     {
         try {
+            // 过滤掉排除列表中的产品
+            $excludedIds = $this->excludedProductIds;
+            $beforeCount = count($productData);
+            $productData = array_filter($productData, function (array $item) use ($excludedIds): bool {
+                return !in_array((string) ($item['product_id'] ?? ''), $excludedIds, true);
+            });
+
+            $filteredCount = $beforeCount - count($productData);
+            if ($filteredCount > 0) {
+                $this->publisherLogger->info(sprintf(
+                    'Product import: %d products excluded, %d remaining',
+                    $filteredCount,
+                    count($productData)
+                ));
+            }
+
+            if (empty($productData)) {
+                return;
+            }
+
             // 创建 Operation 对象（符合 Magento 官方标准）
             $operation = $this->operationFactory->create([
                 'data' => [
                     'topic_name' => self::TOPIC_PRODUCT_IMPORT,
-                    'serialized_data' => $this->serializer->serialize($productData),
+                    'serialized_data' => $this->serializer->serialize(array_values($productData)),
                     'status' => OperationInterface::STATUS_TYPE_OPEN
                 ]
             ]);

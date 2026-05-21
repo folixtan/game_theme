@@ -8,8 +8,12 @@
 define([
     'jquery',
     'underscore',
-    'mage/translate'
-], function ($, _, $t) {
+    'mage/translate',
+    'mage/template',
+    'priceUtils',
+    'mage/validation/validation',
+      'jquery-ui-modules/widget'
+], function ($, _, $t, mageTemplate, priceUtils) {
     'use strict';
 
     return function (targetWidget) {
@@ -18,7 +22,8 @@ define([
          */
         var chargeTemplateMixin = {
             options: {
-                childProductTemplates: {}
+                childProductTemplates: {},
+                   selectorProduct: '.product-form-container',
             },
 
             /**
@@ -26,6 +31,10 @@ define([
              * @private
              */
             _init: function () {
+                // Count total attributes (must run BEFORE _super which triggers render)
+                this._totalAttributes = Object.keys(this.options.jsonConfig.attributes || {}).length;
+                this._renderIndex = 0;
+
                 // 调用原生的 _init 方法
                 this._super();
 
@@ -38,7 +47,7 @@ define([
                     );
                    
                 }
-
+           
                 // 绑定 change 事件监听器
                 this._bindChangeEvent();
 
@@ -294,10 +303,7 @@ define([
             _initFormValidation: function ($container) {
                 var form = $container.closest('form');
 
-                if (form.length && form.data('mageValidation')) {
-                    form.validation('destroy');
-                }
-
+                // 确保表单验证已初始化
                 form.validation({
                     submitHandler: function (form) {
                         form.submit();
@@ -328,6 +334,185 @@ define([
                 return str.replace(/[&<>"'/]/g, function (char) {
                     return map[char];
                 });
+            },
+
+            /**
+             * 覆盖 _OnClick：调整价格盒子选择路径
+             * 
+             * @param {Object} $this
+             * @param {Object} $widget
+             * @private
+             */
+            _OnClick: function ($this, $widget) {
+                this._super($this, $widget);
+                // 更新右侧面板中的 SKU 值
+                $widget._updateSkuDisplay();
+            },
+
+            /**
+             * 更新右侧面板中的 SKU 显示
+             * @private
+             */
+            _updateSkuDisplay: function () {
+                var simpleProductId = this._getSimpleProductId();
+                var $skuValue = $('#product_addtocart_form .product.attribute.sku .value');
+
+                if (!$skuValue.length) {
+                    return;
+                }
+
+                if (simpleProductId && this.options.jsonConfig.sku && this.options.jsonConfig.sku[simpleProductId]) {
+                    var sku = this.options.jsonConfig.sku[simpleProductId] || '';
+                    $skuValue.text(sku);
+                }
+            },
+
+           
+
+            /**
+             * 覆盖 _RenderSwatchOptions：直接在渲染时输出完整 HTML
+             * 
+             * @param {Object} config
+             * @param {string} controlId
+             * @returns {string}
+             * @private
+             */
+            _RenderSwatchOptions: function (config, controlId) {
+                var self = this,
+                    optionConfig = this.options.jsonSwatchConfig[config.id],
+                    optionClass = this.options.classes.optionClass,
+                    sizeConfig = this.options.jsonSwatchImageSizeConfig,
+                    moreLimit = parseInt(this.options.numberToShow, 10),
+                    moreClass = this.options.classes.moreButton,
+                    moreText = this.options.moreButtonText,
+                    countAttributes = 0,
+                    html = '';
+
+                if (!this.options.jsonSwatchConfig.hasOwnProperty(config.id)) {
+                    return '';
+                }
+
+                // Determine if this is the first attribute (→ pills) or later (→ product cards)
+                // Only use Pill mode when there are 2+ attributes total
+                var isFirstAttribute = (self._renderIndex === 0) && (self._totalAttributes > 1);
+                self._renderIndex++;
+
+                $.each(config.options, function (index) {
+                    var id,
+                        type,
+                        value,
+                        thumb,
+                        label,
+                        width,
+                        height,
+                        attr,
+                        swatchImageWidth,
+                        swatchImageHeight;
+
+                    if (!optionConfig.hasOwnProperty(this.id)) {
+                        return '';
+                    }
+
+                    // Add more button
+                    if (moreLimit === countAttributes++) {
+                        html += '<a href="#" class="' + moreClass + '"><span>' + moreText + '</span></a>';
+                    }
+
+                    id = this.id;
+                    type = parseInt(optionConfig[id].type, 10);
+                    value = optionConfig[id].hasOwnProperty('value') ?
+                        $('<i></i>').text(optionConfig[id].value).html() : '';
+                    thumb = optionConfig[id].hasOwnProperty('thumb') ? optionConfig[id].thumb : '';
+                    width = _.has(sizeConfig, 'swatchThumb') ? sizeConfig.swatchThumb.width : 110;
+                    height = _.has(sizeConfig, 'swatchThumb') ? sizeConfig.swatchThumb.height : 90;
+                    label = this.label ? $('<i></i>').text(this.label).html() : '';
+                    attr =
+                        ' id="' + controlId + '-item-' + id + '"' +
+                        ' index="' + index + '"' +
+                        ' aria-checked="false"' +
+                        ' aria-describedby="' + controlId + '"' +
+                        ' tabindex="0"' +
+                        ' data-option-type="' + type + '"' +
+                        ' data-option-id="' + id + '"' +
+                        ' data-option-label="' + label + '"' +
+                        ' aria-label="' + label + '"' +
+                        ' role="option"' +
+                        ' data-thumb-width="' + width + '"' +
+                        ' data-thumb-height="' + height + '"';
+
+                    attr += thumb !== '' ? ' data-option-tooltip-thumb="' + thumb + '"' : '';
+                    attr += value !== '' ? ' data-option-tooltip-value="' + value + '"' : '';
+
+                    swatchImageWidth = _.has(sizeConfig, 'swatchImage') ? sizeConfig.swatchImage.width : 30;
+                    swatchImageHeight = _.has(sizeConfig, 'swatchImage') ? sizeConfig.swatchImage.height : 20;
+
+                    if (!this.hasOwnProperty('products') || this.products.length <= 0) {
+                        attr += ' data-option-empty="true"';
+                    }
+
+                    if (type === 0) {
+                        if (isFirstAttribute) {
+                            // Region Pill — compact, no product name/price
+                            html += '<div class="' + optionClass + ' text pdp-swatch-option pdp-swatch-pill" ' + attr + '>' +
+                                '<span class="swatch-option__checkbox"></span>' +
+                                '<span class="swatch-option__pill-label">' + self._escapeHtml(label) + '</span>' +
+                                '</div>';
+                        } else {
+                            // Product Card — full layout with name + price
+                            var productId = this.products && this.products.length > 0 ? this.products[0] : null;
+                            var productName = productId && self.options.jsonConfig.productNames ? self.options.jsonConfig.productNames[productId] : '';
+                            var priceHtml = '';
+
+                            if (productId && self.options.jsonConfig.optionPrices && self.options.jsonConfig.optionPrices[productId]) {
+                                var priceData = self.options.jsonConfig.optionPrices[productId];
+                                var finalAmount = parseFloat(priceData.finalPrice?.amount) || 0;
+                                var oldAmount = parseFloat(priceData.oldPrice?.amount) || 0;
+                                var priceFormat = self.options.jsonConfig.priceFormat || {};
+                                var finalPriceHtml = priceUtils.formatPrice(finalAmount, priceFormat);
+                                if (oldAmount > finalAmount) {
+                                    var oldPriceHtml = priceUtils.formatPrice(oldAmount, priceFormat);
+                                    priceHtml = '<span class="swatch-option__old-price">' + oldPriceHtml + '</span>';
+                                }
+                                priceHtml += '<span class="swatch-option__final-price">' + finalPriceHtml + '</span>';
+                            }
+
+                            var leftHtml = '<span class="swatch-option__checkbox"></span>';
+                            leftHtml += '<div class="swatch-option__info">';
+                            leftHtml += '<span class="swatch-option__label">' + self._escapeHtml(productName || label) + '</span>';
+                            if (label) {
+                                leftHtml += '<span class="swatch-option__sku">' + self._escapeHtml(label) + '</span>';
+                            }
+                            leftHtml += '</div>';
+
+                            html += '<div class="' + optionClass + ' text pdp-swatch-option"' + ' ' + attr + '>' +
+                                '<div class="swatch-option__inner">' +
+                                '<div class="swatch-option__left">' + leftHtml + '</div>' +
+                                '<div class="swatch-option__right">' + priceHtml + '</div>' +
+                                '</div>' +
+                                '</div>';
+                        }
+                    } else if (type === 1) {
+                        // Color
+                        html += '<div class="' + optionClass + ' color" ' + attr +
+                            ' style="background: ' + value +
+                            ' no-repeat center; background-size: initial;">' + '' +
+                            '</div>';
+                    } else if (type === 2) {
+                        // Image
+                        html += '<div class="' + optionClass + ' image" ' + attr +
+                            ' style="background: url(' + value + ') no-repeat center; background-size: initial;width:' +
+                            swatchImageWidth + 'px; height:' + swatchImageHeight + 'px">' + '' +
+                            '</div>';
+                    } else if (type === 3) {
+                        // Clear
+                        html += '<div class="' + optionClass + '" ' + attr + '></div>';
+                    } else {
+                        // Default
+                        html += '<div class="' + optionClass + '" ' + attr + '>' + label + '</div>';
+                    }
+                });
+
+                return html;
             }
         };
 

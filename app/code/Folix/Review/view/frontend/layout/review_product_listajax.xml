@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <referenceBlock name="product.info.product_additional_data">
+        <arguments>
+            <argument name="rating_distribution_view_model" xsi:type="object">Folix\Review\ViewModel\RatingDistribution</argument>
+        </arguments>
+    </referenceBlock>
+</layout>

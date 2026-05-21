@@ -387,6 +387,14 @@
 @folix-opacity-red-50: rgba(255, 59, 48, 0.5);
 
 // ============================================================================
+//  SWATCH CARD COLORS - Swatch选项卡片颜色
+// ============================================================================
+
+@folix-swatch-card-bg: rgba(255, 255, 255, 0.03);
+@folix-swatch-card-bg-hover: rgba(255, 255, 255, 0.05);
+@folix-swatch-card-bg-selected: rgba(255, 107, 53, 0.1);
+
+// ============================================================================
 //  STATUS COLORS - 状态颜色（订单状态等）
 // ============================================================================
 
@@ -409,3 +417,15 @@
 @font-weight__medium: 500;                  // 中等
 @font-weight__semibold: 600;                // 半粗
 @font-weight__bold: 700;                    // 粗体
+
+// ============================================================================
+//  RGB COLOR HELPERS - 用于 rgba() 组合的 RGB 值
+// ============================================================================
+
+@folix-rgb-primary: red(@folix-primary), green(@folix-primary), blue(@folix-primary);
+@folix-rgb-primary-light: red(@folix-primary-light), green(@folix-primary-light), blue(@folix-primary-light);
+@folix-rgb-secondary: red(@folix-secondary), green(@folix-secondary), blue(@folix-secondary);
+@folix-rgb-accent: red(@folix-accent), green(@folix-accent), blue(@folix-accent);
+@folix-rgb-accent-light: red(@folix-accent-light), green(@folix-accent-light), blue(@folix-accent-light);
+@folix-rgb-purple: red(@folix-purple), green(@folix-purple), blue(@folix-purple);
+@folix-rgb-white: 255, 255, 255;

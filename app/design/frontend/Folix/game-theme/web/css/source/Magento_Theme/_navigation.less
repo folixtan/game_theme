@@ -14,52 +14,115 @@
          margin: 0;
     }
 
-
-
 }
 
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m)  {
 
+    .folix-nav-container {
+        .sections.nav-sections {
+            flex: 1 1 auto;
+        }
+    }
+
     .folix-top-search {
-         
-   
-         // 优化搜索框整体容器
+         // 搜索框容器
             .form.minisearch {
               display: flex;
               align-items: stretch;
-              
-              
-             
             }
     }
-   
-     .navigation li.level0 {
-        
-            .level-top {
-               
-                padding: 8px 16px;            
-                border-radius: 8px;
-                border-style: none;
-                border-radius: @folix-radius-md;
 
+    .navigation li.level0 {
+        margin: 0 6px;
+
+        > .level-top {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            height: 36px;
+            padding: 0 16px;
+            font-size: 15px;
+            font-weight: 500;
+            line-height: normal;
+            color: @folix-text-primary;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            transition: all @folix-transition-fast;
+            white-space: nowrap;
+
+            .ui-menu-icon {
+                position: static;
+                font-size: 10px;
+                margin-left: 2px;
+                transition: transform @folix-transition-fast;
+                color: @folix-text-tertiary;
             }
-    
-        
-             &.active .level-top,&.has-active > .level-top {
-                   background: @folix-purple;
-                  box-shadow: 0 0 20px @folix-opacity-purple-30;
-                  border: 0;
-            }
-   
-         
-        &:hover:not(.active) {
-           .level-top {
-                background: @folix-accent;
-           }
         }
-          
-     }
+
+        // 默认态 - 纯文字链接，无任何装饰
+        &:not(.active):not(.has-active) > .level-top {
+            background: transparent;
+            border: none;
+
+            &:hover {
+                color: @folix-accent;
+
+                .ui-menu-icon {
+                    transform: rotate(180deg);
+                    color: @folix-accent;
+                }
+            }
+        }
+
+        // 激活态 - 浅色药丸底色 + 橙色文字（参考图风格）
+        &.active > .level-top,
+        &.has-active > .level-top {
+            color: @folix-accent;
+            background: rgba(@folix-rgb-accent, 0.06);
+            border-radius: 8px;
+            border: 0;
+            display: inline-flex;
+            .ui-menu-icon {
+                color: @folix-accent;
+            }
+
+            &:hover {
+                background: rgba(@folix-rgb-accent, 0.12);
+            }
+        }
+
+        // 下拉箭头旋转（有子菜单的项 hover 时）
+        &:hover > .level-top .ui-menu-icon {
+            transform: rotate(180deg);
+        }
+    }
+
+    // 子菜单下拉面板样式
+    .navigation li.level0 .submenu {
+        margin-top: 4px;
+        border-radius: @folix-radius-lg;
+        border: 1px solid @folix-border;
+        background: linear-gradient(180deg, @folix-bg-card 0%, @folix-bg-panel 100%);
+        box-shadow: 0 12px 40px @folix-opacity-dark-50, 0 0 0 1px @folix-opacity-gold-5;
+        overflow: hidden;
+
+        > li > a {
+            padding: 10px 18px;
+            color: @folix-text-secondary;
+            font-size: 14px;
+            font-weight: @font-weight__medium;
+            transition: all @folix-transition;
+
+            &:hover {
+                color: @folix-nav-hover-text;
+                background: @folix-opacity-gold-5;
+                padding-left: 22px;
+            }
+        }
+    }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m)  { 
@@ -76,4 +139,26 @@
             
           
        }
+
+        // Nav Toggle — 移动端菜单开关按钮
+        .nav-toggle {
+            background: @folix-bg-light;
+            border: 1px solid @folix-border;
+            position: relative;
+            border-radius: @folix-radius-md;
+            color: @folix-secondary;
+            font-size: 24px;
+            cursor: pointer;
+            left: 0;
+            top: 0;
+            transition: all @folix-transition;
+
+            &:hover {
+                box-shadow: @folix-shadow-gold;
+            }
+        }
+
+        .navigation a {
+            color: @folix-text-primary;
+        }
 }

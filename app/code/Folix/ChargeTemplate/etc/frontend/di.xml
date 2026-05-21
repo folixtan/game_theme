@@ -5,16 +5,17 @@
     <preference for="Folix\ChargeTemplate\Api\Data\ChargeTemplateDataInterface" 
                 type="Folix\ChargeTemplate\Model\ChargeTemplateData" />
     
-    <!-- 配置 ItemPool，将直充商品类型映射到 ChargeItem 处理器 -->
-    <!-- 注意：这里假设直充商品的产品类型是 'virtual' 或 'simple' -->
-    <!-- 如果是自定义产品类型，请替换为实际的产品类型代码 -->
+    <!-- 插件：将产品名称注入到 jsonConfig（仅前端） -->
+    <type name="Magento\ConfigurableProduct\Block\Product\View\Type\Configurable">
+        <plugin name="Folix_ChargeTemplate_AddProductNames"
+                type="Folix\ChargeTemplate\Plugin\ConfigurableProduct\Block\Product\View\Type\AddProductNames" />
+    </type>
+
+    <!-- ItemPool：将直充商品类型映射到 ChargeItem 处理器 -->
     <type name="Magento\Checkout\CustomerData\ItemPool">
         <arguments>
             <argument name="itemMap" xsi:type="array">
-                <!-- 如果直充商品使用 virtual 类型 -->
                 <item name="virtual" xsi:type="string">Folix\ChargeTemplate\CustomerData\ChargeItem</item>
-                <!-- 如果直充商品使用 simple 类型，取消下面注释 -->
-                <!-- <item name="simple" xsi:type="string">Folix\ChargeTemplate\CustomerData\ChargeItem</item> -->
             </argument>
         </arguments>
     </type>

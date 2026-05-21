@@ -227,28 +227,12 @@
         }
     }
 
-    // 导航菜单项 - 选中状态
-    .navigation li.level0 {
-        // 激活状态 - 蓝色背景 + 白色文字
-        &.active .level-top,
-        &.has-active > .level-top {
-            background: @folix-secondary;  // 蓝色背景 (不是 @folix-primary!)
-            color: @folix-text-on-dark !important;  // 白色文字
-            box-shadow: 0 0 20px @folix-opacity-dark-20;  // 使用 @folix-opacity-dark-20 替代不存在的 @folix-opacity-blue-30
-
-            .ui-menu-icon {
-                color: @folix-text-on-dark !important;
-            }
-        }
-
-        // 悬停状态（非激活）
-        &:hover:not(.active) {
-            .level-top {
-           
-                color: @folix-secondary;  // 蓝色
-            }
-        }
-    }
+    // 导航菜单项 - 选中状态（由 game-theme/_navigation.less 统一定义，此处不再覆盖）
+    // .navigation li.level0 {
+    //     &.active .level-top,
+    //     &.has-active > .level-top { ... }
+    //     &:hover:not(.active) { .level-top { ... } }
+    // }
 
     // 搜索框样式覆盖
     .folix-top-search {

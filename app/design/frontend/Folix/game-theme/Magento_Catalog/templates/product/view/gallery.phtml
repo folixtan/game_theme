@@ -1,0 +1,30 @@
+<?php
+/**
+ * Folix Game Theme - Product Gallery Template
+ *
+ * 简化版：输出单张产品小图，不使用 Fotorama
+ *
+ * @var $block \Magento\Catalog\Block\Product\View\Gallery
+ * @var $escaper \Magento\Framework\Escaper
+ */
+?>
+
+<?php
+$images = $block->getGalleryImages()->getItems();
+$mainImage = !empty($images) ? $block->getGalleryImages()->getFirstItem() : null;
+
+$helper = $block->getData('imageHelper');
+$mainImageData = $mainImage ?
+    $mainImage->getData('medium_image_url') :
+    $helper->getDefaultPlaceholderUrl('image');
+?>
+
+<div class="gallery-placeholder">
+    <img
+        alt="<?= $escaper->escapeHtmlAttr($block->getProduct()->getName()) ?>"
+        class="pdp-product-image"
+        src="<?= /* @noEscape */ $mainImageData ?>"
+        width="100"
+        height="100"
+    />
+</div>
