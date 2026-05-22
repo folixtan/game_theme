@@ -51,9 +51,9 @@ $checkoutBlcok = \Magento\Framework\App\ObjectManager::getInstance()->get(\Magen
                             id="product-buynow-button"
                             title="<?= $escaper->escapeHtmlAttr(__('Proceed to Checkout')) ?>"
                             class="action primary buynow checkout<?= ($checkoutBlcok->isDisabled()) ? ' disabled' : '' ?>"
-                            <?php if ($checkoutBlcok->isDisabled()): ?>
-                                disabled="disabled"
-                            <?php endif; ?>
+                             
+                                disabled
+                            
                             onclick="var f=this.form;f.setAttribute('data-buynow','1');f.setAttribute('data-checkout-url','<?= $escaper->escapeJs($checkoutBlcok->getCheckoutUrl()) ?>');">
                         <span><?= $escaper->escapeHtml(__('Proceed to Checkout')) ?></span>
                     </button>

@@ -47,6 +47,7 @@ define([
                 }
             });
             $(this.options.addToCartButtonSelector).attr('disabled', false);
+            $("#product-buynow-button").attr('disabled',false);
         }
     });
 
