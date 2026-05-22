@@ -13,6 +13,10 @@ var config = {
             // 扩展原生 Configurable（如果产品使用传统下拉框）
             'Magento_ConfigurableProduct/js/configurable': {
                 'Folix_ChargeTemplate/js/configurable-charge-template-mixin': true
+            },
+            // 扩展 catalogAddToCart，支持一步结账
+            'Magento_Catalog/js/catalog-add-to-cart': {
+                'Folix_ChargeTemplate/js/catalog-add-to-cart-mixin': true
             }
         }
     }

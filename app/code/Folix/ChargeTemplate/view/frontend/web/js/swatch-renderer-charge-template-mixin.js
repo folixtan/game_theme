@@ -478,9 +478,9 @@ define([
 
                             var leftHtml = '<span class="swatch-option__checkbox"></span>';
                             leftHtml += '<div class="swatch-option__info">';
-                            leftHtml += '<span class="swatch-option__label">' + self._escapeHtml(productName || label) + '</span>';
-                            if (label) {
-                                leftHtml += '<span class="swatch-option__sku">' + self._escapeHtml(label) + '</span>';
+                            leftHtml += '<span class="swatch-option__label">' + self._escapeHtml( label) + '</span>';
+                            if (productName) {
+                                leftHtml += '<span class="swatch-option__sku">' + self._escapeHtml(productName) + '</span>';
                             }
                             leftHtml += '</div>';
 

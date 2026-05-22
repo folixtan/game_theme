@@ -132,6 +132,12 @@
             gap: @indent__m;
             // Force all grid cells equal height
             align-items: stretch;
+            // Y轴滚动（非 pill 容器，卡片较多时可以垂直滚动）
+            max-height: 480px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
 
         // ========================================
@@ -147,14 +153,18 @@
             white-space: nowrap;
             width: auto;
             flex-direction: row;
+            outline: none;
 
-            &:hover {
+            &:hover,
+            &:focus-visible {
                 border-color: @folix-secondary;
+                box-shadow: 0 0 0 2px rgba(@folix-rgb-accent, 0.15);
             }
 
             &.selected {
-                border-color: @folix-accent-dark;
+             
                 background: @folix-bg-selected;
+                border: 1px solid @folix-accent-dark;
 
                 .swatch-option__checkbox {
                     background: @folix-secondary;
@@ -188,9 +198,8 @@
             }
         }
 
-        // Region parent: 单行横向滚动（支持大量选项 10-20+）
-        .swatch-attribute.game_region .swatch-attribute-options,
-        .swatch-attribute[data-attribute-code="game_region"] .swatch-attribute-options {
+        // 通用：包含 pdp-swatch-pill 的选项容器 → 单行横向滚动
+        .swatch-attribute-options:has(.pdp-swatch-pill) {
             display: flex;
             flex-wrap: nowrap;       // 不换行，保持单行
             gap: @indent__s;
@@ -198,12 +207,7 @@
             overflow-y: hidden;
             scroll-behavior: smooth; // 平滑滚动
             -webkit-overflow-scrolling: touch;
-
-            // 隐藏横向滚动条（可选，保留滚动能力但视觉更干净）
-            &::-webkit-scrollbar {
-                height: 0;
-            }
-            scrollbar-width: none;   // Firefox 隐藏滚动条
+            // 滚动条保留可见，给桌面用户可滚动的暗示
         }
 
         .swatch-option {
@@ -216,9 +220,13 @@
             position: relative;
             display: flex;
             flex-direction: column;
+            // 去掉浏览器默认 outline，用自定义 focus 样式替代
+            outline: none;
 
-            &:hover {
+            &:hover,
+            &:focus-visible {
                 border-color: @folix-secondary;
+                box-shadow: 0 0 0 2px rgba(@folix-rgb-accent, 0.15);
             }
 
             &.selected {
@@ -521,7 +529,7 @@
 
                     .action.primary.tocart {
                         width: 100%;
-                        padding: @indent__m;
+                        padding: @indent__s @indent__m;
                         border: none;
                         border-radius: @folix-radius-md;
                         font-size: 15px;
@@ -541,7 +549,7 @@
 
                     .action.primary.buynow {
                         width: 100%;
-                        padding: @indent__m;
+                        padding: @indent__s @indent__m;
                         border: none;
                         border-radius: @folix-radius-md;
                         font-size: 15px;
@@ -556,6 +564,7 @@
                 }
             }
         }
+
     }
 }
 
@@ -582,6 +591,12 @@
             flex: 0 0 27%;
          
             align-self: flex-start;
+            .fieldset:last-child {
+                margin-bottom: 0;
+            }
+            .fieldset > .field {
+                 margin:0;
+            }
         }
 
         #product_addtocart_form .form-right-panel {
