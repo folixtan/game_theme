@@ -199,15 +199,196 @@
         }
 
         // 通用：包含 pdp-swatch-pill 的选项容器 → 单行横向滚动
-        .swatch-attribute-options:has(.pdp-swatch-pill) {
+        // 排除 dropdown 场景（dropdown 内 pills 是纵向列表）
+        .swatch-attribute-options:has(.pdp-swatch-pill):not(:has(.pdp-swatch-dropdown-wrapper)) {
             display: flex;
             flex-wrap: nowrap;       // 不换行，保持单行
             gap: @indent__s;
             overflow-x: auto;        // 横向滚动
             overflow-y: hidden;
+            min-width: 100px;
             scroll-behavior: smooth; // 平滑滚动
             -webkit-overflow-scrolling: touch;
             // 滚动条保留可见，给桌面用户可滚动的暗示
+        }
+
+        // Dropdown 容器：覆盖全局 grid 为 block（纵向流式）
+        .swatch-attribute-options:has(.pdp-swatch-dropdown-wrapper) {
+            display: block !important;
+            max-height: none;
+            overflow: visible;
+        }
+
+        // ========================================
+        //  Country Region Dropdown (>6 options)
+        // ========================================
+
+        .pdp-swatch-dropdown-wrapper {
+            position: relative;
+            width: 100%;
+
+            // --open modifier
+            &.pdp-swatch-dropdown-wrapper--open {
+            
+            }
+        }
+
+        .pdp-swatch-dropdown__trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 18px;
+            border: 1.5px solid @folix-border;
+            border-radius: @folix-radius-md;
+            background: @folix-bg-card;
+            cursor: pointer !important;
+            transition: all 0.2s ease;
+            min-height: 46px;
+
+            &:hover {
+                border-color: @folix-secondary;
+                background: @folix-opacity-white-5;
+                box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            }
+
+            .pdp-swatch-dropdown-wrapper--open & {
+                border-color: @folix-secondary;
+            }
+        }
+
+        .pdp-swatch-dropdown__display {
+            font-size: 14px;
+            color: @folix-text-primary;
+            font-weight: 500;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .pdp-swatch-dropdown__arrow {
+            font-size: 10px;
+            color: @folix-text-muted;
+            transition: transform 0.2s ease;
+            margin-left: 8px;
+            flex-shrink: 0;
+
+            .pdp-swatch-dropdown-wrapper--open & {
+                transform: rotate(180deg);
+            }
+        }
+
+        .pdp-swatch-dropdown__panel {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            margin-top: 4px;
+            background: @folix-bg-card;
+            border: 1px solid @folix-border;
+            border-radius: @folix-radius-md;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .pdp-swatch-dropdown__search {
+            padding: 8px 12px;
+            border-bottom: 1px solid @folix-border;
+            flex-shrink: 0;
+        }
+
+        .pdp-swatch-dropdown__search-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid @folix-border;
+            border-radius: @folix-radius-sm;
+            font-size: 13px;
+            background: @folix-opacity-white-5;
+            color: @folix-text-primary;
+            outline: none;
+            box-sizing: border-box;
+
+            &:focus {
+                border-color: @folix-secondary;
+            }
+
+            &::placeholder {
+                color: @folix-text-muted;
+            }
+        }
+
+        .pdp-swatch-dropdown__list {
+            padding: 6px;
+            overflow-y: auto;
+            max-height: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            .swatch-option.pdp-swatch-pill {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 14px;
+                border-radius: @folix-radius-sm;
+                cursor: pointer;
+                border: 1.5px solid transparent;
+                background: transparent;
+                overflow: hidden;
+
+                &:hover {
+                    background: @folix-opacity-white-5;
+                    border-color: @folix-border;
+                    text-decoration: none;
+                }
+
+                &.selected {
+                    background: @folix-bg-selected;
+                    border-color: @folix-secondary;
+                }
+
+                &.disabled {
+                    visibility: hidden;
+                    height: 0 !important;
+                    min-height: 0 !important;
+                    padding: 0 !important;
+                    margin: 0 !important;
+                    border: none !important;
+                    overflow: hidden;
+                    opacity: 0;
+                }
+
+                .swatch-option__pill-label {
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    min-width: 0;
+                }
+            }
+        }
+
+        // ========================================
+        //  Mobile native select (hidden on desktop)
+        // ========================================
+        .pdp-swatch-select {
+            display: none;
+            width: 100%;
+            padding: 4px 16px;
+            border: 1px solid @folix-border;
+            border-radius: @folix-radius-md;
+            background: @folix-bg-card;
+            font-size: 14px;
+            color: @folix-text-primary;
+            outline: none;
+            appearance: auto;
+            -webkit-appearance: auto;
+
+            &:focus {
+                border-color: @folix-secondary;
+            }
         }
 
         .swatch-option {
@@ -222,6 +403,9 @@
             flex-direction: column;
             // 去掉浏览器默认 outline，用自定义 focus 样式替代
             outline: none;
+            &.disabled {
+                 display: none;
+            }
 
             &:hover,
             &:focus-visible {
@@ -323,14 +507,7 @@
             }
         }
 
-        // ========================================
-        //  右侧订单面板
-        // ========================================
-
-        .form-right-panel {
-            position: sticky;
-            top: @indent__l;
-        }
+        
 
         .product-form-change-template {
            
@@ -575,34 +752,47 @@
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m+1) {
     .catalog-product-view {
 
+        .product-add-form {
+            overflow: visible;
+        }
+
         #product_addtocart_form {
             flex-direction: row;
             align-items: flex-start;
+            overflow: visible;
         }
 
         // 左列 65%
         .form-left-panel {
             flex: 0 0 65%;
             max-width: 65%;
+            align-self: flex-start;
         }
 
-        // 右列 35%（固定宽度 340px）
+        // 右列 27% — sticky 订单面板
         .form-right-panel {
             flex: 0 0 27%;
+            position: fixed;
+            right: 9%;
          
+            top: 30%;
+          
+            z-index: 10;
             align-self: flex-start;
             .fieldset:last-child {
                 margin-bottom: 0;
             }
             .fieldset > .field {
-                 margin:0;
+                margin: 0;
             }
         }
 
-        #product_addtocart_form .form-right-panel {
-            position: sticky;
-            top: 20px;
-            z-index: 10;
+        // Desktop: hide native select, show dropdown
+        .pdp-swatch-select {
+            display: none;
+        }
+        .pdp-swatch-dropdown-wrapper {
+            display: block;
         }
 
         // Cart summary: fixed height with scroll on desktop
@@ -636,6 +826,14 @@
         // 移动端：swatch 单列
         .swatch-attribute-options {
             grid-template-columns: repeat(1, 1fr);
+        }
+
+        // Mobile: show native select, hide custom dropdown
+        .pdp-swatch-select {
+            display: block;
+        }
+        .pdp-swatch-dropdown-wrapper {
+            display: none;
         }
 
         // 产品列表单列

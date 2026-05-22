@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Folix_AttributeBatchImport::css/batch-import.css"/>
+    </head>
+    <referenceContainer name="main">
+        <block class="Folix\AttributeBatchImport\Block\Adminhtml\Attribute\Edit\Options\BatchImport"
+               name="main.batch_import"
+               before="main.options"/>
+    </referenceContainer>
+</page>

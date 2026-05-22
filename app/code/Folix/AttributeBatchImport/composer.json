@@ -1,0 +1,21 @@
+{
+    "name": "folix/module-attribute-batch-import",
+    "description": "Batch import product attribute options via textarea on the attribute edit page.",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.4",
+        "magento/framework": "*",
+        "magento/module-catalog": "*",
+        "magento/module-eav": "*"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Folix\\AttributeBatchImport\\": ""
+        }
+    }
+}

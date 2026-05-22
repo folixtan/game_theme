@@ -1,0 +1,50 @@
+<?php
+/**
+ * @var \Folix\AttributeBatchImport\Block\Adminhtml\Attribute\Edit\Options\BatchImport $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+<fieldset class="admin__fieldset fieldset" id="batch-import-options-panel" style="display:none;">
+    <legend class="legend">
+        <span><?= $escaper->escapeHtml(__('Batch Import Options')) ?></span>
+    </legend>
+
+    <div class="admin__field-note" style="margin-bottom:8px;">
+        <span><?= $escaper->escapeHtml(__('One option per line. Use comma to set values per store view.')) ?></span><br/>
+        <code>Label</code>
+        <?= $escaper->escapeHtml(__(" &mdash; Admin (Store 0) value")) ?><br/>
+        <code>Label|StoreId</code>
+        <?= $escaper->escapeHtml(__(" &mdash; Value for a specific store view")) ?><br/>
+        <code>Red|0,红色|1,Rouge|3</code>
+        <?= $escaper->escapeHtml(__(" &mdash; Multiple stores in one option")) ?>
+    </div>
+
+    <div class="admin__field">
+        <div class="admin__field-control">
+            <textarea id="batch-import-textarea"
+                      class="admin__control-textarea"
+                      rows="5"
+                      style="width:100%; max-width:600px; font-family:monospace;"
+                      placeholder="<?= $escaper->escapeHtmlAttr(__("e.g.\nRed\nBlue\nRed|0,Red|1,Red|2\nGreen|2")) ?>"></textarea>
+        </div>
+    </div>
+
+    <div class="admin__field">
+        <div class="admin__field-control">
+            <button type="button"
+                    id="batch-import-btn-add"
+                    class="action-primary action-secondary">
+                <span><?= $escaper->escapeHtml(__('Add to Table')) ?></span>
+            </button>
+            <span id="batch-import-status" style="margin-left:12px; color:#6c757d;"></span>
+        </div>
+    </div>
+</fieldset>
+
+<script type="text/x-magento-init">
+{
+    "*": {
+        "Folix_AttributeBatchImport/js/batch-import": {}
+    }
+}
+</script>
