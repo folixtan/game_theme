@@ -20,6 +20,9 @@ class Data extends AbstractHelper
     public const XML_PATH_LAST_SYNC_TIMESTAMP = 'folixcode_productsync/settings/last_sync_timestamp';
     public const XML_PATH_BATCH_SIZE = 'folixcode_productsync/settings/batch_size';
     public const XML_PATH_LAST_SYNC_PAGE = 'folixcode_productsync/settings/last_sync_page';
+    public const XML_PATH_LAST_SYNC_NAME_INDEX = 'folixcode_productsync/settings/last_sync_name_index';
+    public const XML_PATH_LAST_SYNC_PRODUCT_TYPE_INDEX = 'folixcode_productsync/settings/last_sync_product_type_index';
+    public const XML_PATH_SYNC_NAME = 'folixcode_productsync/settings/name';
 
     private LoggerInterface $logger;
 
@@ -120,6 +123,53 @@ class Data extends AbstractHelper
         }
 
         return (int)$value;
+    }
+
+    /**
+     * 获取产品名称关键词筛选配置（逗号分隔）
+     *
+     * @return array 关键词数组
+     */
+    public function getSyncNames(): array
+    {
+        $value = $this->scopeConfig->getValue(
+            self::XML_PATH_SYNC_NAME,
+            ScopeInterface::SCOPE_STORE
+        );
+
+        if (empty($value)) {
+            return [];
+        }
+
+        // 逗号分隔，trim 去除空格，过滤空值
+        $names = array_map('trim', explode(',', $value));
+        return array_values(array_filter($names));
+    }
+
+    /**
+     * 获取最后一次同步的关键词索引（用于断点续传）
+     *
+     * @return int 0-based 索引，默认0
+     */
+    public function getLastSyncNameIndex(): int
+    {
+        return (int)$this->scopeConfig->getValue(
+            self::XML_PATH_LAST_SYNC_NAME_INDEX,
+            ScopeInterface::SCOPE_STORE
+        ) ?: 0;
+    }
+
+    /**
+     * 获取最后一次同步的产品类型索引（用于断点续传）
+     *
+     * @return int 0-based 索引，默认0
+     */
+    public function getLastSyncProductTypeIndex(): int
+    {
+        return (int)$this->scopeConfig->getValue(
+            self::XML_PATH_LAST_SYNC_PRODUCT_TYPE_INDEX,
+            ScopeInterface::SCOPE_STORE
+        ) ?: 0;
     }
 
 }

@@ -24,8 +24,11 @@
                     <label>Goods Category ID</label>
                     <comment>Filter by category ID. Leave empty to sync all categories.</comment>
                 </field>
-               
- 
+                <field id="name" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Name</label>
+                    <comment>Search products by name (fuzzy match). Comma-separated for multiple keywords. Leave empty to sync all products.</comment>
+                </field>
+
             </group>
         </section>
     </system>

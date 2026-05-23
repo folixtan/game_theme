@@ -146,38 +146,84 @@
         }
 
         // ========================================
-        //  Region Pill — 药丸风格
+        //  Region Pill — 当前：仿 Tab 风格
         // ========================================
+        //  原始药丸风格备份：
+        //  border-radius: 100px; border: 1px; selected → 橙色边框 + 勾选checkbox
+        //  如需回退，用下面注释样式替换：
+        // ---------------------------------------------------------------
+        //  .swatch-option.pdp-swatch-pill {
+        //      padding: 10px 18px;
+        //      border-radius: 100px;
+        //      display: inline-flex;
+        //      align-items: center;
+        //      gap: 8px;
+        //      white-space: nowrap;
+        //      width: auto;
+        //      flex-direction: row;
+        //      outline: none;
+        //      &:hover, &:focus-visible {
+        //          border-color: @folix-secondary;
+        //          box-shadow: 0 0 0 2px rgba(@folix-rgb-accent, 0.15);
+        //      }
+        //      &.selected {
+        //          background: @folix-bg-selected;
+        //          border: 1px solid @folix-accent-dark;
+        //      }
+        //      .swatch-option__checkbox {
+        //          width: 18px; height: 18px;
+        //          border: 2px solid @folix-border;
+        //          border-radius: 50%;
+        //          flex-shrink: 0; position: relative;
+        //      }
+        //      &.selected .swatch-option__checkbox {
+        //          background: @folix-secondary;
+        //          border-color: @folix-secondary;
+        //      }
+        //      .swatch-option__pill-label {
+        //          font-size: 13px; font-weight: 500;
+        //          color: @folix-text-primary;
+        //      }
+        //  }
+        // ========================================
+
         .swatch-option.pdp-swatch-pill {
-            padding: 10px 18px;
-            border-radius: 100px;
+            padding: 8px 16px;
+            border-radius: @folix-radius-sm;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             white-space: nowrap;
             width: auto;
             flex-direction: row;
             outline: none;
-            &:hover, &:focus-visible {
-                border-color: @folix-secondary;
-                box-shadow: 0 0 0 2px rgba(@folix-rgb-accent, 0.15);
+            border: none;
+            background: transparent;
+
+            &:hover,
+            &:focus-visible {
+                background: @folix-opacity-white-5;
+                box-shadow: none;
             }
+
             &.selected {
-                background: @folix-bg-selected;
-                border: 1px solid @folix-accent-dark;
+                background: transparent;
+                border-bottom: 2px solid @folix-secondary;
+
+                .swatch-option__pill-label {
+                    font-weight: 700;
+                    color: @folix-secondary;
+                }
             }
+
+            // 隐藏 checkbox，tab 不需要圆圈勾选
             .swatch-option__checkbox {
-                width: 18px; height: 18px;
-                border: 2px solid @folix-border;
-                border-radius: 50%;
-                flex-shrink: 0; position: relative;
+                display: none;
             }
-            &.selected .swatch-option__checkbox {
-                background: @folix-secondary;
-                border-color: @folix-secondary;
-            }
+
             .swatch-option__pill-label {
-                font-size: 13px; font-weight: 500;
+                font-size: 13px;
+                font-weight: 400;
                 color: @folix-text-primary;
             }
         }
@@ -622,20 +668,9 @@
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = 769) {
     .catalog-product-view {
-        // 移动端/平板：swatch 单列
+        // 移动端：swatch 单列
         .swatch-attribute-options {
             grid-template-columns: repeat(1, 1fr);
-        }
-
-        // 平板及以下：pill 药丸列表强制2列
-        .pdp-swatch-scroll-list {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-
-            > * {
-                width: auto !important;
-                flex: none;
-            }
         }
 
         // 产品列表单列
