@@ -1,0 +1,160 @@
+/**
+ * Folix ChargeTemplate - Swatch Renderer Mixin
+ * 
+ * Thin orchestrator: wires charge-template + dropdown + HTML builder modules.
+ * Only handles data init, event binding, and swatch rendering delegation.
+ */
+define([
+    'jquery',
+    'underscore',
+    'jquery-ui-modules/widget',
+    'Folix_ChargeTemplate/js/charge-template-manager',
+    'Folix_ChargeTemplate/js/swatch-option-html-builder'
+], function ($, _, widget, chargeTemplate, htmlBuilder) {
+    'use strict';
+
+    return function (targetWidget) {
+        var chargeTemplateMixin = {
+            options: {
+                childProductTemplates: {},
+                selectorProduct: '.product-form-container'
+            },
+
+            // ============================================================
+            //  1. Init — count attrs, wire events, load template
+            // ============================================================
+            _init: function () {
+                this._totalAttributes = Object.keys(this.options.jsonConfig.attributes || {}).length;
+                this._renderIndex = 0;
+
+                this._super();
+
+                // Load charge template data from global config
+                if (window.folixChargeTemplateConfig && typeof window.folixChargeTemplateConfig === 'object') {
+                    this.options.childProductTemplates = $.extend(
+                        {},
+                        this.options.childProductTemplates || {},
+                        window.folixChargeTemplateConfig
+                    );
+                }
+
+                this._bindChangeEvent();
+                chargeTemplate.loadForCurrentSelection(this);
+            },
+
+            // ============================================================
+            //  2. Event binding — swatch change → charge template
+            // ============================================================
+            _bindChangeEvent: function () {
+                var self = this;
+                this.element.on('change', '.' + this.options.classes.attributeInput, function () {
+                    setTimeout(function () {
+                        chargeTemplate.loadForCurrentSelection(self);
+                    }, 100);
+                });
+            },
+
+            // ============================================================
+            //  3. Swatch rendering — delegates to htmlBuilder
+            // ============================================================
+            _RenderSwatchOptions: function (config, controlId) {
+                var self = this,
+                    optionConfig = this.options.jsonSwatchConfig[config.id],
+                    optionClass = this.options.classes.optionClass,
+                    sizeConfig = this.options.jsonSwatchImageSizeConfig,
+                    moreLimit = parseInt(this.options.numberToShow, 10),
+                    moreClass = this.options.classes.moreButton,
+                    moreText = this.options.moreButtonText,
+                    countAttributes = 0,
+                    html = '';
+
+                if (!this.options.jsonSwatchConfig.hasOwnProperty(config.id)) {
+                    return '';
+                }
+
+                var isFirstAttribute = (self._renderIndex === 0) && (self._totalAttributes > 1);
+                self._renderIndex++;
+
+                // === Build options (pills / product cards / color / image) ===
+                $.each(config.options, function (index) {
+                    if (!optionConfig.hasOwnProperty(this.id)) { return; }
+
+                    if (moreLimit === countAttributes++) {
+                        html += '<a href="#" class="' + moreClass + '"><span>' + moreText + '</span></a>';
+                    }
+
+                    var attr = htmlBuilder.buildOptionAttr(this, optionConfig, sizeConfig, controlId, index),
+                        type = parseInt(optionConfig[this.id].type, 10);
+
+                    if (type === 0) {
+                        // Text type
+                        if (isFirstAttribute) {
+                            html += htmlBuilder.buildPill(optionClass, attr, this.label);
+                        } else {
+                            html += htmlBuilder.buildProductCard(this, optionClass, attr, self.options.jsonConfig);
+                        }
+                    } else if (type === 1) {
+                        // Color
+                        var value = optionConfig[this.id].value || '';
+                        html += '<div class="' + optionClass + ' color" ' + attr +
+                            ' style="background: ' + value +
+                            ' no-repeat center; background-size: initial;"></div>';
+                    } else if (type === 2) {
+                        // Image
+                        var imgValue = optionConfig[this.id].value || '',
+                            sw = _.has(sizeConfig, 'swatchImage') ? sizeConfig.swatchImage.width : 30,
+                            sh = _.has(sizeConfig, 'swatchImage') ? sizeConfig.swatchImage.height : 20;
+                        html += '<div class="' + optionClass + ' image" ' + attr +
+                            ' style="background: url(' + imgValue +
+                            ') no-repeat center; background-size: initial;width:' +
+                            sw + 'px; height:' + sh + 'px"></div>';
+                    } else if (type === 3) {
+                        // Clear
+                        html += '<div class="' + optionClass + '" ' + attr + '></div>';
+                    } else {
+                        html += '<div class="' + optionClass + '" ' + attr + '>' +
+                            htmlBuilder.escapeHtml(this.label) + '</div>';
+                    }
+                });
+
+                // Always wrap first-attribute pills in scroll container; max-height handles overflow naturally
+                if (isFirstAttribute) {
+                    html = '<div class="pdp-swatch-scroll-wrap">' +
+                        '<div class="pdp-swatch-scroll-list">' + html + '</div>' +
+                        '</div>';
+                }
+
+                return html;
+            },
+
+            // ============================================================
+            //  4. Click — update SKU display
+            // ============================================================
+            _OnClick: function ($this, $widget) {
+                this._super($this, $widget);
+                $widget._updateSkuDisplay();
+            },
+
+            _updateSkuDisplay: function () {
+                var simpleProductId = chargeTemplate.getSimpleProductId(this),
+                    $skuValue = $('#product_addtocart_form .product.attribute.sku .value');
+
+                if (!$skuValue.length) { return; }
+                if (simpleProductId && this.options.jsonConfig.sku && this.options.jsonConfig.sku[simpleProductId]) {
+                    $skuValue.text(this.options.jsonConfig.sku[simpleProductId]);
+                }
+            },
+
+            // ============================================================
+            //  5. Rebuild — reset render index
+            // ============================================================
+            _Rebuild: function () {
+                this._renderIndex = 0;
+                this._super();
+            }
+        };
+
+        $.widget('mage.swatchRenderer', targetWidget, chargeTemplateMixin);
+        return $.mage.swatchRenderer;
+    };
+});
