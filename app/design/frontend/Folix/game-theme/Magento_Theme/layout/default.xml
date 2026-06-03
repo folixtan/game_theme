@@ -90,23 +90,38 @@
            <referenceBlock name="search-term-popular-link" remove="true" />
            <referenceBlock name="sales-guest-form-link" remove="true" />
            <referenceBlock name="catalog-search-advanced-link" remove="true" />
-           <block name="left-links-footer" class="Magento\Cms\Block\BlockByIdentifier" >
-               <arguments>
-                   <argument name="identifier" xsi:type="string">footer-left-content</argument>
-               </arguments>
-           </block>
+           
         </referenceBlock>
 
+        <referenceContainer name="footer-container">
+            <block class="Magento\Framework\View\Element\Template" name="folix.footer.top" template="Magento_Theme::html/footer-top.phtml" before="-" />
+        </referenceContainer>
+
         <referenceContainer name="footer">
-            <block class="Magento\Framework\View\Element\Template" name="folix.footer.middle" template="Magento_Theme::html/footer-middle.phtml" after="-">
-                  <block name="left-links-footer" class="Magento\Cms\Block\BlockByIdentifier" >
+        <block class="Magento\Framework\View\Element\Template" name="folix.footer.left" template="Magento_Theme::html/footer-left.phtml" before="-">
+                <block name="left-links-footer" class="Magento\Cms\Block\BlockByIdentifier" after="-" >
+                    <arguments>
+                        <argument name="identifier" xsi:type="string">footer-middle-content</argument>
+                    </arguments>
+            </block>
+        </block>
+        <block class="Magento\Framework\View\Element\Template" name="folix.footer.middle" template="Magento_Theme::html/footer-middle.phtml" after="-">
+                <block name="middle-links-footer" class="Magento\Cms\Block\BlockByIdentifier" >
+                <arguments>
+                    <argument name="identifier" xsi:type="string">footer-middle-content</argument>
+                </arguments>
+              </block>
+        </block>
+              <block class="Magento\Framework\View\Element\Template" name="folix.footer.right" template="Magento_Theme::html/footer-right.phtml" after="-">
+                  <block name="right-links-footer" class="Magento\Cms\Block\BlockByIdentifier" >
                     <arguments>
                         <argument name="identifier" xsi:type="string">footer-middle-content</argument>
                     </arguments>
                  </block>
             </block>
         </referenceContainer>
-        
+        <move element="footer_links" destination="folix.footer.left" before="left-links-footer" />
+        <move element="form.subscribe" destination="folix.footer.right" after="-" />
           <!-- Body Class -->
         <attribute name="body" value="folix-theme" />
         
