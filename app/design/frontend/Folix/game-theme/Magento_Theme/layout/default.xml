@@ -101,7 +101,7 @@
         <block class="Magento\Framework\View\Element\Template" name="folix.footer.left" template="Magento_Theme::html/footer-left.phtml" before="-">
                 <block name="left-links-footer" class="Magento\Cms\Block\BlockByIdentifier" after="-" >
                     <arguments>
-                        <argument name="identifier" xsi:type="string">footer-middle-content</argument>
+                        <argument name="identifier" xsi:type="string">footer-left-content</argument>
                     </arguments>
             </block>
         </block>
@@ -115,7 +115,7 @@
               <block class="Magento\Framework\View\Element\Template" name="folix.footer.right" template="Magento_Theme::html/footer-right.phtml" after="-">
                   <block name="right-links-footer" class="Magento\Cms\Block\BlockByIdentifier" >
                     <arguments>
-                        <argument name="identifier" xsi:type="string">footer-middle-content</argument>
+                        <argument name="identifier" xsi:type="string">footer-right-content</argument>
                     </arguments>
                  </block>
             </block>
