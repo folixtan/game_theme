@@ -35,22 +35,5 @@ class ChargeType extends AbstractSource
 
         return $this->_options;
     }
-
-    /**
-     * 获取选项文本
-     *
-     * @param string $value
-     * @return string|null
-     */
-    public function getOptionText($value): ?string
-    {
-        switch ($value) {
-            case self::DIRECT:
-                return '直充';
-            case self::CARD:
-                return '卡密';
-            default:
-                return null;
-        }
-    }
+ 
 }
